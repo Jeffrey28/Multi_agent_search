@@ -1023,16 +1023,14 @@ It is interesting to notice that the posterior individual PDFs concentrate to th
 
 \section{CONCLUSION}\label{sec:conclu}
 This paper presents a measurement dissemination-based distributed Bayesian filtering (DBF) method for a multi-robot network, utilizing the Latest-In-and-Full-Out (LIFO) protocol for observation exchange.
-% for target search and tracking.
-Different from statistics dissemination approaches that transmit posterior distributions or likelihood functions, each robot under LIFO only exchanges with neighboring robots a full communication buffer consisting of latest available measurements,
-%only receives the latest available measurements and then broadcasts full communication buffer to its direct neighborhood by single-hopping, 
-which significantly reduces the transmission burden between each pair of robots from the order of environmental size to that of robot number.
-Under the condition of fixed and undirected topology, LIFO can guarantee non-intermittent dissemination of all observations over the network within finite time via local communication among direct neighborhood.
+%Different from statistics dissemination approaches that transmit posterior distributions or likelihood functions, each robot under LIFO only exchanges with neighboring robots a full communication buffer consisting of latest available measurements,
+%which significantly reduces the transmission burden between each pair of robots from the order of environmental size to that of robot number.
+%Under the condition of fixed and undirected topology, LIFO can guarantee non-intermittent dissemination of all observations over the network within finite time via local communication among direct neighborhood.
+By exchanging full communication buffers among neighboring robots, LIFO significantly reduces the transmission burden between each pair of robots to be linear of robot number.
 %, with each robot non-intermittently receiving observations of all others.
 It is worth noting that LIFO is a general measurement exchange protocol and applicable to various sorts of sensors.
 Two types of LIFO-based DBF algorithms are proposed to estimate individual PDF for static and moving target, respectively. 
-For the static target, each robot locally fuses the newly received observations while for the moving target, a record set of historical observations is stored and updated. 
-%Upon obtaining the latest available observations of all robots, an iterative Bayesian filtering procedure is applied that alternates between prediction and updating steps. 
+%For the static target, each robot locally fuses the newly received observations while for the moving target, a record set of historical observations is stored and updated. 
 The consistency of LIFO-based DBF is proved by utilizing the law of large numbers, which ensures that estimated target position converges in probability to the true target position when the number of observations tends to infinity.
 %the agreement between robots' estimated target position and the actual position.
 %The effectiveness of this method is demonstrated by simulations.
@@ -1047,9 +1045,11 @@ The consistency of LIFO-based DBF is proved by utilizing the law of large number
 %The consistency of LIFO-DBF is proved by showing the asymptotic concentration of posterior individual PDF to the equi-parameter set containing the actual state, ensuring the agreement between robots' state estimate using LIFO-DBF and the actual environment state.
 %Simulations demonstrate the effectiveness of LIFO-DBF for SAT of both static and moving targets.
 
-Future work includes how to handle other types of sensors and switching topology.
+%Future work includes how to handle other types of sensors and the switching topology.
+Future work includes how to handle other types of sensors and imperfect communication between robots.
 Other types of sensors may have biased observations and subject to non-Bernoulli distribution, which complicates the design and analysis of LIFO-based Bayesian filters.
-The switching topology, including package loss, can lead to unpredictable delay and intermittent transmission, which may affect the consistency and consensus of LIFO-DBF. 
+%The switching topology, including package loss, can lead to unpredictable delay and intermittent transmission, which may affect the consistency and consensus of LIFO-DBF. 
+Imperfect communication, including package loss, out-of-order measurement and transmission delay, requires extension to LIFO-DBF and may affect its consistency and consensus properties.
 %In addition, combining LIFO-DBF with robot motion planning is promising for more effective SAT of target.
 
 

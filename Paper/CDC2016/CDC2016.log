@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  1 MAR 2016 20:51
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  13 MAR 2016 00:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -933,7 +933,7 @@ Before submitting the final camera ready copy, remember to:
 Here is how much of TeX's memory you used:
  17169 strings out of 493089
  335867 string characters out of 6134842
- 394481 words of memory out of 5000000
+ 394479 words of memory out of 5000000
  20311 multiletter control sequences out of 15000+600000
  52964 words of font info for 117 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -965,7 +965,7 @@ t/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/ty
 pe1/urw/times/utmbi8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/t
 imes/utmr8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/times/utmri
 8a.pfb>
-Output written on CDC2016.pdf (8 pages, 630486 bytes).
+Output written on CDC2016.pdf (8 pages, 630118 bytes).
 PDF statistics:
  344 PDF objects out of 1000 (max. 8388607)
  234 compressed objects within 3 object streams
