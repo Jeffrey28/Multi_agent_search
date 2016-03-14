@@ -25,7 +25,7 @@ switch Selection1
     otherwise, error('No selection.');
 end
 
-Selection2 = 2; % select the motion of agents and target
+Selection2 = 1; % select the motion of agents and target
 switch Selection2
     case 1,  r_move= 0; tar_move=0;
     case 2,  r_move= 0; tar_move=1;
@@ -477,49 +477,14 @@ while (1) %% Filtering Time Step
     
     %% %%%%%%%%%%%%%%  Probability Map Consensus %%%%%%%%%%%%%%%%%%
     % steps:
-    % (1) send/receive the probability map for time k-1 from neighbors
-    % (2) observe and update the probability map for time k
+    % (1) observe and update the probability map for time k
+    % (2) send/receive the probability map for time k-1 from neighbors
     % (3) repeat step (1)
-    
-    % consensus
-    % receive and weighted average neighboring maps
-    for i=1:NumOfRobot % Robot Iteration
-        rbtCon(i).map=rbt_cons(i).map;
-    end
-       
-    for ConStep=1:ConsenStep % Consensus cycle
-        if ConsenFigure==1
-            fig_cnt = fig_cnt+1;
-            h_cons = figure(fig_cnt);
-            clf(h_cons);
-        end
-        for i=1:NumOfRobot % Robot Iteration
-            neighNum=length(rbt(i).neighbour)+1;
-            for t=rbt(i).neighbour
-                tempRbtCon(i).map=rbtCon(i).map+rbtCon(t).map;
-            end
-            tempRbtCon(i).map=tempRbtCon(i).map/neighNum;
-        end
-        % plot local PDFs after concensus
-        for i=1:NumOfRobot
-            rbtCon(i).map=tempRbtCon(i).map;
-            if ConsenFigure==1                
-                figure(fig_cnt)
-                subplot(2,3,i); contourf((rbtCon(i).map)'); title(['Sensor ',num2str(i)]);
-                hold on;
-                for j=1:NumOfRobot
-                    if i==j
-                        plot(rbt(j).x, rbt(j).y, 's','Color',rbt(j).color,'MarkerSize',8,'LineWidth',3);
-                    else
-                        plot(rbt(j).x, rbt(j).y, 'p','Color',rbt(j).color, 'MarkerSize',8,'LineWidth',1.5);
-                    end
-                end
-            end
-        end
-    end
-    for i=1:NumOfRobot % Robot Iteration
-        rbt_cons(i).map=rbtCon(i).map;
-    end
+    % note: the steps are opposite to the DBF steps, which first exchange
+    % info and then incorporate new observations. I still need to think
+    % carefully which order is more reasonable. But for now, I think it's
+    % better to present the consensused results in paper so that readers
+    % will not get confused.
     
     % update using new observation
     if (Selection2 == 1) || (Selection2 == 3)
@@ -546,6 +511,49 @@ while (1) %% Filtering Time Step
         end                     
     end
     
+    % consensus step
+    % receive and weighted average neighboring maps
+    for i=1:NumOfRobot % Robot Iteration
+        rbtCon(i).map=rbt_cons(i).map;
+    end
+       
+    for ConStep=1:ConsenStep % Consensus cycle
+        if ConsenFigure==1
+            fig_cnt = fig_cnt+1;
+            h_cons = figure(fig_cnt);
+            clf(h_cons);
+        end
+        for i=1:NumOfRobot % Robot Iteration
+            neighNum=length(rbt(i).neighbour)+1;
+            tempRbtCon(i).map = rbtCon(i).map;
+            for t=rbt(i).neighbour
+                tempRbtCon(i).map=tempRbtCon(i).map+rbtCon(t).map;
+            end
+            tempRbtCon(i).map=tempRbtCon(i).map/neighNum;
+        end
+        % plot local PDFs after concensus
+        for i=1:NumOfRobot
+            rbtCon(i).map=tempRbtCon(i).map;
+            if ConsenFigure==1                
+                figure(fig_cnt)
+                subplot(2,3,i); contourf((rbtCon(i).map)'); title(['Sensor ',num2str(i)]);
+                hold on;
+                for j=1:NumOfRobot
+                    if i==j
+                        plot(rbt(j).x, rbt(j).y, 's','Color',rbt(j).color,'MarkerSize',8,'LineWidth',3);
+                    else
+                        plot(rbt(j).x, rbt(j).y, 'p','Color',rbt(j).color, 'MarkerSize',8,'LineWidth',1.5);
+                    end
+                end
+            end
+        end
+    end
+    for i=1:NumOfRobot % Robot Iteration
+        rbt_cons(i).map=rbtCon(i).map;
+    end
+    
+    
+   
     %% %%%%%%%%%%%%%% Centralized BF %%%%%%%%%%%%%%%%%%
     % steps:
     % (1) receive all robots' observations
@@ -579,6 +587,7 @@ while (1) %% Filtering Time Step
     
     % ML error
     for i = 1:NumOfRobot
+        % DBF
         [tmp_x1,tmp_y1] = find(rbt(i).map == max(rbt(i).map(:)));
         if length(tmp_x1) > 1
             tmp_idx = randi(length(tmp_x1),1,1);
@@ -587,6 +596,8 @@ while (1) %% Filtering Time Step
         end
         rbt(i).ml_dbf(:,count) = [tmp_x1(tmp_idx);tmp_y1(tmp_idx)];
         rbt(i).ml_err_dbf(count) = norm(rbt(i).ml_dbf(:,count)-[fld.tx;fld.ty]);
+        
+        % concensus
         [tmp_x2,tmp_y2] = find(rbt_cons(i).map == max(rbt_cons(i).map(:)));
         if length(tmp_x2) > 1
             tmp_idx2 = randi(length(tmp_x2),1,1);
@@ -596,6 +607,8 @@ while (1) %% Filtering Time Step
         rbt_cons(i).ml_cons(:,count) = [tmp_x2(tmp_idx2);tmp_y2(tmp_idx2)];
         rbt_cons(i).ml_err_cons(count) = norm(rbt_cons(i).ml_cons(:,count)-[fld.tx;fld.ty]);
     end
+    
+    % centralized
     [tmp_x3,tmp_y3] = find(rbt_cent.map == max(rbt_cent.map(:)));
     if length(tmp_x3) > 1
         tmp_idx3 = randi(length(tmp_x3),1,1);
@@ -618,7 +631,6 @@ while (1) %% Filtering Time Step
         for jj = 1:size(pt',2)
             cov_p1 = cov_p1 + dif1(:,jj)*dif1(:,jj)'*tmp_map1(pt(jj,1),pt(jj,2));
         end
-        cov_p1 = cov_p1/size(pt',2);
         rbt(i).pdf_cov{count} = cov_p1;
         rbt(i).pdf_norm_dbf(count) = norm(cov_p1,'fro');
         
@@ -633,10 +645,10 @@ while (1) %% Filtering Time Step
         for jj = 1:size(pt',2)
             cov_p2 = cov_p2 + dif2(:,jj)*dif2(:,jj)'*tmp_map2(pt(jj,1),pt(jj,2));
         end
-        cov_p2 = cov_p2/size(pt',2);
         rbt_cons(i).pdf_cov_cons{count} = cov_p2;
         rbt_cons(i).pdf_norm_cons(count) = norm(cov_p2,'fro');
     end
+    
     % centralized
     tmp_map3 = rbt_cent.map;
     % this avoids the error when some grid has zeros probability
@@ -648,7 +660,6 @@ while (1) %% Filtering Time Step
     for jj = 1:size(pt',2)
         cov_p3 = cov_p3 + dif3(:,jj)*dif3(:,jj)'*tmp_map3(pt(jj,1),pt(jj,2));
     end
-    cov_p3 = cov_p3/size(pt',2);
     rbt_cent.pdf_cov_cent{count} = cov_p3;
     rbt_cent.pdf_norm_cent(count) = norm(cov_p3,'fro');
     
@@ -685,10 +696,10 @@ while (1) %% Filtering Time Step
     %}
     
     
-    %% %%%%%%%%%%%%%% Plotting %%%%%%%%%%%%%%%%%
+    %% %%%%%%%%%%%%%% Plotting for simulation process%%%%%%%%%%%%%%%%%
     
     %% LIFO-DBF
-    %{
+    %
     % plot figures for selected robots
     for k = sim_r_idx
         fig_cnt = fig_cnt+1;
@@ -727,7 +738,7 @@ while (1) %% Filtering Time Step
     
     %% Consensus
     % plot figures for selected robots
-    %{
+    %
     for k = sim_r_idx
         fig_cnt = fig_cnt+1;
         tmp_hd = figure (fig_cnt); % handle for plot of a single robot's target PDF
@@ -764,7 +775,7 @@ while (1) %% Filtering Time Step
     %}
     
     %% Centralized
-    %{
+    %
     % plot figures for central map
     fig_cnt = fig_cnt+1;
     tmp_hd = figure (fig_cnt); % handle for plot of a single robot's target PDF
@@ -839,7 +850,7 @@ while (1) %% Filtering Time Step
     end
 end
 
-%% plot the performance metrics
+%% %%%%%%%%%%%%%% plot the performance metrics %%%%%%%%%%%%%%%%%
 % ml error
 fig_cnt = fig_cnt+1;
 hf_err = figure(fig_cnt);
