@@ -1,0 +1,109 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf340
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww28300\viewh15220\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 *  While the authors maintain LIFO is a novel idea, one of the reviewers points out a paper that present a similar concept. A discussion of the differences and/or similarities between these methods is missing.\
+\
+* Both reviewers note that the paper is substandard in terms of mathematical accuracy, with numerous concepts introduced only at an informal level and proofs lacking rigor.\
+\
+* Importantly, a thorough evaluation of the method is missing. This problem has been extensively studied. This method seems to work, but what are its advantages (if any), when compared to previous work?\
+\
+In conclusion, while the paper may have some merit, in its current form it is not adequate for publication in T-ASE.\
+\
+Reviewer's comments to author:\
+\
+Reviewer: 1\
+\
+Comments to the Authors<br><br>Please comment on Major Contribution of the Paper, Organization and Style, Technical Accuracy, Presentation and Adequacy of Citations (List possible additions if needed).\
+This paper proposes a distributed Bayesian filter (DBF) for target localization by a robotic network, based on the Latest-In-and-Full-Out (LIFO) local observation exchange protocol. The new strategy reduces the communication burden through the network from the order of the environment size (as in the classical statistics dissemination approaches) to the order of robot number. Under the assumption of fixed and undirected communication topologies and robots equipped with binary sensors, two LIFO DBF algorithms are introduced in the case of static and moving targets (and static/mobile robots) and their convergence properties are studied (see Theorem 1 and 2). Numerical simulations with six agents and one (static or mobile) target illustrate the proposed theory.\
+\
+The main idea of the paper (the use of a LIFO protocol and communication buffers to store the latest observations from each robot in the network) appears to be rather original and interesting. However, the presentation, notation, and English of the paper are generally poor, and the main theoretical results are not clearly stated. In this respect, I report below several points that the authors should address in the revised manuscript:\
+\
+a) The problem of active target tracking with a team of mobile robots has been widely studied in the control and robotic literatures (see e.g. the approaches based on Kalman filtering for information fusion in "Coupled distributed estimation and control for mobile sensor networks \'bb, R. Olfati-Saber, P. Jalalkamali,  IEEE Trans. on  Automatic Control, vol. 57, n. 10, pp. 2609-2614, 2012, and in "Active target tracking and cooperative localization for teams of aerial vehicles \'bb, F. Morbidi, G.L. Mariottini, IEEE Trans. Control Systems Technology, vol. 21, n. 5, pp. 1694-1707, 2013, and the references therein). A comparison between the proposed approach based on Bayesian filtering and these previous works should be included in the paper. In particular, when considering the work of Olfati-Saber and Jalalkamali, special attention should be devoted to the analysis of robustness and to decentralized nature of the two solutions.\
+\
+b) 
+\b The statement of Proposition 1 is vague
+\b0 . How is the delay \\tau_\{i,j\} between two robots i and j defined ? How is it related to the shortest path in the communication network ? This is not evident from Proposition 1. In the proof of Proposition 1, the authors invoke Bellman\'92s principle (i.e. dynamic programming): however, the role of this principle in the second part of the proof is unclear.\
+\
+c) 
+\b Are Corollary 1 and 2 really necessary
+\b0 ? They should be removed or at least combined in a single corollary.\
+\
+d) 
+\b At the end of Sect. IIB, the definition of the set \\mathcal\{Q\}_i is not clear
+\b0 . Please be more precise.\
+\
+e) The notion of \'ab virtual PDF \'bb introduced for the first time in Algorithm 2 on page 6, should be better motivated and explained in the body of the text.\
+\
+f) The use of the concepts of \'ab consistency \'bb and \'ab consensus \'bb in Sect. IV is rather informal. These concepts should be more rigorously defined. The ambiguity around the notion of consensus is reinforced by the following obscure statement of the authors in Remark 5: \'ab It must be noted that traditional statistics dissemination-based methods only ensure consensus of individual PDFs \'bb.\
+\
+g) 
+\b In the proof of Theorem 1, the authors utilize binary observations subject to a Bernoulli distribution
+\b0 . For the sake of clearness, this assumption on sensor modeling should be introduced much earlier, in Sect. IIA. There is also an open conflict with the assumption of sensors modeled with identical Gaussian functions in equations (15a)-(15b).\
+\
+h) At the beginning of Sect IVB, the authors state that \'ab Here, the main idea is to classify robot observation positions into two disjoint sets: infinite-observation spots that contains positions where a robot makes infinite observations \'bb. But what does \'ab infinite observations \'bb mean in practice ? The proof of Lemma 1 is not completely clear and it should be improved. \
+\
+i) 
+\b The text accompanying Figs. 4, 5 and 6 in Sect. V is too terse
+\b0  and the future readers of the paper will not able to reproduce the results of the authors. For instance, which are the initial positions of the target and of the six robots in the two scenarios?\
+\
+j) The notation of the paper should be improved. The authors use the 
+\b acronym PDF
+\b0  for \'ab Posterior Density Function \'bb . However, this is highly confusing since the abbreviation PDF stands for \'ab Probability Density Function \'bb in probability theory. Similarly, at the beginning of Sect. IIB, the authors use the 
+\b letter \'ab M \'bb
+\b0  to denote the adjacency matrix of a graph. However, the letter \'ab A \'bb is normally used in graph theory to indicate the adjacency matrix. Finally, the notation used in the first formula of Sect. IIIA is extremely heavy. The authors should avoid three orders of subscripts, since the symbols are painful to read. Isn\'92t the subscript \'ab j \'bb of time \'ab k \'bb redundant?\
+\
+The authors should also fix the following minor issues in the revised manuscript:\
+\
+1) Page 1, first sentence of the abstract: the sentence is poorly written and should be rephrased.\
+2) Page 1, lines 16-18 of the abstract: It should be \'ab For a static target \'bb and \'ab for a moving target \'bb.\
+3) Page 1, penultimate sentence of the abstract: The English of the sentence is poor.\
+4) Page 1, second line of \'ab Note to Practitioners \'bb : \'ab increasing attention \'bb instead of \'ab increasing interest \'bb.\
+5) Page 1, line 15 of \'ab Note to Practitioners \'bb : \'ab moving targets \'bb instead of \'ab moving target \'bb.\
+6) Page 1, first column, lines 9-10 : \'ab DKF used additional low-pass and band-pass consensus filters \'bb. What do you mean exactly ? Please be more precise.\
+7) Page 1, first column, lines 25-26 :  \'ab depends on the communication topology \'bb instead of\
+\'ab is closely related to the communication topology \'bb.\
+8) Page 2, second column, two lines before Remark 1: \'ab binary sensors \'bb instead of \'ab binary sensor \'bb.\
+9) Page 2, second column, second sentence of Remark 2: \'ab closer \'bb instead of \'ab more close \'bb.\
+10) Page 3, Fig. 1: This figure is unnecessary. The shape of ring, line and star graphs is well known.\
+11) Page 3, two lines before equation (4): \'ab Bayes\'92 theorem \'bb instead of \'ab Bayes\'92 formula \'bb.\
+12) Page 3, first line of the second column: The notation is redundant. What does \'ab posterior individual PDF \'bb mean?\
+13) Page 3, second sentence of Sect. III: The phrase is poorly written.\
+14) Page 3, line 8 of Sect. III: \'ab other agent \'bb instead of \'ab other agents \'bb.\
+15) Page 5, second column, Algorithm 1: The point (2.1) is poorly written. Which \'ab groups  \'bb are the authors referring to here?\
+16) Page 6, first column, line 6: \'ab using the aforementioned \'bb instead of \'ab using aforementioned \'bb\
+17) Page 6, second column, first paragraph of Sect. IV: The sentence is meaningless.\
+18) Page 7, Fig. 3: The symbols inside the boxes of the record sets are unreadable.\
+19) Page 9, second line of Sect. VB: What do you mean with \'ab move in circular trajectories *periodically* \'bb ?\
+20) Page 10, references [8] and [23] should be corrected.\
+\
+Reviewer: 2\
+\
+Comments to the Authors<br><br>Please comment on Major Contribution of the Paper, Organization and Style, Technical Accuracy, Presentation and Adequacy of Citations (List possible additions if needed).\
+This paper proposes a distributed filtering algorithm for a distribute robot network. The distributed neighborhood filtering algorithm employs a Latest-In-and-Full-Out local exchange protocol to allow each robot to accumulate understanding of the overall observation. The proposed filters have been used for both moving and static targets. Two simulation case studies have been used to validate the proposed filtering algorithm and the results appear to be satisfying.\
+\
+While the content is easy to follow and distributed filtering is an important topic. My primary concerns are\
+\
+1)      
+\b It is unclear what the purpose of the LIFO strategy is and what is the advantage
+\b0 . The paper reads like "we have a new method and it happens to work for two sample cases." It is a little disappointing that there is no discussion about whether this new strategy would provide better results over existing approaches.\
+\
+2)      The proposed LIFO strategy is structurally similar to "check-point" concept in Leung et al.'s paper [1]. However, Lenug's paper has much better theoretical analysis than this paper. The insight provided by Lenug's paper overshadows this manuscript. It is hard to justify the novelty of this paper.\
+\
+3)      The proofs provided are mostly relying on verbal description which are not very rigorous.\
+\
+4)      Lack of a convincing physical experiment make it hard to judge how robust when the method meets the application. 
+\b Lack of comparison study
+\b0  also cannot convince reviewer that this paper advance our understanding of the distribution filtering.\
+\
+\
+\
+[1]K. Leung, T. Barfoot, and H. Liu, "Decentralized localization of sparsely-communicating robot networks: A centralized-equivalent approach," Robotics, IEEE Transactions on , vol. 26, no. 1, pp. 62 \'9677, Feb. 2010\
+\
+\
+Points that can be improved:\
+1. add comparative study with benchmark methods (vs centralized method vs consensus method; metrics: average estimation error, entropy reduction rate, run 3, 6, 9 robots, each with 10 trials).\
+2. Explain more clearly what the purpose of LIFO is and why consistency is important and is what consensus methods cannot guarantee\
+3. clarify the unclear points mentioned by the first reviewer}

@@ -69,7 +69,7 @@ elseif tar_move == 1
 end
 
 %% Probability Map Consensus setup
-ConsenFigure=0; % if 1, draw the concensus steps
+ConsenFigure=1; % if 1, draw the concensus steps
 
 %% Probability Map Update
 % calculate the prediction matrix
