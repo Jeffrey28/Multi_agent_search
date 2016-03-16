@@ -23,17 +23,11 @@ The main idea of the paper (the use of a LIFO protocol and communication buffers
 \
 a) The problem of active target tracking with a team of mobile robots has been widely studied in the control and robotic literatures (see e.g. the approaches based on Kalman filtering for information fusion in "Coupled distributed estimation and control for mobile sensor networks \'bb, R. Olfati-Saber, P. Jalalkamali,  IEEE Trans. on  Automatic Control, vol. 57, n. 10, pp. 2609-2614, 2012, and in "Active target tracking and cooperative localization for teams of aerial vehicles \'bb, F. Morbidi, G.L. Mariottini, IEEE Trans. Control Systems Technology, vol. 21, n. 5, pp. 1694-1707, 2013, and the references therein). A comparison between the proposed approach based on Bayesian filtering and these previous works should be included in the paper. In particular, when considering the work of Olfati-Saber and Jalalkamali, special attention should be devoted to the analysis of robustness and to decentralized nature of the two solutions.\
 \
-b) 
-\b The statement of Proposition 1 is vague
-\b0 . How is the delay \\tau_\{i,j\} between two robots i and j defined ? How is it related to the shortest path in the communication network ? This is not evident from Proposition 1. In the proof of Proposition 1, the authors invoke Bellman\'92s principle (i.e. dynamic programming): however, the role of this principle in the second part of the proof is unclear.\
+b) The statement of Proposition 1 is vague. How is the delay \\tau_\{i,j\} between two robots i and j defined ? How is it related to the shortest path in the communication network ? This is not evident from Proposition 1. In the proof of Proposition 1, the authors invoke Bellman\'92s principle (i.e. dynamic programming): however, the role of this principle in the second part of the proof is unclear.\
 \
-c) 
-\b Are Corollary 1 and 2 really necessary
-\b0 ? They should be removed or at least combined in a single corollary.\
+c) Are Corollary 1 and 2 really necessary? They should be removed or at least combined in a single corollary.\
 \
-d) 
-\b At the end of Sect. IIB, the definition of the set \\mathcal\{Q\}_i is not clear
-\b0 . Please be more precise.\
+d) At the end of Sect. IIB, the definition of the set \\mathcal\{Q\}_i is not clear. Please be more precise.\
 \
 e) The notion of \'ab virtual PDF \'bb introduced for the first time in Algorithm 2 on page 6, should be better motivated and explained in the body of the text.\
 \
@@ -45,9 +39,7 @@ g)
 \
 h) At the beginning of Sect IVB, the authors state that \'ab Here, the main idea is to classify robot observation positions into two disjoint sets: infinite-observation spots that contains positions where a robot makes infinite observations \'bb. But what does \'ab infinite observations \'bb mean in practice ? The proof of Lemma 1 is not completely clear and it should be improved. \
 \
-i) 
-\b The text accompanying Figs. 4, 5 and 6 in Sect. V is too terse
-\b0  and the future readers of the paper will not able to reproduce the results of the authors. For instance, which are the initial positions of the target and of the six robots in the two scenarios?\
+i) The text accompanying Figs. 4, 5 and 6 in Sect. V is too terse and the future readers of the paper will not able to reproduce the results of the authors. For instance, which are the initial positions of the target and of the six robots in the two scenarios?\
 \
 j) The notation of the paper should be improved. The authors use the 
 \b acronym PDF
@@ -86,17 +78,13 @@ This paper proposes a distributed filtering algorithm for a distribute robot net
 \
 While the content is easy to follow and distributed filtering is an important topic. My primary concerns are\
 \
-1)      
-\b It is unclear what the purpose of the LIFO strategy is and what is the advantage
-\b0 . The paper reads like "we have a new method and it happens to work for two sample cases." It is a little disappointing that there is no discussion about whether this new strategy would provide better results over existing approaches.\
+1)      It is unclear what the purpose of the LIFO strategy is and what is the advantage. The paper reads like "we have a new method and it happens to work for two sample cases." It is a little disappointing that there is no discussion about whether this new strategy would provide better results over existing approaches.\
 \
 2)      The proposed LIFO strategy is structurally similar to "check-point" concept in Leung et al.'s paper [1]. However, Lenug's paper has much better theoretical analysis than this paper. The insight provided by Lenug's paper overshadows this manuscript. It is hard to justify the novelty of this paper.\
 \
 3)      The proofs provided are mostly relying on verbal description which are not very rigorous.\
 \
-4)      Lack of a convincing physical experiment make it hard to judge how robust when the method meets the application. 
-\b Lack of comparison study
-\b0  also cannot convince reviewer that this paper advance our understanding of the distribution filtering.\
+4)      Lack of a convincing physical experiment make it hard to judge how robust when the method meets the application. Lack of comparison study also cannot convince reviewer that this paper advance our understanding of the distribution filtering.\
 \
 \
 \
@@ -104,6 +92,4 @@ While the content is easy to follow and distributed filtering is an important to
 \
 \
 Points that can be improved:\
-1. add comparative study with benchmark methods (vs centralized method vs consensus method; metrics: average estimation error, entropy reduction rate, run 3, 6, 9 robots, each with 10 trials).\
-2. Explain more clearly what the purpose of LIFO is and why consistency is important and is what consensus methods cannot guarantee\
-3. clarify the unclear points mentioned by the first reviewer}
+1. Explain more clearly what the purpose of LIFO is and why consistency is important and is what consensus methods cannot guarantee}

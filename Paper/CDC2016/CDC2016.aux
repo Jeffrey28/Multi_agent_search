@@ -19,7 +19,7 @@
 \citation{coates2004distributed}
 \citation{ribeiro2006bandwidth}
 \citation{djuric2011non}
-\citation{bonnie2012modelling}
+\citation{bonnie2012modelling,liu2015model}
 \citation{djuric2008target}
 \citation{lawton2003decentralized}
 \citation{liu2010simple}
@@ -76,7 +76,7 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Example of LIFO-DBF for $1^\text  {st}$ robot at time $k$. Networked robots take a line topology, shown in the top. The stored individual PDF is $ P^1_{pdf}(k-N)$. The robot first calculates $ P^1_{virt}(k-N+1)$ using DBF and stores it as $ P^1_{pdf}(k-N+1)$. Repeating DBF until obtaining $ P^1_{pdf}(k)$, which is then used as the target PDF estimation of $1^\text  {st}$ robot at time $k$. In this example, $\Omega ^1_{\xi }=\left \delimiter "4266308 1,2,\dots  ,N+1-\xi \right \delimiter "5267309 $, $\xi =1,\dots  ,N$.\relax }}{5}}
 \newlabel{fig:LIFO-DBF}{{3}{5}}
 \newlabel{fig:LIFO-DBF@cref}{{[figure][3][]3}{5}}
-\@writefile{toc}{\contentsline {section}{\numberline {IV}Proof of Consistency and Consensus}{5}}
+\@writefile{toc}{\contentsline {section}{\numberline {IV}Proof of Consistency}{5}}
 \newlabel{sec:consist_proof}{{IV}{5}}
 \newlabel{sec:consist_proof@cref}{{[section][4][]IV}{5}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {IV-A}Proof for static robots}{5}}
@@ -91,7 +91,6 @@
 \newlabel{eqn:cmp_log@cref}{{[equation][7][]7}{5}}
 \newlabel{eqn:cmp_lim1}{{8}{5}}
 \newlabel{eqn:cmp_lim1@cref}{{[equation][8][]8}{5}}
-\citation{bandyopadhyay2014distributed,julian2012distributed}
 \citation{bonnie2012modelling}
 \newlabel{eqn:cmp_lim2}{{9}{6}}
 \newlabel{eqn:cmp_lim2@cref}{{[equation][9][]9}{6}}
@@ -115,7 +114,6 @@
 \newlabel{sec:sim@cref}{{[section][5][]V}{6}}
 \newlabel{eqn:gauss_sensor}{{15}{6}}
 \newlabel{eqn:gauss_sensor@cref}{{[subequation][15][]15}{6}}
-\citation{tisdale2009autonomous}
 \newlabel{fig:sta_sen_sta_tar_sing1}{{4a}{7}}
 \newlabel{fig:sta_sen_sta_tar_sing1@cref}{{[subfigure][1][4]4a}{7}}
 \newlabel{sub@fig:sta_sen_sta_tar_sing1}{{a}{7}}
@@ -132,11 +130,15 @@
 \newlabel{fig:sta_sen_sta_tar_sing4@cref}{{[subfigure][4][4]4d}{7}}
 \newlabel{sub@fig:sta_sen_sta_tar_sing4}{{d}{7}}
 \newlabel{sub@fig:sta_sen_sta_tar_sing4@cref}{{[subfigure][4][4]4d}{7}}
-\newlabel{fig:sta_sen_sta_tar_all}{{4e}{7}}
-\newlabel{fig:sta_sen_sta_tar_all@cref}{{[subfigure][5][4]4e}{7}}
-\newlabel{sub@fig:sta_sen_sta_tar_all}{{e}{7}}
-\newlabel{sub@fig:sta_sen_sta_tar_all@cref}{{[subfigure][5][4]4e}{7}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces (a)-(d) The $1^\text  {st}$ robot's individual PDFs at different times; (e) All robots' individual PDFs at time $30$. The square denotes the current robot and stars represent other robots. The cross stands for the target.\relax }}{7}}
+\newlabel{fig:sta_sen_sta_tar_pos_err}{{4e}{7}}
+\newlabel{fig:sta_sen_sta_tar_pos_err@cref}{{[subfigure][5][4]4e}{7}}
+\newlabel{sub@fig:sta_sen_sta_tar_pos_err}{{e}{7}}
+\newlabel{sub@fig:sta_sen_sta_tar_pos_err@cref}{{[subfigure][5][4]4e}{7}}
+\newlabel{fig:sta_sen_sta_tar_entropy}{{4f}{7}}
+\newlabel{fig:sta_sen_sta_tar_entropy@cref}{{[subfigure][6][4]4f}{7}}
+\newlabel{sub@fig:sta_sen_sta_tar_entropy}{{f}{7}}
+\newlabel{sub@fig:sta_sen_sta_tar_entropy@cref}{{[subfigure][6][4]4f}{7}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces (a)-(d) The $1^\text  {st}$ robot's individual PDF at different times. The square denotes the current robot and stars represent other robots. The cross stands for the target. (e) Average position estimation errors of $1^\text  {st}$, $3^\text  {rd}$ and $5^\text  {th}$ robot's LIFO-DBF, CbDF and CF. (f) Average entropy of individual PDFs.\relax }}{7}}
 \newlabel{fig:sta_sen_sta_tar}{{4}{7}}
 \newlabel{fig:sta_sen_sta_tar@cref}{{[figure][4][]4}{7}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {V-A}Static Robots, Static Target}{7}}
@@ -158,17 +160,18 @@
 \newlabel{fig:mov_sen_mov_tar_sing4@cref}{{[subfigure][4][5]5d}{7}}
 \newlabel{sub@fig:mov_sen_mov_tar_sing4}{{d}{7}}
 \newlabel{sub@fig:mov_sen_mov_tar_sing4@cref}{{[subfigure][4][5]5d}{7}}
-\newlabel{fig:mov_sen_mov_tar_all}{{5e}{7}}
-\newlabel{fig:mov_sen_mov_tar_all@cref}{{[subfigure][5][5]5e}{7}}
-\newlabel{sub@fig:mov_sen_mov_tar_all}{{e}{7}}
-\newlabel{sub@fig:mov_sen_mov_tar_all@cref}{{[subfigure][5][5]5e}{7}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces (a)-(d) The $1^\text  {st}$ robot's individual PDFs at different times; (e) All robots' individual PDFs at time $40$.\relax }}{7}}
+\newlabel{fig:mov_sen_mov_tar_pos_err}{{5e}{7}}
+\newlabel{fig:mov_sen_mov_tar_pos_err@cref}{{[subfigure][5][5]5e}{7}}
+\newlabel{sub@fig:mov_sen_mov_tar_pos_err}{{e}{7}}
+\newlabel{sub@fig:mov_sen_mov_tar_pos_err@cref}{{[subfigure][5][5]5e}{7}}
+\newlabel{fig:mov_sen_mov_tar_entropy}{{5f}{7}}
+\newlabel{fig:mov_sen_mov_tar_entropy@cref}{{[subfigure][6][5]5f}{7}}
+\newlabel{sub@fig:mov_sen_mov_tar_entropy}{{f}{7}}
+\newlabel{sub@fig:mov_sen_mov_tar_entropy@cref}{{[subfigure][6][5]5f}{7}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces (a)-(d) The $6^\text  {th}$ robot's individual PDFs at different times. (e) Average position estimation errors. (f) Average entropy of individual PDFs.\relax }}{7}}
 \newlabel{fig:mov_sen_mov_tar}{{5}{7}}
 \newlabel{fig:mov_sen_mov_tar@cref}{{[figure][5][]5}{7}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {V-B}Moving Robots, Moving Target}{7}}
-\@writefile{toc}{\contentsline {section}{\numberline {VI}CONCLUSION}{7}}
-\newlabel{sec:conclu}{{VI}{7}}
-\newlabel{sec:conclu@cref}{{[section][6][]VI}{7}}
 \bibstyle{IEEEtran}
 \bibdata{references}
 \bibcite{chamberland2007wireless}{1}
@@ -192,10 +195,13 @@
 \bibcite{ribeiro2006bandwidth}{19}
 \bibcite{djuric2011non}{20}
 \bibcite{bonnie2012modelling}{21}
-\bibcite{djuric2008target}{22}
-\bibcite{lawton2003decentralized}{23}
-\bibcite{liu2010simple}{24}
-\bibcite{thatte2008sensor}{25}
-\bibcite{kulich2014single}{26}
-\bibcite{tisdale2009autonomous}{27}
+\bibcite{liu2015model}{22}
+\bibcite{djuric2008target}{23}
+\bibcite{lawton2003decentralized}{24}
+\bibcite{liu2010simple}{25}
+\bibcite{thatte2008sensor}{26}
+\bibcite{kulich2014single}{27}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}CONCLUSION}{8}}
+\newlabel{sec:conclu}{{VI}{8}}
+\newlabel{sec:conclu@cref}{{[section][6][]VI}{8}}
 \@writefile{toc}{\contentsline {section}{References}{8}}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  13 MAR 2016 00:39
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  15 MAR 2016 23:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -732,12 +732,7 @@ LaTeX Font Info:    Try loading font information for OT1+pcr on input line 95.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-)
-Underfull \hbox (badness 1400) in paragraph at lines 133--146
-\OT1/ptm/m/n/10 which can be clas-si-fied into two types: fu-sion cen-ter
- []
-
-[1{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+) [1{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
 ]
@@ -745,10 +740,10 @@ Underfull \hbox (badness 1400) in paragraph at lines 133--146
 File: figures/com_topo.pdf Graphic file (type pdf)
 
 <use figures/com_topo.pdf>
-Package pdftex.def Info: figures/com_topo.pdf used on input line 273.
+Package pdftex.def Info: figures/com_topo.pdf used on input line 277.
 (pdftex.def)             Requested size: 212.47287pt x 70.33257pt.
  [2]
-Underfull \hbox (badness 2213) in paragraph at lines 338--340
+Underfull \hbox (badness 2213) in paragraph at lines 342--344
 \OT1/ptm/m/n/10 and $\OML/cmm/m/it/10 P[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x[]\
 OMS/cmsy/m/n/10 j\OT1/cmr/bx/n/10 z[]\OT1/cmr/m/n/10 )$ \OT1/ptm/m/n/10 is call
 ed pos-te-rior in-di-vid-ual PDF;
@@ -758,7 +753,7 @@ ed pos-te-rior in-di-vid-ual PDF;
 File: figures/data_exchange.pdf Graphic file (type pdf)
 
 <use figures/data_exchange.pdf>
-Package pdftex.def Info: figures/data_exchange.pdf used on input line 459.
+Package pdftex.def Info: figures/data_exchange.pdf used on input line 463.
 (pdftex.def)             Requested size: 242.82503pt x 166.65018pt.
  [3 <./figures/com_topo.pdf> <./figures/data_exchange.pdf
 
@@ -768,155 +763,183 @@ pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/data_exchange.pdf)
 File: figures/DBF_demo.pdf Graphic file (type pdf)
 
 <use figures/DBF_demo.pdf>
-Package pdftex.def Info: figures/DBF_demo.pdf used on input line 544.
-(pdftex.def)             Requested size: 237.7689pt x 149.93677pt.
- [4]
-Overfull \hbox (7.24725pt too wide) detected at line 683
+Package pdftex.def Info: figures/DBF_demo.pdf used on input line 537.
+(pdftex.def)             Requested size: 258.00111pt x 162.69385pt.
+
+Overfull \hbox (12.283pt too wide) in paragraph at lines 537--543
+ [][] 
+ []
+
+[4]
+Overfull \hbox (7.24725pt too wide) detected at line 690
 \OML/cmm/m/it/10 P[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x[]\OMS/cmsy/m/n/10 j\OML
 /cmm/m/it/10 z[]; [] ; z[]\OT1/cmr/m/n/10 ) = \OML/cmm/m/it/10 P[]\OT1/cmr/m/n/
 10 (\OML/cmm/m/it/10 x[]\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 :
  []
 
 
-Underfull \hbox (badness 7649) in paragraph at lines 685--687
+Underfull \hbox (badness 7649) in paragraph at lines 692--694
 []\OT1/ptm/b/n/10 (4) \OT1/ptm/m/n/10 In-di-vid-ual PDF of $\OML/cmm/m/it/10 i[
 ]$ \OT1/ptm/m/n/10 robot at time $\OML/cmm/m/it/10 k$ \OT1/ptm/m/n/10 is
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 715--720
+Underfull \vbox (badness 1360) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 722--727
 
  []
 
 
-Overfull \hbox (6.14972pt too wide) detected at line 729
+Overfull \hbox (6.14972pt too wide) detected at line 736
 [] [] [] \OT1/cmr/m/n/9 = [] [] [] + [] [] [] [] []\OML/cmm/m/it/9 :
  []
 
 [5 <./figures/DBF_demo.pdf>]
-<figures/sta_sen_sta_tar_single_1.pdf, id=73, 481.94987pt x 456.18404pt>
-File: figures/sta_sen_sta_tar_single_1.pdf Graphic file (type pdf)
+<figures/sta_sen_sta_tar_single_1_1.pdf, id=73, 501.66302pt x 394.44864pt>
+File: figures/sta_sen_sta_tar_single_1_1.pdf Graphic file (type pdf)
 
-<use figures/sta_sen_sta_tar_single_1.pdf>
-Package pdftex.def Info: figures/sta_sen_sta_tar_single_1.pdf used on input lin
-e 877.
-(pdftex.def)             Requested size: 96.12033pt x 90.97763pt.
+<use figures/sta_sen_sta_tar_single_1_1.pdf>
+Package pdftex.def Info: figures/sta_sen_sta_tar_single_1_1.pdf used on input l
+ine 884.
+(pdftex.def)             Requested size: 106.2403pt x 83.53484pt.
 
-<figures/sta_sen_sta_tar_single_5.pdf, id=74, 481.94987pt x 456.18404pt>
-File: figures/sta_sen_sta_tar_single_5.pdf Graphic file (type pdf)
+<figures/sta_sen_sta_tar_single_1_5.pdf, id=74, 501.6055pt x 394.58458pt>
+File: figures/sta_sen_sta_tar_single_1_5.pdf Graphic file (type pdf)
 
-<use figures/sta_sen_sta_tar_single_5.pdf>
-Package pdftex.def Info: figures/sta_sen_sta_tar_single_5.pdf used on input lin
-e 881.
-(pdftex.def)             Requested size: 96.12033pt x 90.97763pt.
+<use figures/sta_sen_sta_tar_single_1_5.pdf>
+Package pdftex.def Info: figures/sta_sen_sta_tar_single_1_5.pdf used on input l
+ine 888.
+(pdftex.def)             Requested size: 106.2403pt x 83.56964pt.
 
-<figures/sta_sen_sta_tar_single_10.pdf, id=75, 481.94987pt x 409.20854pt>
-File: figures/sta_sen_sta_tar_single_10.pdf Graphic file (type pdf)
+<figures/sta_sen_sta_tar_single_1_10.pdf, id=75, 501.6055pt x 394.585pt>
+File: figures/sta_sen_sta_tar_single_1_10.pdf Graphic file (type pdf)
 
-<use figures/sta_sen_sta_tar_single_10.pdf>
-Package pdftex.def Info: figures/sta_sen_sta_tar_single_10.pdf used on input li
-ne 885.
-(pdftex.def)             Requested size: 96.12033pt x 81.60922pt.
+<use figures/sta_sen_sta_tar_single_1_10.pdf>
+Package pdftex.def Info: figures/sta_sen_sta_tar_single_1_10.pdf used on input 
+line 892.
+(pdftex.def)             Requested size: 106.2403pt x 83.56973pt.
 
-<figures/sta_sen_sta_tar_single_30.pdf, id=76, 481.94987pt x 409.20854pt>
-File: figures/sta_sen_sta_tar_single_30.pdf Graphic file (type pdf)
+<figures/sta_sen_sta_tar_single_1_30.pdf, id=76, 501.7057pt x 379.62326pt>
+File: figures/sta_sen_sta_tar_single_1_30.pdf Graphic file (type pdf)
 
-<use figures/sta_sen_sta_tar_single_30.pdf>
-Package pdftex.def Info: figures/sta_sen_sta_tar_single_30.pdf used on input li
-ne 889.
-(pdftex.def)             Requested size: 96.12033pt x 81.60922pt.
+<use figures/sta_sen_sta_tar_single_1_30.pdf>
+Package pdftex.def Info: figures/sta_sen_sta_tar_single_1_30.pdf used on input 
+line 896.
+(pdftex.def)             Requested size: 106.2403pt x 80.38359pt.
 
-<figures/sta_sen_sta_tar_30.pdf, id=77, 759.49211pt x 557.13321pt>
-File: figures/sta_sen_sta_tar_30.pdf Graphic file (type pdf)
+<figures/sta_pos_err.pdf, id=77, 575.11928pt x 409.6729pt>
+File: figures/sta_pos_err.pdf Graphic file (type pdf)
 
-<use figures/sta_sen_sta_tar_30.pdf>
-Package pdftex.def Info: figures/sta_sen_sta_tar_30.pdf used on input line 893.
+<use figures/sta_pos_err.pdf>
+Package pdftex.def Info: figures/sta_pos_err.pdf used on input line 900.
+(pdftex.def)             Requested size: 116.35252pt x 82.87703pt.
 
-(pdftex.def)             Requested size: 202.3529pt x 148.4387pt.
+<figures/sta_entropy.pdf, id=78, 575.11928pt x 410.04128pt>
+File: figures/sta_entropy.pdf Graphic file (type pdf)
 
-<figures/mov_sen_mov_tar_single_1.pdf, id=78, 489.1769pt x 459.79752pt>
-File: figures/mov_sen_mov_tar_single_1.pdf Graphic file (type pdf)
+<use figures/sta_entropy.pdf>
+Package pdftex.def Info: figures/sta_entropy.pdf used on input line 904.
+(pdftex.def)             Requested size: 116.35252pt x 82.95155pt.
 
-<use figures/mov_sen_mov_tar_single_1.pdf>
-Package pdftex.def Info: figures/mov_sen_mov_tar_single_1.pdf used on input lin
-e 903.
-(pdftex.def)             Requested size: 96.12033pt x 90.34421pt.
+<figures/mov_sen_mov_tar_single_6_1.pdf, id=79, 501.66302pt x 394.44864pt>
+File: figures/mov_sen_mov_tar_single_6_1.pdf Graphic file (type pdf)
 
-<figures/mov_sen_mov_tar_single_5.pdf, id=79, 489.1769pt x 459.79752pt>
-File: figures/mov_sen_mov_tar_single_5.pdf Graphic file (type pdf)
+<use figures/mov_sen_mov_tar_single_6_1.pdf>
+Package pdftex.def Info: figures/mov_sen_mov_tar_single_6_1.pdf used on input l
+ine 920.
+(pdftex.def)             Requested size: 106.2403pt x 83.53484pt.
 
-<use figures/mov_sen_mov_tar_single_5.pdf>
-Package pdftex.def Info: figures/mov_sen_mov_tar_single_5.pdf used on input lin
-e 907.
-(pdftex.def)             Requested size: 96.12033pt x 90.34421pt.
+<figures/mov_sen_mov_tar_single_6_5.pdf, id=80, 501.57413pt x 394.5532pt>
+File: figures/mov_sen_mov_tar_single_6_5.pdf Graphic file (type pdf)
 
-<figures/mov_sen_mov_tar_single_10.pdf, id=80, 489.1769pt x 416.43553pt>
-File: figures/mov_sen_mov_tar_single_10.pdf Graphic file (type pdf)
+<use figures/mov_sen_mov_tar_single_6_5.pdf>
+Package pdftex.def Info: figures/mov_sen_mov_tar_single_6_5.pdf used on input l
+ine 924.
+(pdftex.def)             Requested size: 106.2403pt x 83.56902pt.
 
-<use figures/mov_sen_mov_tar_single_10.pdf>
-Package pdftex.def Info: figures/mov_sen_mov_tar_single_10.pdf used on input li
-ne 911.
-(pdftex.def)             Requested size: 96.12033pt x 81.82414pt.
+<figures/mov_sen_mov_tar_single_6_10.pdf, id=81, 501.6055pt x 394.58458pt>
+File: figures/mov_sen_mov_tar_single_6_10.pdf Graphic file (type pdf)
 
-<figures/mov_sen_mov_tar_single_40.pdf, id=81, 489.1769pt x 416.43553pt>
-File: figures/mov_sen_mov_tar_single_40.pdf Graphic file (type pdf)
+<use figures/mov_sen_mov_tar_single_6_10.pdf>
+Package pdftex.def Info: figures/mov_sen_mov_tar_single_6_10.pdf used on input 
+line 928.
+(pdftex.def)             Requested size: 106.2403pt x 83.56964pt.
 
-<use figures/mov_sen_mov_tar_single_40.pdf>
-Package pdftex.def Info: figures/mov_sen_mov_tar_single_40.pdf used on input li
-ne 915.
-(pdftex.def)             Requested size: 96.12033pt x 81.82414pt.
+<figures/mov_sen_mov_tar_single_6_30.pdf, id=82, 561.09625pt x 420.57124pt>
+File: figures/mov_sen_mov_tar_single_6_30.pdf Graphic file (type pdf)
 
-<figures/mov_sen_mov_tar_40.pdf, id=82, 759.49211pt x 557.13321pt>
-File: figures/mov_sen_mov_tar_40.pdf Graphic file (type pdf)
+<use figures/mov_sen_mov_tar_single_6_30.pdf>
+Package pdftex.def Info: figures/mov_sen_mov_tar_single_6_30.pdf used on input 
+line 932.
+(pdftex.def)             Requested size: 106.2403pt x 79.627pt.
 
-<use figures/mov_sen_mov_tar_40.pdf>
-Package pdftex.def Info: figures/mov_sen_mov_tar_40.pdf used on input line 919.
+<figures/mov_pos_err.pdf, id=83, 558.13885pt x 409.6729pt>
+File: figures/mov_pos_err.pdf Graphic file (type pdf)
 
-(pdftex.def)             Requested size: 202.3529pt x 148.4387pt.
- [6] [7 <./figures/sta_sen_sta_tar_single_1.pdf> <./figures/sta_sen_sta_tar_sin
-gle_5.pdf
+<use figures/mov_pos_err.pdf>
+Package pdftex.def Info: figures/mov_pos_err.pdf used on input line 936.
+(pdftex.def)             Requested size: 116.35252pt x 85.40248pt.
+
+<figures/mov_entropy.pdf, id=84, 558.13885pt x 410.04128pt>
+File: figures/mov_entropy.pdf Graphic file (type pdf)
+
+<use figures/mov_entropy.pdf>
+Package pdftex.def Info: figures/mov_entropy.pdf used on input line 940.
+(pdftex.def)             Requested size: 116.35252pt x 85.47928pt.
+ [6] [7 <./figures/sta_sen_sta_tar_single_1_1.pdf> <./figures/sta_sen_sta_tar_s
+ingle_1_5.pdf
 
 pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/sta_sen_sta_tar_si
-ngle_5.pdf): PDF inclusion: multiple pdfs with page group included in a single 
-page
-> <./figures/sta_sen_sta_tar_single_10.pdf
+ngle_1_5.pdf): PDF inclusion: multiple pdfs with page group included in a singl
+e page
+> <./figures/sta_sen_sta_tar_single_1_10.pdf
 
 pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/sta_sen_sta_tar_si
-ngle_10.pdf): PDF inclusion: multiple pdfs with page group included in a single
- page
-> <./figures/sta_sen_sta_tar_single_30.pdf
+ngle_1_10.pdf): PDF inclusion: multiple pdfs with page group included in a sing
+le page
+> <./figures/sta_sen_sta_tar_single_1_30.pdf
 
 pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/sta_sen_sta_tar_si
-ngle_30.pdf): PDF inclusion: multiple pdfs with page group included in a single
- page
-> <./figures/sta_sen_sta_tar_30.pdf
+ngle_1_30.pdf): PDF inclusion: multiple pdfs with page group included in a sing
+le page
+> <./figures/sta_pos_err.pdf
 
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/sta_sen_sta_tar_30
-.pdf): PDF inclusion: multiple pdfs with page group included in a single page
-> <./figures/mov_sen_mov_tar_single_1.pdf
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/sta_pos_err.pdf): 
+PDF inclusion: multiple pdfs with page group included in a single page
+> <./figures/sta_entropy.pdf
 
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/mov_sen_mov_tar_si
-ngle_1.pdf): PDF inclusion: multiple pdfs with page group included in a single 
-page
-> <./figures/mov_sen_mov_tar_single_5.pdf
-
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/mov_sen_mov_tar_si
-ngle_5.pdf): PDF inclusion: multiple pdfs with page group included in a single 
-page
-> <./figures/mov_sen_mov_tar_single_10.pdf
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/sta_entropy.pdf): 
+PDF inclusion: multiple pdfs with page group included in a single page
+> <./figures/mov_sen_mov_tar_single_6_1.pdf
 
 pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/mov_sen_mov_tar_si
-ngle_10.pdf): PDF inclusion: multiple pdfs with page group included in a single
- page
-> <./figures/mov_sen_mov_tar_single_40.pdf
+ngle_6_1.pdf): PDF inclusion: multiple pdfs with page group included in a singl
+e page
+> <./figures/mov_sen_mov_tar_single_6_5.pdf
 
 pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/mov_sen_mov_tar_si
-ngle_40.pdf): PDF inclusion: multiple pdfs with page group included in a single
- page
-> <./figures/mov_sen_mov_tar_40.pdf
+ngle_6_5.pdf): PDF inclusion: multiple pdfs with page group included in a singl
+e page
+> <./figures/mov_sen_mov_tar_single_6_10.pdf
 
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/mov_sen_mov_tar_40
-.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/mov_sen_mov_tar_si
+ngle_6_10.pdf): PDF inclusion: multiple pdfs with page group included in a sing
+le page
+> <./figures/mov_sen_mov_tar_single_6_30.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/mov_sen_mov_tar_si
+ngle_6_30.pdf): PDF inclusion: multiple pdfs with page group included in a sing
+le page
+> <./figures/mov_pos_err.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/mov_pos_err.pdf): 
+PDF inclusion: multiple pdfs with page group included in a single page
+> <./figures/mov_entropy.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/mov_entropy.pdf): 
+PDF inclusion: multiple pdfs with page group included in a single page
 >] (./CDC2016.bbl)
 
 ** Conference Paper **
@@ -931,10 +954,10 @@ Before submitting the final camera ready copy, remember to:
 
 [8] (./CDC2016.aux) ) 
 Here is how much of TeX's memory you used:
- 17169 strings out of 493089
- 335867 string characters out of 6134842
- 394479 words of memory out of 5000000
- 20311 multiletter control sequences out of 15000+600000
+ 17187 strings out of 493089
+ 336420 string characters out of 6134842
+ 396481 words of memory out of 5000000
+ 20327 multiletter control sequences out of 15000+600000
  52964 words of font info for 117 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  62i,14n,75p,642b,531s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -965,10 +988,10 @@ t/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/ty
 pe1/urw/times/utmbi8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/t
 imes/utmr8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/times/utmri
 8a.pfb>
-Output written on CDC2016.pdf (8 pages, 630118 bytes).
+Output written on CDC2016.pdf (8 pages, 847446 bytes).
 PDF statistics:
- 344 PDF objects out of 1000 (max. 8388607)
- 234 compressed objects within 3 object streams
+ 1582 PDF objects out of 1728 (max. 8388607)
+ 1054 compressed objects within 11 object streams
  0 named destinations out of 1000 (max. 500000)
- 78 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 88 words of extra memory for PDF output out of 10000 (max. 10000000)
 
