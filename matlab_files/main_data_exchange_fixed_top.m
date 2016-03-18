@@ -65,6 +65,7 @@ sim.ConsenStep = ConsenStep;
 sim.NumOfRobot = NumOfRobot;
 sim.r_init_pos_set = [x_set;y_set];
 sim.sim_r_idx = sim_r_idx;
+sim.trial_num = trial_num;
 
 while (trial_cnt <= trial_num)
     %% Field Setup
