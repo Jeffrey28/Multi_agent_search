@@ -33,8 +33,7 @@ C.-C. Wang, C.~Thorpe, and S.~Thrun, ``Online simultaneous localization and
 \bibitem{2005distributed}
 R.~Olfati-Saber, ``Distributed kalman filter with embedded consensus filters,''
   in \emph{Decision and Control, 2005 and 2005 European Control Conference.
-  CDC-ECC'05. 44th IEEE Conference on}.\hskip 1em plus 0.5em minus 0.4em\relax
-  IEEE, 2005, pp. 8179--8184.
+  CDC-ECC'05. 44th IEEE Conference on}, pp. 8179--8184.
 
 \bibitem{madhavan2004distributed}
 R.~Madhavan, K.~Fregene, and L.~E. Parker, ``Distributed cooperative outdoor
@@ -43,13 +42,12 @@ R.~Madhavan, K.~Fregene, and L.~E. Parker, ``Distributed cooperative outdoor
 
 \bibitem{gu2007distributed}
 D.~Gu, ``Distributed particle filter for target tracking,'' in \emph{Robotics
-  and Automation, 2007 IEEE International Conference on}.\hskip 1em plus 0.5em
-  minus 0.4em\relax IEEE, 2007, pp. 3856--3861.
+  and Automation, 2007 IEEE International Conference on}, pp. 3856--3861.
 
 \bibitem{bandyopadhyay2014distributed}
 S.~Bandyopadhyay and S.-J. Chung, ``Distributed estimation using bayesian
-  consensus filtering,'' in \emph{American Control Conference (ACC),
-  2014}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2014, pp. 634--641.
+  consensus filtering,'' in \emph{American Control Conference (ACC), 2014}, pp.
+  634--641.
 
 \bibitem{julian2012distributed}
 B.~J. Julian, M.~Angermann, M.~Schwager, and D.~Rus, ``Distributed robotic
@@ -59,13 +57,12 @@ B.~J. Julian, M.~Angermann, M.~Schwager, and D.~Rus, ``Distributed robotic
 \bibitem{zuo2006bandwidth}
 L.~Zuo, K.~Mehrotra, P.~K. Varshney, and C.~K. Mohan, ``Bandwidth-efficient
   target tracking in distributed sensor networks using particle filters,'' in
-  \emph{Information Fusion, 2006 9th International Conference on}.\hskip 1em
-  plus 0.5em minus 0.4em\relax IEEE, 2006, pp. 1--4.
+  \emph{Information Fusion, 2006 9th International Conference on}, pp. 1--4.
 
 \bibitem{vemula2006target}
 M.~Vemula, M.~F. Bugallo, and P.~M. Djuri{\'c}, ``Target tracking in a
   two-tiered hierarchical sensor network,'' in \emph{ICASSP 2006 Proceedings.},
-  vol.~4.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2006, pp. IV--IV.
+  vol.~4, pp. IV--IV.
 
 \bibitem{jadbabaie2003coordination}
 A.~Jadbabaie, J.~Lin, \emph{et~al.}, ``Coordination of groups of mobile
@@ -96,15 +93,13 @@ O.~Hlinka, O.~Slu{\v{c}}iak, F.~Hlawatsch, P.~M. Djuri{\'c}, and M.~Rupp,
 \bibitem{beaudeau2012target}
 J.~Beaudeau, M.~F. Bugallo, and P.~M. Djuric, ``Target tracking with
   asynchronous measurements by a network of distributed mobile agents,'' in
-  \emph{in ICASSP 2012 Proceedings}.\hskip 1em plus 0.5em minus 0.4em\relax
-  IEEE, 2012, pp. 3857--3860.
+  \emph{in ICASSP 2012 Proceedings}, pp. 3857--3860.
 
 \bibitem{sheng2005distributed}
 X.~Sheng, Y.-H. Hu, and P.~Ramanathan, ``Distributed particle filter with gmm
   approximation for multiple targets localization and tracking in wireless
   sensor network,'' in \emph{Proceedings of the 4th international symposium on
-  Information processing in sensor networks}.\hskip 1em plus 0.5em minus
-  0.4em\relax IEEE Press, 2005, p.~24.
+  Information processing in sensor networks}, p.~24.
 
 \bibitem{coates2004distributed}
 M.~Coates, ``Distributed particle filters for sensor networks,'' in
@@ -120,8 +115,8 @@ A.~Ribeiro and G.~B. Giannakis, ``Bandwidth-constrained distributed estimation
 
 \bibitem{djuric2011non}
 P.~M. Djuri{\'c}, J.~Beaudeau, and M.~F. Bugallo, ``Non-centralized target
-  tracking with mobile agents,'' in \emph{ICASSP 2011 Proceedings}.\hskip 1em
-  plus 0.5em minus 0.4em\relax IEEE, 2011, pp. 5928--5931.
+  tracking with mobile agents,'' in \emph{ICASSP 2011 Proceedings}, pp.
+  5928--5931.
 
 \bibitem{xiao2008asynchronous}
 F.~Xiao and L.~Wang, ``Asynchronous consensus in continuous-time multi-agent
@@ -146,8 +141,13 @@ G.~Thatte and U.~Mitra, ``Sensor selection and power allocation for distributed
 \bibitem{bonnie2012modelling}
 D.~Bonnie, S.~Candido, T.~Bretl, and S.~Hutchinson, ``Modelling search with a
   binary sensor utilizing self-conjugacy of the exponential family,'' in
-  \emph{Robotics and Automation (ICRA), 2012 IEEE International Conference
-  on}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2012, pp. 3975--3982.
+  \emph{Robotics and Automation (ICRA), 2012 IEEE International Conference on},
+  pp. 3975--3982.
+
+\bibitem{liu2015model}
+C.~Liu, S.~E. Li, and J.~K. Hedrick, ``Model predictive control-based
+  probabilistic search method for autonomous ground robot in a dynamic
+  environment,'' in \emph{ASME 2015 Dynamic Systems and Control Conference}.
 
 \bibitem{djuric2008target}
 P.~M. Djuri{\'c}, M.~Vemula, and M.~F. Bugallo, ``Target tracking by particle

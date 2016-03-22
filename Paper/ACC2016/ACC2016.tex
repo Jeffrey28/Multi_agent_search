@@ -77,14 +77,14 @@
 
 
 \title{\LARGE \bf
-	Distributed Environmental Estimation Using A Group of UGVs Under Dynamically Changing Interaction Topologies}
+	Distributed Target Localization Using A Group of UGVs Under Dynamically Changing Interaction Topologies}
 %Distributed Bayesian Filters for Multi-UGV Network by Using Latest-In-and-Full-Out Exchange Protocol of Observations}
 
 
 \author{Chang Liu$^{1}$, Shengbo Eben Li$^{2}$ and J. Karl Hedrick$^{3}$% <-this % stops a space
 	\thanks{*The first two authors, C. Liu and S. Li, have equally contributed to this research.}% <-this % stops a space
 	\thanks{$^{1}$C. Liu is with the Vehicle Dynamics \& Control Lab, Department of Mechanical Engineering, University of California, Berkeley, Berkeley, CA 94709, USA. Email: {\tt\small changliu@berkeley.edu}}%
-	\thanks{$^{2}$S. Eben Li is with the Department of Automotive Engineering, Tsinghua University, Beijing, 100084, China. He is currently working at Department of Mechanical Engineering, University of California, Berkeley as a visiting scholar. Email: {\tt\small lisb04@gmail.com}}%
+	\thanks{$^{2}$S. Eben Li is with the Department of Automotive Engineering, Tsinghua University, Beijing, 100084, China. He has worked at the Department of Mechanical Engineering, University of California, Berkeley as a visiting scholar. Email: {\tt\small lisb04@gmail.com}}%
 	\thanks{$^{3}$J. K. Hedrick is with the Vehicle Dynamics \& Control Lab, Department of Mechanical Engineering, University of California, Berkeley, Berkeley, CA 94709, USA. Email: {\tt\small khedrick@me.berkeley.edu}}%
 }
 
@@ -101,18 +101,15 @@
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\begin{abstract}
-		
-		This paper presents a distributed Bayesian filtering (DBF) method for a network of multiple unmanned ground vehicles (UGVs) under dynamically changing interaction topologies. The information exchange among UGVs relies on a measurement dissemination scheme, called Latest-In-and-Full-Out (LIFO) protocol. Different from statistics dissemination approaches that transmit posterior distributions or likelihood functions, each UGV under LIFO only sends a buffer that contains latest available measurements to neighboring nodes, which reduces the transmission burden from the order of environmental size to that of UGV number. 
-		Under the condition that the union of undirected switching topologies
-%		 across some time intervals
-		is connected frequently enough,
-%		 as system evolves,
-		LIFO can disseminate observations over the network within finite time. The LIFO-based DBF algorithm is then derived to estimate individual posterior density function (PDF) for target localization in a static environment. The consistency of this algorithm is proved that each individual estimate of target position converges in probability to the true value when the number of observations tends to infinity.
-		The effectiveness of this method is demonstrated by a series of simulations.
+		This paper presents a distributed Bayesian filtering (DBF) method for a network of multiple unmanned ground vehicles (UGVs) under dynamically changing interaction topologies. The information exchange among UGVs relies on a measurement dissemination scheme, called Latest-In-and-Full-Out (LIFO) protocol. Different from statistics dissemination approaches that transmit posterior distributions or likelihood functions, each UGV under LIFO only sends a buffer that contains latest available measurements to neighboring nodes, which significantly reduces the transmission burden between each pair of UGVs to scale linearly with the size of the network.
+		Under the condition that the union of undirected switching topologies is connected frequently enough,
+		LIFO can disseminate observations over the network within finite time. 
+		The LIFO-based DBF algorithm is then derived to estimate individual probability density function (PDF) for target localization in a static environment. The consistency of this algorithm is proved that each individual estimate of target position converges in probability to the true target position.
+		The effectiveness of this method is demonstrated by comparing with consensus-based distributed filters and the centralized filter in simulations.
 	\end{abstract}
 	
 	\begin{keywords} 
-		Multiple vehicle system, environment estimation, distributed filtering, switching interaction topology
+		Multiple vehicle system, target localization, environmental sensing, distributed filtering, switching interaction topology
 	\end{keywords}
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\section{INTRODUCTION}
@@ -145,15 +142,15 @@
 %	If the information is being exchanged by direct sensing, the locally visible neighbors of a vehicle will likely change over time. 
 	In such cases, dynamically changing topologies can cause random packet loss and variable transmission delay, thus decreasing the performance of distributed estimation, and even leading to inconsistency and non-consensus. 
 	
-	This paper presents a measurement dissemination-based distributed Bayesian filtering (DBF) method for a group of networked UGVs with dynamically changing interaction topologies. The measurement dissemination scheme uses the so-called Latest-In-and-Full-Out (LIFO) protocol, in which each UGV is only allowed to broadcast observations to its neighbors by using single-hopping.
-	Individual Bayesian filter is implemented locally for each UGV after exchanging observations using LIFO.
-	Under the condition that the union of undirected switching topologies is connected frequently enough, two properties are achieved: (1) LIFO can disseminate observations over the network within finite time; (2) LIFO-based DBF guarantees the consistency of estimation that each individual estimate of target position converges in probability to the true value as the number of observations tends to infinity. 
-	The main benefit of using LIFO is on the reduction of communication burden, with the transmission data volume scaling linearly with the UGV number. 
+	The main contribution of the paper is that we present a measurement dissemination-based distributed Bayesian filtering (DBF) method for a group of networked UGVs with dynamically changing interaction topologies. The measurement dissemination scheme uses the so-called Latest-In-and-Full-Out (LIFO) protocol, under which each UGV is only allowed to broadcast observations to its neighbors by using single-hopping.
+	Individual Bayesian filter is implemented locally by each UGV after exchanging observations using LIFO.
+	Under the condition that the union of undirected switching topologies is connected frequently enough, two properties are achieved: (1) LIFO can disseminate observations over the network within finite time; (2) LIFO-based DBF guarantees the consistency of estimation that each individual estimate of target position converges in probability to the true target position as the number of observations tends to infinity. 
+	The main benefit of using LIFO is on the reduction of communication burden, with the transmission data volume scaling linearly with the size of the UGV network. 
 	
 	The rest of this paper is organized as follows: 
-	The LIFO protocol for dynamically changing interaction topologies is formulated in \cref{sec:lifo}.
-	The LIFO-based DBF algorithm is described in \cref{sec:LIFO-dbf}, where the consistency and consensus of estimation are proved.
-	Simulation results are presented in \cref{sec:sim} and \cref{sec:conclu} concludes the paper.
+	the LIFO protocol for dynamically changing interaction topologies is formulated in \cref{sec:lifo};
+	the LIFO-based DBF algorithm is described in \cref{sec:LIFO-dbf}, where the consistency of estimation is proved;
+	simulation results are presented in \cref{sec:sim} and \cref{sec:conclu} concludes the paper.
 	
 	\section{LIFO Protocol for Dynamically Changing Interaction Topologies}\label{sec:lifo}
 	Consider a network of $N$ UGVs in a bounded two-dimensional space $S$. 
@@ -298,9 +295,10 @@
 	
 	\begin{figure}%[thpb]
 		\centering
-		\includegraphics[width=0.45\textwidth]{figures/data_exchange_switch}
+		\includegraphics[width=0.43\textwidth]{figures/data_exchange_switch}
 		\caption{Example of LIFO with three UGVs using switching line interaction topologies. The double-headed arrow represents a communication link between two UGVs.}
 		\label{fig:LIFO}
+%		\vspace{-1em}]
 	\end{figure}
 	
 	\begin{prop}\label{prop1}
@@ -404,7 +402,7 @@
 	The combination of \Cref{eqn:bin_sensor1} and \Cref{eqn:bin_sensor0} forms a binary sensor model parameterized by $x^T$ and $x^{R,i}$. 
 	For the purpose of simplicity, we will not explicitly write $x^{R,i}$ when no confusion may occur.
 	%, with which all observations are generated. 
-	The commonly used likelihood functions for binary sensor include Gaussian function \cite{bonnie2012modelling} and step function \cite{djuric2008target}.
+	The commonly used likelihood functions for binary sensor include Gaussian function \cite{bonnie2012modelling,liu2015model} and step function \cite{djuric2008target}.
 	
 	\begin{rem}
 		Given the knowledge of current target and UGV positions, current observation of each UGV is conditionally independent from its own past observations and those of other UGVs.
@@ -807,19 +805,19 @@
 	%\medskip
 	
 	
-	\begin{rem}
-		%	When $X^T_{eq}$ only contains $x^{T^{*}}$, consistency means the estimated target position converges to true target position in probability. Additionally, 
-		\Cref{thm:LIFO-dbf-sta-tar} guarantees the consistency of distributed filtering using LIFO-DBF.
-		This result also leads to the consensus of individual PDFs since they all converge to the same distribution.
-%		This paper can guarantee both consistency and consensus of individual PDF. 
-%		The reason is that all individual PDFs converge to the same distribution, thus the consensus is also achieved.
-		Different from this study, traditional statistics dissemination-based methods only ensure consensus of individual PDFs \cite{bandyopadhyay2014distributed,julian2012distributed}. 
-		To the best knowledge of authors, there is no proof of consistency on estimated target position.
-		%	that guarantees the agreed PDF is close to the true target PDF.
-		%	 of individual PDFs.
-		%	In fact, the statistics dissemination-based methods can ensure the convergence of the state estimate among UGVs. 
-		%	However, there's no guarantee whether the agreed estimate is close to the actual target position.
-	\end{rem}
+%	\begin{rem}
+%		%	When $X^T_{eq}$ only contains $x^{T^{*}}$, consistency means the estimated target position converges to true target position in probability. Additionally, 
+%		\Cref{thm:LIFO-dbf-sta-tar} guarantees the consistency of distributed filtering using LIFO-DBF.
+%		This result also leads to the consensus of individual PDFs since they all converge to the same distribution.
+%%		This paper can guarantee both consistency and consensus of individual PDF. 
+%%		The reason is that all individual PDFs converge to the same distribution, thus the consensus is also achieved.
+%		Different from this study, traditional statistics dissemination-based methods only ensure consensus of individual PDFs \cite{bandyopadhyay2014distributed,julian2012distributed}. 
+%		To the best knowledge of authors, there is no proof of consistency on estimated target position.
+%		%	that guarantees the agreed PDF is close to the true target PDF.
+%		%	 of individual PDFs.
+%		%	In fact, the statistics dissemination-based methods can ensure the convergence of the state estimate among UGVs. 
+%		%	However, there's no guarantee whether the agreed estimate is close to the actual target position.
+%	\end{rem}
 	
 %	\begin{rem}
 %%		It is interesting to notice that the interaction topology condition for consistency and consensus in this study is similar to the condition for information consensus in \cite{jadbabaie2003coordination}.
@@ -837,62 +835,33 @@
 			\caption{Collection of changing topologies}\label{fig:com_topo1}
 		\end{subfigure}
 		~
-		\begin{subfigure}[b]{0.35\textwidth}
-			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_single_1_combo}
-			\caption{Individual PDF of $1^\text{st}$ UGV}\label{fig:sta_sen_sta_tar_sing1_1}
+		\begin{subfigure}[b]{0.21\textwidth}
+			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_top1_3_dbf_first}
+			\caption{Individual PDF}\label{fig:sta_sen_sta_tar_top1_init_dbf}
 		\end{subfigure}
-%		\begin{subfigure}[b]{0.17\textwidth}
-%			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_single_1_5}
-%			\caption{Step 5}\label{fig:sta_sen_sta_tar_sing1_2}
-%		\end{subfigure}
-%		\begin{subfigure}[b]{0.17\textwidth}
-%			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_single_1_20}
-%			\caption{Step 20}\label{fig:sta_sen_sta_tar_sing1_3}
-%		\end{subfigure}
-%		\begin{subfigure}[b]{0.17\textwidth}
-%			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_single_1_50}
-%			\caption{Step 50}\label{fig:sta_sen_sta_tar_sing1_4}
-%		\end{subfigure}
-		\begin{subfigure}[b]{0.35\textwidth}
-			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_single_2_combo}
-			\caption{Individual PDF of $2^\text{nd}$ UGV}\label{fig:sta_sen_sta_tar_sing2_1}
+		\begin{subfigure}[b]{0.21\textwidth}
+			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_top1_3_dbf_end}
+			\caption{LIFO-DBF}\label{fig:sta_sen_sta_tar_top1_dbf}
 		\end{subfigure}
-%		\begin{subfigure}[b]{0.17\textwidth}
-%			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_single_2_5}
-%			\caption{Step 5}\label{fig:sta_sen_sta_tar_sing2_2}
-%		\end{subfigure}
-%		\begin{subfigure}[b]{0.17\textwidth}
-%			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_single_2_20}
-%			\caption{Step 20}\label{fig:sta_sen_sta_tar_sing2_3}
-%		\end{subfigure}
-%		\begin{subfigure}[b]{0.17\textwidth}
-%			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_single_2_50}
-%			\caption{Step 50}\label{fig:sta_sen_sta_tar_sing2_4}
-%		\end{subfigure}
-		\begin{subfigure}[b]{0.35\textwidth}
-			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_single_5_combo}
-			\caption{Individual PDF of $5^\text{th}$ UGV}\label{fig:sta_sen_sta_tar_sing3_1}
+		\begin{subfigure}[b]{0.21\textwidth}
+			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_top1_3_cons_end}
+			\caption{Consensus method}\label{fig:sta_sen_sta_tar_top1_cons}
 		\end{subfigure}
-%		\begin{subfigure}[b]{0.17\textwidth}
-%			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_single_5_5}
-%			\caption{Step 5}\label{fig:sta_sen_sta_tar_sing3_2}
-%		\end{subfigure}
-%		\begin{subfigure}[b]{0.17\textwidth}
-%			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_single_5_20}
-%			\caption{Step 20}\label{fig:sta_sen_sta_tar_sing3_3}
-%		\end{subfigure}
-%		\begin{subfigure}[b]{0.17\textwidth}
-%			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_single_5_50}
-%			\caption{Step 50}\label{fig:sta_sen_sta_tar_sing3_4}
-%		\end{subfigure}
-%		\begin{subfigure}[b]{0.4\textwidth}
-%			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_30}
-%			\caption{Step 30}\label{fig:sta_sen_sta_tar_all}
-%		\end{subfigure}
-		\caption{First scenario consists of two types of topologies. (b)-(d) show individual PDFs for $1^\text{st}$, $2^\text{nd}$ and $5^\text{th}$ UGV, respectively.}
-%			 Individual PDFs for two changing interaction topologies: (b)-(e) The $1^\text{st}$ UGV's individual PDFs at different times; (f)-(i) The $2^\text{nd}$ UGV's individual PDFs; (j)-(m) The $5^\text{nd}$ UGV's individual PDFs. The cross stands for the target.}
-%			The square denotes the current UGV and stars represent other UGVs. The cross stands for the target.}
+		\begin{subfigure}[b]{0.21\textwidth}
+			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_top1_cent_end}
+			\caption{Centralized filter}\label{fig:sta_sen_sta_tar_top1_cent}
+		\end{subfigure}	
+		\begin{subfigure}[b]{0.23\textwidth}
+			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_top1_pos_err}
+			\caption{Position error}\label{fig:sta_sen_sta_tar_top1_pos_err}
+		\end{subfigure}	
+		\begin{subfigure}[b]{0.23\textwidth}
+			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_top1_entropy}
+			\caption{Entropy reduction}\label{fig:sta_sen_sta_tar_top1_entropy}
+		\end{subfigure}		
+		\caption{First scenario: (a) two types of topologies; (b) individual PDF of the $3^\text{rd}$ UGV after initial observation; (c)-(e) PDFs at the end of simulation using different filters; (f) average position estimation errors; (g) average entropy of PDF. In last two figures, metrics are based on the PDFs of the $1^\text{st}$, $3^\text{rd}$ and $5^\text{th}$ UGV using LIFO-DBF, the common PDF using CbDF and using CF.}
 		\label{fig:sta_sen_sta_tar1}
+		\vspace{-1.3em}
 	\end{figure}
 	
 	\begin{figure}%[thpb]
@@ -902,67 +871,40 @@
 			\caption{Collection of changing topologies}\label{fig:com_topo2}
 		\end{subfigure}
 		~
-		\begin{subfigure}[b]{0.35\textwidth}
-			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_2_single_1_combo}
-			\caption{Individual PDF of $1^\text{st}$ UGV}\label{fig:sta_sen_sta_tar_2_sing1_1}
+		\begin{subfigure}[b]{0.21\textwidth}
+			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_top2_1_dbf_first}
+			\caption{Individual PDF}\label{fig:sta_sen_sta_tar_top2_init_dbf}
 		\end{subfigure}
-%		\begin{subfigure}[b]{0.17\textwidth}
-%			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_2_single_1_5}
-%			\caption{Step 5}\label{fig:sta_sen_sta_tar_2_sing1_2}
-%		\end{subfigure}
-%		\begin{subfigure}[b]{0.17\textwidth}
-%			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_2_single_1_20}
-%			\caption{Step 20}\label{fig:sta_sen_sta_tar_2_sing1_3}
-%		\end{subfigure}
-%		\begin{subfigure}[b]{0.17\textwidth}
-%			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_2_single_1_50}
-%			\caption{Step 50}\label{fig:sta_sen_sta_tar_2_sing1_4}
-%		\end{subfigure}
-		\begin{subfigure}[b]{0.35\textwidth}
-			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_2_single_2_combo}
-			\caption{Individual PDF of $2^\text{nd}$ UGV}\label{fig:sta_sen_sta_tar_2_sing2_1}
+		\begin{subfigure}[b]{0.21\textwidth}
+			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_top2_1_dbf_end}
+			\caption{LIFO-DBF}\label{fig:sta_sen_sta_tar_top2_dbf}
 		\end{subfigure}
-%		\begin{subfigure}[b]{0.17\textwidth}
-%			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_2_single_2_5}
-%			\caption{Step 5}\label{fig:sta_sen_sta_tar_2_sing2_2}
-%		\end{subfigure}
-%		\begin{subfigure}[b]{0.17\textwidth}
-%			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_2_single_2_20}
-%			\caption{Step 20}\label{fig:sta_sen_sta_tar_2_sing2_3}
-%		\end{subfigure}
-%		\begin{subfigure}[b]{0.17\textwidth}
-%			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_2_single_2_50}
-%			\caption{Step 50}\label{fig:sta_sen_sta_tar_2_sing2_4}
-%		\end{subfigure}
-		\begin{subfigure}[b]{0.35\textwidth}
-			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_2_single_5_combo}
-			\caption{Individual PDF of $5^\text{th}$ UGV}\label{fig:sta_sen_sta_tar_2_sing3_1}
+		\begin{subfigure}[b]{0.21\textwidth}
+			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_top2_1_cons_end}
+			\caption{Consensus method}\label{fig:sta_sen_sta_tar_top2_cons}
 		\end{subfigure}
-%		\begin{subfigure}[b]{0.17\textwidth}
-%			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_2_single_5_5}
-%			\caption{Step 5}\label{fig:sta_sen_sta_tar_2_sing3_2}
-%		\end{subfigure}
-%		\begin{subfigure}[b]{0.17\textwidth}
-%			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_2_single_5_20}
-%			\caption{Step 20}\label{fig:sta_sen_sta_tar_2_sing3_3}
-%		\end{subfigure}
-%		\begin{subfigure}[b]{0.17\textwidth}
-%			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_2_single_5_50}
-%			\caption{Step 50}\label{fig:sta_sen_sta_tar_2_sing3_4}
-%		\end{subfigure}
-%		\begin{subfigure}[b]{0.4\textwidth}
-%			\includegraphics[width=\textwidth]{figures/mov_sen_mov_tar_40}
-%			\caption{Step 40}\label{fig:mov_sen_mov_tar_all}
-%		\end{subfigure}
+		\begin{subfigure}[b]{0.21\textwidth}
+			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_top2_cent_end}
+			\caption{Centralized filter}\label{fig:sta_sen_sta_tar_top2_cent}
+		\end{subfigure}	
+		\begin{subfigure}[b]{0.23\textwidth}
+			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_top2_pos_err}
+			\caption{Position error}\label{fig:sta_sen_sta_tar_top2_pos_err}
+		\end{subfigure}	
+		\begin{subfigure}[b]{0.23\textwidth}
+			\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_top2_entropy}
+			\caption{Entropy reduction}\label{fig:sta_sen_sta_tar_top2_entropy}
+		\end{subfigure}		
 		\caption{Second scenario consists of three types of topologies. (b)-(d) show individual PDFs for $1^\text{st}$, $2^\text{nd}$ and $5^\text{th}$ UGV, respectively.}
 %			Individual PDFs for three switching interaction topologies: (b)-(e) The $1^\text{st}$ UGV's individual PDFs; (f)-(i) The $2^\text{nd}$ UGV's individual PDFs; (j)-(m) The $5^\text{nd}$ UGV's individual PDFs. }
 		\label{fig:sta_sen_sta_tar2}
-	\end{figure}
-	
+		\vspace{-1.3em}
+	\end{figure}				
+		
 	This section simulates two sets of dynamically changing interaction topologies to demonstrate the effectiveness of LIFO-DBF.
-	In both cases, six static UGVs, represented as one square and five stars in \cref{fig:sta_sen_sta_tar1} and \cref{fig:sta_sen_sta_tar2}, are utilized and each UGV is equipped with a binary sensor. 
-	The square represents the UGV whose individual PDF is shown in the figure.
-	All sensors are modeled with identical Gaussian functions \cite{bonnie2012modelling}:
+	Each scenario includes six static UGVs, represented as the square and stars in \cref{fig:sta_sen_sta_tar1} and \cref{fig:sta_sen_sta_tar2}.
+	The square represents the UGV whose individual PDF is shown in the figures.
+	UGVs are equipped with binary sensors and the sensor model, \cref{eqn:bin_sensor1,eqn:bin_sensor0}, takes the form of Gaussian functions \cite{bonnie2012modelling}:
 	%\small\begin{align}\label{eqn:gauss_sensor}
 	\small\begin{subequations}\label{eqn:gauss_sensor}
 		\begin{align}
@@ -976,106 +918,43 @@
 	%Figure 4 shows the 1-D illustration of Gaussian binary sensor model.
 	%where $x^R$ denotes the UGV position, which is included in UGV state $y^R$.
 	
-	\cref{fig:com_topo1} and \cref{fig:com_topo2} illustrates the collections of changing interaction topologies for the first and second scenario, respectively, one with two topologies and the other with three topologies.
-	The union of topologies in each collections is designed to be jointly connected.
+	\cref{fig:com_topo1} and \cref{fig:com_topo2} illustrate the collections of changing interaction topologies for the first and second scenario, respectively, one with two topologies and the other with three topologies.
+	The union of topologies in each collection is designed to be jointly connected.
 	In both scenarios, topologies appear alternatively such that their union are connected frequently enough.
-%	The first scenario consists of six static UGVs and a single static target.
-	%, which acts as a proof of concept of LIFO-DBF for static target.
-%	The second scenario subsequently deals with a collection of three topologies, as shown in \cref{fig:com_topo2}.
-%	These three topologies also appear alternatively and are therefore jointly connected with sufficient frequency.
-%	six moving UGVs for localizing a moving target. 
-%	UGV positions are randomly generated at each time step. 
-	%The third scenario contains six moving sensors and one moving target. 
-%	A single-integrator dynamics is used as the target motion model.
+
+	In both scenarios, LIFO-DBF is compared with two commonly adopted approaches in multi-agent filtering: the consensus-based distributed filtering (CbDF) method and the centralized filtering (CF) method.
+	The CbDF requires robots to continually exchange their individual PDFs with direct neighbors, using the average of all received and its own individual PDFs as the updated individual PDF.
+	Multiple rounds of communication and averaging are conducted at each time step to ensure the convergence of each robot's individual PDF.
+	The CF assumes a central unit that can constantly receive and fuse all robots' latest observations into a single PDF.
+	10 test trials with randomly generated initial target positions are run and each trial is terminated after 150 time steps.
+	The average error between the estimated and true target position and the average entropy of individual PDFs of all 10 trials are compared among these three approaches.
 	
-%	\subsection{Static UGVs, Static Target}\label{subsec:sim1}
+	In the first scenario, each UGV forms a circular individual PDF after the initial observation, centered at its own position, as shown in \cref{fig:sta_sen_sta_tar_top1_init_dbf}.
+	The circular PDF occurs because the Gaussian sensor model (\Cref{eqn:gauss_sensor}) only depends on the distance between a UGV and the target.
+	As more observations are received by each UGV, the posterior individual PDF concentrates to the true location of the target (\cref{fig:sta_sen_sta_tar_top1_dbf}), which accords with the consistency of LIFO-DBF.	
 	
-%	The positions of six static UGVs are shown as stars and square in \cref{fig:sta_sen_sta_tar1} and \cref{fig:sta_sen_sta_tar2}.
-	%Each UGV constantly receives binary observations of the target.
-	The LIFO-DBF is implemented on each UGV for target localization.
-%	The networked UGVs use a ring communication topology that each UGV can communicate with two fixed neighbors.
-%	\cref{fig:sta_sen_sta_tar1} shows the estimation results of the static target. 
-	After the initial observation, each UGV forms a circular individual PDF, centered at its own position.
-	%\cref{fig:sta_sen_sta_tar_sing1} shows the individual PDF after initial observation for $1^\text{st}$ UGV.
-	The circular PDF occurs because the Gaussian sensor model (\Cref{eqn:gauss_sensor}) only depends on the distance between UGV and target.
-	As more observations are received by each UGV, the posterior individual PDF concentrates to the true location of the target, which accords with the consistency of LIFO-DBF.
-	%In fact, with the Guassian sensor model (\Cref{eqn:gauss_sensor}), all positions with equal distance to a UGV belong to the same equi-parameter set of the UGV.
-	%Considering the system of six UGVs located separately, the equi-parameter set that contains the actual target position only contains one element.
-	%\cref{fig:entropy} (a) shows the decrease of the entropy of each UGV's individual PDF, indicating the reduction of the uncertainty in PDF estimation.
+	Comparison of the estimation performance between LIFO-DBF, CbDF and CF is presented in \cref{fig:sta_sen_sta_tar_top1_pos_err,fig:sta_sen_sta_tar_top1_entropy}.
+	Unsurprisingly, the CF achieves the best performance in terms of both small position estimation error and fast reduction of entropy. 
+	This happens because the central unit has access to the latest observations of all UGVs, thus making most use of all available information.
+	LIFO-DBF and CbDF show similar performance as the CF does in position estimation error.
+	However, they significantly differ in terms of entropy reduction. 
+	In fact, LIFO-DBF has similar asymptotic performance as the CF in reducing the entropy of PDF over time; this is notable since each UGV only communicates with its neighboring UGVs, which consumes less communication recourse than the CF.
+	The CbDF, on the contrary, is much slower in entropy reduction while incurring huge communication burden due to multiple rounds of consensus at each time step.
+	The difference in entropy reduction makes sense since CbDF can only ``implicitly" fuses different robots' observation via computing the average of individual PDFs while LIFO-DBF and CF can directly utilize observations, thus making better use of available information.	
+	Such difference results in vastly different individual PDFs, as shown in \cref{fig:sta_sen_sta_tar_top1_dbf,fig:sta_sen_sta_tar_top1_cons,fig:sta_sen_sta_tar_top1_cent}, which show the PDF at the end of simulation.
+	Similar performance difference among LIFO-DBF, CbDF and CF for the second scenario can be observed in \cref{fig:sta_sen_sta_tar2}.
 	
-	%\subsection{Moving UGVs, Static Target}
-	%The six UGVs move within the field to estimate the target position. 
-	%The motion planning of UGVs for effective target search has received much attention in the past years. 
-	%In this work, the UGV positions are randomly generated at each time in order to demonstrate the effectiveness of LIFO-DBF approach. 
-	%Readers interested in UGV motion planning can refer to \cite{tisdale2009autonomous,furukawa2006recursive}.
-	%
-	%\cref{fig:mov_sen_sta_tar} shows the estimation results over time. 
-	%Similar to the results in \cref{subsec:sim1}, the posterior individual PDF concentrates to the true target location. 
-	%\cref{fig:entropy} (b) shows the decrease of the entropy of the individual PDFs.
-	%
-	%\begin{figure}%[thpb]
-	%	\centering
-	%	\begin{subfigure}[b]{0.23\textwidth}
-	%		\includegraphics[width=\textwidth]{figures/mov_sen_sta_tar_1}
-	%		\caption{Step 1}\label{fig:mov_sen_sta_tar1}
-	%	\end{subfigure}
-	%	~
-	%	\begin{subfigure}[b]{0.23\textwidth}
-	%		\includegraphics[width=\textwidth]{figures/mov_sen_sta_tar_3}
-	%		\caption{Step 3}\label{fig:mov_sen_sta_tar2}
-	%	\end{subfigure}
-	%	~
-	%	\begin{subfigure}[b]{0.23\textwidth}
-	%		\includegraphics[width=\textwidth]{figures/mov_sen_sta_tar_10}
-	%		\caption{Step 10}\label{fig:mov_sen_sta_tar3}
-	%	\end{subfigure}
-	%	~
-	%	\begin{subfigure}[b]{0.23\textwidth}
-	%		\includegraphics[width=\textwidth]{figures/mov_sen_sta_tar_30}
-	%		\caption{Step 30}\label{fig:mov_sen_sta_tar4}
-	%	\end{subfigure}
-	%	\caption{Moving UGVs' individual PDFs of the static target.}
-	%	\label{fig:mov_sen_sta_tar}
-	%\end{figure}
 	
-	%\subsection{Moving UGVs, Moving Target}
-	%The six UGVs move within the field to estimate the target position, using the same topology and neighborhood as in \cref{subsec:sim1}.
-	%%The motion planning of UGVs for effective target search has received much attention in the past years. 
-	%%Readers interested in this topic can refer to \cite{tisdale2009autonomous,furukawa2006recursive}.
-	%In this work, UGV positions are randomly generated at each time.
-	%% in order to demonstrate the effectiveness of LIFO-DBF.
-	%Readers interested in the motion planning of UGVs for effective target localization can refer to \cite{tisdale2009autonomous}. %,furukawa2006recursive
-	%The target dynamics is given by a single-integrator model: $x^T(k+1)=x^T(k)+v\Delta T$,
-	%%\small\begin{equation*}
-	%%x^T(k+1)=x^T(k)+v\Delta T
-	%%\end{equation*}\normalsize
-	%where $v$ is the constant velocity of the target; $\Delta T$ is the sampling time.
-	%
-	%The LIFO-DBF described in \cref{subsec:LIFO-dbf-mov-tar} is utilized for target localization.
-	%\cref{fig:mov_sen_mov_tar} shows the estimation results of the moving target. 
-	%It is interesting to notice that the posterior individual PDFs concentrate to the true target location at each time, even when the target constantly moves.
-	%\cref{fig:entropy} (b) shows the decrease of the entropy of the posterior distribution.
+	\section{CONCLUSION}\label{sec:conclu}	
+	This paper presents a measurement dissemination-based distributed Bayesian filtering (DBF) method for a network of multiple unmanned ground vehicles (UGVs) under dynamically changing interaction topologies.
+	The information exchange among UGVs relies on the Latest-In-and-Full-Out (LIFO) protocol, under which UGVs exchange full communication buffers with neighbors and can significantly reduce the transmission burden between each pair of UGVs to scale linearly with the network size.
+	Under the condition that the union of undirected switching topologies is connected frequently enough,
+	LIFO can disseminate observations over the network within finite time. The LIFO-based DBF algorithm is then derived to estimate individual probability density function (PDF) for target localization in a static environment. The consistency of this algorithm is proved by utilizing the law of large numbers, ensuring that each individual estimate of target position converges in probability to the true value.
+	Simulations comparing LIFO-DBF with consensus-based distributed filters (CbDF) and the centralized filter (CF) show that LIFO-DBF achieves similar performance as CF and superior performance over CbDF while requiring less communication resource.
 	
-	%\begin{figure}%[thpb]
-	%	\centering
-	%	\includegraphics[width=0.5\textwidth]{figures/entropy_all}
-	%	\caption{Entropy of individual PDFs over time: (a) static UGVs and static target; (b) moving UGVs and moving target.}
-	%	\label{fig:entropy}
-	%\end{figure}
-	
-	\section{CONCLUSION}\label{sec:conclu}
-	This paper presents a distributed Bayesian filtering (DBF) method for a network of multiple unmanned ground vehicles (UGVs) under dynamically changing interaction topologies. 
-	The information exchange among UGVs relies on a measurement dissemination scheme, called Latest-In-and-Full-Out (LIFO) protocol. Different from statistics dissemination approaches that transmit posterior distributions or likelihood functions, each UGV under LIFO only sends a full communication buffer consisting of latest available measurements, which significantly reduces the transmission burden between each pair of UGVs from the order of environmental size to that of UGV number. 
-	Under the condition that the union of undirected switching topologies
-	%		 across some time intervals
-	is connected frequently enough,
-	%		 as system evolves,
-	LIFO can disseminate observations over the network within finite time. The LIFO-based DBF algorithm is then derived to estimate individual posterior density function (PDF) for target localization in a static environment. The consistency of this algorithm is proved by utilizing the law of large numbers, ensuring that each individual estimate of target position converges in probability to the true value when the number of observations tends to infinity.
-	
-	Future work includes how to handle other types of sensors and directed interaction topologies.
+	Future work includes handling other types of sensors and directed interaction topologies.
 	Other types of sensors may have biased observations and subject to non-Bernoulli distribution, which complicates the design and analysis of LIFO-based Bayesian filters.
-	The directed interaction topologies, due to the constraint of unidirectional communication, may affect condition for the consistency and consensus of LIFO-DBF. 
-	%In addition, combining LIFO-DBF with UGV motion planning is promising for more effective SAT of target.
+	The directed interaction topologies, due to the constraint of unidirectional communication, may affect condition for the consistency of LIFO-DBF. 
 	
 	
 	\addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
@@ -1100,8 +979,8 @@
 	
 	\section*{ACKNOWLEDGMENT}
 	%This work is supported by the Embedded Humans: Provably Correct Decision Making for Networks of Humans and Unmanned Systems project, a MURI project funded by the Office of Naval Research.
-	The authors gratefully acknowledges the Office of Naval Research for supporting the research described in this paper. 
-	They would also like to thank Yuting Wei in the Department of Statistics, UC Berkeley for her sincere help and fruitful discussion on the consistency proof.
+	The authors gratefully acknowledges the Office of Naval Research for supporting this work. 
+	They would also like to thank Yuting Wei in the Department of Statistics, UC Berkeley for her sincere help and fruitful discussion.
 	
 	%The preferred spelling of the word Òacknowledgment?in America is without an Òe?after the Òg? Avoid the stilted expression, ÒOne of us (R. B. G.) thanks . . .? Instead, try ÒR. B. G. thanks? Put sponsor acknowledgments in the unnumbered footnote on the first page.
 	
