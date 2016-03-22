@@ -1,0 +1,66 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: ACC2016_reduced.aux
+The style file: IEEEtran.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: references.bib
+-- IEEEtran.bst version 1.11 (2003/04/02) by Michael Shell.
+-- http://www.ctan.org/tex-archive/macros/latex/contrib/supported/IEEEtran/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+Warning--empty year in 2005distributed
+Warning--empty year in gu2007distributed
+Warning--empty year in bandyopadhyay2014distributed
+Warning--empty year in zuo2006bandwidth
+Warning--empty year in vemula2006target
+Warning--empty year in sheng2005distributed
+Warning--empty year in djuric2011non
+Warning--empty year in bonnie2012modelling
+Warning--empty year in liu2015model
+
+Done.
+You've used 19 entries,
+            3975 wiz_defined-function locations,
+            907 strings with 11026 characters,
+and the built_in function-call counts, 16280 in all, are:
+= -- 1301
+> -- 360
+< -- 176
++ -- 204
+- -- 51
+* -- 784
+:= -- 2329
+add.period$ -- 40
+call.type$ -- 19
+change.case$ -- 19
+chr.to.int$ -- 420
+cite$ -- 28
+duplicate$ -- 1145
+empty$ -- 1302
+format.name$ -- 67
+if$ -- 3787
+int.to.chr$ -- 0
+int.to.str$ -- 19
+missing$ -- 167
+newline$ -- 77
+num.names$ -- 19
+pop$ -- 374
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 2
+skip$ -- 1259
+stack$ -- 0
+substring$ -- 1001
+swap$ -- 972
+text.length$ -- 36
+text.prefix$ -- 0
+top$ -- 5
+type$ -- 0
+warning$ -- 9
+while$ -- 88
+width$ -- 21
+write$ -- 198
+(There were 9 warnings)
