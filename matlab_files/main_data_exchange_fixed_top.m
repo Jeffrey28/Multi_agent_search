@@ -26,7 +26,7 @@ max_EstStep = 50; % max step
 ConsenStep=10;
 
 % select the motion of agents and target
-Selection = 4; 
+Selection = 1; 
 switch Selection
     case 1,  r_move= 0; tar_move=0;
     case 2,  r_move= 0; tar_move=1;
@@ -34,6 +34,7 @@ switch Selection
     case 4,  r_move= 1; tar_move=1;
     otherwise, error('No selection.');
 end
+
 % the set of robots whose pdf will be drawn
 if r_move == 0
     sim_r_idx = [1,3,5];
@@ -42,17 +43,50 @@ else
 end
 
 NumOfRobot = 6;
-x_set = [20,40,60,80,60,40];
-y_set = [50,20,20,50,80,80];
 
 save_file = 0; % choose whether to save simulation results
 
 %% %%%%%%%%%%%%%%%%%%%%%% Setup for multiple trials %%%%%%%%%%%%%%%%%%%%%%
+trial_num = 1; % 10 % number of trials to run
+
 fld = struct();
-trial_num = 10; % number of trials to run
+fld.x = 100; fld.y = 100;  % Field size
+
+% used for initialization, don't need to call again unless necessary
+%{
+% robot initialization
+rbt(NumOfRobot) = struct;
+% these are randomly generated initial positions of robots
+% x_set = [20,40,60,80,60,40];
+% y_set = [50,20,20,50,80,80];
+
+% generate random initial positions of robots
+for ii = 1:NumOfRobot
+    rnd_rbt_pos(1,:) = randi([5,fld.x-5],1,trial_num);
+    rnd_rbt_pos(2,:) = randi([5,fld.y-5],1,trial_num);
+    rbt(ii).init_pos = rnd_rbt_pos;
+end
+
+% generate the covariance matrices and offset of sensors
+for ii = 1:NumOfRobot
+    rbt(ii).sen_cov = randCov(2,fld.x,fld.y); % covariance of Gaussian distribution
+    rbt(ii).inv_sen_cov = eye(2)/rbt(ii).sen_cov; % inverse of covariance
+    rbt(ii).sen_offset = randn(2,1).*[5;5]; % offset of the center of Gaussian distribution
+end
+
+save('sensor_spec.mat','rbt');
+%}
+
+% these are randomly generated sensor specifications
+load('sensor_spec.mat','rbt')
+
+% target initialization
+
 % generate random target position (just generate once and use them afterwards)
 % rnd_tar_pos(1,:) = randi([5,fld.x-5],1,trial_num);
 % rnd_tar_pos(2,:) = randi([5,fld.y-5],1,trial_num);
+
+% these are randomly generated target positions
 fld.tx_set = [68, 55, 41, 10, 75, 35, 60, 72, 14, 16];
 fld.ty_set = [55, 49, 86, 77, 71, 9, 11, 13, 77, 90];
 
@@ -63,13 +97,13 @@ sim.tar_move = tar_move;
 sim.max_EstStep = max_EstStep;
 sim.ConsenStep = ConsenStep;
 sim.NumOfRobot = NumOfRobot;
-sim.r_init_pos_set = [x_set;y_set];
+sim.r_init_pos_set = rbt.init_pos;
 sim.sim_r_idx = sim_r_idx;
 sim.trial_num = trial_num;
 
 while (trial_cnt <= trial_num)
     %% Field Setup
-    fld.x = 100; fld.y = 100;  % Field size
+    
     fld.map = ones(fld.x,fld.y)/(fld.x*fld.y);
     [xpt,ypt] = meshgrid(1:fld.x,1:fld.y);
     fld.traj = []; % trajectory of traget
@@ -146,9 +180,9 @@ while (trial_cnt <= trial_num)
     end
     
     % binary sensor model
-    sigmaVal=(fld.x/10)^2+(fld.y/10)^2; % covariance matrix for the sensor
-    k_s = 2*pi*sqrt(det(sigmaVal)); % normalizing factor
-    s_psi = 1/2*eye(2)/sigmaVal; % psi for the sensor
+%     sigmaVal=(fld.x/10)^2+(fld.y/10)^2; % covariance matrix for the sensor
+%     k_s = 2*pi*sqrt(det(sigmaVal)); % normalizing factor
+%     s_psi = 1/2*eye(2)/sigmaVal; % psi for the sensor
     % robot colors
     rbt(1).color = 'r';
     rbt(2).color = 'g';
@@ -236,7 +270,7 @@ while (trial_cnt <= trial_num)
         % Generate measurement and observation probability
         rbt_cent.z = [];
         for i=1:NumOfRobot % Robot Iteration
-            rbt(i).z = sensorSim(rbt(i).x,rbt(i).y,fld.tx,fld.ty,sigmaVal);
+            rbt(i).z = sensorSim(rbt(i),fld);
             rbt_cons(i).z = rbt(i).z;
             rbt_cent.z = [rbt_cent.z;rbt(i).z];
         end
@@ -666,20 +700,20 @@ while (trial_cnt <= trial_num)
                 if j==k
                     line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
                     set(line_hdl,'Marker','.','Color','r','MarkerSize',3,'LineWidth',2);
-                    plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 's','Color','r','MarkerSize',10,'LineWidth',3);
+                    plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 's','Color','r','MarkerSize',25,'LineWidth',3);
                 else
                     line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
                     set(line_hdl,'Marker','.','Color','g','MarkerSize',3,'LineWidth',2);
-                    plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 'p','Color','g','MarkerSize',10,'LineWidth',1.5);
+                    plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 'p','Color','g','MarkerSize',25,'LineWidth',1.5);
                 end
                 
                 % draw traget trajectory
                 line_hdl = line(fld.traj(1,:), fld.traj(2,:));
                 set(line_hdl,'Marker','.','Color','k','MarkerSize',3,'LineWidth',2);
-                plot(fld.tx, fld.ty, 'k+','MarkerSize',10,'LineWidth',3);
-                set(gca,'fontsize',16)
+                plot(fld.tx, fld.ty, 'k+','MarkerSize',25,'LineWidth',3);
+                set(gca,'fontsize',30)
             end
-            xlabel(['Step=',num2str(count)],'FontSize',16);
+            xlabel(['Step=',num2str(count)],'FontSize',30);
         end
         %}
         
@@ -702,20 +736,20 @@ while (trial_cnt <= trial_num)
                 if j==k
                     line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
                     set(line_hdl,'Marker','.','Color','r','MarkerSize',3,'LineWidth',2);
-                    plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 's','Color','r','MarkerSize',10,'LineWidth',3);
+                    plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 's','Color','r','MarkerSize',25,'LineWidth',3);
                 else
                     line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
                     set(line_hdl,'Marker','.','Color','g','MarkerSize',3,'LineWidth',2);
-                    plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 'p','Color','g','MarkerSize',10,'LineWidth',1.5);
+                    plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 'p','Color','g','MarkerSize',25,'LineWidth',1.5);
                 end
                 
                 % draw target trajectory
                 line_hdl = line(fld.traj(1,:), fld.traj(2,:));
                 set(line_hdl,'Marker','.','Color','k','MarkerSize',3,'LineWidth',2);
-                plot(fld.tx, fld.ty, 'k+','MarkerSize',10,'LineWidth',3);
-                set(gca,'fontsize',16)
+                plot(fld.tx, fld.ty, 'k+','MarkerSize',25,'LineWidth',3);
+                set(gca,'fontsize',30)
             end
-            xlabel(['Step=',num2str(count)],'FontSize',16);
+            xlabel(['Step=',num2str(count)],'FontSize',30);
         end
         %}
         
@@ -734,11 +768,18 @@ while (trial_cnt <= trial_num)
         
         hold on;
         
+        % draw robot trajectory
+        for j=1:NumOfRobot
+            line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
+            set(line_hdl,'Marker','.','Color','g','MarkerSize',3,'LineWidth',2);
+            plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 'p','Color','g','MarkerSize',25,'LineWidth',1.5);
+        end
+        
         % draw target trajectory
         line_hdl = line(fld.traj(1,:), fld.traj(2,:));
         set(line_hdl,'Marker','.','Color','k','MarkerSize',3,'LineWidth',2);
-        plot(fld.tx, fld.ty, 'k+','MarkerSize',10,'LineWidth',3);
-        set(gca,'fontsize',16)
+        plot(fld.tx, fld.ty, 'k+','MarkerSize',25,'LineWidth',3);
+        set(gca,'fontsize',30)
         %}
         
         % save plots

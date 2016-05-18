@@ -13,7 +13,7 @@
 clear; clc; close all
 
 %% %%%%%%%%%%%%%%%%%%%%%% General Setup %%%%%%%%%%%%%%%%%%%%%%
-max_EstStep = 150; % max step
+max_EstStep = 1; % max step
 ConsenStep=10;
 
 Selection = 1; % select the motion of agents and target
@@ -49,7 +49,7 @@ fld.ty_set = [55, 49, 86, 77, 71, 9, 11, 13, 77, 90];
 [ptx,pty] = meshgrid(1:fld.x,1:fld.y);
 pt = [ptx(:),pty(:)];
 
-trial_cnt = 1;
+trial_cnt = 10;
 sim = struct();
 sim.r_move = r_move;
 sim.tar_move = tar_move;
@@ -517,20 +517,20 @@ while (trial_cnt <= trial_num)
                     if j==k
                         line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
                         set(line_hdl,'Marker','.','Color','r','MarkerSize',3,'LineWidth',2);
-                        plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 's','Color','r','MarkerSize',10,'LineWidth',3);
+                        plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 's','Color','r','MarkerSize',25,'LineWidth',3);
                     else
                         line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
                         set(line_hdl,'Marker','.','Color','g','MarkerSize',3,'LineWidth',2);
-                        plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 'p','Color','g','MarkerSize',10,'LineWidth',1.5);
+                        plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 'p','Color','g','MarkerSize',25,'LineWidth',1.5);
                     end
                     
                     % draw traget trajectory
                     line_hdl = line(fld.traj(1,:), fld.traj(2,:));
                     set(line_hdl,'Marker','.','Color','k','MarkerSize',3,'LineWidth',2);
-                    plot(fld.tx, fld.ty, 'k+','MarkerSize',10,'LineWidth',3);
-                    set(gca,'fontsize',16)
+                    plot(fld.tx, fld.ty, 'k+','MarkerSize',25,'LineWidth',3);
+                    set(gca,'fontsize',30)
                 end
-                xlabel(['Step=',num2str(count)],'FontSize',16);
+                xlabel(['Step=',num2str(count)],'FontSize',30);
             end
             %}
             
@@ -553,20 +553,20 @@ while (trial_cnt <= trial_num)
                     if j==k
                         line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
                         set(line_hdl,'Marker','.','Color','r','MarkerSize',3,'LineWidth',2);
-                        plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 's','Color','r','MarkerSize',10,'LineWidth',3);
+                        plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 's','Color','r','MarkerSize',25,'LineWidth',3);
                     else
                         line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
                         set(line_hdl,'Marker','.','Color','g','MarkerSize',3,'LineWidth',2);
-                        plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 'p','Color','g','MarkerSize',10,'LineWidth',1.5);
+                        plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 'p','Color','g','MarkerSize',25,'LineWidth',1.5);
                     end
                     
                     % draw target trajectory
                     line_hdl = line(fld.traj(1,:), fld.traj(2,:));
                     set(line_hdl,'Marker','.','Color','k','MarkerSize',3,'LineWidth',2);
-                    plot(fld.tx, fld.ty, 'k+','MarkerSize',10,'LineWidth',3);
-                    set(gca,'fontsize',16)
+                    plot(fld.tx, fld.ty, 'k+','MarkerSize',25,'LineWidth',3);
+                    set(gca,'fontsize',30)
                 end
-                xlabel(['Step=',num2str(count)],'FontSize',16);
+                xlabel(['Step=',num2str(count)],'FontSize',30);
             end
             %}
             
@@ -581,15 +581,22 @@ while (trial_cnt <= trial_num)
             load('MyColorMap','mymap')
             colormap(mymap);
             colorbar
-            xlabel(['Step=',num2str(count)],'FontSize',16);
+            xlabel(['Step=',num2str(count)],'FontSize',30);
             
             hold on;
+            
+            % draw robot trajectory
+            for j=1:NumOfRobot
+                line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
+                set(line_hdl,'Marker','.','Color','g','MarkerSize',3,'LineWidth',2);
+                plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 'p','Color','g','MarkerSize',25,'LineWidth',1.5);
+            end
             
             % draw target trajectory
             line_hdl = line(fld.traj(1,:), fld.traj(2,:));
             set(line_hdl,'Marker','.','Color','k','MarkerSize',3,'LineWidth',2);
-            plot(fld.tx, fld.ty, 'k+','MarkerSize',10,'LineWidth',3);
-            set(gca,'fontsize',16)
+            plot(fld.tx, fld.ty, 'k+','MarkerSize',25,'LineWidth',3);
+            set(gca,'fontsize',30)
             %}
         end
         

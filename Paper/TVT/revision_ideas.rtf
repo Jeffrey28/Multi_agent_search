@@ -1,0 +1,123 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf460
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red127\green127\blue127;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid1\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid2\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li1440\lin1440 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid101\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\})}{\leveltext\leveltemplateid201\'02\'00);}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid3}
+{\list\listtemplateid4\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\})}{\leveltext\leveltemplateid301\'02\'00);}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid302\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li1440\lin1440 }{\listname ;}\listid4}
+{\list\listtemplateid5\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\})}{\leveltext\leveltemplateid401\'02\'00);}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid5}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}{\listoverride\listid4\listoverridecount0\ls4}{\listoverride\listid5\listoverridecount0\ls5}}
+\margl1440\margr1440\vieww28300\viewh15340\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 Revision ideas
+\b0  for IEEE Transaction on Vehicular Technology:\
+first, solve soundness problems\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\ls1\ilvl0\cf0 {\listtext	1.	}\cf2 skim the papers mentioned in Soundness 1) and see what methods they use, what evaluations they do and what comparison I can make (robustness etc.).\cf0 \
+\pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
+\ls1\ilvl1\cf0 {\listtext	\uc0\u8259 	}\cf2 Olfati\'92s paper is about using multi-agents to track a target. Agents use double integral models and the measurement takes linear model. It shows that, by using distributed Kalman consensus filter and flocking controller, each agent can track the target and form a flocking formation. It seems to me that this paper deals with the linear case of the idea of searching in formation.\
+{\listtext	\uc0\u8259 	}Morbidi\'92s paper consider the distributed KF and active localization. It gives bounds on the estimate covariance matrix of the target, which is nice.\
+{\listtext	\uc0\u8259 	}also checked Leung\'92s paper. The formulation almost contains my work. However, it does not prove consistency (though this is actually not necessary but can differentiate my work from his). It also does not investigated the effects of uncertainty on the estimation results.\cf0 \
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\ls1\ilvl0\cf0 {\listtext	2.	}in simulation, compare with the works mentioned in \'93Soundness\'94\
+\pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
+\ls1\ilvl1\cf0 {\listtext	\uc0\u8259 	}randomly generate initial positions of robots, target. \
+{\listtext	\uc0\u8259 	}randomize an error (offset) that a sensor has (or the detection scope, e.g. the covariance matrix) to show the robustness\
+{\listtext	\uc0\u8259 	}make figures formal. add more complexity to figures, e.g. compare the estimation accuracy vs the sensor error, etc. (refer to 5/17/16 \'93multi\'94 idea sketch folder)\
+{\listtext	\uc0\u8259 	}maybe derive a D-KF based on my work.\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\ls1\ilvl0\cf0 {\listtext	3.	}modify the consistency proof.
+\b \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b0 \cf0 \
+second, solve novelty and writing issues:\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\ls2\ilvl0\cf0 {\listtext	1.	}in introduction, explicitly explain the difference from Leung\'92s paper (e.g. Leung\'92s paper is about robot localization, mine is about target localization).\
+{\listtext	2.	}explain more clearly what the benefit/advantages of LIFO-DBF.\
+{\listtext	3.	}change \'93robots\'94 to \'93UGVs\'94.\
+{\listtext	4.	}any others in \'93Writing\'94 section and the minor issue bullets of Reviewer 1\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+
+\b Reviewer comments
+\b0 \
+General:\
+Novelty:\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\ls3\ilvl0\cf0 {\listtext	1)	}While the authors maintain LIFO is a novel idea, one of the reviewers points out a paper that present a similar concept. A discussion of the differences and/or similarities between these methods is missing. The proposed LIFO strategy is structurally similar to "check-point" concept in Leung et al.'s paper [1]. However, Lenug's paper has much better theoretical analysis than this paper. The insight provided by Lenug's paper overshadows this manuscript. It is hard to justify the novelty of this paper.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+Soundness:\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\ls4\ilvl0\cf0 {\listtext	1)	}Importantly, a thorough evaluation of the method is missing. This problem has been extensively studied. This method seems to work, but what are its advantages (if any), when compared to previous work?\
+\pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
+\ls4\ilvl1\cf0 {\listtext	\uc0\u8259 	}The problem of active target tracking with a team of mobile robots has been widely studied in the control and robotic literatures (see e.g. the approaches based on Kalman filtering for information fusion in "Coupled distributed estimation and control for mobile sensor networks \'bb, R. Olfati-Saber, P. Jalalkamali,  IEEE Trans. on  Automatic Control, vol. 57, n. 10, pp. 2609-2614, 2012, and in "Active target tracking and cooperative localization for teams of aerial vehicles \'bb, F. Morbidi, G.L. Mariottini, IEEE Trans. Control Systems Technology, vol. 21, n. 5, pp. 1694-1707, 2013, and the references therein). A 
+\b comparison
+\b0  between the proposed approach based on Bayesian filtering and these previous works should be included in the paper. In particular, when considering the work of Olfati-Saber and Jalalkamali, special attention should be devoted to the analysis of
+\b  robustness 
+\b0 and
+\b  
+\b0 to
+\b  decentralized nature of the two solutions
+\b0 .\
+{\listtext	\uc0\u8259 	}The text accompanying Figs. 4, 5 and 6 in Sect. V is too terse and the future readers of the paper will not able to reproduce the results of the authors. For instance, which are the initial positions of the target and of the six robots in the two scenarios?\
+{\listtext	\uc0\u8259 	}It is unclear what the purpose of the LIFO strategy is and what is the advantage. The paper reads like "we have a new method and it happens to work for two sample cases." It is a little disappointing that there is no discussion about whether this new strategy would provide better results over existing approaches.\
+{\listtext	\uc0\u8259 	}Lack of a convincing physical experiment make it hard to judge how robust when the method meets the application. Lack of comparison study also cannot convince reviewer that this paper advance our understanding of the distribution filtering.\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\ls4\ilvl0\cf0 {\listtext	2)	}Both reviewers note that the paper is substandard in terms of mathematical accuracy, with numerous concepts introduced only at an informal level and proofs lacking rigor.\
+{\listtext	3)	}The proofs provided are mostly relying on verbal description which are not very rigorous.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+Writing:\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\ls5\ilvl0\cf0 {\listtext	1)	}main theoretical results are not clearly stated\
+{\listtext	2)	}Are Corollary 1 and 2 really necessary? They should be removed or at least combined in a single corollary.\
+{\listtext	3)	}d) At the end of Sect. IIB, the definition of the set \\mathcal\{Q\}_i is not clear. Please be more precise.\
+{\listtext	4)	}The notion of \'ab virtual PDF \'bb introduced for the first time in Algorithm 2 on page 6, should be better motivated and explained in the body of the text.\
+{\listtext	5)	}The use of the concepts of \'ab consistency \'bb and \'ab consensus \'bb in Sect. IV is rather informal. These concepts should be more rigorously defined. The ambiguity around the notion of consensus is reinforced by the following obscure statement of the authors in Remark 5: \'ab It must be noted that traditional statistics dissemination-based methods only ensure consensus of individual PDFs \'bb.\
+{\listtext	6)	}In the proof of Theorem 1, the authors utilize binary observations subject to a Bernoulli distribution. For the sake of clearness, this assumption on sensor modeling should be introduced much earlier, in Sect. IIA. There is also an open conflict with the assumption of sensors modeled with identical Gaussian functions in equations (15a)-(15b).\
+{\listtext	7)	}At the beginning of Sect IVB, the authors state that \'ab Here, the main idea is to classify robot observation positions into two disjoint sets: infinite-observation spots that contains positions where a robot makes infinite observations \'bb. But what does \'ab infinite observations \'bb mean in practice ? The proof of Lemma 1 is not completely clear and it should be improved. \
+{\listtext	8)	}The notation of the paper should be improved. The authors use the acronym PDF for \'ab Posterior Density Function \'bb . However, this is highly confusing since the abbreviation PDF stands for \'ab Probability Density Function \'bb in probability theory. Similarly, at the beginning of Sect. IIB, the authors use the letter \'ab M \'bb to denote the adjacency matrix of a graph. However, the letter \'ab A \'bb is normally used in graph theory to indicate the adjacency matrix. Finally, the notation used in the first formula of Sect. IIIA is extremely heavy. The authors should avoid three orders of subscripts, since the symbols are painful to read. Isn\'92t the subscript \'ab j \'bb of time \'ab k \'bb redundant?\
+{\listtext	9)	}The statement of Proposition 1 is vague. How is the delay \\tau_\{i,j\} between two robots i and j defined ? How is it related to the shortest path in the communication network ? This is not evident from Proposition 1. In the proof of Proposition 1, the authors invoke Bellman\'92s principle (i.e. dynamic programming): however, the role of this principle in the second part of the proof is unclear.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+More detailed issues:\
+Reviewer: 1\
+\
+The main idea of the paper (the use of a LIFO protocol and communication buffers to store the latest observations from each robot in the network) appears to be 
+\b rather original and interesting
+\b0 . However, the 
+\b presentation, notation, and English of the paper are generally poor
+\b0 , and the main theoretical results are not clearly stated. In this respect, I report below several points that the authors should address in the revised manuscript:\
+\
+The authors should also fix the following minor issues in the revised manuscript:\
+\
+1) Page 1, first sentence of the abstract: the sentence is poorly written and should be rephrased.\
+2) Page 1, lines 16-18 of the abstract: It should be \'ab For a static target \'bb and \'ab for a moving target \'bb.\
+3) Page 1, penultimate sentence of the abstract: The English of the sentence is poor.\
+4) Page 1, second line of \'ab Note to Practitioners \'bb : \'ab increasing attention \'bb instead of \'ab increasing interest \'bb.\
+5) Page 1, line 15 of \'ab Note to Practitioners \'bb : \'ab moving targets \'bb instead of \'ab moving target \'bb.\
+6) Page 1, first column, lines 9-10 : \'ab DKF used additional low-pass and band-pass consensus filters \'bb. What do you mean exactly ? Please be more precise.\
+7) Page 1, first column, lines 25-26 :  \'ab depends on the communication topology \'bb instead of\
+\'ab is closely related to the communication topology \'bb.\
+8) Page 2, second column, two lines before Remark 1: \'ab binary sensors \'bb instead of \'ab binary sensor \'bb.\
+9) Page 2, second column, second sentence of Remark 2: \'ab closer \'bb instead of \'ab more close \'bb.\
+10) Page 3, Fig. 1: This figure is unnecessary. The shape of ring, line and star graphs is well known.\
+11) Page 3, two lines before equation (4): \'ab Bayes\'92 theorem \'bb instead of \'ab Bayes\'92 formula \'bb.\
+12) Page 3, first line of the second column: The notation is redundant. What does \'ab posterior individual PDF \'bb mean?\
+13) Page 3, second sentence of Sect. III: The phrase is poorly written.\
+14) Page 3, line 8 of Sect. III: \'ab other agent \'bb instead of \'ab other agents \'bb.\
+15) Page 5, second column, Algorithm 1: The point (2.1) is poorly written. Which \'ab groups  \'bb are the authors referring to here?\
+16) Page 6, first column, line 6: \'ab using the aforementioned \'bb instead of \'ab using aforementioned \'bb\
+17) Page 6, second column, first paragraph of Sect. IV: The sentence is meaningless.\
+18) Page 7, Fig. 3: The symbols inside the boxes of the record sets are unreadable.\
+19) Page 9, second line of Sect. VB: What do you mean with \'ab move in circular trajectories *periodically* \'bb ?\
+20) Page 10, references [8] and [23] should be corrected.\
+\
+Reviewer: 2\
+\
+\
+[1]K. Leung, T. Barfoot, and H. Liu, "Decentralized localization of sparsely-communicating robot networks: A centralized-equivalent approach," Robotics, IEEE Transactions on , vol. 26, no. 1, pp. 62 \'9677, Feb. 2010}
