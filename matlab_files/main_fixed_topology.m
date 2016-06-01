@@ -11,18 +11,27 @@
 % original paper got rejected from ICRA 16 and T-ASE. program is modified
 % for CDC 16
 % compare the LIFO-DBF with consensus method and centralized method
+% 5/4/16
+% re-write the fixed-topology case in OOP. Hopefully this will make my
+% coding cleaner, more readable and easier to adapt
 
 % possible bug for this program:
 % 1. in moving target case, maybe we should first let target move, then observe, then update pdf.
 % 2. try to change the update step, current method takes huge memory and
 % may have bugs.
 
+% progress on 5/17/16
+% debugging the code for static robot static target case. Needs to continue
+% debugging and then debug for moving robot or target cases.
+
 % main function for running the simulation
 clear; clc; close all
 
 %% %%%%%%%%%%%%%%%%%%%%%% General Setup %%%%%%%%%%%%%%%%%%%%%%
-max_step = 50; % max step
+save_data = false; % save data or not
+show_plot = false; % draw plots or not
 
+max_step = 50; % max step
 % rounds of consensus at each time step
 cons_step=10;
 
@@ -45,11 +54,9 @@ end
 
 num_robot = 6;
 
-save_file = 0; % choose whether to save simulation results
-
 dt = 1; % discretization time interval
 
-%%% %%%%%%%%%%%%%%%%%%%%%% Simulation %%%%%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%%%%%%%%%%%% Simulation %%%%%%%%%%%%%%%%%%%%%%
 % used for initialization, don't need to call again unless necessary
 %{
 % robot initialization
@@ -94,22 +101,8 @@ ty_set = [55, 49, 86, 77, 71, 9, 11, 13, 77, 90];
 % communication neighbor
 rbt_nbhd = {[2,6],[1,3],[2,4],[3,5],[4,6],[1,5]};
 
-%% Setup for multiple trials
+% Setup for multiple trials
 trial_num = 1; % 10 % number of trials to run
-
-% initialize sim class 
-inPara = struct;
-inPara_sim.r_move = r_move;
-inPara_sim.tar_move = tar_move;
-inPara_sim.max_step = max_step;
-inPara_sim.cons_step = cons_step;
-inPara_sim.num_robot = num_robot;
-inPara_sim.r_init_pos_set = extractfield(rbt_spec,'init_pos');
-inPara_sim.sim_r_idx = sim_r_idx;
-inPara_sim.trial_num = trial_num;
-inPara_sim.dt = dt;
-
-sim = Sim(inPara_sim);
 
 for trial_cnt = 1:trial_num
     % initialize field class
@@ -133,12 +126,13 @@ for trial_cnt = 1:trial_num
             inPara_rbt.pos = rbt_spec(rbt_cnt).init_pos(:,trial_cnt);
             inPara_rbt.sen_cov = rbt_spec(rbt_cnt).sen_cov;
             inPara_rbt.inv_sen_cov = rbt_spec(rbt_cnt).inv_sen_cov;
-            inPara_rbt.sen_offset = rbt_spec(rbt_cnt).sen_offset;
+            inPara_rbt.sen_offset = 0; %rbt_spec(rbt_cnt).sen_offset;
             inPara_rbt.fld_size = fld_size;
             inPara_rbt.max_step = max_step;
             inPara_rbt.nbhd_idx = rbt_nbhd{rbt_cnt};
             inPara_rbt.r_move = r_move;
             inPara_rbt.num_robot = num_robot;
+            inPara_rbt.idx = rbt_cnt;
             rbt{rbt_cnt} = Robot(inPara_rbt);
         end
     elseif r_move == 1
@@ -155,36 +149,36 @@ for trial_cnt = 1:trial_num
             rbt = rbt.predStep(inPara_pred);
         end
     end
-    %% %%%%%%%%%%%%%% simulation %%%%%%%%%%%%%%%%%%
+    %% %%%%%%%%%%%%%% main code of simulation %%%%%%%%%%%%%%%%%%
     %% target moves
-    fld = fld.targetMove;
+    fld.targetMove;
     
     %% filtering
     %% LIFO-DBF
     % Bayesian Updating steps:
     % (1) observe and update the stored own observations at time k
-    % (2) send/receive and update stored observations
+    % (2) exchange and update stored observations
     % (3) update probability map
     % (4) repeat step (1)
     for ii = 1:num_robot
         % step 1
         % observe
 %         rbt(ii) = rbt(ii).sensorGen(fld); % simulate the sensor measurement  
-        rbt{ii}.sensorGen(fld);
+        rbt{ii} = rbt{ii}.sensorGen(fld);
         
         % update own observation
         inPara1 = struct('selection',selection);
-        rbt(ii) = rbt(ii).updOwnMsmt(inPara1);
+        rbt{ii} = rbt{ii}.updOwnMsmt(inPara1);
         
         % step 2
         inPara2 = struct;
         inPara2.selection = selection;        
-        inPara2.rbt_nbhd_set = rbt(rbt(ii).nbhd_idx);
-        rbt(ii) = rbt(ii).dataExch(inPara2);
+        inPara2.rbt_nbhd_set = rbt(rbt{ii}.nbhd_idx);
+        rbt{ii} = rbt{ii}.dataExch(inPara2);
         
         % step 3
         inPara3 = struct('selection',selection);
-        rbt(ii) = rbt(ii).DBF(inPara3);
+        rbt{ii} = rbt{ii}.DBF(inPara3);
     end
             
     %% Concensus
@@ -193,23 +187,31 @@ for trial_cnt = 1:trial_num
     
     %% go to next iteration
     for ii = 1:num_robot
-       rbt(ii) = rbt(ii).stepUpdate; 
+       rbt{ii} = rbt{ii}.stepUpdate; 
     end
 end
 
-%% %%%%%%%%%%%%%%%%%%%%%% End of Simulation %%%%%%%%%%%%%%%%%%%%%%
-%% save robot structure
-%{
-switch selection
-    case 1,  tag = 'sta_sen_sta_tar';
-    case 2,  tag = 'sta_sen_mov_tar';
-    case 3,  tag = 'mov_sen_sta_tar';
-    case 4,  tag = 'mov_sen_mov_tar';
+%% %%%%%%%%%%%%%%%%%%%%%% Simulation Results %%%%%%%%%%%%%%%%%%%%%%
+% initialize sim class 
+inPara = struct;
+inPara_sim.r_move = r_move;
+inPara_sim.tar_move = tar_move;
+inPara_sim.max_step = max_step;
+inPara_sim.cons_step = cons_step;
+inPara_sim.num_robot = num_robot;
+inPara_sim.r_init_pos_set = extractfield(rbt_spec,'init_pos');
+inPara_sim.sim_r_idx = sim_r_idx;
+inPara_sim.trial_num = trial_num;
+inPara_sim.dt = dt;
+
+sim = Sim(inPara_sim);
+
+% draw plot
+if show_plot
+    sim.plotStim();
 end
 
-if save_file == 1
-    file_name = sprintf('./figures/data_exchange/CDC16/%s_robot_%s.mat',tag,datestr(now,1));
-    %     save(file_name,'sim','sim_res','fld')
-    save(file_name) % save current workspace
+% save data
+if save_data 
+    sim.saveSimData(selection);
 end
-%}

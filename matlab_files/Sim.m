@@ -1,16 +1,169 @@
 classdef Sim
     properties
         dt; % discretization time interval
+        r_move;
+        tar_move;
+        max_step;
+        cons_step;
+        num_robot;
+        r_init_pos_set;
+        sim_r_idx;
+        trial_num;        
     end
     
     methods
         
-        function obj = Sim(inPara)
-           obj.dt = inPara.dt; 
+        function this = Sim(inPara)
+           this.dt = inPara.dt; 
+        end        
+                
+        function saveSimData(this,selection,rbt,fld)
+            % save the simulation data, mainly the Robot and Field objects
+            switch selection
+                case 1,  tag = 'sta_sen_sta_tar';
+                case 2,  tag = 'sta_sen_mov_tar';
+                case 3,  tag = 'mov_sen_sta_tar';
+                case 4,  tag = 'mov_sen_mov_tar';
+            end
+                        
+            file_name = sprintf('./figures/data_exchange/CDC16/%s_robot_%s.mat',tag,datestr(now,1));
+            %     save(file_name,'sim','sim_res','fld')
+            save(file_name) % save current workspace
         end
         
-        function computeMetrics(sim)
-         %% %%%%%%%%%%%% Computing Performance Metrics %%%%%%%%%%%%%%%%%%%
+        function plotSim(this)
+            % Plotting for simulation process
+            
+            %% LIFO-DBF
+            %
+            % plot figures for selected robots
+            for k = sim_r_idx
+                fig_cnt = fig_cnt+1;
+                tmp_hd = figure (fig_cnt); % handle for plot of a single robot's target PDF
+                clf(tmp_hd);
+                shading interp
+                contourf((rbt(k).map)','LineColor','none');
+                load('MyColorMap','mymap')
+                colormap(mymap);
+                colorbar
+                hold on;
+                for j=1:NumOfRobot
+                    % draw robot trajectory
+                    if j==k
+                        line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
+                        set(line_hdl,'Marker','.','Color','r','MarkerSize',3,'LineWidth',2);
+                        plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 's','Color','r','MarkerSize',25,'LineWidth',3);
+                    else
+                        line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
+                        set(line_hdl,'Marker','.','Color','g','MarkerSize',3,'LineWidth',2);
+                        plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 'p','Color','g','MarkerSize',25,'LineWidth',1.5);
+                    end
+                    
+                    % draw traget trajectory
+                    line_hdl = line(fld.traj(1,:), fld.traj(2,:));
+                    set(line_hdl,'Marker','.','Color','k','MarkerSize',3,'LineWidth',2);
+                    plot(fld.tx, fld.ty, 'k+','MarkerSize',25,'LineWidth',3);
+                    set(gca,'fontsize',30)
+                end
+                xlabel(['Step=',num2str(count)],'FontSize',30);
+            end
+            %}
+            
+            %% Consensus
+            % plot figures for selected robots
+            %{
+            for k = 1%sim_r_idx
+                fig_cnt = fig_cnt+1;
+                tmp_hd = figure (fig_cnt); % handle for plot of a single robot's target PDF
+                clf(tmp_hd);
+                shading interp
+                contourf((rbt_cons(k).map)','LineColor','none');
+                load('MyColorMap','mymap')
+                colormap(mymap);
+                colorbar
+                hold on;
+                for j=1:NumOfRobot
+                    
+                    % draw robot trajectory
+                    if j==k
+                        line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
+                        set(line_hdl,'Marker','.','Color','r','MarkerSize',3,'LineWidth',2);
+                        plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 's','Color','r','MarkerSize',25,'LineWidth',3);
+                    else
+                        line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
+                        set(line_hdl,'Marker','.','Color','g','MarkerSize',3,'LineWidth',2);
+                        plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 'p','Color','g','MarkerSize',25,'LineWidth',1.5);
+                    end
+                    
+                    % draw target trajectory
+                    line_hdl = line(fld.traj(1,:), fld.traj(2,:));
+                    set(line_hdl,'Marker','.','Color','k','MarkerSize',3,'LineWidth',2);
+                    plot(fld.tx, fld.ty, 'k+','MarkerSize',25,'LineWidth',3);
+                    set(gca,'fontsize',30)
+                end
+                xlabel(['Step=',num2str(count)],'FontSize',30);
+            end
+            %}
+            
+            %% Centralized
+            %{
+            % plot figures for central map
+            fig_cnt = fig_cnt+1;
+            tmp_hd = figure (fig_cnt); % handle for plot of a single robot's target PDF
+            clf(tmp_hd);
+            shading interp
+            contourf((rbt_cent.map)','LineColor','none');
+            load('MyColorMap','mymap')
+            colormap(mymap);
+            colorbar
+            xlabel(['Step=',num2str(count)],'FontSize',16);
+            
+            hold on;
+            
+            % draw robot trajectory
+            for j=1:NumOfRobot
+                line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
+                set(line_hdl,'Marker','.','Color','g','MarkerSize',3,'LineWidth',2);
+                plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 'p','Color','g','MarkerSize',25,'LineWidth',1.5);
+            end
+            
+            % draw target trajectory
+            line_hdl = line(fld.traj(1,:), fld.traj(2,:));
+            set(line_hdl,'Marker','.','Color','k','MarkerSize',3,'LineWidth',2);
+            plot(fld.tx, fld.ty, 'k+','MarkerSize',25,'LineWidth',3);
+            set(gca,'fontsize',30)
+            %}
+            
+            % save plots
+            %{
+        if (count == 1) || (count == 3) || (count == 5) || (count == 7) ||...
+                (count == 10) || (count == 20) || (count == 30) || (count == 40)...
+                || (count == 50) || (count == 60) || (count == 70) || (count == 80)...
+                || (count == 90) || (count == 100)
+            switch Selection2
+                case 1,  tag = 'sta_sen_sta_tar';
+                case 2,  tag = 'sta_sen_mov_tar';
+                case 3,  tag = 'mov_sen_sta_tar';
+                case 4,  tag = 'mov_sen_mov_tar';
+            end
+            %         file_name1 = sprintf('./figures/data_exchange_switch/%s_%d_%s',tag,count,datestr(now,1));
+            %         saveas(hf1,file_name1,'fig')
+            %         saveas(hf1,file_name1,'jpg')
+            for k = sim_r_idx
+                tmp_hf = figure(k+2);
+                file_name2 = sprintf('./figures/data_exchange/%s_single_%d_%d_%s',tag,k,count,datestr(now,1));
+                if save_file == 1
+                    saveas(tmp_hf,file_name2,'fig')
+                    saveas(tmp_hf,file_name2,'jpg')
+                end
+            end
+        end
+            %}
+            
+        end
+        
+        function computeMetrics(this)
+         % Computing Performance Metrics
          
          % ML error
          for i = 1:NumOfRobot
@@ -116,136 +269,5 @@ classdef Sim
          
         end
         
-    
-        function plotSim(sim)
-            %% %%%%%%%%%%%%%% Plotting for simulation process %%%%%%%%%%%%%%%%%
-            
-            %% LIFO-DBF
-            %
-            % plot figures for selected robots
-            for k = sim_r_idx
-                fig_cnt = fig_cnt+1;
-                tmp_hd = figure (fig_cnt); % handle for plot of a single robot's target PDF
-                clf(tmp_hd);
-                shading interp
-                contourf((rbt(k).map)','LineColor','none');
-                load('MyColorMap','mymap')
-                colormap(mymap);
-                colorbar
-                hold on;
-                for j=1:NumOfRobot
-                    % draw robot trajectory
-                    if j==k
-                        line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
-                        set(line_hdl,'Marker','.','Color','r','MarkerSize',3,'LineWidth',2);
-                        plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 's','Color','r','MarkerSize',25,'LineWidth',3);
-                    else
-                        line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
-                        set(line_hdl,'Marker','.','Color','g','MarkerSize',3,'LineWidth',2);
-                        plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 'p','Color','g','MarkerSize',25,'LineWidth',1.5);
-                    end
-                    
-                    % draw traget trajectory
-                    line_hdl = line(fld.traj(1,:), fld.traj(2,:));
-                    set(line_hdl,'Marker','.','Color','k','MarkerSize',3,'LineWidth',2);
-                    plot(fld.tx, fld.ty, 'k+','MarkerSize',25,'LineWidth',3);
-                    set(gca,'fontsize',30)
-                end
-                xlabel(['Step=',num2str(count)],'FontSize',30);
-            end
-            %}
-            
-            %% Consensus
-            % plot figures for selected robots
-            %
-            for k = 1%sim_r_idx
-                fig_cnt = fig_cnt+1;
-                tmp_hd = figure (fig_cnt); % handle for plot of a single robot's target PDF
-                clf(tmp_hd);
-                shading interp
-                contourf((rbt_cons(k).map)','LineColor','none');
-                load('MyColorMap','mymap')
-                colormap(mymap);
-                colorbar
-                hold on;
-                for j=1:NumOfRobot
-                    
-                    % draw robot trajectory
-                    if j==k
-                        line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
-                        set(line_hdl,'Marker','.','Color','r','MarkerSize',3,'LineWidth',2);
-                        plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 's','Color','r','MarkerSize',25,'LineWidth',3);
-                    else
-                        line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
-                        set(line_hdl,'Marker','.','Color','g','MarkerSize',3,'LineWidth',2);
-                        plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 'p','Color','g','MarkerSize',25,'LineWidth',1.5);
-                    end
-                    
-                    % draw target trajectory
-                    line_hdl = line(fld.traj(1,:), fld.traj(2,:));
-                    set(line_hdl,'Marker','.','Color','k','MarkerSize',3,'LineWidth',2);
-                    plot(fld.tx, fld.ty, 'k+','MarkerSize',25,'LineWidth',3);
-                    set(gca,'fontsize',30)
-                end
-                xlabel(['Step=',num2str(count)],'FontSize',30);
-            end
-            %}
-            
-            %% Centralized
-            %
-            % plot figures for central map
-            fig_cnt = fig_cnt+1;
-            tmp_hd = figure (fig_cnt); % handle for plot of a single robot's target PDF
-            clf(tmp_hd);
-            shading interp
-            contourf((rbt_cent.map)','LineColor','none');
-            load('MyColorMap','mymap')
-            colormap(mymap);
-            colorbar
-            xlabel(['Step=',num2str(count)],'FontSize',16);
-            
-            hold on;
-            
-            % draw robot trajectory
-            for j=1:NumOfRobot
-                line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
-                set(line_hdl,'Marker','.','Color','g','MarkerSize',3,'LineWidth',2);
-                plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 'p','Color','g','MarkerSize',25,'LineWidth',1.5);
-            end
-            
-            % draw target trajectory
-            line_hdl = line(fld.traj(1,:), fld.traj(2,:));
-            set(line_hdl,'Marker','.','Color','k','MarkerSize',3,'LineWidth',2);
-            plot(fld.tx, fld.ty, 'k+','MarkerSize',25,'LineWidth',3);
-            set(gca,'fontsize',30)
-            %}
-            
-            % save plots
-            %{
-        if (count == 1) || (count == 3) || (count == 5) || (count == 7) ||...
-                (count == 10) || (count == 20) || (count == 30) || (count == 40)...
-                || (count == 50) || (count == 60) || (count == 70) || (count == 80)...
-                || (count == 90) || (count == 100)
-            switch Selection2
-                case 1,  tag = 'sta_sen_sta_tar';
-                case 2,  tag = 'sta_sen_mov_tar';
-                case 3,  tag = 'mov_sen_sta_tar';
-                case 4,  tag = 'mov_sen_mov_tar';
-            end
-            %         file_name1 = sprintf('./figures/data_exchange_switch/%s_%d_%s',tag,count,datestr(now,1));
-            %         saveas(hf1,file_name1,'fig')
-            %         saveas(hf1,file_name1,'jpg')
-            for k = sim_r_idx
-                tmp_hf = figure(k+2);
-                file_name2 = sprintf('./figures/data_exchange/%s_single_%d_%d_%s',tag,k,count,datestr(now,1));
-                if save_file == 1
-                    saveas(tmp_hf,file_name2,'fig')
-                    saveas(tmp_hf,file_name2,'jpg')
-                end
-            end
-        end
-            %}
-            
-        end
     end
 end

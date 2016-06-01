@@ -2,7 +2,7 @@
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;\red127\green127\blue127;}
 {\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid1\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid2\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li1440\lin1440 }{\listname ;}\listid1}
-{\list\listtemplateid2\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid101\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid101\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid102\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li1440\lin1440 }{\listname ;}\listid2}
 {\list\listtemplateid3\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\})}{\leveltext\leveltemplateid201\'02\'00);}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid3}
 {\list\listtemplateid4\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\})}{\leveltext\leveltemplateid301\'02\'00);}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid302\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li1440\lin1440 }{\listname ;}\listid4}
 {\list\listtemplateid5\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\})}{\leveltext\leveltemplateid401\'02\'00);}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid5}}
@@ -11,7 +11,8 @@
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
 \f0\b\fs24 \cf0 Revision ideas
-\b0  for IEEE Transaction on Vehicular Technology:\
+\b0  for journal paper:\
+(based on Shengbo\'92s meeting on 5/17/16)\
 first, solve soundness problems\
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls1\ilvl0\cf0 {\listtext	1.	}\cf2 skim the papers mentioned in Soundness 1) and see what methods they use, what evaluations they do and what comparison I can make (robustness etc.).\cf0 \
@@ -20,24 +21,21 @@ first, solve soundness problems\
 {\listtext	\uc0\u8259 	}Morbidi\'92s paper consider the distributed KF and active localization. It gives bounds on the estimate covariance matrix of the target, which is nice.\
 {\listtext	\uc0\u8259 	}also checked Leung\'92s paper. The formulation almost contains my work. However, it does not prove consistency (though this is actually not necessary but can differentiate my work from his). It also does not investigated the effects of uncertainty on the estimation results.\cf0 \
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
-\ls1\ilvl0\cf0 {\listtext	2.	}in simulation, compare with the works mentioned in \'93Soundness\'94\
+\ls1\ilvl0\cf0 {\listtext	2.	}in simulation, compare with the works mentioned in \'93Soundness\'94.\
 \pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
-\ls1\ilvl1\cf0 {\listtext	\uc0\u8259 	}randomly generate initial positions of robots, target. \
-{\listtext	\uc0\u8259 	}randomize an error (offset) that a sensor has (or the detection scope, e.g. the covariance matrix) to show the robustness\
-{\listtext	\uc0\u8259 	}make figures formal. add more complexity to figures, e.g. compare the estimation accuracy vs the sensor error, etc. (refer to 5/17/16 \'93multi\'94 idea sketch folder)\
-{\listtext	\uc0\u8259 	}maybe derive a D-KF based on my work.\
+\ls1\ilvl1\cf0 {\listtext	\uc0\u8259 	}show the robustness to uncertainty (+), communication efficiency (+) and memory usage(-)\
+{\listtext	\uc0\u8259 	}randomly generate initial positions of robots, target. \
+{\listtext	\uc0\u8259 	}add noise to target motion model\
+{\listtext	\uc0\u8259 	}in paper, mention real robot and sensor. use their parameters for simulation\
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
-\ls1\ilvl0\cf0 {\listtext	3.	}modify the consistency proof.
-\b \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-
-\b0 \cf0 \
-second, solve novelty and writing issues:\
-\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
-\ls2\ilvl0\cf0 {\listtext	1.	}in introduction, explicitly explain the difference from Leung\'92s paper (e.g. Leung\'92s paper is about robot localization, mine is about target localization).\
-{\listtext	2.	}explain more clearly what the benefit/advantages of LIFO-DBF.\
-{\listtext	3.	}change \'93robots\'94 to \'93UGVs\'94.\
-{\listtext	4.	}any others in \'93Writing\'94 section and the minor issue bullets of Reviewer 1\
+\ls1\ilvl0\cf0 {\listtext	3.	}Second, solve other issues in content (novelty and writing)\
+\pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
+\ls1\ilvl1\cf0 {\listtext	\uc0\u8259 	}explain why DBF is better than consensus method (consensus method is a linear combination, not obeying the vanilla Bayesian rule). May draw a graph to show what the difference is (i.e. at which procedure consensus method becomes less accurate than DBF)\
+{\listtext	\uc0\u8259 	}clearly differentiate consistency from consensus\
+\pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
+\ls2\ilvl1\cf0 {\listtext	\uc0\u8259 	}in introduction, explicitly explain the difference from Leung\'92s paper (e.g. Leung\'92s paper is about robot localization, mine is about target localization).\
+{\listtext	\uc0\u8259 	}any others in \'93Writing\'94 section and the minor issue bullets of Reviewer 1\
+{\listtext	\uc0\u8259 	}submit to IEEE Mechatronics \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 

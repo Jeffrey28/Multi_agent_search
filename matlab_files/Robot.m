@@ -1,35 +1,43 @@
 classdef Robot
     properties
+        % basic info
         idx; % index of the robot
-        pos; % robot position
-        upd_cell; % cell used for updating probability map
         step_cnt; % current time step
+        nbhd_idx; % index of neighboring robots        
+        num_robot;
+        
+        % motion state
+        traj;
+        pos; % robot position
         % used for circular motion of robot
         T; % period of circular motion
         r; % radius
         w; % angular velocity
         center; % center of the circular motion
+        
         % sensor specs
         sen_cov;
         inv_sen_cov;
         sen_offset;
+        
         % observation
         z; % observation measurement
         k; % measurement time
-        prob; % prob matrix for a certain observation. a way to reduce computation time, sacrificing the space complexity
         
-        traj;
+        % filtering
+        nbhd_record; % record some useful info about neighbors, e.g. the time steps that have been used for updating the prob map
+        lkhd_map; % prob matrix for a certain observation. a way to reduce computation time, sacrificing the space complexity        
+        upd_cell; % cell used for updating probability map
         talign_map; % store the prob_map for observations with same tiem index, i.e. P(x|z^1_1:k,...,z^N_1:k)
         talign_t; % record the time for the time-aligned map
         dbf_map; % probability map
         cons_map; % prob map for concensus method
         cen_map; % prob map for centralized filter
-        entropy;
-        nbhd_idx; % index of neighboring robots
-        nbhd_record; % record some useful info about neighbors, e.g. the time steps that have been used for updating the prob map
-        num_robot;
-        color; % color for drawing plots
-        buffer; % communication buffer. a struct array, each element corresponding to the latest info for a robot
+        buffer; % communication buffer. a struct array, each element corresponding to the latest info for a robot     
+
+        % plotting
+        color; % color for drawing plots     
+        
         % performance metrics
         ml_pos_dbf;
         ml_pos_cons;
@@ -49,75 +57,104 @@ classdef Robot
     end
     
     methods
-        function obj = Robot(inPara)
-            obj.pos = inPara.pos;
-            obj.upd_cell = {}; %%% can precompute this term and pass the lookup table to this constructor function
-            
+        function this = Robot(inPara)
+            this.pos = inPara.pos;
+            this.upd_cell = {}; %%% can precompute this term and pass the lookup table to this constructor function
+            this.idx = inPara.idx;
             if inPara.r_move == 0
-                obj.pos = inPara.pos; % sensor position
+                this.pos = inPara.pos; % sensor position
             elseif inPara.r_move == 1
-                obj.T = 20; % period of circling motion
-                obj.center = inPara.center;
-                obj.r = inPara.r; %15;
-                obj.w = 2*pi/obj.T;
-                obj.pos = [inPara.center(1);inPara.center(1)+obj.r]; % initial position is at the top of the circle
+                this.T = 20; % period of circling motion
+                this.center = inPara.center;
+                this.r = inPara.r; %15;
+                this.w = 2*pi/this.T;
+                this.pos = [inPara.center(1);inPara.center(1)+this.r]; % initial position is at the top of the circle
             end
-            obj.traj = [];
-            obj.sen_cov = inPara.sen_cov;
-            obj.inv_sen_cov = inPara.inv_sen_cov;
-            obj.sen_offset = inPara.sen_offset;
-            obj.dbf_map = ones(inPara.fld_size(1),inPara.fld_size(2));
-            obj.dbf_map = obj.dbf_map/sum(sum(obj.dbf_map));
-            obj.cons_map = obj.dbf_map;
-            obj.cen_map = obj.dbf_map;
-            obj.talign_map = obj.dbf_map; % store the prob_map for observations with same tiem index, i.e. P(x|z^1_1:k,...,z^N_1:k)
-            obj.talign_t = 0; % record the time for the time-aligned map
-            obj.prob = zeros(inPara.fld_size(1),inPara.fld_size(2));
-            obj.entropy = zeros(1,inPara.max_step);
-            obj.nbhd_idx = inPara.nbhd_idx;    
-            % initialize buffer
-            obj.buffer(inPara.num_robot).pos = [];
-            obj.buffer(inPara.num_robot).z = [];
-            obj.buffer(inPara.num_robot).k = [];
-            obj.buffer(inPara.num_robot).prob = {};
-            obj.buffer(inPara.num_robot).used = [];
+            this.traj = [];
+            this.sen_cov = inPara.sen_cov;
+            this.inv_sen_cov = inPara.inv_sen_cov;
+            this.sen_offset = inPara.sen_offset;
+            this.dbf_map = ones(inPara.fld_size(1),inPara.fld_size(2));
+            this.dbf_map = this.dbf_map/sum(sum(this.dbf_map));
+            this.cons_map = this.dbf_map;
+            this.cen_map = this.dbf_map;
+            this.talign_map = this.dbf_map; % store the prob_map for observations with same tiem index, i.e. P(x|z^1_1:k,...,z^N_1:k)
+            this.talign_t = 0; % record the time for the time-aligned map
+            this.lkhd_map = zeros(inPara.fld_size(1),inPara.fld_size(2));
+%             obj.entropy = zeros(1,inPara.max_step);
+            this.nbhd_idx = inPara.nbhd_idx;    
+            % initialize buffer            
+            this.buffer(inPara.num_robot).pos = [];
+            this.buffer(inPara.num_robot).z = [];
+            this.buffer(inPara.num_robot).k = [];
+            this.buffer(inPara.num_robot).lkhd_map = {};
+            this.buffer(inPara.num_robot).used = [];
 %             obj.buffer = struct;
 %             if ~isempty(inPara.nbhd_idx)
 %                 obj.buffer(inPara.num_robot).used = []; % record the observations that are already used by BF
 %             end
-            obj.num_robot = inPara.num_robot;
-            obj.step_cnt = 0;
+            this.num_robot = inPara.num_robot;
+            this.step_cnt = 0;
         end
         
-        function sensorGen(this,fld)
+        % generate a random measurment and computes the probability
+        % likelihood map
+        function this = sensorGen(this,fld)
+            % generate sensor measurement
             x_r = this.pos;
-            t = fld.target.pos;
+            x_t = fld.target.pos;
             inv_cov = this.inv_sen_cov;
             offset = this.sen_offset;
             
-            prob = exp(-1/2*(t+offset-x_r)'*inv_cov*(t+offset-x_r));
-            z = (rand(1,1) < prob);
-            if z == 0
-                prob = 1-prob;
-            end                
-            this.z = z;
+            tmp_lkhd = exp(-1/2*(x_t+offset-x_r)'*inv_cov*(x_t+offset-x_r));
+            tmp_z = (rand(1,1) < tmp_lkhd);
+                      
+            this.z = tmp_z;
             this.k = this.step_cnt;
-            this.prob = prob;
+                  
+            % generate the likelihood map for all possible target locations            
+            tmp_lkhd_map = this.sensorProb(fld);
+            if tmp_z == 0
+                tmp_lkhd_map = 1-tmp_lkhd_map;
+            end      
+            
+            this.lkhd_map = tmp_lkhd_map;
         end
         
-        function rbt = updOwnMsmt(rbt,inPara)
+        % computes probability likelihood map
+        function lkhd_map = sensorProb(this,fld)
+            x_r = this.pos;
+            inv_cov = this.inv_sen_cov;
+            offset = this.sen_offset;
+            
+            xlen = fld.fld_size(1);
+            ylen = fld.fld_size(2);
+            [ptx,pty] = meshgrid(1:xlen,1:ylen);
+            pt = [ptx(:)';pty(:)'];
+            pt = bsxfun(@minus,pt,[0.5;0.5]); % the target position is treated as the center of each cell
+            % pt = x_t+offset-x_r
+            pt = bsxfun(@plus,pt,offset);
+            pt = bsxfun(@minus,pt,x_r);
+%             pt = pt - x_r*ones(1,xlen*ylen);
+            tmp = pt'*inv_cov*pt;
+            tmp_diag = diag(tmp);
+            % prob = exp(-1/2*(t-x_r)'/sigma*(t-x_r));
+            lkhd_map = exp(-1/2*(reshape(tmp_diag,xlen,ylen))');
+        end
+        
+        function this = updOwnMsmt(this,inPara)
             % update robot's own measurement in the communication buffer
             
             selection = inPara.selection;
             if (selection == 1) || (selection == 3)
                 % static target
                 % (1) self-observation
-                % update the buffer with the robot's own observation
-                rbt.buffer(rbt.idx).pos = rbt.pos;
-                rbt.buffer(rbt.idx).z = rbt.z;
-                rbt.buffer(rbt.idx).k = rbt.step_cnt;
-                rbt.buffer(rbt.idx).prob = rbt.prob;
-                
+                % update the buffer with the robot's own observation       
+                    this.buffer(this.idx).pos = this.pos;
+                    this.buffer(this.idx).z = this.z;
+                    this.buffer(this.idx).k = this.step_cnt;
+                    this.buffer(this.idx).lkhd_map = this.lkhd_map;
+                    
 %                 if (~isempty(rbt.buffer(rbt.idx).k)) && (rbt.buffer(rbt.idx).z == 1)
 %                     rbt.buffer(rbt.idx).prob = rbt.sensorProb(inPara.fld);
                     
@@ -137,10 +174,10 @@ classdef Robot
             elseif (selection == 2) || (selection == 4)
                 % Observation of each robot
                 %                 for i=1:NumOfRobot
-                rbt.buffer(rbt.idx).pos = [rbt.pos,rbt.buffer(rbt.idx).pos];
-                rbt.buffer(rbt.idx).z = [rbt.z,rbt.buffer(rbt.idx).z];
-                rbt.buffer(rbt.idx).k = [rbt.k,rbt.buffer(rbt.idx).k];
-                rbt.buffer(rbt.idx).prob{rbt.step_cnt} = rbt.prob;
+                this.buffer(this.idx).pos = [this.pos,this.buffer(this.idx).pos];
+                this.buffer(this.idx).z = [this.z,this.buffer(this.idx).z];
+                this.buffer(this.idx).k = [this.k,this.buffer(this.idx).k];
+                this.buffer(this.idx).lkhd_map{this.step_cnt} = this.lkhd_map;
 
 %                 if (~isempty(rbt.buffer(rbt.idx).k)) && (rbt.buffer(rbt.idx).z == 1)
 %                     rbt.buffer(rbt.idx).prob = rbt.sensorProb(inPara.fld);
@@ -172,22 +209,22 @@ classdef Robot
             end
         end
         
-        function rbt = dataExch(rbt,inPara)
+        function this = dataExch(this,inPara)
             % exchange communication buffer with neighbors
             selection = inPara.selection;
             rbt_nbhd_set = inPara.rbt_nbhd_set;
             if (selection == 1) || (selection == 3)
-                % (2) sending/receive
+                % (2) exchange and update buffer
                 for t = 1:length(rbt_nbhd_set)
                     % note: communication only transmit the latest
                     % observation stored in each neighbor
-                    tmp_rbt = rbt_nbhd_set(t);
-                    for jj = 1:rbt.num_robot
-                        if (~isempty(tmp_rbt.buffer(jj).k)) && (isempty(rbt.buffer(jj).k) || (rbt.buffer(jj).k < tmp_rbt.buffer(jj).k))
-                            rbt.buffer(jj).pos = tmp_rbt.buffer(jj).pos;
-                            rbt.buffer(jj).z = tmp_rbt.buffer(jj).z;
-                            rbt.buffer(jj).k = tmp_rbt.buffer(jj).k;
-                            rbt.buffer(jj).prob = tmp_rbt.buffer(jj).prob;
+                    tmp_rbt = rbt_nbhd_set{t};
+                    for jj = 1:this.num_robot
+                        if (~isempty(tmp_rbt.buffer(jj).k)) && (isempty(this.buffer(jj).k) || (this.buffer(jj).k < tmp_rbt.buffer(jj).k))
+                            this.buffer(jj).pos = tmp_rbt.buffer(jj).pos;
+                            this.buffer(jj).z = tmp_rbt.buffer(jj).z;
+                            this.buffer(jj).k = tmp_rbt.buffer(jj).k;
+                            this.buffer(jj).lkhd_map = tmp_rbt.buffer(jj).lkhd_map;
                         end
                     end
                     
@@ -242,20 +279,20 @@ classdef Robot
                     % note: communication only transmit the latest
                     % observation stored in each neighbor
                     tmp_rbt = rbt_nbhd_set(t);
-                    for jj = 1:rbt.num_robot
-                        if (~isempty(tmp_rbt.buffer(jj).k)) && (isempty(rbt.buffer(jj).k) || (rbt.buffer(jj).k < tmp_rbt.buffer(jj).k))
+                    for jj = 1:this.num_robot
+                        if (~isempty(tmp_rbt.buffer(jj).k)) && (isempty(this.buffer(jj).k) || (this.buffer(jj).k < tmp_rbt.buffer(jj).k))
                             %%% this code only handles the fixed topology
                             %%% case, i.e. each time a one-step newer
                             %%% observation is received. for multi-step
                             %%% newer observations, such code needs
                             %%% modification.
-                            rbt.buffer(jj).pos = [tmp_rbt.buffer(jj).pos(:,1),rbt.buffer(jj).pos];
-                            rbt.buffer(jj).z = [tmp_rbt.buffer(jj).z(1),rbt.buffer(jj).z];
-                            rbt.buffer(jj).k = [tmp_rbt.buffer(jj).k(1),rbt.buffer(jj).k];
+                            this.buffer(jj).pos = [tmp_rbt.buffer(jj).pos(:,1),this.buffer(jj).pos];
+                            this.buffer(jj).z = [tmp_rbt.buffer(jj).z(1),this.buffer(jj).z];
+                            this.buffer(jj).k = [tmp_rbt.buffer(jj).k(1),this.buffer(jj).k];
                             % in real experiment, this prob term should not
                             % be communicated. In simulation, this is for
                             % the purpose of accelerating the computation speed.
-                            rbt.buffer(jj).prob = {tmp_rbt.buffer(jj).prob{1},rbt.buffer(jj).prob};
+                            this.buffer(jj).lkhd_map = {tmp_rbt.buffer(jj).lkhd_map{1},this.buffer(jj).lkhd_map};
                         end
                     end
                 end
@@ -296,22 +333,21 @@ classdef Robot
             end
         end
         
-        function rbt = DBF(rbt,inPara)
-            selection = inPara.selection;
-            step_cnt = rbt.step_cnt;
-            upd_cell = rbt.upd_cell;
+        function this = DBF(this,inPara)
+            selection = inPara.selection;            
             if (selection == 1) || (selection == 3)
                 %% update by bayes rule
                 % calculate probility of latest z
-                for jj=1:rbt.num_robot % Robot Iteration
-                    if (~isempty(rbt.buffer(jj).k)) && (~ismember(rbt.buffer(jj).k,rbt.buffer(jj).used))
-                        rbt.dbf_map=rbt.dbf_map.*rbt.buffer(jj).prob;
-                        rbt.buffer(jj).used = [rbt.buffer(jj).used,rbt.buffer(jj).k];
+                for jj=1:this.num_robot % Robot Iteration
+                    if (~isempty(this.buffer(jj).k)) && (~ismember(this.buffer(jj).k,this.buffer(jj).used))
+                        this.dbf_map=this.dbf_map.*this.buffer(jj).lkhd_map;
+                        this.buffer(jj).used = [this.buffer(jj).used,this.buffer(jj).k];
                     end
                 end
-                rbt.dbf_map=rbt.dbf_map/sum(sum(rbt.dbf_map));
+                this.dbf_map=this.dbf_map/sum(sum(this.dbf_map));
                 
             elseif (selection == 2) || (selection == 4)
+                upd_cell = this.upd_cell;
                 %% update by bayes rule
                 % note: main computation resource are used in calling sensorProb function.
                 % when using grid map, can consider precomputing
@@ -319,10 +355,10 @@ classdef Robot
                 
                 %                 for ii=1:NumOfRobot % Robot Iteration
                 talign_flag = 1; % if all agent's observation's time are no less than talign_t+1, then talign_flag = 1, increase talign_t
-                tmp_t = rbt.talign_t;
-                tmp_map = rbt.talign_map; % time-aligned map
+                tmp_t = this.talign_t;
+                tmp_map = this.talign_map; % time-aligned map
                 
-                for t = (rbt.talign_t+1):step_cnt
+                for t = (this.talign_t+1):this.step_cnt
                     %% one-step prediction step
                     tmp_map2 = zeros(size(tmp_map));
                     for k = 1:size(pt,1)
@@ -351,13 +387,13 @@ classdef Robot
                     %                             end
                     %                         end
                     
-                    for jj=1:rbt.num_robot
-                        if (~isempty(rbt.buffer(jj).k)) && (rbt.buffer(jj).k(1) >= t)
+                    for jj=1:this.num_robot
+                        if (~isempty(this.buffer(jj).k)) && (this.buffer(jj).k(1) >= t)
                             % note: this update is not valid in real
                             % experiment since we don't communicate
                             % probability. This line of code is for
                             % computation reduction in simulation
-                            tmp_map = tmp_map.*rbt.buffer(jj).prob{t};
+                            tmp_map = tmp_map.*this.buffer(jj).lkhd_map{t};
                         else
                             talign_flag = 0;
                         end
@@ -370,16 +406,16 @@ classdef Robot
                     
                     % after the first loop, the robot's aligned time
                     % increase by one
-                    if (t == rbt.talign_t+1) && (talign_flag == 1)
-                        rbt.talign_map = tmp_map;
-                        rbt.talign_map = rbt.talign_map/sum(sum(rbt.talign_map));
+                    if (t == this.talign_t+1) && (talign_flag == 1)
+                        this.talign_map = tmp_map;
+                        this.talign_map = this.talign_map/sum(sum(this.talign_map));
                         tmp_t = tmp_t+1;
                     end
                 end
                 
-                rbt(ii).talign_t = tmp_t;
-                rbt(ii).map = tmp_map;
-                rbt(ii).map = rbt(ii).map/sum(sum(rbt(ii).map));
+                this(ii).talign_t = tmp_t;
+                this(ii).map = tmp_map;
+                this(ii).map = this(ii).map/sum(sum(this(ii).map));
                 %                 end
                 % record the map for each time
                 %             rbt(i).map_cell{count} = rbt(i).map;
