@@ -3,66 +3,78 @@ classdef Sim
         dt; % discretization time interval
         r_move;
         tar_move;
-        max_step;
+        sim_len;
         cons_step;
         num_robot;
         r_init_pos_set;
         sim_r_idx;
-        trial_num;        
+        trial_num;
+        selection;
+        rbt_set; % record all rbt objects
+        sim_res; % records the metrics of different filtering methods
     end
     
     methods
         
         function this = Sim(inPara)
-           this.dt = inPara.dt; 
-        end        
-                
-        function saveSimData(this,selection,rbt,fld)
+            this.dt = inPara.dt;
+            this.r_move = inPara.r_move;
+            this.tar_move = inPara.tar_move;
+            this.sim_len = inPara.sim_len;
+            this.cons_step = inPara.cons_step;
+            this.num_robot = inPara.num_robot;
+            this.r_init_pos_set = inPara.r_init_pos_set;
+            this.sim_r_idx = inPara.sim_r_idx;
+            this.trial_num = inPara.trial_num;
+        end
+        
+        function saveSimData(this)
             % save the simulation data, mainly the Robot and Field objects
-            switch selection
+            switch this.selection
                 case 1,  tag = 'sta_sen_sta_tar';
                 case 2,  tag = 'sta_sen_mov_tar';
                 case 3,  tag = 'mov_sen_sta_tar';
                 case 4,  tag = 'mov_sen_mov_tar';
             end
-                        
-            file_name = sprintf('./figures/data_exchange/CDC16/%s_robot_%s.mat',tag,datestr(now,1));
-            %     save(file_name,'sim','sim_res','fld')
+            
+            file_name = sprintf('./figures/data_exchange/Journal/%s_robot_%s.mat',tag,datestr(now,1));
+            
+            %%%%% need to revise. may not want to save upd_cell %%%%%
             save(file_name) % save current workspace
         end
         
-        function plotSim(this)
+        function plotSim(this,rbt,fld,count)
             % Plotting for simulation process
-            
+            fig_cnt = 1;
             %% LIFO-DBF
             %
             % plot figures for selected robots
-            for k = sim_r_idx
+            for k = this.sim_r_idx
                 fig_cnt = fig_cnt+1;
                 tmp_hd = figure (fig_cnt); % handle for plot of a single robot's target PDF
                 clf(tmp_hd);
                 shading interp
-                contourf((rbt(k).map)','LineColor','none');
+                contourf((rbt{k}.map)','LineColor','none');
                 load('MyColorMap','mymap')
                 colormap(mymap);
                 colorbar
                 hold on;
-                for j=1:NumOfRobot
+                for j=1:this.num_robot
                     % draw robot trajectory
                     if j==k
-                        line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
+                        line_hdl = line(rbt{j}.traj(1,:), rbt{j}.traj(2,:));
                         set(line_hdl,'Marker','.','Color','r','MarkerSize',3,'LineWidth',2);
-                        plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 's','Color','r','MarkerSize',25,'LineWidth',3);
+                        plot(rbt{j}.traj(1,end), rbt{j}.traj(2,end), 's','Color','r','MarkerSize',25,'LineWidth',3);
                     else
-                        line_hdl = line(rbt(j).traj(1,:), rbt(j).traj(2,:));
+                        line_hdl = line(rbt{j}.traj(1,:), rbt{j}.traj(2,:));
                         set(line_hdl,'Marker','.','Color','g','MarkerSize',3,'LineWidth',2);
-                        plot(rbt(j).traj(1,end), rbt(j).traj(2,end), 'p','Color','g','MarkerSize',25,'LineWidth',1.5);
+                        plot(rbt{j}.traj(1,end), rbt{j}.traj(2,end), 'p','Color','g','MarkerSize',25,'LineWidth',1.5);
                     end
                     
                     % draw traget trajectory
-                    line_hdl = line(fld.traj(1,:), fld.traj(2,:));
+                    line_hdl = line(fld.target.traj(1,:), fld.target.traj(2,:));
                     set(line_hdl,'Marker','.','Color','k','MarkerSize',3,'LineWidth',2);
-                    plot(fld.tx, fld.ty, 'k+','MarkerSize',25,'LineWidth',3);
+                    plot(fld.target.pos(1), fld.target.pos(2), 'k+','MarkerSize',25,'LineWidth',3);
                     set(gca,'fontsize',30)
                 end
                 xlabel(['Step=',num2str(count)],'FontSize',30);
@@ -162,111 +174,228 @@ classdef Sim
             
         end
         
-        function computeMetrics(this)
-         % Computing Performance Metrics
-         
-         % ML error
-         for i = 1:NumOfRobot
-             % DBF
-             [tmp_x1,tmp_y1] = find(rbt(i).map == max(rbt(i).map(:)));
-             if length(tmp_x1) > 1
-                 tmp_idx = randi(length(tmp_x1),1,1);
-             else
-                 tmp_idx = 1;
-             end
-             rbt(i).ml_dbf(:,count) = [tmp_x1(tmp_idx);tmp_y1(tmp_idx)];
-             rbt(i).ml_err_dbf(count) = norm(rbt(i).ml_dbf(:,count)-[fld.tx;fld.ty]);
-             
-             % concensus
-             [tmp_x2,tmp_y2] = find(rbt_cons(i).map == max(rbt_cons(i).map(:)));
-             if length(tmp_x2) > 1
-                 tmp_idx2 = randi(length(tmp_x2),1,1);
-             else
-                 tmp_idx2 = 1;
-             end
-             rbt_cons(i).ml_cons(:,count) = [tmp_x2(tmp_idx2);tmp_y2(tmp_idx2)];
-             rbt_cons(i).ml_err_cons(count) = norm(rbt_cons(i).ml_cons(:,count)-[fld.tx;fld.ty]);
-         end
-         
-         % centralized
-         [tmp_x3,tmp_y3] = find(rbt_cent.map == max(rbt_cent.map(:)));
-         if length(tmp_x3) > 1
-             tmp_idx3 = randi(length(tmp_x3),1,1);
-         else
-             tmp_idx3 = 1;
-         end
-         rbt_cent.ml_cent(:,count) = [tmp_x3(tmp_idx3);tmp_y3(tmp_idx3)];
-         rbt_cent.ml_err_cent(count) = norm(rbt_cent.ml_cent(:,count)-[fld.tx;fld.ty]);
-         
-         % Covariance of posterior pdf
-         for i=1:NumOfRobot
-             % DBF
-             tmp_map1 = rbt(i).map;
-             % this avoids the error when some grid has zeros probability
-             tmp_map1(tmp_map1 <= realmin) = realmin;
-             
-             % compute covariance of distribution
-             dif1 = pt' - [(1+fld.x)/2;(1+fld.y)/2]*ones(1,size(pt',2));
-             cov_p1 = zeros(2,2);
-             for jj = 1:size(pt',2)
-                 cov_p1 = cov_p1 + dif1(:,jj)*dif1(:,jj)'*tmp_map1(pt(jj,1),pt(jj,2));
-             end
-             rbt(i).pdf_cov{count} = cov_p1;
-             rbt(i).pdf_norm_dbf(count) = norm(cov_p1,'fro');
-             
-             % concensus
-             tmp_map2 = rbt_cons(i).map;
-             % this avoids the error when some grid has zeros probability
-             tmp_map2(tmp_map2 <= realmin) = realmin;
-             
-             % compute covariance of distribution
-             dif2 = pt' - [(1+fld.x)/2;(1+fld.y)/2]*ones(1,size(pt',2));
-             cov_p2 = zeros(2,2);
-             for jj = 1:size(pt',2)
-                 cov_p2 = cov_p2 + dif2(:,jj)*dif2(:,jj)'*tmp_map2(pt(jj,1),pt(jj,2));
-             end
-             rbt_cons(i).pdf_cov_cons{count} = cov_p2;
-             rbt_cons(i).pdf_norm_cons(count) = norm(cov_p2,'fro');
-         end
-         
-         % centralized
-         tmp_map3 = rbt_cent.map;
-         % this avoids the error when some grid has zeros probability
-         tmp_map3(tmp_map3 <= realmin) = realmin;
-         
-         % compute covariance of distribution
-         dif3 = pt' - [(1+fld.x)/2;(1+fld.y)/2]*ones(1,size(pt',2));
-         cov_p3 = zeros(2,2);
-         for jj = 1:size(pt',2)
-             cov_p3 = cov_p3 + dif3(:,jj)*dif3(:,jj)'*tmp_map3(pt(jj,1),pt(jj,2));
-         end
-         rbt_cent.pdf_cov_cent{count} = cov_p3;
-         rbt_cent.pdf_norm_cent(count) = norm(cov_p3,'fro');
-         
-         % Entropy of posterior pdf
-         %
-         for i=1:NumOfRobot
-             % DBF
-             tmp_map1 = rbt(i).map;
-             % this avoids the error when some grid has zeros probability
-             tmp_map1(tmp_map1 <= realmin) = realmin;
-             dis_entropy = -(tmp_map1).*log2(tmp_map1); % get the p*log(p) for all grid points
-             rbt(i).entropy(count) = sum(sum(dis_entropy));
-             
-             % concensus
-             tmp_map2 = rbt_cons(i).map;
-             % this avoids the error when some grid has zeros probability
-             tmp_map2(tmp_map2 <= realmin) = realmin;
-             dis_entropy = -(tmp_map2).*log2(tmp_map2); % get the p*log(p) for all grid points
-             rbt_cons(i).entropy(count) = sum(sum(dis_entropy));
-         end
-         % centralized
-         tmp_map3 = rbt_cent.map;
-         % this avoids the error when some grid has zeros probability
-         tmp_map3(tmp_map3 <= realmin) = realmin;
-         dis_entropy = -(tmp_map3).*log2(tmp_map3); % get the p*log(p) for all grid points
-         rbt_cent.entropy(count) = sum(sum(dis_entropy));
-         
+        function this = compareMetrics(this)
+            for jj = 1:this.trial_num
+                for ii = 1:this.num_robot
+                    % ml error
+                    sim_res.ml_err_dbf(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.ml_err_dbf;
+                    sim_res.ml_err_cons(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.ml_err_cons;
+                    
+                    % norm of cov of pdf
+                    sim_res.pdf_norm_dbf(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.pdf_norm_dbf;
+                    sim_res.pdf_norm_cons(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.pdf_norm_cons;
+                    
+                    % entropy of pdf
+                    sim_res.ent_dbf(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.ent_dbf;
+                    sim_res.ent_cons(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.ent_cons;
+                end
+                sim_res.ml_err_cent(jj,:) = this.rbt_set{jj}.rbt{1}.ml_err_cent;
+                sim_res.pdf_norm_cent(jj,:) = this.rbt_set{jj}.rbt{1}.rbt_cent.pdf_norm_cent;
+                sim_res.ent_cent(jj,:) = this.rbt_set{jj}.rbt{1}.rbt_cent.ent_cent;
+            end
+            
+            for ii = 1:this.num_robot
+                % ml error
+                % dbf
+                tmp_ml_err_dbf = squeeze(sim_res.ml_err_dbf(ii,:,:));
+                sim_res.ml_err_dbf_mean(ii,:) = mean(tmp_ml_err_dbf,1);
+                sim_res.ml_err_dbf_cov(ii,:) = diag(cov(tmp_ml_err_dbf))';
+                
+                % consensus
+                tmp_ml_err_cons = squeeze(sim_res.ml_err_cons(ii,:,:));
+                sim_res.ml_err_cons_mean(ii,:) = mean(tmp_ml_err_cons,1);
+                sim_res.ml_err_cons_cov(ii,:) = diag(cov(tmp_ml_err_cons)');
+                
+                % norm of cov of pdf
+                % dbf
+                tmp_pdf_norm_dbf = squeeze(sim_res.pdf_norm_dbf(ii,:,:));
+                sim_res.pdf_norm_dbf_mean(ii,:) = mean(tmp_pdf_norm_dbf,1);
+                sim_res.pdf_norm_dbf_cov(ii,:) = diag(cov(tmp_pdf_norm_dbf)');
+                
+                % consensus
+                tmp_pdf_norm_cons = squeeze(sim_res.pdf_norm_cons(ii,:,:));
+                sim_res.pdf_norm_cons_mean(ii,:) = mean(tmp_pdf_norm_cons,1);
+                sim_res.pdf_norm_cons_cov(ii,:) = diag(cov(tmp_pdf_norm_cons)');
+                
+                % entropy of pdf
+                % dbf
+                tmp_entropy_dbf = squeeze(sim_res.entropy_dbf(ii,:,:));
+                sim_res.ent_dbf_mean(ii,:) = mean(tmp_entropy_dbf,1);
+                sim_res.ent_dbf_cov(ii,:) = diag(cov(tmp_entropy_dbf)');
+                
+                % consensus
+                tmp_entropy_cons = squeeze(sim_res.entropy_cons(ii,:,:));
+                sim_res.ent_cons_mean(ii,:) = mean(tmp_entropy_cons,1);
+                sim_res.ent_cons_cov(ii,:) = diag(cov(tmp_entropy_cons)');
+            end
+            
+            % ml error
+            % centralized
+            tmp_ml_err_cent = sim_res.ml_err_cent;
+            sim_res.ml_err_cent_mean = mean(tmp_ml_err_cent,1);
+            sim_res.ml_err_cent_cov = diag(cov(tmp_ml_err_cent)');
+            
+            % norm of cov of pdf
+            % centralized
+            tmp_pdf_norm_cent = sim_res.pdf_norm_cent;
+            sim_res.pdf_norm_cent_mean = mean(tmp_pdf_norm_cent,1);
+            sim_res.pdf_norm_cent_cov = diag(cov(tmp_pdf_norm_cent)');
+            
+            % entropy of pdf
+            % centralized
+            tmp_ent_cent = sim_res.entropy_cent;
+            sim_res.ent_cent_mean = mean(tmp_ent_cent,1);
+            sim_res.ent_cent_cov = diag(cov(tmp_ent_cent)');
+            
+            %% %%%%%%%%%%%%%% plot the performance metrics %%%%%%%%%%%%%%%%%
+            plot_rbt_idx = 1:2:5; % draw robot 1, 3, 5
+            fig_cnt = 1;
+            % ml error
+            fig_cnt = fig_cnt+1;
+            hf_err = figure(fig_cnt);
+            line_clr = ['r','g','b','c','m','k'];
+            line_marker = {'o','*','s','d','^','h'};
+            
+            % for LIFO-DBF, we draw different robot's performance metrics
+            for i=plot_rbt_idx
+                plot(1:count-2,sim_res.ml_err_dbf_mean(i,1:count-2),line_clr(i),'LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+                % errorbar(1:count-2,sim_res.ml_err_dbf_mean(i,1:count-2),sqrt(sim_res.ml_err_dbf_cov(i,1:count-2)),...
+                %         line_clr(i),'LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+            end
+            
+            % for consensus, we draw one robot's performance metrics.
+            
+            % for i=1:NumOfRobot
+            %     plot(1:count-2,rbt_cons(i).ml_err_cons(1:count-2),line_clr(i),'LineStyle','--','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+            % end
+            plot(1:count-2,sim_res.ml_err_cons_mean(1,1:count-2),line_clr(2),'LineStyle','--','LineWidth',2,'Marker',line_marker{2},'MarkerSize',2); hold on;
+            % errorbar(1:count-2,sim_res.ml_err_cons_mean(1,1:count-2),sqrt(sim_res.ml_err_cons_cov(1,1:count-2)),...
+            %     line_clr(1),'LineStyle','--','LineWidth',2,'Marker',line_marker{1},'MarkerSize',2); hold on;
+            
+            % only on centralized filter
+            plot(1:count-2,sim_res.ml_err_cent_mean(1:count-2),line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{6},'MarkerSize',2); hold on;
+            % errorbar(1:count-2,sim_res.ml_err_cent_mean(1:count-2),sqrt(sim_res.ml_err_cent_cov(1:count-2)),...
+            %     line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{6},'MarkerSize',2); hold on;
+            xlim([0,count-1])
+            
+            % add legend
+            [~, hobj1] = legend('DBF-R1','DBF-R3','DBF-R5','Consen','Central');
+            textobj = findobj(hobj1, 'type', 'text');
+            set(textobj, 'fontsize', 15);
+            
+            title('Target Position Error','FontSize',30);
+            set(gca,'fontsize',30)
+            xlabel('Time','FontSize',30);
+            ylabel('Position Error','FontSize',30);
+            
+            %{
+                switch Selection2
+                    case 1,  tag = 'sta_sen_sta_tar';
+                    case 2,  tag = 'sta_sen_mov_tar';
+                    case 3,  tag = 'mov_sen_sta_tar';
+                    case 4,  tag = 'mov_sen_mov_tar';
+                end
+                file_name2 = sprintf('./figures/data_exchange/%s_entropy_%s',tag,datestr(now,1));
+                if save_file == 1
+                    saveas(hf_err,file_name2,'fig')
+                    saveas(hf_err,file_name2,'jpg')
+                end
+            %}
+            
+            % pdf covariance norm
+            % results are hard to interpret. So just not include this figure
+            %{
+                fig_cnt = fig_cnt+1;
+                hf_cov = figure(fig_cnt);
+                line_clr = ['r','g','b','c','m','k'];
+                line_marker = {'o','*','s','d','^','h'};
+                for i=plot_rbt_idx
+                %     plot(1:count-2,rbt(i).pdf_norm_dbf(1:count-2),line_clr(i),'LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+                    plot(1:count-2,sim_res.pdf_norm_dbf_mean(i,1:count-2),line_clr(i),'LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+                %     errorbar(1:count-2,sim_res.pdf_norm_dbf_mean(i,1:count-2),sqrt(sim_res.pdf_norm_dbf_cov(i,1:count-2)),...
+                %         line_clr(i),'LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+                end
+                [~, hobj2] = legend('Robot 1','Robot 2','Robot 3','Robot 4','Robot 5','Robot 6');
+                textobj = findobj(hobj2, 'type', 'text');
+                set(textobj, 'fontsize', 24);
+
+                % plot(1:count-2,rbt_cons(i).pdf_norm_cons(1:count-2),line_clr(i),'LineStyle','--','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+                plot(1:count-2,sim_res.pdf_norm_cons_mean(1,1:count-2),line_clr(2),'LineStyle','--','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+                % errorbar(1:count-2,sim_res.pdf_norm_cons_mean(1,1:count-2),sqrt(sim_res.pdf_norm_cons_cov(1,1:count-2)),...
+                %     line_clr(1),'LineStyle','--','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+
+                % plot(1:count-2,rbt_cent.pdf_norm_cent(1:count-2),line_clr(i),'LineStyle','-.','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+                plot(1:count-2,sim_res.pdf_norm_cent_mean(1:count-2),line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+                % errorbar(1:count-2,sim_res.pdf_norm_cent_mean(1:count-2),sqrt(sim_res.pdf_norm_cent_cov(1:count-2)),...
+                %     line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+                xlim([0,count-1])
+
+                title('Covariance of Target PDF','FontSize',30);
+                set(gca,'fontsize',30)
+                xlabel('Time','FontSize',30);
+                ylabel('Norm of Covariance Matrix','FontSize',30);
+
+
+
+            %{
+                switch Selection2
+                    case 1,  tag = 'sta_sen_sta_tar';
+                    case 2,  tag = 'sta_sen_mov_tar';
+                    case 3,  tag = 'mov_sen_sta_tar';
+                    case 4,  tag = 'mov_sen_mov_tar';
+                end
+                file_name2 = sprintf('./figures/data_exchange/%s_entropy_%s',tag,datestr(now,1));
+                if save_file == 1
+                    saveas(hf_cov,file_name2,'fig')
+                    saveas(hf_cov,file_name2,'jpg')
+                end
+            %}
+            %}
+            
+            % entropy
+            fig_cnt = fig_cnt+1;
+            hf_ent = figure(fig_cnt);
+            line_clr = ['r','g','b','c','m','k'];
+            line_marker = {'o','*','s','d','^','h'};
+            for i=plot_rbt_idx
+                %     plot(1:count-2,rbt(i).entropy(1:count-2),line_clr(i),'LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+                plot(1:count-2,sim_res.entropy_dbf_mean(i,1:count-2),line_clr(i),'LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+                %     errorbar(1:count-2,sim_res.entropy_dbf_mean(i,1:count-2),sqrt(sim_res.entropy_dbf_cov(i,1:count-2)),line_clr(i),'LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+            end
+            
+            % plot(1:count-2,rbt_cons(i).entropy(1:count-2),line_clr(i),'LineStyle','--','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+            plot(1:count-2,sim_res.entropy_cons_mean(1,1:count-2),line_clr(2),'LineStyle','--','LineWidth',2,'Marker',line_marker{2},'MarkerSize',2); hold on;
+            % errorbar(1:count-2,sim_res.entropy_cons_mean(1,1:count-2),sqrt(sim_res.entropy_cons_cov(1,1:count-2)),line_clr(1),'LineStyle','--','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+            
+            % plot(1:count-2,rbt_cent.entropy(1:count-2),line_clr(i),'LineStyle','-.','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+            plot(1:count-2,sim_res.entropy_cent_mean(1:count-2),line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{6},'MarkerSize',2); hold on;
+            % errorbar(1:count-2,sim_res.entropy_cent_mean(1:count-2),sqrt(sim_res.entropy_cent_cov(1:count-2)),line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+            xlim([0,count-1])
+            
+            % add legend
+            [~, hobj3] = legend('DBF-R1','DBF-R3','DBF-R5','Consen','Central');
+            textobj = findobj(hobj3, 'type', 'text');
+            set(textobj, 'fontsize', 15);
+            
+            title('Entropy of the Target PDF','FontSize',30);
+            set(gca,'fontsize',30)
+            xlabel('Time','FontSize',30);
+            ylabel('Entropy','FontSize',30);
+            
+            %{
+                switch Selection2
+                    case 1,  tag = 'sta_sen_sta_tar';
+                    case 2,  tag = 'sta_sen_mov_tar';
+                    case 3,  tag = 'mov_sen_sta_tar';
+                    case 4,  tag = 'mov_sen_mov_tar';
+                end
+                file_name2 = sprintf('./figures/data_exchange/%s_entropy_%s',tag,datestr(now,1));
+                if save_file == 1
+                    saveas(hf_ent,file_name2,'fig')
+                    saveas(hf_ent,file_name2,'jpg')
+                end
+            %}
+            this.sim_res = sim_res;
         end
         
     end

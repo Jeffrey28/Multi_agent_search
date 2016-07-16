@@ -20,9 +20,10 @@
 % 2. try to change the update step, current method takes huge memory and
 % may have bugs.
 
-% progress on 5/17/16
-% debugging the code for static robot static target case. Needs to continue
-% debugging and then debug for moving robot or target cases.
+% progress on 7/14/16
+% has debugged the code for static robot static target case. Needs to write up the Sim class 
+% and then debug for moving robot or target cases. Still writing the Sim
+% class compareMetrics method
 
 % main function for running the simulation
 clear; clc; close all
@@ -31,7 +32,7 @@ clear; clc; close all
 save_data = false; % save data or not
 show_plot = false; % draw plots or not
 
-max_step = 50; % max step
+sim_len = 50; % max step
 % rounds of consensus at each time step
 cons_step=10;
 
@@ -104,6 +105,20 @@ rbt_nbhd = {[2,6],[1,3],[2,4],[3,5],[4,6],[1,5]};
 % Setup for multiple trials
 trial_num = 1; % 10 % number of trials to run
 
+% initialize sim class
+inPara = struct;
+inPara_sim.r_move = r_move;
+inPara_sim.tar_move = tar_move;
+inPara_sim.sim_len = sim_len;
+inPara_sim.cons_step = cons_step;
+inPara_sim.num_robot = num_robot;
+inPara_sim.r_init_pos_set = extractfield(rbt_spec,'init_pos');
+inPara_sim.sim_r_idx = sim_r_idx;
+inPara_sim.trial_num = trial_num;
+inPara_sim.dt = dt;
+inPara_sim.selection = selection;
+sim = Sim(inPara_sim);
+
 for trial_cnt = 1:trial_num
     % initialize field class
     fld_size = [100;100];  % Field size
@@ -128,7 +143,7 @@ for trial_cnt = 1:trial_num
             inPara_rbt.inv_sen_cov = rbt_spec(rbt_cnt).inv_sen_cov;
             inPara_rbt.sen_offset = 0; %rbt_spec(rbt_cnt).sen_offset;
             inPara_rbt.fld_size = fld_size;
-            inPara_rbt.max_step = max_step;
+            inPara_rbt.max_step = sim_len;
             inPara_rbt.nbhd_idx = rbt_nbhd{rbt_cnt};
             inPara_rbt.r_move = r_move;
             inPara_rbt.num_robot = num_robot;
@@ -141,77 +156,180 @@ for trial_cnt = 1:trial_num
             inPara_rbt.center = rbt_spec.init_pos(:,rbt_cnt);
             inPara.r = 15;
             inPara_rbt.fld_size = fld_size;
-            inPara_rbt.max_step = max_step;
+            inPara_rbt.max_step = sim_len;
             inPara_rbt.nbhd_idx = rbt_nbhd{rbt_cnt};
             rbt(rbt_cnt) = Robot(inPara_rbt);
             inPara_pred.u_set = target.u_set;
             inPara_pred.V_set = target.V_set;
             rbt = rbt.predStep(inPara_pred);
         end
-    end
+    end        
+    
     %% %%%%%%%%%%%%%% main code of simulation %%%%%%%%%%%%%%%%%%
-    %% target moves
-    fld.targetMove;
-    
-    %% filtering
     %% LIFO-DBF
-    % Bayesian Updating steps:
-    % (1) observe and update the stored own observations at time k
-    % (2) exchange and update stored observations
-    % (3) update probability map
-    % (4) repeat step (1)
-    for ii = 1:num_robot
-        % step 1
-        % observe
-%         rbt(ii) = rbt(ii).sensorGen(fld); % simulate the sensor measurement  
-        rbt{ii} = rbt{ii}.sensorGen(fld);
+    count = 1;
+    while(1)
+        %% target moves
+        fld = fld.targetMove();
         
-        % update own observation
-        inPara1 = struct('selection',selection);
-        rbt{ii} = rbt{ii}.updOwnMsmt(inPara1);
-        
-        % step 2
-        inPara2 = struct;
-        inPara2.selection = selection;        
-        inPara2.rbt_nbhd_set = rbt(rbt{ii}.nbhd_idx);
-        rbt{ii} = rbt{ii}.dataExch(inPara2);
-        
-        % step 3
-        inPara3 = struct('selection',selection);
-        rbt{ii} = rbt{ii}.DBF(inPara3);
-    end
+        %% filtering
+        % Bayesian Updating steps:
+        % (1) observe and update the stored own observations at time k
+        % (2) exchange and update stored observations
+        % (3) update probability map
+        % (4) repeat step (1)
+        for ii = 1:num_robot
+            % step 1
+            % observe
+            rbt{ii} = rbt{ii}.sensorGen(fld); % simulate the sensor measurement
             
-    %% Concensus
-    
-    %% Centralized 
-    
-    %% go to next iteration
-    for ii = 1:num_robot
-       rbt{ii} = rbt{ii}.stepUpdate; 
+            % update own observation
+            inPara1 = struct('selection',selection);
+            rbt{ii} = rbt{ii}.updOwnMsmt(inPara1);
+            
+            % step 2
+            inPara2 = struct;
+            inPara2.selection = selection;
+            inPara2.rbt_nbhd_set = rbt(rbt{ii}.nbhd_idx);
+            rbt{ii} = rbt{ii}.dataExch(inPara2);
+            
+            % step 3
+            inPara3 = struct('selection',selection);
+            rbt{ii} = rbt{ii}.DBF(inPara3);
+        end        
+        
+        %% draw current step
+        % draw plot
+        if show_plot
+            sim.plotStim(rbt,fld,trial_cnt);
+        end
+        
+        %% compute metrics
+        rbt{ii} = rbt{ii}.computeMetrics();
+        %% go to next iteration
+        for ii = 1:num_robot
+            rbt{ii} = rbt{ii}.stepUpdate;
+        end
+        
+        if count > sim_len            
+            break
+        end
     end
+    
+    %% Concensus
+    % consider comparing with the Indian guy's NL combination rule.
+    count = 1;
+    while(1)
+        %% target moves
+        fld = fld.targetMove();
+        
+        %% filtering
+        % Bayesian Updating steps:
+        % (1) observe and update the stored own observations at time k
+        % (2) exchange and update stored observations
+        % (3) update probability map
+        % (4) repeat step (1)
+        for ii = 1:num_robot
+            % step 1
+            % observe
+            rbt{ii} = rbt{ii}.sensorGen(fld); % simulate the sensor measurement
+            
+            % update own observation
+            inPara1 = struct('selection',selection);
+            rbt{ii} = rbt{ii}.updOwnMsmt(inPara1);
+            
+            % step 2
+            inPara2 = struct;
+            inPara2.selection = selection;
+            inPara2.rbt_nbhd_set = rbt(rbt{ii}.nbhd_idx);
+            rbt{ii} = rbt{ii}.dataExch(inPara2);
+            
+            % step 3
+            inPara3 = struct('selection',selection);
+            rbt{ii} = rbt{ii}.DBF(inPara3);
+        end        
+        
+        %% draw current step
+        % draw plot
+        if show_plot
+            sim.plotStim(rbt,fld,trial_cnt);
+        end
+        
+        %% compute metrics
+        rbt{ii} = rbt{ii}.computeMetrics();
+        %% go to next iteration
+        for ii = 1:num_robot
+            rbt{ii} = rbt{ii}.stepUpdate;
+        end
+        
+        if count > sim_len            
+            break
+        end
+    end
+    
+    
+    %% Centralized
+    % use rbt{1} to act as the centralized filter
+    count = 1;
+    while(1)
+        %% target moves
+        fld = fld.targetMove();
+        
+        %% filtering
+        % Bayesian Updating steps:
+        % (1) observe and update the stored own observations at time k
+        % (2) exchange and update stored observations
+        % (3) update probability map
+        % (4) repeat step (1)
+        for ii = 1:num_robot
+            % step 1
+            % observe
+            rbt{ii} = rbt{ii}.sensorGen(fld); % simulate the sensor measurement
+            
+            % update own observation
+            inPara1 = struct('selection',selection);
+            rbt{ii} = rbt{ii}.updOwnMsmt(inPara1);
+            
+            % step 2
+            inPara2 = struct;
+            inPara2.selection = selection;
+            inPara2.rbt_nbhd_set = rbt(rbt{ii}.nbhd_idx);
+            rbt{ii} = rbt{ii}.dataExch(inPara2);
+            
+            % step 3
+            inPara3 = struct('selection',selection);
+            rbt{ii} = rbt{ii}.DBF(inPara3);
+        end        
+        
+        %% draw current step
+        % draw plot
+        if show_plot
+            sim.plotStim(rbt,fld,trial_cnt);
+        end
+        
+        %% compute metrics
+        rbt{ii} = rbt{ii}.computeMetrics();
+        %% go to next iteration
+        for ii = 1:num_robot
+            rbt{ii} = rbt{ii}.stepUpdate;
+        end
+        
+        if count > sim_len            
+            break
+        end
+    end
+        
+    sim.rbt_set{trial_cnt} = rbt;
 end
 
 %% %%%%%%%%%%%%%%%%%%%%%% Simulation Results %%%%%%%%%%%%%%%%%%%%%%
-% initialize sim class 
-inPara = struct;
-inPara_sim.r_move = r_move;
-inPara_sim.tar_move = tar_move;
-inPara_sim.max_step = max_step;
-inPara_sim.cons_step = cons_step;
-inPara_sim.num_robot = num_robot;
-inPara_sim.r_init_pos_set = extractfield(rbt_spec,'init_pos');
-inPara_sim.sim_r_idx = sim_r_idx;
-inPara_sim.trial_num = trial_num;
-inPara_sim.dt = dt;
+% compare the performance of different methods
+met = sim.compareMetrics();
 
-sim = Sim(inPara_sim);
-
-% draw plot
-if show_plot
-    sim.plotStim();
-end
-
-% save data
+% save data (workspace)
 if save_data 
-    sim.saveSimData(selection);
+    
+    sim.saveSimData();
 end
+
+

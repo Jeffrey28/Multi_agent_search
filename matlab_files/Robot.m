@@ -3,7 +3,7 @@ classdef Robot
         % basic info
         idx; % index of the robot
         step_cnt; % current time step
-        nbhd_idx; % index of neighboring robots        
+        nbhd_idx; % index of neighboring robots
         num_robot;
         
         % motion state
@@ -26,17 +26,17 @@ classdef Robot
         
         % filtering
         nbhd_record; % record some useful info about neighbors, e.g. the time steps that have been used for updating the prob map
-        lkhd_map; % prob matrix for a certain observation. a way to reduce computation time, sacrificing the space complexity        
+        lkhd_map; % prob matrix for a certain observation. a way to reduce computation time, sacrificing the space complexity
         upd_cell; % cell used for updating probability map
         talign_map; % store the prob_map for observations with same tiem index, i.e. P(x|z^1_1:k,...,z^N_1:k)
         talign_t; % record the time for the time-aligned map
         dbf_map; % probability map
         cons_map; % prob map for concensus method
-        cen_map; % prob map for centralized filter
-        buffer; % communication buffer. a struct array, each element corresponding to the latest info for a robot     
-
+        cent_map; % prob map for centralized filter
+        buffer; % communication buffer. a struct array, each element corresponding to the latest info for a robot
+        
         % plotting
-        color; % color for drawing plots     
+        color; % color for drawing plots
         
         % performance metrics
         ml_pos_dbf;
@@ -81,18 +81,18 @@ classdef Robot
             this.talign_map = this.dbf_map; % store the prob_map for observations with same tiem index, i.e. P(x|z^1_1:k,...,z^N_1:k)
             this.talign_t = 0; % record the time for the time-aligned map
             this.lkhd_map = zeros(inPara.fld_size(1),inPara.fld_size(2));
-%             obj.entropy = zeros(1,inPara.max_step);
-            this.nbhd_idx = inPara.nbhd_idx;    
-            % initialize buffer            
+            %             obj.entropy = zeros(1,inPara.max_step);
+            this.nbhd_idx = inPara.nbhd_idx;
+            % initialize buffer
             this.buffer(inPara.num_robot).pos = [];
             this.buffer(inPara.num_robot).z = [];
             this.buffer(inPara.num_robot).k = [];
             this.buffer(inPara.num_robot).lkhd_map = {};
             this.buffer(inPara.num_robot).used = [];
-%             obj.buffer = struct;
-%             if ~isempty(inPara.nbhd_idx)
-%                 obj.buffer(inPara.num_robot).used = []; % record the observations that are already used by BF
-%             end
+            %             obj.buffer = struct;
+            %             if ~isempty(inPara.nbhd_idx)
+            %                 obj.buffer(inPara.num_robot).used = []; % record the observations that are already used by BF
+            %             end
             this.num_robot = inPara.num_robot;
             this.step_cnt = 0;
         end
@@ -108,15 +108,15 @@ classdef Robot
             
             tmp_lkhd = exp(-1/2*(x_t+offset-x_r)'*inv_cov*(x_t+offset-x_r));
             tmp_z = (rand(1,1) < tmp_lkhd);
-                      
+            
             this.z = tmp_z;
             this.k = this.step_cnt;
-                  
-            % generate the likelihood map for all possible target locations            
+            
+            % generate the likelihood map for all possible target locations
             tmp_lkhd_map = this.sensorProb(fld);
             if tmp_z == 0
                 tmp_lkhd_map = 1-tmp_lkhd_map;
-            end      
+            end
             
             this.lkhd_map = tmp_lkhd_map;
         end
@@ -135,7 +135,7 @@ classdef Robot
             % pt = x_t+offset-x_r
             pt = bsxfun(@plus,pt,offset);
             pt = bsxfun(@minus,pt,x_r);
-%             pt = pt - x_r*ones(1,xlen*ylen);
+            %             pt = pt - x_r*ones(1,xlen*ylen);
             tmp = pt'*inv_cov*pt;
             tmp_diag = diag(tmp);
             % prob = exp(-1/2*(t-x_r)'/sigma*(t-x_r));
@@ -149,23 +149,23 @@ classdef Robot
             if (selection == 1) || (selection == 3)
                 % static target
                 % (1) self-observation
-                % update the buffer with the robot's own observation       
-                    this.buffer(this.idx).pos = this.pos;
-                    this.buffer(this.idx).z = this.z;
-                    this.buffer(this.idx).k = this.step_cnt;
-                    this.buffer(this.idx).lkhd_map = this.lkhd_map;
-                    
-%                 if (~isempty(rbt.buffer(rbt.idx).k)) && (rbt.buffer(rbt.idx).z == 1)
-%                     rbt.buffer(rbt.idx).prob = rbt.sensorProb(inPara.fld);
-                    
-%                 elseif (~isempty(rbt.buffer(rbt.idx).k)) && (rbt.buffer(rbt.idx).z == 0)
-%                     rbt.buffer(rbt.idx).prob = 1 - rbt.sensorProb(inPara.fld);
-%                 end
+                % update the buffer with the robot's own observation
+                this.buffer(this.idx).pos = this.pos;
+                this.buffer(this.idx).z = this.z;
+                this.buffer(this.idx).k = this.step_cnt;
+                this.buffer(this.idx).lkhd_map = this.lkhd_map;
+                
+                %                 if (~isempty(rbt.buffer(rbt.idx).k)) && (rbt.buffer(rbt.idx).z == 1)
+                %                     rbt.buffer(rbt.idx).prob = rbt.sensorProb(inPara.fld);
+                
+                %                 elseif (~isempty(rbt.buffer(rbt.idx).k)) && (rbt.buffer(rbt.idx).z == 0)
+                %                     rbt.buffer(rbt.idx).prob = 1 - rbt.sensorProb(inPara.fld);
+                %                 end
                 
                 % assign this probability to rbt_cons and rbt_cent to
                 % save computation resource
-%                 rbt.cons_prob = rbt.buffer(rbt.idx).prob;
-%                 rbt.cent_prob = rbt.buffer(rbt.idx).prob;
+                %                 rbt.cons_prob = rbt.buffer(rbt.idx).prob;
+                %                 rbt.cent_prob = rbt.buffer(rbt.idx).prob;
                 %                 rbt_cons(i).prob = rbtBuffer{i}.rbt(i).prob;
                 %                 rbt_cent.prob{i} = rbtBuffer{i}.rbt(i).prob;
                 
@@ -178,17 +178,17 @@ classdef Robot
                 this.buffer(this.idx).z = [this.z,this.buffer(this.idx).z];
                 this.buffer(this.idx).k = [this.k,this.buffer(this.idx).k];
                 this.buffer(this.idx).lkhd_map{this.step_cnt} = this.lkhd_map;
-
-%                 if (~isempty(rbt.buffer(rbt.idx).k)) && (rbt.buffer(rbt.idx).z == 1)
-%                     rbt.buffer(rbt.idx).prob = rbt.sensorProb(inPara.fld);
-%                 elseif (~isempty(rbt.buffer(rbt.idx).k)) && (rbt.buffer(rbt.idx).z == 0)
-%                     rbt.buffer(rbt.idx).prob = 1 - rbt.sensorProb(inPara.fld);
-%                 end
+                
+                %                 if (~isempty(rbt.buffer(rbt.idx).k)) && (rbt.buffer(rbt.idx).z == 1)
+                %                     rbt.buffer(rbt.idx).prob = rbt.sensorProb(inPara.fld);
+                %                 elseif (~isempty(rbt.buffer(rbt.idx).k)) && (rbt.buffer(rbt.idx).z == 0)
+                %                     rbt.buffer(rbt.idx).prob = 1 - rbt.sensorProb(inPara.fld);
+                %                 end
                 
                 % assign this probability to rbt_cons and rbt_cent to
                 % save computation resource
-%                 rbt.cons_prob = rbt.buffer(rbt.idx).prob;
-%                 rbt.cent_prob = rbt.buffer(rbt.idx).prob;
+                %                 rbt.cons_prob = rbt.buffer(rbt.idx).prob;
+                %                 rbt.cent_prob = rbt.buffer(rbt.idx).prob;
                 
                 %                     rbtBuffer{i}.rbt(i).x=[rbt(i).x,rbtBuffer{i}.rbt(i).x];
                 %                     rbtBuffer{i}.rbt(i).y=[rbt(i).y,rbtBuffer{i}.rbt(i).y];
@@ -334,7 +334,7 @@ classdef Robot
         end
         
         function this = DBF(this,inPara)
-            selection = inPara.selection;            
+            selection = inPara.selection;
             if (selection == 1) || (selection == 3)
                 %% update by bayes rule
                 % calculate probility of latest z
@@ -352,13 +352,16 @@ classdef Robot
                 % note: main computation resource are used in calling sensorProb function.
                 % when using grid map, can consider precomputing
                 % results and save as a lookup table
-                
-                %                 for ii=1:NumOfRobot % Robot Iteration
+               
                 talign_flag = 1; % if all agent's observation's time are no less than talign_t+1, then talign_flag = 1, increase talign_t
                 tmp_t = this.talign_t;
                 tmp_map = this.talign_map; % time-aligned map
                 
                 for t = (this.talign_t+1):this.step_cnt
+                    %%% the computation for moving target is too expensive.
+                    %%% it seems possible that we don't need to always go
+                    %%% back to talign_mpa as long as the topology is
+                    %%% fixed.
                     %% one-step prediction step
                     tmp_map2 = zeros(size(tmp_map));
                     for k = 1:size(pt,1)
@@ -410,6 +413,8 @@ classdef Robot
                         this.talign_map = tmp_map;
                         this.talign_map = this.talign_map/sum(sum(this.talign_map));
                         tmp_t = tmp_t+1;
+                        %%% I think when we increase the aligned time, we
+                        %%% can remove the old lkhd_map 
                     end
                 end
                 
@@ -541,7 +546,7 @@ classdef Robot
             % target motion model
             u_set = inPara.u_set;
             V_set = inPara.V_set;
-                                   
+            
             [ptx,pty] = meshgrid(1:fld.x,1:fld.y);
             pt = [ptx(:),pty(:)];
             rbt.upd_cell = cell(size(pt,1),fld.target.mode_num); % pred matrix for all motion models
@@ -553,31 +558,136 @@ classdef Robot
                     mu = pt(ii,:)'+u_set(:,ii);
                     for x = 1:fld.x
                         for y = 1:fld.y
-                            tmp_trans(x,y) = mvncdf([x-1;y-1],[x,y],mu,V_set);                            
+                            tmp_trans(x,y) = mvncdf([x-1;y-1],[x,y],mu,V_set);
                         end
                     end
                     rbt.upd_cell{ii,mode_cnt} = tmp_trans;
-                end          
+                end
             end
             
-%             for ii = 1:size(pt,1)
-%                 for jj = 1:size(fld.target.dx_set,2)
-%                     %             fld.target.dx = fld.target.dx_set(jj);
-%                     %             fld.target.dy = fld.target.dy_set(jj);
-%                     tmp_dx = fld.target.dx_set(jj);
-%                     tmp_dy = fld.target.dy_set(jj);
-%                     
-%                     upd_cell1{ii,jj} = zeros(fld.x,fld.y);
-%                     if (pt(ii,1)+fld.target.speed*tmp_dx <= fld.x) && (pt(ii,2)+fld.target.speed*tmp_dy <= fld.y) && (pt(ii,1)+fld.target.speed*tmp_dx >= 1) && (pt(ii,2)+fld.target.speed*tmp_dy >= 1)
-%                         upd_cell1{ii,jj}(pt(ii,1)+fld.target.speed*tmp_dx,pt(ii,2)+fld.target.speed*tmp_dy) = 1;
-%                     end
-%                 end
-%             end
+            %             for ii = 1:size(pt,1)
+            %                 for jj = 1:size(fld.target.dx_set,2)
+            %                     %             fld.target.dx = fld.target.dx_set(jj);
+            %                     %             fld.target.dy = fld.target.dy_set(jj);
+            %                     tmp_dx = fld.target.dx_set(jj);
+            %                     tmp_dy = fld.target.dy_set(jj);
+            %
+            %                     upd_cell1{ii,jj} = zeros(fld.x,fld.y);
+            %                     if (pt(ii,1)+fld.target.speed*tmp_dx <= fld.x) && (pt(ii,2)+fld.target.speed*tmp_dy <= fld.y) && (pt(ii,1)+fld.target.speed*tmp_dx >= 1) && (pt(ii,2)+fld.target.speed*tmp_dy >= 1)
+            %                         upd_cell1{ii,jj}(pt(ii,1)+fld.target.speed*tmp_dx,pt(ii,2)+fld.target.speed*tmp_dy) = 1;
+            %                     end
+            %                 end
+            %             end
             
         end
         
         function rbt = stepUpdate(rbt)
-           rbt.step_cnt = rbt.step_cnt+1; 
+            rbt.step_cnt = rbt.step_cnt+1;
         end
+        
+        function this = computeMetrics(this,fld,count)
+            % Computing Performance Metrics
+            
+            % ML error
+            % DBF
+            [tmp_x1,tmp_y1] = find(this.dbf_map == max(this.dbf_map(:)));
+            if length(tmp_x1) > 1
+                tmp_idx = randi(length(tmp_x1),1,1);
+            else
+                tmp_idx = 1;
+            end
+            this.ml_pos_dbf(:,count) = [tmp_x1(tmp_idx);tmp_y1(tmp_idx)];
+            this.ml_err_dbf(count) = norm(this.ml_pos_dbf(:,count)-[fld.tx;fld.ty]);
+            
+            % concensus
+            [tmp_x2,tmp_y2] = find(this.cons_map == max(this.cons_map));
+            if length(tmp_x2) > 1
+                tmp_idx2 = randi(length(tmp_x2),1,1);
+            else
+                tmp_idx2 = 1;
+            end
+            this.ml_pos_cons(:,count) = [tmp_x2(tmp_idx2);tmp_y2(tmp_idx2)];
+            this.ml_err_cons(count) = norm(this.ml_pos_cons(:,count)-[fld.tx;fld.ty]);
+            
+            % centralized
+            [tmp_x3,tmp_y3] = find(this.cent_map == max(this.cent_map(:)));
+            if length(tmp_x3) > 1
+                tmp_idx3 = randi(length(tmp_x3),1,1);
+            else
+                tmp_idx3 = 1;
+            end
+            this.ml_pos_cent(:,count) = [tmp_x3(tmp_idx3);tmp_y3(tmp_idx3)];
+            this.ml_err_cent(count) = norm(this.ml_pos_cent(:,count)-[fld.tx;fld.ty]);
+            
+            % Covariance of posterior pdf
+            for i=1:this.num_robot
+                % DBF
+                tmp_map1 = this.dbf_map;
+                % this avoids the error when some grid has zeros probability
+                tmp_map1(tmp_map1 <= realmin) = realmin;
+                
+                % compute covariance of distribution
+                dif1 = pt' - [(1+fld.target.pos(1))/2;(1+fld.target.pos(2))/2]*ones(1,size(pt',2));
+                cov_p1 = zeros(2,2);
+                for jj = 1:size(pt',2)
+                    cov_p1 = cov_p1 + dif1(:,jj)*dif1(:,jj)'*tmp_map1(pt(jj,1),pt(jj,2));
+                end
+                this.pdf_cov_dbf{count} = cov_p1;
+                this.pdf_norm_dbf(count) = norm(cov_p1,'fro');
+                
+                % concensus
+                tmp_map2 = this.cons_map;
+                % this avoids the error when some grid has zeros probability
+                tmp_map2(tmp_map2 <= realmin) = realmin;
+                
+                % compute covariance of distribution
+                dif2 = pt' - [(1+fld.target.pos(1))/2;(1+fld.target.pos(2))/2]*ones(1,size(pt',2));
+                cov_p2 = zeros(2,2);
+                for jj = 1:size(pt',2)
+                    cov_p2 = cov_p2 + dif2(:,jj)*dif2(:,jj)'*tmp_map2(pt(jj,1),pt(jj,2));
+                end
+                this.pdf_cov_cons{count} = cov_p2;
+                this.pdf_norm_cons(count) = norm(cov_p2,'fro');
+            end
+            
+            % centralized
+            tmp_map3 = this.cent_map;
+            % this avoids the error when some grid has zeros probability
+            tmp_map3(tmp_map3 <= realmin) = realmin;
+            
+            % compute covariance of distribution
+            dif3 = pt' - [(1+fld.target.pos(1))/2;(1+fld.target.pos(2))/2]*ones(1,size(pt',2));
+            cov_p3 = zeros(2,2);
+            for jj = 1:size(pt',2)
+                cov_p3 = cov_p3 + dif3(:,jj)*dif3(:,jj)'*tmp_map3(pt(jj,1),pt(jj,2));
+            end
+            this.pdf_cov_cent{count} = cov_p3;
+            this.pdf_norm_cent(count) = norm(cov_p3,'fro');
+            
+            % Entropy of posterior pdf
+            %
+            for i=1:this.num_robot
+                % DBF
+                tmp_map1 = this.dbf_map;
+                % this avoids the error when some grid has zeros probability
+                tmp_map1(tmp_map1 <= realmin) = realmin;
+                dis_entropy = -(tmp_map1).*log2(tmp_map1); % get the p*log(p) for all grid points
+                this.ent_dbf(count) = sum(sum(dis_entropy));
+                
+                % concensus
+                tmp_map2 = this.cons_map;
+                % this avoids the error when some grid has zeros probability
+                tmp_map2(tmp_map2 <= realmin) = realmin;
+                dis_entropy = -(tmp_map2).*log2(tmp_map2); % get the p*log(p) for all grid points
+                this.ent_cons(count) = sum(sum(dis_entropy));
+            end
+            % centralized
+            tmp_map3 = this{1}.cent_map;
+            % this avoids the error when some grid has zeros probability
+            tmp_map3(tmp_map3 <= realmin) = realmin;
+            dis_entropy = -(tmp_map3).*log2(tmp_map3); % get the p*log(p) for all grid points
+            this.ent_cent(count) = sum(sum(dis_entropy));            
+        end
+        
     end
 end
