@@ -347,7 +347,7 @@ classdef Robot
                 this.dbf_map=this.dbf_map/sum(sum(this.dbf_map));
                 
             elseif (selection == 2) || (selection == 4)
-                upd_cell = this.upd_cell;
+                upd_matrix = this.upd_matrix;
                 %% update by bayes rule
                 % note: main computation resource are used in calling sensorProb function.
                 % when using grid map, can consider precomputing
@@ -358,16 +358,16 @@ classdef Robot
                 tmp_map = this.talign_map; % time-aligned map
                 
                 for t = (this.talign_t+1):this.step_cnt
-                    %%% the computation for moving target is too expensive.
-                    %%% it seems possible that we don't need to always go
-                    %%% back to talign_mpa as long as the topology is
-                    %%% fixed.
+                   
                     %% one-step prediction step
-                    tmp_map2 = zeros(size(tmp_map));
-                    for k = 1:size(pt,1)
-                        tmp_map2 = tmp_map2+upd_cell{k,model_idx}*tmp_map(pt(k,1),pt(k,2));
-                    end
-                    tmp_map = tmp_map2;
+%                     tmp_map2 = zeros(size(tmp_map));
+%                     for k = 1:size(pt,1)
+%                         tmp_map2 = tmp_map2+upd_cell{k,model_idx}*tmp_map(pt(k,1),pt(k,2));
+%                     end
+
+                    % p(x_k+1) = sum_{x_k} p(x_k+1|x_k)p(x_k)
+                    tmp_map2 = upd_matrix{model_idx}*tmp_map(:);
+                    tmp_map = reshape(tmp_map2,size(tmp_map));
                     
                     %% updating step
                     %                         for jj=1:rbt.num_robot
@@ -413,14 +413,17 @@ classdef Robot
                         this.talign_map = tmp_map;
                         this.talign_map = this.talign_map/sum(sum(this.talign_map));
                         tmp_t = tmp_t+1;
-                        %%% I think when we increase the aligned time, we
-                        %%% can remove the old lkhd_map 
+                        % when we increase the aligned time, we can remove 
+                        % the old lkhd_map 
+                        for jj=1:this.num_robot
+                            this.buffer(jj).lkhd_map{this.talign_t} = [];
+                        end
                     end
                 end
                 
-                this(ii).talign_t = tmp_t;
-                this(ii).map = tmp_map;
-                this(ii).map = this(ii).map/sum(sum(this(ii).map));
+                this.talign_t = tmp_t;
+                this.dbf_map = tmp_map;
+                this.dbf_map = this.dbf_map/sum(sum(this.dbf_map));
                 %                 end
                 % record the map for each time
                 %             rbt(i).map_cell{count} = rbt(i).map;
@@ -534,53 +537,8 @@ classdef Robot
                 end
                 rbt_cent.map = tmp_cent_map/sum(sum(tmp_cent_map));
             end
-        end
-        
-        function rbt = predStep(rbt,inPara)
-            %% Probability map update based on target motion model
-            % calculate the prediction matrix
-            % this part takes too much time, needs to optimize some time
-            %%% note: in fact, this method may be too dull, can think about a
-            %%% clever one that does not need so much storage space.
-            
-            % target motion model
-            u_set = inPara.u_set;
-            V_set = inPara.V_set;
-            
-            [ptx,pty] = meshgrid(1:fld.x,1:fld.y);
-            pt = [ptx(:),pty(:)];
-            rbt.upd_cell = cell(size(pt,1),fld.target.mode_num); % pred matrix for all motion models
-            
-            for mode_cnt = 1:fld.target.mode_num
-                for ii = 1:size(pt,1)
-                    % transition matrix
-                    tmp_trans = zeros(fld.x,fld.y);
-                    mu = pt(ii,:)'+u_set(:,ii);
-                    for x = 1:fld.x
-                        for y = 1:fld.y
-                            tmp_trans(x,y) = mvncdf([x-1;y-1],[x,y],mu,V_set);
-                        end
-                    end
-                    rbt.upd_cell{ii,mode_cnt} = tmp_trans;
-                end
-            end
-            
-            %             for ii = 1:size(pt,1)
-            %                 for jj = 1:size(fld.target.dx_set,2)
-            %                     %             fld.target.dx = fld.target.dx_set(jj);
-            %                     %             fld.target.dy = fld.target.dy_set(jj);
-            %                     tmp_dx = fld.target.dx_set(jj);
-            %                     tmp_dy = fld.target.dy_set(jj);
-            %
-            %                     upd_cell1{ii,jj} = zeros(fld.x,fld.y);
-            %                     if (pt(ii,1)+fld.target.speed*tmp_dx <= fld.x) && (pt(ii,2)+fld.target.speed*tmp_dy <= fld.y) && (pt(ii,1)+fld.target.speed*tmp_dx >= 1) && (pt(ii,2)+fld.target.speed*tmp_dy >= 1)
-            %                         upd_cell1{ii,jj}(pt(ii,1)+fld.target.speed*tmp_dx,pt(ii,2)+fld.target.speed*tmp_dy) = 1;
-            %                     end
-            %                 end
-            %             end
-            
-        end
-        
+        end      
+                
         function rbt = stepUpdate(rbt)
             rbt.step_cnt = rbt.step_cnt+1;
         end
