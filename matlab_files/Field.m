@@ -28,25 +28,25 @@ classdef Field
 %             end         
 %         end
         
-        function fld = targetMove(fld)
+        function this = targetMove(this)
             
-            tmp_u_set = fld.target.u_set;
-            tmp_idx = fld.target.model_idx;
-            if fld.tar_move == 1
+            tmp_u_set = this.target.u_set;
+            tmp_idx = this.target.model_idx;
+            if this.tar_move == 1
                 % Target Moves
                 % if current model makes target out of field, choose the next
                 % motion model in fld.target.dx_set and fld.target.dy_set
-                tmp_pos = fld.target.pos + tmp_u_set(tmp_idx)*fld.dt;                
-                while (tmp_pos(1) <= 0 || tmp_pos(2) <= 0 || tmp_pos(1) >= fld.fld_size(1) || tmp_pos(2) >= fld.fld_size(2))
-                    tmp_pos = fld.target.pos;
-                    tmp_idx = rem(tmp_idx+1,length(fld.target.u_set));
+                tmp_pos = this.target.pos + tmp_u_set(tmp_idx)*this.dt;                
+                while (tmp_pos(1) <= 0 || tmp_pos(2) <= 0 || tmp_pos(1) >= this.fld_size(1) || tmp_pos(2) >= this.fld_size(2))
+                    tmp_idx = rem(tmp_idx+1,length(this.target.u_set));
                     if tmp_idx == 0
-                        tmp_idx = length(fld.target.u_set);
+                        tmp_idx = length(this.target.u_set);
                     end
-                    tmp_pos = fld.target.pos + tmp_u_set(tmp_idx)*fld.dt;
+                    tmp_pos = this.target.pos + tmp_u_set(tmp_idx)*this.dt;
                 end
-                fld.target.pos = tmp_pos;
-                fld.target.model_idx = tmp_idx;
+                this.target.pos = tmp_pos;
+                this.target.traj = [this.target.traj;tmp_pos];
+                this.target.model_idx = tmp_idx;
                 
 %                 tmp_tx = fld.target.pos(1) + fld.target.speed * fld.target.dx;
 %                 tmp_ty = fld.target.pos(2) + fld.target.speed * fld.target.dy;

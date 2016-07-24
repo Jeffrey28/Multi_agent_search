@@ -54,7 +54,7 @@ classdef Sim
                 tmp_hd = figure (fig_cnt); % handle for plot of a single robot's target PDF
                 clf(tmp_hd);
                 shading interp
-                contourf((rbt{k}.map)','LineColor','none');
+                contourf((rbt{k}.dbf_map)','LineColor','none');
                 load('MyColorMap','mymap')
                 colormap(mymap);
                 colorbar

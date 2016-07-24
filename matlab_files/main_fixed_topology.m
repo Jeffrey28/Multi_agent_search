@@ -48,18 +48,16 @@ inPara_sim.selection = selection;
 sim = Sim(inPara_sim);
 
 for trial_cnt = 1:trial_num
-    % initialize field class
-    
+    % initialize field class    
     target.pos = [tx_set(trial_cnt);ty_set(trial_cnt)];
     target.u_set = u_set;
     target.V_set = V_set; % Covariance of process noise model for the target
     target.model_idx = 1;
-    target.traj = [];
+    target.traj = target.pos;
     target.mode_num = mode_num;
     
     inPara_fld = struct('fld_size',fld_size,'target',target,'tar_move',tar_move,'dt',dt);
-    fld = Field(inPara_fld);    
-%     fld = fld.setMotionModel();
+    fld = Field(inPara_fld);
             
     % initialize robot class
     inPara_rbt = struct('num_robot',num_robot,'dt',dt);
@@ -77,6 +75,7 @@ for trial_cnt = 1:trial_num
             inPara_rbt.r_move = r_move;
             inPara_rbt.num_robot = num_robot;
             inPara_rbt.idx = rbt_cnt;
+            inPara_rbt.upd_matrix = upd_matrix;
             rbt{rbt_cnt} = Robot(inPara_rbt);
         end
     elseif r_move == 1
@@ -97,9 +96,7 @@ for trial_cnt = 1:trial_num
     %% %%%%%%%%%%%%%% main code of simulation %%%%%%%%%%%%%%%%%%
     %% LIFO-DBF
     count = 1;
-    while(1)
-        %% target moves
-        fld = fld.targetMove();
+    while(1)                
         
         %% filtering
         % Bayesian Updating steps:
@@ -107,46 +104,60 @@ for trial_cnt = 1:trial_num
         % (2) exchange and update stored observations
         % (3) update probability map
         % (4) repeat step (1)
+        
+        tmp_rbt = rbt; % use tmp_rbt in data exchange
+        
+        % step 1
+        % own measurement
         for ii = 1:num_robot
-            % step 1
+            rbt{ii}.step_cnt = count;            
             % observe
             rbt{ii} = rbt{ii}.sensorGen(fld); % simulate the sensor measurement
             
             % update own observation
             inPara1 = struct('selection',selection);
             rbt{ii} = rbt{ii}.updOwnMsmt(inPara1);
-            
-            % step 2
+        end
+        
+        % step 2
+        % exchange
+        for ii = 1:num_robot
             inPara2 = struct;
             inPara2.selection = selection;
             inPara2.rbt_nbhd_set = rbt(rbt{ii}.nbhd_idx);
-            rbt{ii} = rbt{ii}.dataExch(inPara2);
-            
-            % step 3
+            tmp_rbt{ii} = tmp_rbt{ii}.dataExch(inPara2);
+        end
+        rbt = tmp_rbt;
+        
+        % step 3
+        % dbf
+        for ii = 1:num_robot
             inPara3 = struct('selection',selection);
             rbt{ii} = rbt{ii}.DBF(inPara3);
-        end        
-        
+        end    
+
         %% draw current step
         % draw plot
         if show_plot
-            sim.plotStim(rbt,fld,trial_cnt);
+            sim.plotSim(rbt,fld,trial_cnt);
         end
-        
-        %% compute metrics
-        rbt{ii} = rbt{ii}.computeMetrics();
-        %% go to next iteration
-        for ii = 1:num_robot
-            rbt{ii} = rbt{ii}.stepUpdate;
-        end
-        
+                
+        %% go to next iteration        
         if count > sim_len            
             break
         end
+        
+        count = count + 1;
+    end
+    
+    %% compute metrics
+    for ii = 1:num_robot
+        rbt{ii} = rbt{ii}.computeMetrics(fld,'dbf');
     end
     
     %% Concensus
     % consider comparing with the Indian guy's NL combination rule.
+    %{
     count = 1;
     while(1)
         %% target moves
@@ -195,10 +206,12 @@ for trial_cnt = 1:trial_num
             break
         end
     end
+    %}
     
     
     %% Centralized
     % use rbt{1} to act as the centralized filter
+    %{
     count = 1;
     while(1)
         %% target moves
@@ -247,8 +260,21 @@ for trial_cnt = 1:trial_num
             break
         end
     end
-        
+    %}        
+    
     sim.rbt_set{trial_cnt} = rbt;
+    
+    %% target moves
+    if t_move == 1
+        fld = fld.targetMove();
+    end
+    
+    %% robot moves
+    if r_move == 1
+        for ii = 1:num_robot
+            rbt{ii} = rbt{ii}.robotMove();
+        end
+    end
 end
 
 %% %%%%%%%%%%%%%%%%%%%%%% Simulation Results %%%%%%%%%%%%%%%%%%%%%%
