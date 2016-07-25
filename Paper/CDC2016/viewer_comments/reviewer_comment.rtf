@@ -1,0 +1,147 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}}
+\margl1440\margr1440\vieww16100\viewh15280\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Issues to work on:\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\ls1\ilvl0\cf0 {\listtext	\'95	}State clearly the sensor and target model\
+{\listtext	\'95	}How a robot can utilize the measurement from others (should mention that each robot knows the likelihood function of other robots)\
+{\listtext	\'95	}The algorithm is not very clearly stated (how the update happens, see reviewer 1) and the storage space seems incorrect.\
+{\listtext	\'95	}The likelihood function needs to be hard-coded beforehand and thus cannot deal with time-varying sensor\
+{\listtext	\'95	}The convergence of consensus is faster than LIFO (the reviewer seems to misunderstand the result!)\
+{\listtext	\'95	}Some minor corrections suggested by the reviewer 2.\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\cf0 \
+Possible direction to think about:\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\ls2\ilvl0\cf0 {\listtext	\'95	}Prior knowledge of robot number is required. Extension to the case of unknown number of robots: what if robot fails; also can consider data/communication saturation.\
+{\listtext	\'95	}Proof is limited to static target and binary sensor case. Also some steps in the proof is unclear.\
+{\listtext	\'95	}Can extend to directed (even time-varying) case using some tools the reviewer mentioned.\
+{\listtext	\'95	}Can compare and analyze with the centralized filter.\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+\
+\
+Reviewer 1 of CDC 16 submission 1899\
+\
+Comments to the author\
+======================\
+\
+This paper presents a distributed Bayesian filtering\
+algorithm to estimate the pdf of a target using a\
+multi-robot network. In this approach, the robots exchange\
+measurements with their neighbors using a LIFO protocol.\
+Although the authors claim that the algorithm can be used\
+for static or moving targets with homogeneous or\
+heterogeneous sensors, the theoretical guarantees for\
+convergence in probability are provided for a special case\
+only. \
+\
+Major Comments: \
+1. This paper is on estimation theory, but it does not\
+explicitly state the target dynamics or measurement model. \
+Later on, we see that the target dynamics is static.\
+Moreover, only a probabilistic model of a binary sensor\
+(which follows a Bernoulli distribution) is provided in\
+(1,2). \
+Therefore, I feel the authors should state clearly upfront\
+that this paper only applies to static targets with binary\
+sensors. \
+\
+This is an issue, because the authors claim at the start\
+that the results in this paper apply to static or moving\
+targets with homogeneous or heterogeneous sensors. But the\
+subsequent theory presented in this paper does not satisfy\
+this claim. \
+Similarly, the simulation section uses cases like Gaussian\
+measurement models and moving targets, which are not\
+supported by the theory of this paper. \
+\
+2. The author claim in the lit review section that\
+disseminating measurements instead of statistics among\
+neighbors is better because less information needs to be\
+communicated. \
+I donot understand how the agent j can use the measurement\
+from agent i in its Bayesian filter, if the jth agent does\
+not know the likelihood function of the ith agent.\
+Therefore, either all the sensors are homogeneous (have the\
+same likelihood function), or each agent needs to somehow\
+keep track of the likelihood functions of all the other\
+agents. \
+This seems to be a critical issue that has not been\
+reported in this paper. In fact, throughout the paper, the\
+fact each agent somehow keeps track of the likelihood\
+functions of all the other agents is used but not\
+explicitly mentioned/analyzed. For example, likelihood\
+functions of other agents are used in the update step (4).\
+\
+3. The authors claim in Remark 4 that LIFO-DBF algorithm\
+needs O(M^2 + N^2) space. \
+But there is an issue with this computation. Step (3.3) in\
+Algorithm 2 suggests that the agent updates its PDF for\
+(k-N+1) time instant at time instant k. Therefore, each\
+agent only has estimated PDF that is N time instants behind\
+the current time instant. \
+Another alternative strategy is to simultaneously update\
+the PDF of all the time instants from (k-N+1) to (k). This\
+is what might be happening in the N runs in step (3) in\
+Algorithm 2 (it is not clear from the paper). In that case,\
+the agent needs to store N pdfs, hence the total storage\
+space will be O(N^2 +  N* M^2). \
+This is significantly greater than that of consensus based\
+methods which only stores 1 PDF at each time instant of\
+size O(M^2).	\
+\
+4. There are 3 critical problems with this LIFO protocol:\
+- The sensors need to know beforehand the number of sensors\
+in the network. So sensors cannot be added or removed from\
+the network. Many existing NB-based consensus algorithms\
+donot have this limitation. \
+- As shown in pt 2, the agents keep track of the likelihood\
+functions of all the other agents, which is hard-coded into\
+each agent before the algorithm starts. This removes the\
+possibility that the likelihood functions of the sensors\
+could be time-varying and actually depend on the sensor\'eds\
+positions, the target\'eds position, etc. This is a severe\
+limitation.   \
+- As shown in pt 3, the amount of space used in the\
+LIFO-DBF is much larger than that in consensus based\
+algorithms. Moreover, the simulations results show better\
+convergence of consensus based algorithms with respect to\
+LIFO-DBF because LIFO-DBF uses delayed information. The\
+authors themselves make this point in the paragraph just\
+above Conclusion. \
+\
+So it is not clear to me how the LIFO-DBF is better than\
+existing consensus-based distributed estimation algorithms?\
+ \
+ \
+5. Theorem 1 only deals with the special case of static\
+targets with binary sensors. Theorem 2 deals with moving\
+sensors (not moving target). Both donot handle moving\
+targets or general sensors. \
+Hence this contradicts the initial claims that the\
+theoretical analysis of LIFO-DBF is for general sensors\
+with moving targets. Similarly, the simulation examples for\
+these cases does not have much meaning since the authors\
+have not proved this case.   \
+In the proof of Theorem 1, (8) does not seem right. What if\
+the support of pdf(x^T) is not the same as that of\
+pdf(x^T*)? For example, there can be some y such that\
+pdf(x^T) at y>0 and pdf(x^T*) at y=0. Then (8) is\
+undefined. \
+It is not clear where the relation below (13) came from.   \
+\
+\
+Minor comments:\
+1. Remark 1 should be Assumption 1. Else it need not be\
+true. \
+2. In Section II.B, it would be good to state as an\
+assumption that this paper is using undirected graphs. The\
+definition of N_i and Q_i is not clear in this section. \
+}

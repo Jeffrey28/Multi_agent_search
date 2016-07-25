@@ -6,7 +6,7 @@ show_plot = true; % draw plots or not
 
 sim_len = 50; % max step
 % rounds of consensus at each time step
-cons_step=100;
+cons_step=20;
 
 % select the motion of agents and target
 selection = 2;
@@ -125,7 +125,7 @@ if tar_move == 1
 else
     % this is not necessary for final program. However, for debugging
     % purpose, I need this identity matrix.
-    upd_matrix = eye(fld.fld_size(1)*fld.fld_size(2));
+    upd_matrix = eye(fld_size(1)*fld_size(2));
 end
 
 %             for ii = 1:size(pt,1)

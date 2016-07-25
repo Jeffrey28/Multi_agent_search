@@ -66,8 +66,8 @@ for trial_cnt = 1:trial_num
         for rbt_cnt = 1:num_robot
             inPara_rbt = struct;
             inPara_rbt.pos = rbt_spec(rbt_cnt).init_pos(:,trial_cnt);
-            inPara_rbt.sen_cov = rbt_spec(rbt_cnt).sen_cov;
-            inPara_rbt.inv_sen_cov = rbt_spec(rbt_cnt).inv_sen_cov;
+            inPara_rbt.sen_cov = 49*eye(2);%rbt_spec(rbt_cnt).sen_cov;
+            inPara_rbt.inv_sen_cov = 0.02*eye(2);%rbt_spec(rbt_cnt).inv_sen_cov;
             inPara_rbt.sen_offset = 0; %rbt_spec(rbt_cnt).sen_offset;
             inPara_rbt.fld_size = fld_size;
             inPara_rbt.max_step = sim_len;
@@ -105,8 +105,6 @@ for trial_cnt = 1:trial_num
         % (3) update probability map
         % (4) repeat step (1)
         
-        tmp_rbt = rbt; % use tmp_rbt in data exchange
-        
         % step 1
         % own measurement
         for ii = 1:num_robot
@@ -117,9 +115,10 @@ for trial_cnt = 1:trial_num
             % update own observation
             inPara1 = struct('selection',selection);
             rbt{ii} = rbt{ii}.updOwnMsmt(inPara1);
-        end
+        end        
         
         % step 2
+        tmp_rbt = rbt; % use tmp_rbt in data exchange
         % exchange
         for ii = 1:num_robot
             inPara2 = struct;
@@ -148,6 +147,20 @@ for trial_cnt = 1:trial_num
         end
         
         count = count + 1;
+        
+        % following code should appear at the end of the code. Putting them
+        % here is only for debugging purpose
+        %% target moves
+        if tar_move == 1
+            fld = fld.targetMove();
+        end
+        
+        %% robot moves
+        if r_move == 1
+            for ii = 1:num_robot
+                rbt{ii} = rbt{ii}.robotMove();
+            end
+        end
     end
     
     %% compute metrics
@@ -265,7 +278,7 @@ for trial_cnt = 1:trial_num
     sim.rbt_set{trial_cnt} = rbt;
     
     %% target moves
-    if t_move == 1
+    if tar_move == 1
         fld = fld.targetMove();
     end
     

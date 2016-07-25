@@ -156,9 +156,9 @@ classdef Robot
                 
             elseif (selection == 2) || (selection == 4)
                 % moving target
-                this.buffer(this.idx).pos = [this.pos,this.buffer(this.idx).pos];
-                this.buffer(this.idx).z = [this.z,this.buffer(this.idx).z];
-                this.buffer(this.idx).k = [this.k,this.buffer(this.idx).k];
+                this.buffer(this.idx).pos = [this.buffer(this.idx).pos,this.pos];
+                this.buffer(this.idx).z = [this.buffer(this.idx).z,this.z];
+                this.buffer(this.idx).k = [this.buffer(this.idx).k,this.k];
                 this.buffer(this.idx).lkhd_map{this.step_cnt} = this.lkhd_map;
                 
                 % assign this probability to rbt_cons and rbt_cent to
@@ -197,19 +197,23 @@ classdef Robot
                     % observation stored in each neighbor
                     tmp_rbt = rbt_nbhd_set{t};
                     for jj = 1:this.num_robot
-                        if (~isempty(tmp_rbt.buffer(jj).k)) && (isempty(this.buffer(jj).k) || (this.buffer(jj).k(1) < tmp_rbt.buffer(jj).k(1)))
+                        if (~isempty(tmp_rbt.buffer(jj).k)) && (isempty(this.buffer(jj).k) || (this.buffer(jj).k(end) < tmp_rbt.buffer(jj).k(end)))
                             %%% this code only handles the fixed topology
                             %%% case, i.e. each time a one-step newer
                             %%% observation is received. for multi-step
                             %%% newer observations, such code needs
                             %%% modification.
-                            this.buffer(jj).pos = [tmp_rbt.buffer(jj).pos(:,1),this.buffer(jj).pos];
-                            this.buffer(jj).z = [tmp_rbt.buffer(jj).z(1),this.buffer(jj).z];
-                            this.buffer(jj).k = [tmp_rbt.buffer(jj).k(1),this.buffer(jj).k];
+                            this.buffer(jj).pos = [this.buffer(jj).pos,tmp_rbt.buffer(jj).pos(:,end)];
+                            this.buffer(jj).z = [this.buffer(jj).z,tmp_rbt.buffer(jj).z(end)];
+                            this.buffer(jj).k = [this.buffer(jj).k,tmp_rbt.buffer(jj).k(end)];
                             % in real experiment, this prob term should not
                             % be communicated. In simulation, this is for
                             % the purpose of accelerating the computation speed.
-                            this.buffer(jj).lkhd_map = {tmp_rbt.buffer(jj).lkhd_map{1},this.buffer(jj).lkhd_map};
+                            if isempty(this.buffer(jj).lkhd_map)                                
+                                this.buffer(jj).lkhd_map = tmp_rbt.buffer(jj).lkhd_map(end);
+                            else
+                                this.buffer(jj).lkhd_map(end+1) = tmp_rbt.buffer(jj).lkhd_map(end);
+                            end
                         end
                     end
                 end
@@ -224,7 +228,7 @@ classdef Robot
                 for jj=1:this.num_robot % Robot Iteration
                     if (~isempty(this.buffer(jj).k)) && (~ismember(this.buffer(jj).k,this.buffer(jj).used))
                         this.dbf_map=this.dbf_map.*this.buffer(jj).lkhd_map;
-                        this.buffer(jj).used = [this.buffer(jj).k,this.buffer(jj).used];
+                        this.buffer(jj).used = [this.buffer(jj).used,this.buffer(jj).k];
                     end
                 end
                 this.dbf_map=this.dbf_map/sum(sum(this.dbf_map));
@@ -240,8 +244,9 @@ classdef Robot
                 tmp_t = this.talign_t;
                 tmp_map = this.talign_map; % time-aligned map
                 
+                display(this.idx)
                 for t = (this.talign_t+1):this.step_cnt
-                   
+                    display(t)
                     %% one-step prediction step                     
                     % p(x_k+1) = sum_{x_k} p(x_k+1|x_k)p(x_k)
                     tmp_map2 = upd_matrix*tmp_map(:);
@@ -249,7 +254,8 @@ classdef Robot
                     
                     %% updating step                                       
                     for jj=1:this.num_robot
-                        if (~isempty(this.buffer(jj).k)) && (this.buffer(jj).k(1) >= t)
+                        display(jj)
+                        if (~isempty(this.buffer(jj).k)) && (this.buffer(jj).k(end) >= t)
                             % note: this update is not valid in real
                             % experiment since we don't communicate
                             % probability. This line of code is for
@@ -276,9 +282,9 @@ classdef Robot
                         % the previous data 
                         if this.talign_t > 0 
                             for jj=1:this.num_robot
-                                this.buffer(jj).pos(:,end)=[];
-                                this.buffer(jj).z(end)=[];
-                                this.buffer(jj).k(end)=[];
+                                this.buffer(jj).pos(:,this.talign_t) = -ones(2,1);
+                                this.buffer(jj).z(this.talign_t) = -1;
+                                this.buffer(jj).k(this.talign_t) = -1;
                                 % note: lkhd_map is a cell, therefore we
                                 % keep all the old cell (empty cell) but
                                 % the length of lkhd_map will not decrease.
