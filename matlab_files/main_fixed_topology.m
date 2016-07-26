@@ -1,7 +1,7 @@
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Multi Sensor-based Distributed Bayesian Estimator
 % This code is for distributed bayesian estimator for target positioning and tracking
-% (1) Target: Static target with unknown position
+% (1) Target: Static or moving target with unknown position
 % (2) Sensors: Binary sensor with only 0 or 1 measurement
 % (3) Strategy: (3.1) Observation Exchange strategy (Neighbourhood or Global-Exchange)
 %               (3.2) Probability Map Consensus strategy (single step or multi-step)
@@ -14,16 +14,9 @@
 % 5/4/16
 % re-write the fixed-topology case in OOP. Hopefully this will make my
 % coding cleaner, more readable and easier to adapt
-
-% possible bug for this program:
-% 1. in moving target case, maybe we should first let target move, then observe, then update pdf.
-% 2. try to change the update step, current method takes huge memory and
-% may have bugs.
-
-% progress on 7/14/16
-% has debugged the code for static robot static target case. Needs to write up the Sim class 
-% and then debug for moving robot or target cases. Still writing the Sim
-% class compareMetrics method
+% 7/23/16
+% continued re-writing the code in OOP. the paper based on this code got
+% rejected in CDC 16
 
 % main function for running the simulation
 clear; clc; close all
@@ -59,10 +52,7 @@ for trial_cnt = 1:trial_num
     inPara_fld = struct('fld_size',fld_size,'target',target,'tar_move',tar_move,'dt',dt);
     fld = Field(inPara_fld);
             
-    % initialize robot class
-    
-    %%% temp use
-    upd_matrix = {eye(fld_size(1)*fld_size(2))};
+    % initialize robot class        
     
     inPara_rbt = struct('num_robot',num_robot,'dt',dt);
     rbt = cell(num_robot,1);
@@ -101,10 +91,6 @@ for trial_cnt = 1:trial_num
     %% LIFO-DBF
     count = 1;
     
-    %%% temp use
-    %%% find the difference of static and moving dbf
-    test_rbt = rbt;
-    
     while(1)                
         
         %% filtering
@@ -122,32 +108,12 @@ for trial_cnt = 1:trial_num
             % observe
             rbt{ii} = rbt{ii}.sensorGen(fld); % simulate the sensor measurement
             
-            
-            % update own observation
-            
-            %%% temp use      
-            test_rbt{ii}.step_cnt = count;
-            test_rbt{ii}.z = rbt{ii}.z;
-            test_rbt{ii}.k = rbt{ii}.k;
-            test_rbt{ii}.lkhd_map = rbt{ii}.lkhd_map;
-            testinPara1 = struct('selection',1);
-            test_rbt{ii} = test_rbt{ii}.updOwnMsmt(testinPara1);
-            
+            % update own observation                      
             inPara1 = struct('selection',selection);
             rbt{ii} = rbt{ii}.updOwnMsmt(inPara1);
         end        
         
-        % step 2
-        tmp_rbt1 = test_rbt; % use tmp_rbt in data exchange
-        
-        for ii = 1:num_robot
-            testinPara2 = struct;
-            testinPara2.selection = 1;
-            testinPara2.rbt_nbhd_set = test_rbt(test_rbt{ii}.nbhd_idx);
-            tmp_rbt1{ii} = tmp_rbt1{ii}.dataExch(testinPara2);
-        end
-        test_rbt = tmp_rbt1;
-
+        % step 2       
         % exchange
         tmp_rbt = rbt; % use tmp_rbt in data exchange
         
@@ -161,22 +127,9 @@ for trial_cnt = 1:trial_num
         
         % step 3
         % dbf
-        for ii = 1:num_robot
-            %% temp use
-            testinPara3 = struct('selection',1);
-            test_rbt{ii} = test_rbt{ii}.DBF(testinPara3);
-            
+        for ii = 1:num_robot                        
             inPara3 = struct('selection',selection);
-            rbt{ii} = rbt{ii}.DBF(inPara3);
-            
-            %% temp use
-            tmp_dif = sum(sum(abs(test_rbt{ii}.dbf_map-rbt{ii}.dbf_map)));
-            if  tmp_dif >= 10^-14
-                display(count)
-                display('robot #')
-                display(ii)
-                display(tmp_dif)               
-            end
+            rbt{ii} = rbt{ii}.DBF(inPara3);                        
         end    
 
         %% draw current step
@@ -339,8 +292,7 @@ end
 met = sim.compareMetrics();
 
 % save data (workspace)
-if save_data 
-    
+if save_data     
     sim.saveSimData();
 end
 

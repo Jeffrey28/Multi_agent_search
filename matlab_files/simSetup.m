@@ -121,7 +121,8 @@ V_set = {0.01*eye(2),0.01*eye(2)}; %inPara.V_set;
 
 % save('upd_matrix.mat','upd_matrix')
 if tar_move == 1
-    load('upd_matrix.mat','upd_matrix')    
+    upd_matrix = {eye(fld_size(1)*fld_size(2))};
+%     load('upd_matrix.mat','upd_matrix')    
 end
 
 %             for ii = 1:size(pt,1)
