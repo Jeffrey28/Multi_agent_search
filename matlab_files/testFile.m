@@ -210,7 +210,7 @@ end
 %}
 
 %%% process the entropy
-%
+%{
 file_name_list = {};
 % read xxx_entropy_xxx.fig
 for ii = 1:size(a,1)
@@ -274,3 +274,7 @@ ax = gca;
 mymap = colormap(ax);
 save('MyColorMap','mymap');
 %}
+
+%% check the difference using static and moving target dbf
+sim.plotSim(rbt,fld,count);
+sim.plotSim(test_rbt,fld,count);

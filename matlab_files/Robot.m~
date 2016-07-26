@@ -237,9 +237,9 @@ classdef Robot
                 %}
                 
                 for jj=1:this.num_robot % Robot Iteration
-                    if (~isempty(this.buffer(jj).k)) %&& (~ismember(this.buffer(jj).k,this.buffer(jj).used))
-                        this.dbf_map=this.dbf_map.*this.buffer(jj).lkhd_map{end};
-%                         this.buffer(jj).used = [this.buffer(jj).used,this.buffer(jj).k];
+                    if (~isempty(this.buffer(jj).k)) && (~ismember(this.buffer(jj).k,this.buffer(jj).used))
+                        this.dbf_map=this.dbf_map.*this.buffer(jj).lkhd_map;
+                        this.buffer(jj).used = [this.buffer(jj).used,this.buffer(jj).k];
                     end
                 end
                 this.dbf_map=this.dbf_map/sum(sum(this.dbf_map));
@@ -255,7 +255,7 @@ classdef Robot
                 tmp_t = this.talign_t;
                 tmp_map = this.talign_map; % time-aligned map
                 
-%                 display(this.idx)
+                display(this.idx)
                 for t = (this.talign_t+1):this.step_cnt
                     display(t)
                     %% one-step prediction step                     

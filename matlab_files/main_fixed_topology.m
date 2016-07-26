@@ -60,6 +60,9 @@ for trial_cnt = 1:trial_num
     fld = Field(inPara_fld);
             
     % initialize robot class
+    
+    %%% temp use
+    upd_matrix = {eye(fld_size(1)*fld_size(2))};
     inPara_rbt = struct('num_robot',num_robot,'dt',dt);
     rbt = cell(num_robot,1);
     if r_move == 0
@@ -96,6 +99,7 @@ for trial_cnt = 1:trial_num
     %% %%%%%%%%%%%%%% main code of simulation %%%%%%%%%%%%%%%%%%
     %% LIFO-DBF
     count = 1;
+    
     while(1)                
         
         %% filtering
@@ -130,15 +134,33 @@ for trial_cnt = 1:trial_num
         
         % step 3
         % dbf
+        
+        %%% temp use
+        %%% find the difference of static and moving dbf
+        test_rbt = rbt;
+        
         for ii = 1:num_robot
+            %%% temp use
+            testinPara3 = struct('selection',1);
+            test_rbt{ii} = test_rbt{ii}.DBF(testinPara3);
+            
             inPara3 = struct('selection',selection);
             rbt{ii} = rbt{ii}.DBF(inPara3);
+            
+            %%% temp use
+            tmp_dif = sum(sum(abs(test_rbt{ii}.dbf_map-rbt{ii}.dbf_map)));
+            if  tmp_dif >= 10^-14
+                display(count)
+                display('robot #')
+                display(ii)
+                display(tmp_dif)               
+            end
         end    
 
         %% draw current step
         % draw plot
         if show_plot
-            sim.plotSim(rbt,fld,trial_cnt);
+            sim.plotSim(rbt,fld,count);
         end
                 
         %% go to next iteration        

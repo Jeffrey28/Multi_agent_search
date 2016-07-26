@@ -2,7 +2,7 @@
 
 %% %%%%%%% General Setup %%%%%%%%%%
 save_data = false; % save data or not
-show_plot = true; % draw plots or not
+show_plot = false; % draw plots or not
 
 sim_len = 50; % max step
 % rounds of consensus at each time step
@@ -121,11 +121,7 @@ V_set = {0.01*eye(2),0.01*eye(2)}; %inPara.V_set;
 
 % save('upd_matrix.mat','upd_matrix')
 if tar_move == 1
-    load('upd_matrix.mat','upd_matrix')
-else
-    % this is not necessary for final program. However, for debugging
-    % purpose, I need this identity matrix.
-    upd_matrix = eye(fld_size(1)*fld_size(2));
+    load('upd_matrix.mat','upd_matrix')    
 end
 
 %             for ii = 1:size(pt,1)
