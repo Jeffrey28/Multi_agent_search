@@ -226,7 +226,7 @@ classdef Robot
             if (selection == 1) || (selection == 3)
                 % calculate probility of latest z
                 % comment out for comparing with moving target dbf
-                %{
+                %
                 for jj=1:this.num_robot % Robot Iteration
                     if (~isempty(this.buffer(jj).k)) && (~ismember(this.buffer(jj).k,this.buffer(jj).used))
                         this.dbf_map=this.dbf_map.*this.buffer(jj).lkhd_map;
@@ -236,6 +236,7 @@ classdef Robot
                 this.dbf_map=this.dbf_map/sum(sum(this.dbf_map));
                 %}
                 
+                %{
                 for jj=1:this.num_robot % Robot Iteration
                     if (~isempty(this.buffer(jj).k)) %&& (~ismember(this.buffer(jj).k,this.buffer(jj).used))
                         this.dbf_map=this.dbf_map.*this.buffer(jj).lkhd_map{end};
@@ -243,6 +244,7 @@ classdef Robot
                     end
                 end
                 this.dbf_map=this.dbf_map/sum(sum(this.dbf_map));
+                %}
                 
             elseif (selection == 2) || (selection == 4)
                 upd_matrix = this.upd_matrix{1};

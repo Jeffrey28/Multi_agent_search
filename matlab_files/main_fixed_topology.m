@@ -63,6 +63,7 @@ for trial_cnt = 1:trial_num
     
     %%% temp use
     upd_matrix = {eye(fld_size(1)*fld_size(2))};
+    
     inPara_rbt = struct('num_robot',num_robot,'dt',dt);
     rbt = cell(num_robot,1);
     if r_move == 0
@@ -100,6 +101,10 @@ for trial_cnt = 1:trial_num
     %% LIFO-DBF
     count = 1;
     
+    %%% temp use
+    %%% find the difference of static and moving dbf
+    test_rbt = rbt;
+    
     while(1)                
         
         %% filtering
@@ -111,19 +116,41 @@ for trial_cnt = 1:trial_num
         
         % step 1
         % own measurement
+        
         for ii = 1:num_robot
             rbt{ii}.step_cnt = count;            
             % observe
             rbt{ii} = rbt{ii}.sensorGen(fld); % simulate the sensor measurement
             
+            
             % update own observation
+            
+            %%% temp use      
+            test_rbt{ii}.step_cnt = count;
+            test_rbt{ii}.z = rbt{ii}.z;
+            test_rbt{ii}.k = rbt{ii}.k;
+            test_rbt{ii}.lkhd_map = rbt{ii}.lkhd_map;
+            testinPara1 = struct('selection',1);
+            test_rbt{ii} = test_rbt{ii}.updOwnMsmt(testinPara1);
+            
             inPara1 = struct('selection',selection);
             rbt{ii} = rbt{ii}.updOwnMsmt(inPara1);
         end        
         
         % step 2
-        tmp_rbt = rbt; % use tmp_rbt in data exchange
+        tmp_rbt1 = test_rbt; % use tmp_rbt in data exchange
+        
+        for ii = 1:num_robot
+            testinPara2 = struct;
+            testinPara2.selection = 1;
+            testinPara2.rbt_nbhd_set = test_rbt(test_rbt{ii}.nbhd_idx);
+            tmp_rbt1{ii} = tmp_rbt1{ii}.dataExch(testinPara2);
+        end
+        test_rbt = tmp_rbt1;
+
         % exchange
+        tmp_rbt = rbt; % use tmp_rbt in data exchange
+        
         for ii = 1:num_robot
             inPara2 = struct;
             inPara2.selection = selection;
@@ -134,20 +161,15 @@ for trial_cnt = 1:trial_num
         
         % step 3
         % dbf
-        
-        %%% temp use
-        %%% find the difference of static and moving dbf
-        test_rbt = rbt;
-        
         for ii = 1:num_robot
-            %%% temp use
+            %% temp use
             testinPara3 = struct('selection',1);
             test_rbt{ii} = test_rbt{ii}.DBF(testinPara3);
             
             inPara3 = struct('selection',selection);
             rbt{ii} = rbt{ii}.DBF(inPara3);
             
-            %%% temp use
+            %% temp use
             tmp_dif = sum(sum(abs(test_rbt{ii}.dbf_map-rbt{ii}.dbf_map)));
             if  tmp_dif >= 10^-14
                 display(count)
