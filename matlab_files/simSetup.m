@@ -6,7 +6,8 @@ show_plot = false; % draw plots or not
 
 sim_len = 50; % max step
 % rounds of consensus at each time step
-cons_step=20;
+cons_step=10;
+cons_fig = false; % whether to show intermediate step of consensus
 
 % select the motion of agents and target
 selection = 2;

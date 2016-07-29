@@ -1,6 +1,6 @@
 This is BibTeX, Version 0.99d (TeX Live 2015)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
-The top-level auxiliary file: CDC2016.aux
+The top-level auxiliary file: journal_fixed_top.aux
 The style file: IEEEtran.bst
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
@@ -30,7 +30,7 @@ Warning--empty year in kulich2014single
 Done.
 You've used 27 entries,
             3975 wiz_defined-function locations,
-            950 strings with 12706 characters,
+            950 strings with 12726 characters,
 and the built_in function-call counts, 23242 in all, are:
 = -- 1868
 > -- 541

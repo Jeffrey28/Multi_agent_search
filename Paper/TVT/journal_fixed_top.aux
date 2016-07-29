@@ -28,6 +28,8 @@
 \newlabel{sec:prob_form}{{II}{2}}
 \newlabel{sec:prob_form@cref}{{[section][2][]II}{2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {II-A}Probabilistic Model of Binary Sensor}{2}}
+\@writefile{tdo}{\contentsline {todo}{\textbf  {[Note:]} {write the observation model. refer to the paper ``Target Tracking by Particle Filtering in Binary Sensor Networks"}}{2}}
+\pgfsyspdfmark {pgfid1}{28638146}{43606614}
 \newlabel{eqn:bin_sensor1}{{1}{2}}
 \newlabel{eqn:bin_sensor1@cref}{{[equation][1][]1}{2}}
 \newlabel{eqn:bin_sensor0}{{2}{2}}
@@ -47,20 +49,24 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {II-C.2}Updating}{3}}
 \newlabel{eqn:bayes_upd}{{4}{3}}
 \newlabel{eqn:bayes_upd@cref}{{[equation][4][]4}{3}}
-\@writefile{toc}{\contentsline {section}{\numberline {III}Distributed Bayesian Filter via Latest-In-and-Full-Out Protocol}{3}}
-\newlabel{sec:LIFO-dbf}{{III}{3}}
-\newlabel{sec:LIFO-dbf@cref}{{[section][3][]III}{3}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Example of LIFO with three robots using line communication topology\relax }}{3}}
 \newlabel{fig:LIFO}{{2}{3}}
 \newlabel{fig:LIFO@cref}{{[figure][2][]2}{3}}
+\@writefile{toc}{\contentsline {section}{\numberline {III}Distributed Bayesian Filter via Latest-In-and-Full-Out Protocol}{3}}
+\newlabel{sec:LIFO-dbf}{{III}{3}}
+\newlabel{sec:LIFO-dbf@cref}{{[section][3][]III}{3}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {III-A}Latest-In-and-Full-Out (LIFO) Protocol}{3}}
 \newlabel{subsec:LIFO}{{III-A}{3}}
 \newlabel{subsec:LIFO@cref}{{[subsection][1][3]III-A}{3}}
-\newlabel{prop1}{{1}{3}}
-\newlabel{prop1@cref}{{[prop][1][]1}{3}}
+\@writefile{tdo}{\contentsline {todo}{\textbf  {[Note:]} {describe the connectivity with $M^k(i;j) > 0$ and probably generalize to directed topology.}}{3}}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces LIFO Protocol\relax }}{4}}
 \newlabel{alg:lifo}{{1}{4}}
 \newlabel{alg:lifo@cref}{{[algorithm][1][]1}{4}}
+\pgfsyspdfmark {pgfid2}{11587521}{21597148}
+\newlabel{prop1}{{1}{4}}
+\newlabel{prop1@cref}{{[prop][1][]1}{4}}
+\@writefile{tdo}{\contentsline {todo}{\textbf  {[Note:]} {these two corollaries seem straightforward to reviewers.}}{4}}
+\pgfsyspdfmark {pgfid3}{28638146}{45801296}
 \newlabel{cor1}{{1}{4}}
 \newlabel{cor1@cref}{{[cor][1][]1}{4}}
 \newlabel{cor2}{{2}{4}}
@@ -76,22 +82,26 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Example of LIFO-DBF for $1^\text  {st}$ robot at time $k$. Networked robots take a line topology, shown in the top. The stored individual PDF is $ P^1_{pdf}(k-N)$. The robot first calculates $ P^1_{virt}(k-N+1)$ using DBF and stores it as $ P^1_{pdf}(k-N+1)$. Repeating DBF until obtaining $ P^1_{pdf}(k)$, which is then used as the target PDF estimation of $1^\text  {st}$ robot at time $k$. In this example, $\Omega ^1_{\xi }=\left \delimiter "4266308 1,2,\dots  ,N+1-\xi \right \delimiter "5267309 $, $\xi =1,\dots  ,N$.\relax }}{5}}
 \newlabel{fig:LIFO-DBF}{{3}{5}}
 \newlabel{fig:LIFO-DBF@cref}{{[figure][3][]3}{5}}
+\@writefile{tdo}{\contentsline {todo}{\textbf  {[Note:]} {check whether the space complexity is correct}}{5}}
+\pgfsyspdfmark {pgfid4}{11587521}{22119404}
 \@writefile{toc}{\contentsline {section}{\numberline {IV}Proof of Consistency}{5}}
 \newlabel{sec:consist_proof}{{IV}{5}}
 \newlabel{sec:consist_proof@cref}{{[section][4][]IV}{5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {IV-A}Proof for static robots}{5}}
-\newlabel{thm:LIFO-dbf-sta-tar}{{1}{5}}
-\newlabel{thm:LIFO-dbf-sta-tar@cref}{{[thm][1][]1}{5}}
+\@writefile{tdo}{\contentsline {todo}{\textbf  {[Note:]} {the lack of proof for moving target case may be problematic. Maybe need to briefly describe how this can be done.}}{5}}
+\pgfsyspdfmark {pgfid5}{11587521}{5244019}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces LIFO-DBF Algorithm\relax }}{5}}
 \newlabel{alg:lifo-dbf}{{2}{5}}
 \newlabel{alg:lifo-dbf@cref}{{[algorithm][2][]2}{5}}
-\newlabel{eqn:cmp}{{6}{5}}
-\newlabel{eqn:cmp@cref}{{[equation][6][]6}{5}}
-\newlabel{eqn:cmp_log}{{7}{5}}
-\newlabel{eqn:cmp_log@cref}{{[equation][7][]7}{5}}
-\newlabel{eqn:cmp_lim1}{{8}{5}}
-\newlabel{eqn:cmp_lim1@cref}{{[equation][8][]8}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {IV-A}Proof for static robots}{5}}
+\newlabel{thm:LIFO-dbf-sta-tar}{{1}{5}}
+\newlabel{thm:LIFO-dbf-sta-tar@cref}{{[thm][1][]1}{5}}
 \citation{bonnie2012modelling}
+\newlabel{eqn:cmp}{{6}{6}}
+\newlabel{eqn:cmp@cref}{{[equation][6][]6}{6}}
+\newlabel{eqn:cmp_log}{{7}{6}}
+\newlabel{eqn:cmp_log@cref}{{[equation][7][]7}{6}}
+\newlabel{eqn:cmp_lim1}{{8}{6}}
+\newlabel{eqn:cmp_lim1@cref}{{[equation][8][]8}{6}}
 \newlabel{eqn:cmp_lim2}{{9}{6}}
 \newlabel{eqn:cmp_lim2@cref}{{[equation][9][]9}{6}}
 \newlabel{eqn:lim}{{10}{6}}
@@ -109,11 +119,6 @@
 \newlabel{thm:LIFO-dbf-mov-tar@cref}{{[thm][2][]2}{6}}
 \newlabel{eqn:cmp2}{{14}{6}}
 \newlabel{eqn:cmp2@cref}{{[equation][14][]14}{6}}
-\@writefile{toc}{\contentsline {section}{\numberline {V}Simulation}{6}}
-\newlabel{sec:sim}{{V}{6}}
-\newlabel{sec:sim@cref}{{[section][5][]V}{6}}
-\newlabel{eqn:gauss_sensor}{{15}{6}}
-\newlabel{eqn:gauss_sensor@cref}{{[subequation][15][]15}{6}}
 \newlabel{fig:sta_sen_sta_tar_sing1}{{4a}{7}}
 \newlabel{fig:sta_sen_sta_tar_sing1@cref}{{[subfigure][1][4]4a}{7}}
 \newlabel{sub@fig:sta_sen_sta_tar_sing1}{{a}{7}}
@@ -141,9 +146,11 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces (a)-(d) The $1^\text  {st}$ robot's individual PDF at different times. The square denotes the current robot and stars represent other robots. The cross stands for the target. (e) Average position estimation errors of $1^\text  {st}$, $3^\text  {rd}$ and $5^\text  {th}$ robot's LIFO-DBF, CbDF and CF. (f) Average entropy of individual PDFs.\relax }}{7}}
 \newlabel{fig:sta_sen_sta_tar}{{4}{7}}
 \newlabel{fig:sta_sen_sta_tar@cref}{{[figure][4][]4}{7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {V-A}Static Robots, Static Target}{7}}
-\newlabel{subsec:sim1}{{V-A}{7}}
-\newlabel{subsec:sim1@cref}{{[subsection][1][5]V-A}{7}}
+\@writefile{toc}{\contentsline {section}{\numberline {V}Simulation}{7}}
+\newlabel{sec:sim}{{V}{7}}
+\newlabel{sec:sim@cref}{{[section][5][]V}{7}}
+\newlabel{eqn:gauss_sensor}{{15}{7}}
+\newlabel{eqn:gauss_sensor@cref}{{[subequation][15][]15}{7}}
 \newlabel{fig:mov_sen_mov_tar_sing1}{{5a}{7}}
 \newlabel{fig:mov_sen_mov_tar_sing1@cref}{{[subfigure][1][5]5a}{7}}
 \newlabel{sub@fig:mov_sen_mov_tar_sing1}{{a}{7}}
@@ -171,7 +178,9 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces (a)-(d) The $6^\text  {th}$ robot's individual PDFs at different times. (e) Average position estimation errors. (f) Average entropy of individual PDFs.\relax }}{7}}
 \newlabel{fig:mov_sen_mov_tar}{{5}{7}}
 \newlabel{fig:mov_sen_mov_tar@cref}{{[figure][5][]5}{7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {V-B}Moving Robots, Moving Target}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {V-A}Static Robots, Static Target}{7}}
+\newlabel{subsec:sim1}{{V-A}{7}}
+\newlabel{subsec:sim1@cref}{{[subsection][1][5]V-A}{7}}
 \bibstyle{IEEEtran}
 \bibdata{references}
 \bibcite{chamberland2007wireless}{1}
@@ -197,11 +206,12 @@
 \bibcite{bonnie2012modelling}{21}
 \bibcite{liu2015model}{22}
 \bibcite{djuric2008target}{23}
-\bibcite{lawton2003decentralized}{24}
-\bibcite{liu2010simple}{25}
-\bibcite{thatte2008sensor}{26}
-\bibcite{kulich2014single}{27}
+\@writefile{toc}{\contentsline {subsection}{\numberline {V-B}Moving Robots, Moving Target}{8}}
 \@writefile{toc}{\contentsline {section}{\numberline {VI}CONCLUSION}{8}}
 \newlabel{sec:conclu}{{VI}{8}}
 \newlabel{sec:conclu@cref}{{[section][6][]VI}{8}}
 \@writefile{toc}{\contentsline {section}{References}{8}}
+\bibcite{lawton2003decentralized}{24}
+\bibcite{liu2010simple}{25}
+\bibcite{thatte2008sensor}{26}
+\bibcite{kulich2014single}{27}

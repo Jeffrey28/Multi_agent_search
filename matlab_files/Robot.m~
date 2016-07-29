@@ -90,10 +90,7 @@ classdef Robot
             this.buffer(inPara.num_robot).k = [];
             this.buffer(inPara.num_robot).lkhd_map = {};
             this.buffer(inPara.num_robot).used = [];   
-            this.buffer_cent.pos = [];
             this.buffer_cent.z = [];
-            this.buffer_cent.k = [];
-            this.buffer_cent.lkhd_map = {};
             this.num_robot = inPara.num_robot;
             this.step_cnt = 0;
         end
@@ -254,14 +251,8 @@ classdef Robot
                     display(t)
                     %% one-step prediction step                     
                     % p(x_k+1) = sum_{x_k} p(x_k+1|x_k)p(x_k)
-                    % note, data in upd_matrix is first along y direction 
-                    % and then along x direction. therefore, when using
-                    % tmp_map(:), care should be taken since tmp_map(:)
-                    % orders data first along x direction, then y
-                    % direction.
-                    tmp_map = tmp_map';
                     tmp_map2 = upd_matrix*tmp_map(:);
-                    tmp_map = (reshape(tmp_map2,size(tmp_map)))';
+                    tmp_map = reshape(tmp_map2,size(tmp_map));
                     
                     %% updating step                                       
                     for jj=1:this.num_robot
@@ -325,9 +316,9 @@ classdef Robot
                 this.cons_map = this.cons_map.*this.lkhd_map;
             elseif (selection == 2) || (selection == 4)
                 upd_matrix = this.upd_matrix{1};
-                tmp_map = (this.cons_map)';
-                tmp_map2 = upd_matrix*tmp_map(:);
-                tmp_map = (reshape(tmp_map2,size(tmp_map)))';
+                tmp_map = this.cons_map;
+                tmp_map2 = upd_matrix.*tmp_map(:);
+                tmp_map = reshape(tmp_map2,size(tmp_map));
                 this.cons_map = tmp_map.*this.lkhd_map;
             end
             this.cons_map = this.cons_map/sum(sum(this.cons_map));
@@ -337,9 +328,9 @@ classdef Robot
                 this.cent_map = this.cent_map.*this.lkhd_map;
             elseif (selection == 2) || (selection == 4)
                 upd_matrix = this.upd_matrix{1};
-                tmp_map = (this.cent_map)';
-                tmp_map2 = upd_matrix*tmp_map(:);
-                tmp_map = (reshape(tmp_map2,size(tmp_map)))';
+                tmp_map = this.cent_map;
+                tmp_map2 = upd_matrix.*tmp_map(:);
+                tmp_map = reshape(tmp_map2,size(tmp_map));
                 this.cent_map = tmp_map.*this.lkhd_map;
             end
             this.cent_map = this.cons_map/sum(sum(this.cent_map));
@@ -378,7 +369,6 @@ classdef Robot
             end
             %}
             rbt_nbhd_set = inPara.rbt_nbhd_set;
-            cons_fig = inPara.cons_fig;
             % consensus step
             % receive and weighted average neighboring maps            
              
@@ -390,7 +380,7 @@ classdef Robot
 
             % plot local PDFs after concensus
             
-            if cons_fig
+            if ConsenFigure==1
                 figure
 %                 subplot(2,3,i); 
                 contourf((this.cons_map)'); title(['Sensor ',this.idx]);
@@ -446,44 +436,40 @@ classdef Robot
             % (2) update the probability map for time k
             % (3) repeat step (1)
             
-            selection = inPara.selection;
             if (selection == 1) || (selection == 3)
                 this.cent_map = this.cent_map.*this.lkhd_map;
             elseif (selection == 2) || (selection == 4)
-                % prediction step
                 upd_matrix = this.upd_matrix{1};
                 tmp_map = this.cent_map;
-                tmp_map2 = upd_matrix*tmp_map(:);
+                tmp_map2 = upd_matrix.*tmp_map(:);
                 tmp_map = reshape(tmp_map2,size(tmp_map));
-                
-                % update step
                 this.cent_map = tmp_map.*this.lkhd_map;
             end
             this.cent_map = this.cons_map/sum(sum(this.cent_map));            
             
             
-%             tmp_cent_map = rbt_cent.map;
-%             if (Selection == 1) || (Selection == 3)
-%                 % update step
-%                 for i = 1:NumOfRobot
-%                     tmp_cent_map = tmp_cent_map.*rbt_cent.prob{i};
-%                 end
-%                 rbt_cent.map = tmp_cent_map/sum(sum(tmp_cent_map));
-%                 
-%             elseif (Selection == 2) || (Selection == 4)
-%                 % prediction step
-%                 tmp_cent_map2 = zeros(size(tmp_cent_map));
-%                 for k = 1:size(pt,1)
-%                     tmp_cent_map2 = tmp_cent_map2+upd_cell1{k,model_idx}*tmp_cent_map(pt(k,1),pt(k,2));
-%                 end
-%                 tmp_cent_map = tmp_cent_map2;
-%                 
-%                 % update step
-%                 for i=1:NumOfRobot
-%                     tmp_cent_map = tmp_cent_map.*rbt_cent.prob{i};
-%                 end
-%                 rbt_cent.map = tmp_cent_map/sum(sum(tmp_cent_map));
-%             end
+            tmp_cent_map = rbt_cent.map;
+            if (Selection == 1) || (Selection == 3)
+                % update step
+                for i = 1:NumOfRobot
+                    tmp_cent_map = tmp_cent_map.*rbt_cent.prob{i};
+                end
+                rbt_cent.map = tmp_cent_map/sum(sum(tmp_cent_map));
+                
+            elseif (Selection == 2) || (Selection == 4)
+                % prediction step
+                tmp_cent_map2 = zeros(size(tmp_cent_map));
+                for k = 1:size(pt,1)
+                    tmp_cent_map2 = tmp_cent_map2+upd_cell1{k,model_idx}*tmp_cent_map(pt(k,1),pt(k,2));
+                end
+                tmp_cent_map = tmp_cent_map2;
+                
+                % update step
+                for i=1:NumOfRobot
+                    tmp_cent_map = tmp_cent_map.*rbt_cent.prob{i};
+                end
+                rbt_cent.map = tmp_cent_map/sum(sum(tmp_cent_map));
+            end
         end      
                 
         function this = robotMove(this)
@@ -504,19 +490,19 @@ classdef Robot
                     tmp_idx = 1;
                 end
                 this.ml_pos_dbf(:,count) = [tmp_x1(tmp_idx);tmp_y1(tmp_idx)];
-                this.ml_err_dbf(count) = norm(this.ml_pos_dbf(:,count)-fld.target.pos);
+                this.ml_err_dbf(count) = norm(this.ml_pos_dbf(:,count)-[fld.tx;fld.ty]);
             end
             
             % concensus
             if strcmp(id,'cons')
-                [tmp_x2,tmp_y2] = find(this.cons_map == max(this.cons_map(:)));
+                [tmp_x2,tmp_y2] = find(this.cons_map == max(this.cons_map));
                 if length(tmp_x2) > 1
                     tmp_idx2 = randi(length(tmp_x2),1,1);
                 else
                     tmp_idx2 = 1;
                 end
                 this.ml_pos_cons(:,count) = [tmp_x2(tmp_idx2);tmp_y2(tmp_idx2)];
-                this.ml_err_cons(count) = norm(this.ml_pos_cons(:,count)-fld.target.pos);
+                this.ml_err_cons(count) = norm(this.ml_pos_cons(:,count)-[fld.tx;fld.ty]);
             end
             
             % centralized
@@ -528,13 +514,10 @@ classdef Robot
                     tmp_idx3 = 1;
                 end
                 this.ml_pos_cent(:,count) = [tmp_x3(tmp_idx3);tmp_y3(tmp_idx3)];
-                this.ml_err_cent(count) = norm(this.ml_pos_cent(:,count)-fld.target.pos);
+                this.ml_err_cent(count) = norm(this.ml_pos_cent(:,count)-[fld.tx;fld.ty]);
             end
             
             %% Covariance of posterior pdf
-            [ptx,pty] = meshgrid(1:fld.fld_size(1),1:fld.fld_size(2));
-            pt = [ptx(:),pty(:)];
-            
             % DBF
             if strcmp(id,'dbf')
                 tmp_map1 = this.dbf_map;

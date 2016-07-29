@@ -211,8 +211,6 @@ for trial_cnt = 1:trial_num
     %% compute metrics
     for ii = 1:num_robot
         rbt{ii} = rbt{ii}.computeMetrics(fld,'dbf');
-        rbt{ii} = rbt{ii}.computeMetrics(fld,'cons');
-        rbt{ii} = rbt{ii}.computeMetrics(fld,'cent');
     end
     
     
