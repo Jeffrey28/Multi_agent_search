@@ -83,62 +83,6 @@ rbt_nbhd = {[2,6],[1,3],[2,4],[3,5],[4,6],[1,5]};
 trial_num = 1; % 10 % number of trials to run
 
 mode_num = 1;%2;
-
-%% Motion model
-% precalculate the prediction matrix so that we don't need to re-compute at
-% each iteration.
-
-% target motion model
-u_set = [zeros(2,1),ones(2,1),-ones(2,1)]; %inPara.u_set;
-V_set = {0.01*eye(2),0.01*eye(2)}; %inPara.V_set;
-
-% Compute the transition matrix for prediction step
-
-% [ptx,pty] = meshgrid(1:fld_size(1),1:fld_size(2));
-% pt = [ptx(:),pty(:)];
-% upd_matrix = cell(mode_num,1); % pred matrix for all motion models
-% 
-% for mode_cnt = 1:mode_num
-%     % tmp_matrix(ii,:) is the transition probability P(x^i_k+1|x^j_k) for
-%     % all x^j_k in the grid
-%     tmp_matrix = zeros(size(pt,1),size(pt,1));
-%     for ii = 1:size(pt,1)
-%         display(ii)
-%         % transition matrix
-%         % tmp_trans(x,y) shows the transition probability P(x^i_k+1|[x;y]),
-%         % considering the dynamic model of vehicle
-%         tmp_trans = zeros(fld_size(1),fld_size(2));
-% %         mu = pt(ii,:)'+u_set(:,ii);
-%         for x = 1:fld_size(1)
-%             for y = 1:fld_size(2)
-%                 mu = [x;y]+u_set(:,mode_cnt);
-%                 tmp_trans(x,y) = mvncdf([pt(ii,1)-0.5;pt(ii,2)-0.5],[pt(ii,1)+0.5;pt(ii,2)+0.5],mu,V_set{mode_cnt});
-%             end
-%         end
-%         tmp_matrix(ii,:) = tmp_trans(:);
-%     end
-%     upd_matrix{mode_cnt} = tmp_matrix;
-% end
-
-% save('upd_matrix.mat','upd_matrix')
-if tar_move == 1
-    upd_matrix = {eye(fld_size(1)*fld_size(2))};
-%     load('upd_matrix.mat','upd_matrix')    
-end
-
-%             for ii = 1:size(pt,1)
-%                 for jj = 1:size(fld.target.dx_set,2)
-%                     %             fld.target.dx = fld.target.dx_set(jj);
-%                     %             fld.target.dy = fld.target.dy_set(jj);
-%                     tmp_dx = fld.target.dx_set(jj);
-%                     tmp_dy = fld.target.dy_set(jj);
-%
-%                     upd_cell1{ii,jj} = zeros(fld.x,fld.y);
-%                     if (pt(ii,1)+fld.target.speed*tmp_dx <= fld.x) && (pt(ii,2)+fld.target.speed*tmp_dy <= fld.y) && (pt(ii,1)+fld.target.speed*tmp_dx >= 1) && (pt(ii,2)+fld.target.speed*tmp_dy >= 1)
-%                         upd_cell1{ii,jj}(pt(ii,1)+fld.target.speed*tmp_dx,pt(ii,2)+fld.target.speed*tmp_dy) = 1;
-%                     end
-%                 end
-%             end
             
 
 %% Compute the sensor probility matrix
