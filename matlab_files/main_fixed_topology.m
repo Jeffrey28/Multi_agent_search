@@ -109,10 +109,6 @@ for trial_cnt = 1:trial_num
             rbt{ii}.step_cnt = count;            
             % observe
             rbt{ii} = rbt{ii}.sensorGen(fld); % simulate the sensor measurement
-%             rbt_cons{ii}.z = rbt{ii}.z;
-%             rbt_cons{ii}.k = rbt{ii}.k;
-%             rbt_cent{ii}.z = rbt{ii}.z;
-%             rbt_cent{ii}.k = rbt{ii}.k;
                         
             % update own observation                      
             inPara1 = struct('selection',selection);
@@ -290,7 +286,8 @@ met = sim.compareMetrics();
 
 % save data (workspace)
 if save_data
-    sim.saveSimData();
+    file_name = sim.saveSimData();
+    save(file_name,'sim','fld')
 end
 
 

@@ -4,10 +4,13 @@
 save_data = false; % save data or not
 show_plot = false; % draw plots or not
 
-sim_len = 50; % max step
+sim_len = 10;%50; % max step
 % rounds of consensus at each time step
 cons_step=10;
 cons_fig = false; % whether to show intermediate step of consensus
+
+% Setup for multiple trials
+trial_num = 2; % 10 % number of trials to run
 
 % select the motion of agents and target
 selection = 2;
@@ -32,7 +35,7 @@ dt = 1; % discretization time interval
 
 fld_size = [100;100];  % Field size
 
-filter_type = [0 0 0]; % 1: turn on the corresponding filters. [dbf,cons,cent]
+filter_type = [1 0 0]; % 1: turn on the corresponding filters. [dbf,cons,cent]
 
 %% define target and robot positions
 % used for initialization, don't need to call again unless necessary
@@ -79,11 +82,17 @@ ty_set = [55, 49, 86, 77, 71, 9, 11, 13, 77, 90];
 % communication neighbor
 rbt_nbhd = {[2,6],[1,3],[2,4],[3,5],[4,6],[1,5]};
 
-% Setup for multiple trials
-trial_num = 1; % 10 % number of trials to run
 
-mode_num = 1;%2;
             
+mode_num = 4;
+
+u_set = [[1;1],[-1;-1],[1;-1],[-1;1]]; %inPara.u_set; 
+V_set = 0.01*eye(2);
+
+% load update matrices
+if exist('upd_matrix','var') == 0
+    load('upd_matrix.mat','upd_matrix');
+end
 
 %% Compute the sensor probility matrix
 % just a placeholder now, will see how fast the program will run without

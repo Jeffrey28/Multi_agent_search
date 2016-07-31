@@ -32,4 +32,4 @@ for mode_cnt = 1:mode_num
     upd_matrix{mode_cnt} = trans_mat;
 end
 
-save('upd_matrix.mat','upd_matrix');
+save('upd_matrix.mat','upd_matrix','-v7.3');

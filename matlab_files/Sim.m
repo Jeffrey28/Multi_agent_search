@@ -167,7 +167,7 @@ classdef Sim
             tmp_sim_res = this.sim_res;
             for jj = 1:this.trial_num
                 for ii = 1:this.num_robot
-                    display(ii)
+%                     display(ii)
                     % ml error
                     tmp_sim_res.ml_err_dbf(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.ml_err_dbf;
                     tmp_sim_res.ml_err_cons(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.ml_err_cons;
@@ -255,10 +255,6 @@ classdef Sim
             end
             
             % for consensus, we draw one robot's performance metrics.
-            
-            % for i=1:NumOfRobot
-            %     plot(1:count-2,rbt_cons(i).ml_err_cons(1:count-2),line_clr(i),'LineStyle','--','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
-            % end
             plot(1:count-2,tmp_sim_res.ml_err_cons_mean(1,1:count-2),line_clr(2),'LineStyle','--','LineWidth',2,'Marker',line_marker{2},'MarkerSize',2); hold on;
             % errorbar(1:count-2,tmp_sim_res.ml_err_cons_mean(1,1:count-2),sqrt(tmp_sim_res.ml_err_cons_cov(1,1:count-2)),...
             %     line_clr(1),'LineStyle','--','LineWidth',2,'Marker',line_marker{1},'MarkerSize',2); hold on;
@@ -278,88 +274,21 @@ classdef Sim
             set(gca,'fontsize',30)
             xlabel('Time','FontSize',30);
             ylabel('Position Error','FontSize',30);
-            
-            %{
-                switch Selection2
-                    case 1,  tag = 'sta_sen_sta_tar';
-                    case 2,  tag = 'sta_sen_mov_tar';
-                    case 3,  tag = 'mov_sen_sta_tar';
-                    case 4,  tag = 'mov_sen_mov_tar';
-                end
-                file_name2 = sprintf('./figures/data_exchange/%s_entropy_%s',tag,datestr(now,1));
-                if save_file == 1
-                    saveas(hf_err,file_name2,'fig')
-                    saveas(hf_err,file_name2,'jpg')
-                end
-            %}
-            
-            % pdf covariance norm
-            % results are hard to interpret. So just not include this figure
-            %{
-                fig_cnt = fig_cnt+1;
-                hf_cov = figure(fig_cnt);
-                line_clr = ['r','g','b','c','m','k'];
-                line_marker = {'o','*','s','d','^','h'};
-                for i=plot_rbt_idx
-                %     plot(1:count-2,rbt(i).pdf_norm_dbf(1:count-2),line_clr(i),'LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
-                    plot(1:count-2,tmp_sim_res.pdf_norm_dbf_mean(i,1:count-2),line_clr(i),'LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
-                %     errorbar(1:count-2,tmp_sim_res.pdf_norm_dbf_mean(i,1:count-2),sqrt(tmp_sim_res.pdf_norm_dbf_cov(i,1:count-2)),...
-                %         line_clr(i),'LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
-                end
-                [~, hobj2] = legend('Robot 1','Robot 2','Robot 3','Robot 4','Robot 5','Robot 6');
-                textobj = findobj(hobj2, 'type', 'text');
-                set(textobj, 'fontsize', 24);
-
-                % plot(1:count-2,rbt_cons(i).pdf_norm_cons(1:count-2),line_clr(i),'LineStyle','--','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
-                plot(1:count-2,tmp_sim_res.pdf_norm_cons_mean(1,1:count-2),line_clr(2),'LineStyle','--','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
-                % errorbar(1:count-2,tmp_sim_res.pdf_norm_cons_mean(1,1:count-2),sqrt(tmp_sim_res.pdf_norm_cons_cov(1,1:count-2)),...
-                %     line_clr(1),'LineStyle','--','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
-
-                % plot(1:count-2,rbt_cent.pdf_norm_cent(1:count-2),line_clr(i),'LineStyle','-.','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
-                plot(1:count-2,tmp_sim_res.pdf_norm_cent_mean(1:count-2),line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
-                % errorbar(1:count-2,tmp_sim_res.pdf_norm_cent_mean(1:count-2),sqrt(tmp_sim_res.pdf_norm_cent_cov(1:count-2)),...
-                %     line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
-                xlim([0,count-1])
-
-                title('Covariance of Target PDF','FontSize',30);
-                set(gca,'fontsize',30)
-                xlabel('Time','FontSize',30);
-                ylabel('Norm of Covariance Matrix','FontSize',30);
-
-
-
-            %{
-                switch Selection2
-                    case 1,  tag = 'sta_sen_sta_tar';
-                    case 2,  tag = 'sta_sen_mov_tar';
-                    case 3,  tag = 'mov_sen_sta_tar';
-                    case 4,  tag = 'mov_sen_mov_tar';
-                end
-                file_name2 = sprintf('./figures/data_exchange/%s_entropy_%s',tag,datestr(now,1));
-                if save_file == 1
-                    saveas(hf_cov,file_name2,'fig')
-                    saveas(hf_cov,file_name2,'jpg')
-                end
-            %}
-            %}
-            
+                    
             % entropy
             tmp_fig_cnt = tmp_fig_cnt+1;
             hf_ent = figure(tmp_fig_cnt);
             line_clr = ['r','g','b','c','m','k'];
             line_marker = {'o','*','s','d','^','h'};
             for ii=plot_rbt_idx
-                %     plot(1:count-2,rbt(i).entropy(1:count-2),line_clr(i),'LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
-                plot(1:count-2,tmp_sim_res.entropy_dbf_mean(ii,1:count-2),line_clr(ii),'LineWidth',2,'Marker',line_marker{ii},'MarkerSize',2); hold on;
+                plot(1:count-2,tmp_sim_res.ent_dbf_mean(ii,1:count-2),line_clr(ii),'LineWidth',2,'Marker',line_marker{ii},'MarkerSize',2); hold on;
                 %     errorbar(1:count-2,tmp_sim_res.entropy_dbf_mean(i,1:count-2),sqrt(tmp_sim_res.entropy_dbf_cov(i,1:count-2)),line_clr(i),'LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
             end
             
-            % plot(1:count-2,rbt_cons(i).entropy(1:count-2),line_clr(i),'LineStyle','--','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
-            plot(1:count-2,tmp_sim_res.entropy_cons_mean(1,1:count-2),line_clr(2),'LineStyle','--','LineWidth',2,'Marker',line_marker{2},'MarkerSize',2); hold on;
+            plot(1:count-2,tmp_sim_res.ent_cons_mean(1,1:count-2),line_clr(2),'LineStyle','--','LineWidth',2,'Marker',line_marker{2},'MarkerSize',2); hold on;
             % errorbar(1:count-2,tmp_sim_res.entropy_cons_mean(1,1:count-2),sqrt(tmp_sim_res.entropy_cons_cov(1,1:count-2)),line_clr(1),'LineStyle','--','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
             
-            % plot(1:count-2,rbt_cent.entropy(1:count-2),line_clr(i),'LineStyle','-.','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
-            plot(1:count-2,tmp_sim_res.entropy_cent_mean(1:count-2),line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{6},'MarkerSize',2); hold on;
+            plot(1:count-2,tmp_sim_res.ent_cent_mean(1:count-2),line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{6},'MarkerSize',2); hold on;
             % errorbar(1:count-2,tmp_sim_res.entropy_cent_mean(1:count-2),sqrt(tmp_sim_res.entropy_cent_cov(1:count-2)),line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
             xlim([0,count-1])
             
@@ -373,24 +302,11 @@ classdef Sim
             xlabel('Time','FontSize',30);
             ylabel('Entropy','FontSize',30);
             
-            %{
-                switch Selection2
-                    case 1,  tag = 'sta_sen_sta_tar';
-                    case 2,  tag = 'sta_sen_mov_tar';
-                    case 3,  tag = 'mov_sen_sta_tar';
-                    case 4,  tag = 'mov_sen_mov_tar';
-                end
-                file_name2 = sprintf('./figures/data_exchange/%s_entropy_%s',tag,datestr(now,1));
-                if save_file == 1
-                    saveas(hf_ent,file_name2,'fig')
-                    saveas(hf_ent,file_name2,'jpg')
-                end
-            %}
             this.sim_res = tmp_sim_res;
         end
        
-        function saveSimData(this)
-            % save the simulation data, mainly the Robot and Field objects
+        function file_name = saveSimData(this)
+            % make the file name for simulation data
             switch this.selection
                 case 1,  tag = 'sta_sen_sta_tar';
                 case 2,  tag = 'sta_sen_mov_tar';
@@ -398,10 +314,7 @@ classdef Sim
                 case 4,  tag = 'mov_sen_mov_tar';
             end
             
-            file_name = sprintf('./figures/data_exchange/Journal/%s_robot_%s.mat',tag,datestr(now,1));
-            
-            %%%%% need to revise. may not want to save upd_cell %%%%%
-            save(file_name) % save current workspace
+            file_name = sprintf('./figures/data_exchange/Journal/%s_robot_%s.mat',tag,datestr(now,1));            
         end
     end
 end
