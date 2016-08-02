@@ -8,7 +8,7 @@
 {\list\listtemplateid5\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\})}{\leveltext\leveltemplateid401\'02\'00);}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid402\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li1440\lin1440 }{\listname ;}\listid5}
 {\list\listtemplateid6\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\})}{\leveltext\leveltemplateid501\'02\'00);}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid6}}
 {\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}{\listoverride\listid4\listoverridecount0\ls4}{\listoverride\listid5\listoverridecount0\ls5}{\listoverride\listid6\listoverridecount0\ls6}}
-\margl1440\margr1440\vieww28300\viewh15160\viewkind0
+\margl1440\margr1440\vieww20680\viewh11220\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
 \f0\b\fs24 \cf0 Revision ideas
@@ -42,10 +42,13 @@ first, solve soundness problems\
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls3\ilvl0\cf0 {\listtext	1.	}modify current CDC paper and submit to ACC 17\
 \pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
-\ls3\ilvl1\cf0 {\listtext	\uc0\u8259 	}give more detailed description of simulation setup, assumption, sensor model etc.\
-{\listtext	\uc0\u8259 	}change robot to UGV\
-{\listtext	\uc0\u8259 	}use a realistic model (e.g. ultrasonic model) at the beginning and introduce the concept of probabilistic model\
+\ls3\ilvl1\cf2 {\listtext	\uc0\u8259 	}give more detailed description of simulation setup, assumption, sensor model etc.\cf0 \
+{\listtext	\uc0\u8259 	}\cf2 change robot to UGV\cf0 \
+{\listtext	\uc0\u8259 	}\cf2 use a realistic model (e.g. ultrasonic model) at the beginning and introduce the concept of probabilistic model\cf0 \
 {\listtext	\uc0\u8259 	}consider using adjacency matrix to prove, as suggested by reviewer 2 from CDC \
+{\listtext	\uc0\u8259 	}\cf2 "the main benefit of using LIFO is on the reduction of communication burden with the transmission data volume scaling linearly with the UGV number". This claim is not shown in the manuscript and not compared to existing methods to prove the reduction of communication burden.\cf0 \
+{\listtext	\uc0\u8259 	}\cf2 add target motion model\cf0 \
+{\listtext	\uc0\u8259 	}use heterogeneous sensor model in the consistency proof?\
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls3\ilvl0\cf0 {\listtext	2.	}modify for journal paper\
 \pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
@@ -53,7 +56,7 @@ first, solve soundness problems\
 {\listtext	\uc0\u8259 	}when doing simulation, consider different cases: binary sensor, range-only sensor, range-bearing sensor. also, use MobileSim to generate high-fidelity simulation results. refer to simulation part in previous note (5/17/16)\
 {\listtext	\uc0\u8259 	}consider the case when the total number of UGVs are unknown (LIFO is okay, but DBF may be an issue. refer to Leung\'92s paper to see how they deal with this issue).\
 {\listtext	\uc0\u8259 	}think if I can prove consistency for moving target case\
-{\listtext	\uc0\u8259 	}solve issues in 5/17/16 note and following issues.\
+{\listtext	\uc0\u8259 	}solve issues in 5/17/16 note, the following issues and the ones from CDC reviewers.\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 
