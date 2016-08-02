@@ -253,18 +253,18 @@ We can use a likelihood function to represent the probability of the target bein
 %\end{equation}\normalsize
 %where $p_{i,k}=P(z^i_k=1|x^g_k;x^R_k)$; $x^g_k$ and $x^R_k$ denote the target and UGV position at $k$, respectively.
 \small\begin{equation}\label{eqn:bin_sensor1}
-P(z^i_k=1|x^g_k;x^{R,i}_k)\in \left[0,1\right],\; x^g_k\in S
+P(z^i_k=1|x^g_k;x^i_k)\in \left[0,1\right],\; x^g_k\in S
 \end{equation}\normalsize
-where $x^{R,i}_k$ is the $i^\text{th}$ sensor's position.
+where $x^i_k$ is the $i^\text{th}$ sensor's position.
 %; $X^g$ represents the set of all possible target positions.
 Correspondingly, the likelihood function that no target is detected is:
 \small\begin{equation}\label{eqn:bin_sensor0}
-P(z^i_k=0|x^g_k;x^{R,i}_k)=1-P(z^i_k=1|x^g_k;x^{R,i}_k)
+P(z^i_k=0|x^g_k;x^{i}_k)=1-P(z^i_k=1|x^g_k;x^{i}_k)
 \end{equation}\normalsize
 %\Cref{eqn:bin_sensor} actually defines a binary sensor model parameterized by $x^g_k$ and $x^R_k$.
 The combination of \Cref{eqn:bin_sensor1} and \Cref{eqn:bin_sensor0} forms the probabilistic model for a binary sensor.
-% parameterized by $x^g_k$ and $x^{R,i}_k$. 
-For the purpose of simplicity, we will not explicitly write $x^{R,i}_k$ when no confusion may occur.
+% parameterized by $x^g_k$ and $x^i_k$. 
+For the purpose of simplicity, we will not explicitly write $x^{i}_k$ when no confusion may occur.
 %, with which all observations are generated. 
 The commonly used likelihood functions for binary sensors include Gaussian function \cite{bonnie2012modelling,liu2015model} and step function \cite{djuric2008target}.
 
@@ -378,9 +378,10 @@ The theoretical analysis show that LIFO-DBF can ensure the consistency and conse
 \subsection{Latest-In-and-Full-Out (LIFO) Protocol}\label{subsec:LIFO}
 Under LIFO, each UGV contains a communication buffer (CB) to store its latest knowledge of observations of all UGVs: 
 \begin{equation*}
-\mathbf{z}^{CB,i}_k=\left[ z^1_{k^i_1},\dots,z^N_{k^i_N}\right]
+\mathbf{z}^{CB,i}_k=\left[ z^1_{k^i_1},\dots,z^N_{k^i_N},x^1_{k^i_1},\dots,x^N_{k^i_N}\right]
 \end{equation*}
-where $z^j_{k^i_j}$ represents the observation made by ${j^\text{th}}$ UGV at time $k^i_j$. 
+where $z^j_{k^i_j}$ represents the observation made by ${j^\text{th}}$ UGV at time $k^i_j$ and $x^j_{k^i_j}$ denotes the sensor position when the associated measurement $z^j_{k^i_j}$ is made. 
+We will not explicitly write $\left[x^1_{k^i_1},\dots,x^N_{k^i_N}\right]$ in $\mathbf{z}^{CB,i}_k$ for the rest of the paper for the purpose of simplicity.
 Note that under LIFO, $\mathcal{Q}_i=\left\lbrace 1,\dots,N\right\rbrace \setminus \left\lbrace i\right\rbrace$, which will be proved in \Cref{cor1}.
 At time $k$, $z^j_{k^i_j}$ is received and stored in ${i^\text{th}}$ UGV CB, in which $k^i_j$ is the latest observation time of ${j^\text{th}}$ UGV available to ${i^\text{th}}$ UGV. Due to the communication delay, $k^i_j<k, \forall j\neq i$ and $k^i_i=k$ always holds.
 The \textbf{LIFO protocol} is stated in \cref{alg:lifo}.
@@ -498,6 +499,7 @@ Two facts can be noticed in \cref{fig:LIFO}: (1) all UGV CBs are filled within 3
 \begin{prop}\label{prop1}
 For a fixed and undirected network of $N$ UGVs, LIFO uses the shortest path(s) between $i^\text{th}$ and $j^\text{th}$ UGV to exchange observation, the length of which is the delay $\tau_{i,j}$ between these two UGVs.
 \end{prop}
+\todonote{use M matrix to prove}
 \begin{proof} 
 Without loss of generality, assume that there is a unique shortest path between $i$ and $j$, denoted by $T^{j,i}_{n^*}=\left(v_1,\dots,v_{n^*}\right)$, with $v_1=j,v_{n^*}=i,v_{m+1}\in\mathcal{N}_{v_m}$. 
 Then, the distance between $i$ and $j$ is $d(j,i)=n^*-1$. 
@@ -541,6 +543,7 @@ Therefore, based on \Cref{prop1}, $\tau_{i,j}$ is constant and the updating of e
 \subsection{Algorithm of LIFO-DBF for Static Target}\label{subsec:LIFO-dbf-sta-tar} 
 
 This section derives the LIFO-DBF algorithm for localizing a static target. 
+It is assumed that, all UGV know the sensor models of other UGVs.
 Each UGV stores last-step individual PDF, i.e., $P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k-1})$. 
 According to \Cref{cor2}, $\mathbf{z}^i_k=\mathbf{z}^{CB,i}_k$ and $\mathbf{z}^{i}_{1:k}=\mathbf{z}^{CB,i}_{1:k}=\left[ z^1_{1:k^i_1},\dots,z^N_{1:k^i_N}\right]$.
 The assumption of static target can simplify the Bayesian filter as the prediction step becomes unnecessary. 
@@ -650,15 +653,15 @@ The \textbf{LIFO-DBF algorithm} for moving target is then stated in \cref{alg:li
 \end{rem}
 
 \section{Proof of Consistency}\label{sec:consist_proof} %and Consensus
-This section proves the consistency of LIFO-DBF. 
+This section proves the consistency of LIFO-DBF under a general assumption of sensors, i.e. a set of heterogeneous sensors. 
 Only proofs for localizing a static target are presented, including static UGVs and moving UGVs.
 The proof of LIFO-DBF for localizing a moving target is similar but requires extra algebraic manipulation, which is omitted due to space limit.
 
-%Considering $S$ is finite and $x^{T^*}$ is the true location of target, define an \textit{equivalent-location} set $x^g_{eq}\subseteq S$ such that 
+%Considering $S$ is finite and $x^{g^*}$ is the true location of target, define an \textit{equivalent-location} set $x^g_{eq}\subseteq S$ such that 
 %\small\begin{equation*}
-%x^g_{eq}=\left\lbrace x^g\in S\arrowvert P(z_k|x^{T})=P(z_k|x^{T^*}),\; \forall z_k\in \left\lbrace 0,1\right\rbrace\right\rbrace ,
+%x^g_{eq}=\left\lbrace x^g\in S\arrowvert P(z_k|x^{T})=P(z_k|x^{g^*}),\; \forall z_k\in \left\lbrace 0,1\right\rbrace\right\rbrace ,
 %\end{equation*}\normalsize
-%i.e., $x^g\in x^g_{eq}$ gives the same observation likelihood as $x^{T^*}$ for given UGV positions.
+%i.e., $x^g\in x^g_{eq}$ gives the same observation likelihood as $x^{g^*}$ for given UGV positions.
 %%for any two parameters in $x^g_{eq}$, the sensor model with one of these two parameters generates equivalent probability value for the same observation $z_k$
 %Since $S$ is finite, $x^g_{eq}$ is also finite. 
 %%Let $x^g_{eq,1},\dots,x^g_{eq,u}$ denote all equi-parameter sets that partition $X^g$ such that following properties hold:
@@ -666,7 +669,7 @@ The proof of LIFO-DBF for localizing a moving target is similar but requires ext
 %%	\item $\bigcup^u_{i=1} x^g_{eq,i}= X^g$
 %%	\item $x^g_{eq,i}\cap x^g_{eq,j}=\emptyset,\;i,j\in \left\lbrace 1,\dots,u\right\rbrace ,i\neq j.$
 %%\end{enumerate}
-%%Without loss of generality, assume $x^{T^*}\in x^g_{eq,1}$, where $x^{T^*}$ denotes the actual position of the target. 
+%%Without loss of generality, assume $x^{g^*}\in x^g_{eq,1}$, where $x^{g^*}$ denotes the actual position of the target. 
 %
 %%\todohere{double check if the following examples for equi-parameter set are accurate}
 %
@@ -723,14 +726,14 @@ The proof of LIFO-DBF for localizing a moving target is similar but requires ext
 \end{algorithm}
 
 \subsection{Proof for static UGVs}
-Considering $S$ is finite and $x^{T^*}$ is the true location of target, the consistency of LIFO-DBF for static UGVs is stated as follows: 
+Considering $S$ is finite and $x^{g^*}$ is the true location of target, the consistency of LIFO-DBF for static UGVs is stated as follows: 
 %\todohere{converge to a set or treat the PDF as a r.v.?}
 \begin{thm}\label{thm:LIFO-dbf-sta-tar}
 	When UGVs are static, the estimated target position converges to the true position of target in probability using LIFO-DBF, i.e.,
 %	the set of estimated target position of each UGV converges to $ x^g_{eq}$ in probability using LIFO-DBF when the number of observations tends to infinity, i.e.,
 	\small\begin{equation*}
 	\lim\limits_{k\rightarrow \infty}
-	P(x^g=x^{T^*}|\mathbf{z}^{i}_{1:k})=
+	P(x^g=x^{g^*}|\mathbf{z}^{i}_{1:k})=
 %	\begin{cases}
 %	1 & \text{if}\; i=1\\
 %	0 & \text{if}\; i\neq 1
@@ -753,24 +756,24 @@ where $P^i_{pdf}$ is $i^\text{th}$ initial individual PDF.
 It is known from \Cref{cor1} and \Cref{cor2} that $k-N<k^i_j\leq k$.
 \addtocounter{equation}{-1}\\
 
-Comparing $P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})$ with $P^i_{pdf}(x^{T^*}|\mathbf{z}^{i}_{1:k})$ yields
+Comparing $P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})$ with $P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})$ yields
 \small\begin{equation}\label{eqn:cmp}
-\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^{i}_{1:k})}=\frac{P^i_{pdf}(x^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g)}{P^i_{pdf}(x^{T^*})\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^{T^*})}
+\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}=\frac{P^i_{pdf}(x^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g)}{P^i_{pdf}(x^{g^*})\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^{g^*})}.
 \end{equation}\normalsize
 
 Take the logarithm of \Cref{eqn:cmp} and average it over $k$ steps:
 \small\begin{equation}\label{eqn:cmp_log}
- \frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^{i}_{1:k})}=\frac{1}{k}\ln\frac{P^i_{pdf}(x^g)}{P^i_{pdf}(x^{T^*})}+\sum\limits_{j=1}^{N}\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{T^*})}.
+ \frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}=\frac{1}{k}\ln\frac{P^i_{pdf}(x^g)}{P^i_{pdf}(x^{g^*})}+\sum\limits_{j=1}^{N}\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}.
 \end{equation}\normalsize
 
-Since $P^i_{pdf}(x^g)$ and $P^i_{pdf}(x^{T^*})$ are bounded, then
+Since $P^i_{pdf}(x^g)$ and $P^i_{pdf}(x^{g^*})$ are bounded, then
 \small\begin{equation}\label{eqn:cmp_lim1}
-\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g)}{P^i_{pdf}(x^{T^*})}= 0.
+\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g)}{P^i_{pdf}(x^{g^*})}= 0.
 \end{equation}\normalsize
 
 The binary observations subject to Bernoulli distribution $B(1,p_j)$, yielding
 \small\begin{equation*}
-P(z^j_l|x^g)=p^{z^j_l}_j(1-p_j)^{1-z^j_l}
+P(z^j_l|x^g)=p^{z^j_l}_j(1-p_j)^{1-z^j_l},
 \end{equation*}\normalsize
 where $p_j=P(z^j_l=1|x^g)$. 
 Utilizing the facts: (1) $z^j_l$ are conditionally independent samples from $B(1,p_j^*)$ and (2) $k-N<k^i_j\leq k$, the law of large numbers yields
@@ -778,13 +781,13 @@ Utilizing the facts: (1) $z^j_l$ are conditionally independent samples from $B(1
 %\lim\limits_{k\rightarrow \infty}
 \frac{1}{k}\sum\limits_{l=1}^{k^i_j}z^j_l\overset{P}{\longrightarrow}p^*_j,\quad 
 %\lim\limits_{k\rightarrow\infty}
-\frac{1}{k}(k^i_j-\sum\limits_{l=1}^{k^i_j}z^j_l)\overset{P}{\longrightarrow}1-p^*_j
+\frac{1}{k}(k^i_j-\sum\limits_{l=1}^{k^i_j}z^j_l)\overset{P}{\longrightarrow}1-p^*_j,
 \end{equation*}\normalsize
-where $p_j^*=P(z^j_l=1|x^{T^*})$ and ``$\overset{P}{\longrightarrow}$" denotes ``convergence in probability''.
+where $p_j^*=P(z^j_l=1|x^{g^*})$ and ``$\overset{P}{\longrightarrow}$" denotes ``convergence in probability''.
 Then, 
 \small\begin{equation}\label{eqn:cmp_lim2}
 %\lim\limits_{k\rightarrow \infty}
-\frac{1}{k}\sum\limits_{l=1}^{k_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{T^*})}\overset{P}{\longrightarrow}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln \frac{1-p_j}{1-p^*_j}
+\frac{1}{k}\sum\limits_{l=1}^{k_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}\overset{P}{\longrightarrow}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln \frac{1-p_j}{1-p^*_j}.
 \end{equation}\normalsize
 
 Note that the right-hand side of \Cref{eqn:cmp_lim2} achieves maximum value 0 if and only if $p_j=p_j^*$. 
@@ -796,26 +799,26 @@ c(x^g)=\sum\limits_{j=1}^{N}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln\frac{1-p_j}{
 Considering \Cref{eqn:cmp_lim1} and \Cref{eqn:cmp_lim2}, the limit of \Cref{eqn:cmp_log} is
 \small \begin{equation}\label{eqn:lim}
 % \lim\limits_{k\rightarrow \infty}
- \frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^{i}_{1:k})}\overset{P}{\longrightarrow}c(x^g)
+ \frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}\overset{P}{\longrightarrow}c(x^g)
 % \sum\limits_{j=1}^{N}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln \frac{1-p_j}{1-p^*_j}
 \end{equation}\normalsize
  
 It follows from \Cref{eqn:lim} that
 \small\begin{equation}\label{eqn:lim2}
-\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^{i}_{1:k})e^{c(x^g)k}}\overset{P}{\longrightarrow}1
+\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})e^{c(x^g)k}}\overset{P}{\longrightarrow}1.
 \end{equation}\normalsize
 
-Define the set $\bar{X}^T=S\setminus \left\lbrace x^{T^*}\right\rbrace$ and $c_M=\max\limits_{x^g\in\bar{X}^T}c(x^g)$.
+Define the set $\bar{X}^T=S\setminus \left\lbrace x^{g^*}\right\rbrace$ and $c_M=\max\limits_{x^g\in\bar{X}^T}c(x^g)$.
 Then $c_M<0$.
 Summing \Cref{eqn:lim2} over $\bar{X}^T$ yields
 \small\begin{equation}\label{eqn:lim3}
-\frac{\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})e^{\left[c_M-c(x^g)\right]k}}{{P^i_{pdf}(x^{T^*}|\mathbf{z}^{i}_{1:k})}e^{c_Mk}}\overset{P}{\longrightarrow} |\bar{X}^T|
+\frac{\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})e^{\left[c_M-c(x^g)\right]k}}{{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}e^{c_Mk}}\overset{P}{\longrightarrow} |\bar{X}^T|,
 \end{equation}\normalsize
 where $|\bar{X}^T|$ denotes the cardinality of $\bar{X}^T$.
 
-Since $c_M<0$,  ${P^i_{pdf}(x^{T^*}|\mathbf{z}^{i}_{1:k})}e^{c_Mk}{\longrightarrow}0$, \Cref{eqn:lim3} implies
+Since $c_M<0$,  ${P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}e^{c_Mk}{\longrightarrow}0$, \Cref{eqn:lim3} implies
 \begin{equation}\label{eqn:lim4}
-\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})e^{\left[c_M-c(x^g)\right]k}\overset{P}{\longrightarrow}0
+\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})e^{\left[c_M-c(x^g)\right]k}\overset{P}{\longrightarrow}0.
 \end{equation}
 
 Utilizing the relation 
@@ -824,27 +827,26 @@ Utilizing the relation
 \end{equation*}
 it can be derived from \Cref{eqn:lim4} that
 \small\begin{equation*}
-\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})\overset{P}{\longrightarrow} 0
+\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})\overset{P}{\longrightarrow} 0.
 \end{equation*}\normalsize
-
 Therefore,
 \small\begin{equation*}
 	\lim\limits_{k\rightarrow \infty}
-	P(x^g=x^{T^*}|\mathbf{z}^{i}_{1:k})=1-\lim\limits_{k\rightarrow \infty}\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})=1
+	P(x^g=x^{g^*}|\mathbf{z}^{i}_{1:k})=1-\lim\limits_{k\rightarrow \infty}\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})=1.
 \end{equation*}\normalsize
 %\begin{enumerate}
 %	\item When $p_j\neq p^*_j$, i.e., $x^g\notin x^g_{eq}$,
 %	\begin{align*}
-%%		\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^i_{1:k})} & <0,
+%%		\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^i_{1:k})} & <0,
 %		\sum\limits_{j=1}^{N}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln \frac{1-p_j}{1-p^*_j} & <0,
 %		\;\text{thus }\\
-%		\lim\limits_{k\rightarrow \infty}\frac{P^i_{pdf}(x^g|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^i_{1:k})} & =0
+%		\lim\limits_{k\rightarrow \infty}\frac{P^i_{pdf}(x^g|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^i_{1:k})} & =0
 %	\end{align*}	
 %	\item When $p_j= p^*_j$, i.e., $x^g\in x^g_{eq}$, \begin{align*}
-%%	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^i_{1:k})} & =0,
+%%	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^i_{1:k})} & =0,
 %	\sum\limits_{j=1}^{N}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln \frac{1-p_j}{1-p^*_j} & = 0,
 %	\;\text{thus }\\
-%	\lim\limits_{k\rightarrow \infty}\frac{P^i_{pdf}(x^g|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^i_{1:k})} & =1
+%	\lim\limits_{k\rightarrow \infty}\frac{P^i_{pdf}(x^g|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^i_{1:k})} & =1
 %	\end{align*}
 %\end{enumerate}
 \end{proof}
@@ -868,12 +870,12 @@ Let $n^{i,k}_j$ denote the times that $i^\text{th}$ UGV visits $j^\text{th}$ pos
 %	the probability of estimated target position belonging to $ x^g_{eq}$ converges to one, i.e.,
 %	the set of estimated target position of each UGV converges to $x^g_{eq}$ in probability using LIFO-DBF when the number of observations tends to infinity, i.e.,
 	\small\begin{equation*}
-		\lim\limits_{k\rightarrow \infty}P(x^g=x^{T^*}|\mathbf{z}^i_{1:k})=
+		\lim\limits_{k\rightarrow \infty}P(x^g=x^{g^*}|\mathbf{z}^i_{1:k})=
 %		\begin{cases}
 %		1 & \text{if}\; i=1\\
 %		0 & \text{if}\; i\neq 1
 %		\end{cases},\;
-		1,\;i=1,\dots,N
+		1,\;i=1,\dots,N.
 	\end{equation*}\normalsize
 %	where $\mathbf{z}^i_{1:k}=\left[z^1_{1:k^i_1},\dots,z^N_{1:k^i_N}\right]$.
 %	, $\left\lbrace k_1,\dots,k_N\right\rbrace$ are the timestamps of $i^\text{th}$ UGV's latest knowledge of all UGVs' observations.
@@ -883,7 +885,7 @@ Let $n^{i,k}_j$ denote the times that $i^\text{th}$ UGV visits $j^\text{th}$ pos
 %Let $M^i\subseteq\left\lbrace 1,\dots,k_j\right\rbrace\times X^R $ denote the set of pair $(k,x^R)$ to indicate $j^\text{th}$ UGV's position at the corresponding time of observation.
 Similar to \Cref{thm:LIFO-dbf-sta-tar}, the batch form of DBF at $k^\text{th}$ step is
 \small\begin{equation}\label{eqn:cmp2}
-\frac{P^i_{pdf}(x^g|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{T^{*}}|\mathbf{z}^i_{1:k})}=\frac{P^i_{pdf}(x^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g;x^R_l)}{P^i_{pdf}(x^{T^{*}})\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^{T^{*}};x^R_l)}
+\frac{P^i_{pdf}(x^g|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{T^{*}}|\mathbf{z}^i_{1:k})}=\frac{P^i_{pdf}(x^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g;x^R_l)}{P^i_{pdf}(x^{T^{*}})\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^{T^{*}};x^R_l)}.
 \end{equation}\normalsize
 
 The only difference from \Cref{eqn:cmp} is that $P(z^j_l|x^g;x^R_l)$ in \Cref{eqn:cmp2} varies as the UGV moves.
@@ -984,9 +986,9 @@ The probabilistic sensor model, \cref{eqn:bin_sensor1,eqn:bin_sensor0}, takes th
 %\small\begin{align}\label{eqn:gauss_sensor}
 \small\begin{subequations}\label{eqn:gauss_sensor}
 	\begin{align}
-		P(z^i_k=1|x_k^g;x_k^{R,i})&=e^{-\frac{1}{2}(x_k^g-x_k^{R,i})^T{\Sigma}^{-1}(x_k^g-x_k^{R,i})}\\
+		P(z^i_k=1|x_k^g;x_k^i)&=e^{-\frac{1}{2}(x_k^g-x_k^i)^T{\Sigma}^{-1}(x_k^g-x_k^i)}\\
 %		\exp\left\lbrace -\frac{1}{2}(x^g-x^R)^T{\Sigma}^{-1}(x^g-x^R)\right\rbrace \\
-		P(z^i_k=0|x_k^g;x_k^{R,i})&=1-P(z^i_k=1|x_k^g;x_k^{R,i}),
+		P(z^i_k=0|x_k^g;x_k^i)&=1-P(z^i_k=1|x_k^g;x_k^i),
 	\end{align}
 \end{subequations}\normalsize
 which reflects the fact that target detection becomes more probable as the UGV approaches the target position.
