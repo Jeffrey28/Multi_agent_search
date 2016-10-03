@@ -71,11 +71,6 @@ L.~Zuo, K.~Mehrotra, P.~K. Varshney, and C.~K. Mohan, ``Bandwidth-efficient
   target tracking in distributed sensor networks using particle filters,'' in
   \emph{Information Fusion, 2006 9th International Conference on}.
 
-\bibitem{vemula2006target}
-M.~Vemula, M.~F. Bugallo, and P.~M. Djuri{\'c}, ``Target tracking in a
-  two-tiered hierarchical sensor network,'' in \emph{Acoustics, Speech and
-  Signal Processing, 2006. IEEE International Conference on}, vol.~4.
-
 \bibitem{hlinka2013distributed}
 O.~Hlinka, F.~Hlawatsch, and P.~M. Djuric, ``Distributed particle filtering in
   agent networks: A survey, classification, and comparison,'' \emph{Signal
@@ -141,6 +136,11 @@ C.~Liu, S.~E. Li, and J.~K. Hedrick, ``Model predictive control-based
 P.~M. Djuri{\'c}, M.~Vemula, and M.~F. Bugallo, ``Target tracking by particle
   filtering in binary sensor networks,'' \emph{Signal Processing, IEEE
   Transactions on}, vol.~56, no.~6, pp. 2229--2238, 2008.
+
+\bibitem{bourgault2003optimal}
+F.~Bourgault, T.~Furukawa, and H.~F. Durrant-Whyte, ``Optimal search for a lost
+  target in a bayesian world,'' in \emph{Field and service robotics}.\hskip 1em
+  plus 0.5em minus 0.4em\relax Springer, 2003, pp. 209--222.
 
 \bibitem{lawton2003decentralized}
 J.~R. Lawton, R.~W. Beard, and B.~J. Young, ``A decentralized approach to
