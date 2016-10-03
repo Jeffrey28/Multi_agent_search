@@ -317,7 +317,8 @@ classdef Robot
         end
         
         function this = updMap(this,inPara)
-            % update own map using its own measurement
+            % update own map using its own measurement, used for consensus
+            % and centralized filters
             selection = inPara.selection;
             
             % consensus map

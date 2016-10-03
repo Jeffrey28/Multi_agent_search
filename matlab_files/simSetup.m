@@ -2,18 +2,18 @@
 
 %% %%%%%%% General Setup %%%%%%%%%%
 save_data = false; % save data or not
-show_plot = false; % draw plots or not
+show_plot = true; %false; % draw plots or not
 
-sim_len = 10;%50; % max step
+sim_len = 30;%50; % max step
 % rounds of consensus at each time step
-cons_step=10;
+cons_step = 10;
 cons_fig = false; % whether to show intermediate step of consensus
 
 % Setup for multiple trials
 trial_num = 2; % 10 % number of trials to run
 
 % select the motion of agents and target
-selection = 2;
+selection = 1;
 switch selection
     case 1,  r_move= 0; tar_move=0;
     case 2,  r_move= 0; tar_move=1;

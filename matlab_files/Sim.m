@@ -12,6 +12,7 @@ classdef Sim
         trial_num;
         selection;
         rbt_set; % record all rbt objects
+        fld_set; % record all field objects
         sim_res; % records the metrics of different filtering methods
         fig_cnt; % counter for figure
     end
@@ -34,7 +35,7 @@ classdef Sim
         
         function plotSim(this,rbt,fld,count)
             % Plotting for simulation process
-            tmp_fig_cnt = sim.fig_cnt;
+            tmp_fig_cnt = this.fig_cnt;
             %% LIFO-DBF
             %
             % plot figures for selected robots
@@ -72,7 +73,7 @@ classdef Sim
             
             %% Consensus
             % plot figures for selected robots
-            %
+            %{
             for k = 1:tihs.sim_r_idx
                 tmp_fig_cnt = tmp_fig_cnt+1;
                 tmp_hd = figure (tmp_fig_cnt); % handle for plot of a single robot's target PDF
@@ -107,7 +108,7 @@ classdef Sim
             %}
             
             %% Centralized
-            %
+            %{
             % plot figures for central map
             tmp_fig_cnt = tmp_fig_cnt+1;
             tmp_hd = figure (tmp_fig_cnt); % handle for plot of a single robot's target PDF

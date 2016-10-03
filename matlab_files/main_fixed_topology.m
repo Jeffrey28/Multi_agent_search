@@ -17,6 +17,8 @@
 % 7/23/16
 % continued re-writing the code in OOP. the paper based on this code got
 % rejected in CDC 16
+% 10/3/16
+% continued debugging the code. will implement different sensor model
 
 % main function for running the simulation
 clear; clc; close all
@@ -61,8 +63,8 @@ for trial_cnt = 1:trial_num
         for rbt_cnt = 1:num_robot
             inPara_rbt = struct;
             inPara_rbt.pos = rbt_spec(rbt_cnt).init_pos(:,trial_cnt);
-            inPara_rbt.sen_cov = 49*eye(2);%rbt_spec(rbt_cnt).sen_cov;
-            inPara_rbt.inv_sen_cov = 0.02*eye(2);%rbt_spec(rbt_cnt).inv_sen_cov;
+            inPara_rbt.sen_cov = 100*eye(2);%rbt_spec(rbt_cnt).sen_cov;
+            inPara_rbt.inv_sen_cov = 0.01*eye(2);%rbt_spec(rbt_cnt).inv_sen_cov;
             inPara_rbt.sen_offset = 0; %rbt_spec(rbt_cnt).sen_offset;
             inPara_rbt.fld_size = fld_size;
             inPara_rbt.max_step = sim_len;
@@ -106,7 +108,7 @@ for trial_cnt = 1:trial_num
         % own measurement
         
         for ii = 1:num_robot
-            rbt{ii}.step_cnt = count;            
+            rbt{ii}.step_cnt = count;
             % observe
             rbt{ii} = rbt{ii}.sensorGen(fld); % simulate the sensor measurement
                         
@@ -136,6 +138,7 @@ for trial_cnt = 1:trial_num
         end    
 
          %% Concensus        
+         %
          % update own map using own measurement
          for ii = 1:num_robot  
              inPara4 = struct('selection',selection);
@@ -157,8 +160,10 @@ for trial_cnt = 1:trial_num
              rbt = tmp_rbt_cons;
              cons_cnt = cons_cnt + 1;
          end         
+         %}
         
          %% centeralized filter
+         %
          % use the first robot as the centralized filter
          rbt{1}.buffer_cent.pos = [];
          this.buffer_cent.z = [];
@@ -175,6 +180,7 @@ for trial_cnt = 1:trial_num
          inPara6.selection = selection;
          
          rbt{1} = rbt{1}.CF(inPara6);
+         %}
          
          %% draw current step
          % draw plot
@@ -202,92 +208,37 @@ for trial_cnt = 1:trial_num
                  rbt{ii} = rbt{ii}.robotMove();
              end
          end
+         
+         %% compute metrics
+         for ii = 1:num_robot
+             rbt{ii} = rbt{ii}.computeMetrics(fld,'dbf');
+             rbt{ii} = rbt{ii}.computeMetrics(fld,'cons');
+             rbt{ii} = rbt{ii}.computeMetrics(fld,'cent');
+         end
     end
-    
-    %% compute metrics
-    for ii = 1:num_robot
-        rbt{ii} = rbt{ii}.computeMetrics(fld,'dbf');
-        rbt{ii} = rbt{ii}.computeMetrics(fld,'cons');
-        rbt{ii} = rbt{ii}.computeMetrics(fld,'cent');
-    end
-    
-    
-    %% Centralized
-    % use rbt{1} to act as the centralized filter
-    %{
-    count = 1;
-    while(1)
-        %% target moves
-        fld = fld.targetMove();
         
-        %% filtering
-        % Bayesian Updating steps:
-        % (1) observe and update the stored own observations at time k
-        % (2) exchange and update stored observations
-        % (3) update probability map
-        % (4) repeat step (1)
-        for ii = 1:num_robot
-            % step 1
-            % observe
-            rbt{ii} = rbt{ii}.sensorGen(fld); % simulate the sensor measurement
-            
-            % update own observation
-            inPara1 = struct('selection',selection);
-            rbt{ii} = rbt{ii}.updOwnMsmt(inPara1);
-            
-            % step 2
-            inPara2 = struct;
-            inPara2.selection = selection;
-            inPara2.rbt_nbhd_set = rbt(rbt{ii}.nbhd_idx);
-            rbt{ii} = rbt{ii}.dataExch(inPara2);
-            
-            % step 3
-            inPara3 = struct('selection',selection);
-            rbt{ii} = rbt{ii}.DBF(inPara3);
-        end
-        
-        %% draw current step
-        % draw plot
-        if show_plot
-            sim.plotStim(rbt,fld,trial_cnt);
-        end
-        
-        %% compute metrics
-        rbt{ii} = rbt{ii}.computeMetrics();
-        %% go to next iteration
-        for ii = 1:num_robot
-            rbt{ii} = rbt{ii}.stepUpdate;
-        end
-        
-        if count > sim_len
-            break
-        end
-    end
-    %}
-    
     sim.rbt_set{trial_cnt}.rbt = rbt;
+    sim.fld_set{trial_cnt}.fld = fld;
     
-    %% target moves
-    if tar_move == 1
-        fld = fld.targetMove();
-    end
-    
-    %% robot moves
-    if r_move == 1
-        for ii = 1:num_robot
-            rbt{ii} = rbt{ii}.robotMove();
-        end
-    end
+%     %% target moves
+%     if tar_move == 1
+%         fld = fld.targetMove();
+%     end
+%     
+%     %% robot moves
+%     if r_move == 1
+%         for ii = 1:num_robot
+%             rbt{ii} = rbt{ii}.robotMove();
+%         end
+%     end
 end
 
 %% %%%%%%%%%%%%%%%%%%%%%% Simulation Results %%%%%%%%%%%%%%%%%%%%%%
-% compare the performance of different methods
+% % compare the performance of different methods
 met = sim.compareMetrics();
-
-% save data (workspace)
-if save_data
-    file_name = sim.saveSimData();
-    save(file_name,'sim','fld')
-end
-
-
+% 
+% % save data (workspace)
+% if save_data
+%     file_name = sim.saveSimData();
+%     save(file_name,'sim','fld')
+% end
