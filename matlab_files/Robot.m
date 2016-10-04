@@ -65,18 +65,20 @@ classdef Robot
     
     methods
         function this = Robot(inPara)
-            this.pos = inPara.pos;
-            this.traj = inPara.pos;
+%             this.pos = inPara.pos;
+%             this.traj = inPara.pos;
             this.upd_matrix = inPara.upd_matrix; %%% can precompute this term and pass the lookup table to this constructor function
             this.idx = inPara.idx;
             if inPara.r_move == 0
                 this.pos = inPara.pos; % sensor position
+                this.traj = this.pos;
             elseif inPara.r_move == 1
                 this.T = 20; % period of circling motion
                 this.center = inPara.center;
                 this.r = inPara.r; %15;
                 this.w = 2*pi/this.T;
-                this.pos = [inPara.center(1);inPara.center(1)+this.r]; % initial position is at the top of the circle
+                this.pos = [inPara.center(1);inPara.center(2)+this.r]; % initial position is at the top of the circle
+                this.traj = this.pos;
             end
             this.sen_cov = inPara.sen_cov;
             this.inv_sen_cov = inPara.inv_sen_cov;
@@ -426,17 +428,17 @@ classdef Robot
             end
             this.cons_map = this.cons_map/sum(sum(this.cons_map));
             
-            % centralized map
-            if (selection == 1) || (selection == 3)
-                this.cent_map = this.cent_map.*this.lkhd_map;
-            elseif (selection == 2) || (selection == 4)
-                upd_matrix = this.upd_matrix{1};
-                tmp_map = (this.cent_map)';
-                tmp_map2 = upd_matrix*tmp_map(:);
-                tmp_map = (reshape(tmp_map2,size(tmp_map)))';
-                this.cent_map = tmp_map.*this.lkhd_map;
-            end
-            this.cent_map = this.cons_map/sum(sum(this.cent_map));
+%             % centralized map
+%             if (selection == 1) || (selection == 3)
+%                 this.cent_map = this.cent_map.*this.lkhd_map;
+%             elseif (selection == 2) || (selection == 4)
+%                 upd_matrix = this.upd_matrix{1};
+%                 tmp_map = (this.cent_map)';
+%                 tmp_map2 = upd_matrix*tmp_map(:);
+%                 tmp_map = (reshape(tmp_map2,size(tmp_map)))';
+%                 this.cent_map = tmp_map.*this.lkhd_map;
+%             end
+%             this.cent_map = this.cent_map/sum(sum(this.cent_map));
         end
         
         function this = cons(this,inPara)
@@ -542,7 +544,9 @@ classdef Robot
             
             selection = inPara.selection;
             if (selection == 1) || (selection == 3)
-                this.cent_map = this.cent_map.*this.lkhd_map;
+                for ii = 1:this.num_robot
+                    this.cent_map = this.cent_map.*this.buffer_cent.lkhd_map{ii};
+                end
             elseif (selection == 2) || (selection == 4)
                 % prediction step
                 upd_matrix = this.upd_matrix{1};
@@ -551,9 +555,12 @@ classdef Robot
                 tmp_map = reshape(tmp_map2,size(tmp_map));
                 
                 % update step
-                this.cent_map = tmp_map.*this.lkhd_map;
+                for ii = 1:this.num_robot
+                    tmp_map = tmp_map.*this.buffer_cent.lkhd_map{ii};
+                end
+                this.cent_map = tmp_map;
             end
-            this.cent_map = this.cons_map/sum(sum(this.cent_map));            
+            this.cent_map = this.cent_map/sum(sum(this.cent_map));            
             
             
 %             tmp_cent_map = rbt_cent.map;
@@ -582,7 +589,10 @@ classdef Robot
                 
         %% robot motion
         function this = robotMove(this)
-            % needs to write up
+            tmp_angl = atan2(this.pos(2)-this.center(2),this.pos(1)-this.center(1));
+            tmp_angl = tmp_angl+this.w;
+            this.pos = this.r*[cos(tmp_angl);sin(tmp_angl)]+this.center;
+            this.traj = [this.traj,this.pos];
         end
         
         %% metrics

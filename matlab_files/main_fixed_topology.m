@@ -69,7 +69,7 @@ for trial_cnt = 1:trial_num
             inPara_rbt.sen_offset = 0; %rbt_spec(rbt_cnt).sen_offset;
             inPara_rbt.cov_ran = 1;
             inPara_rbt.dist_ran = 10;
-            inPara_rbt.cov_brg = 0.01;
+            inPara_rbt.cov_brg = 0.25;
             inPara_rbt.fld_size = fld_size;
             inPara_rbt.max_step = sim_len;
             inPara_rbt.nbhd_idx = rbt_nbhd{rbt_cnt};
@@ -82,20 +82,30 @@ for trial_cnt = 1:trial_num
     elseif r_move == 1
         for rbt_cnt = 1:num_robot
             inPara_rbt = struct;
-            inPara_rbt.center = rbt_spec.init_pos(:,rbt_cnt);
-            inPara.r = 15;
+            inPara_rbt.center = rbt_spec(rbt_cnt).init_pos(:,rbt_cnt);
+            inPara_rbt.r = 5;
+            inPara_rbt.T = 20;
+            inPara_rbt.w = 2*pi/inPara_rbt.T;
+            inPara_rbt.sen_cov = 100*eye(2);%rbt_spec(rbt_cnt).sen_cov;
+            inPara_rbt.inv_sen_cov = 0.01*eye(2);%rbt_spec(rbt_cnt).inv_sen_cov;
+            inPara_rbt.sen_offset = 0; %rbt_spec(rbt_cnt).sen_offset;
+            inPara_rbt.cov_ran = 1;
+            inPara_rbt.dist_ran = 10;
+            inPara_rbt.cov_brg = 0.25;
             inPara_rbt.fld_size = fld_size;
             inPara_rbt.max_step = sim_len;
             inPara_rbt.nbhd_idx = rbt_nbhd{rbt_cnt};
-            rbt(rbt_cnt) = Robot(inPara_rbt);
-            inPara_pred.u_set = target.u_set;
-            inPara_pred.V_set = target.V_set;
-            rbt = rbt.predStep(inPara_pred);
+            inPara_rbt.r_move = r_move;
+            inPara_rbt.num_robot = num_robot;
+            inPara_rbt.idx = rbt_cnt;
+            inPara_rbt.upd_matrix = upd_matrix;
+            rbt{rbt_cnt} = Robot(inPara_rbt);
+%             inPara_pred.u_set = target.u_set;
+%             inPara_pred.V_set = target.V_set;
+%             rbt = rbt.predStep(inPara_pred);
         end
     end        
     
-%     rbt_cons = rbt;
-%     rbt_cent = rbt;
     %% %%%%%%%%%%%%%% main code of simulation %%%%%%%%%%%%%%%%%%
     count = 1;
     
@@ -192,16 +202,16 @@ for trial_cnt = 1:trial_num
          %% centeralized filter
          %
          % use the first robot as the centralized filter
-         rbt{1}.buffer_cent.pos = [];
-         this.buffer_cent.z = [];
-         this.buffer_cent.k = [];
-         this.buffer_cent.lkhd_map = {};
+         rbt{1}.buffer_cent.pos = rbt{1}.pos;
+         rbt{1}.buffer_cent.z = rbt{1}.z;
+         rbt{1}.buffer_cent.k = rbt{1}.k;
+         rbt{1}.buffer_cent.lkhd_map = {rbt{1}.lkhd_map};
          
-         for ii = 1:num_robot
-             rbt{1}.buffer_cent.pos = [rbt{1}.buffer_cent.pos,rbt{ii}.buffer_cent.pos];
-             rbt{1}.buffer_cent.z = [rbt{1}.buffer_cent.z,rbt{ii}.buffer_cent.z];
-             rbt{1}.buffer_cent.k = [rbt{1}.buffer_cent.k,rbt{ii}.buffer_cent.k];
-             rbt{1}.buffer_cent.lkhd_map = [rbt{1}.buffer_cent.lkhd_map,rbt{ii}.buffer_cent.lkhd_map];
+         for ii = 2:num_robot
+             rbt{1}.buffer_cent.pos = [rbt{1}.buffer_cent.pos,rbt{ii}.pos];
+             rbt{1}.buffer_cent.z = [rbt{1}.buffer_cent.z,rbt{ii}.z];
+             rbt{1}.buffer_cent.k = [rbt{1}.buffer_cent.k,rbt{ii}.k];
+             rbt{1}.buffer_cent.lkhd_map = [rbt{1}.buffer_cent.lkhd_map,rbt{ii}.lkhd_map];
          end
          inPara6 = struct;
          inPara6.selection = selection;

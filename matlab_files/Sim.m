@@ -42,7 +42,6 @@ classdef Sim
             %
             % plot figures for selected robots
             for k = this.sim_r_idx
-                tmp_fig_cnt = tmp_fig_cnt+1;
                 tmp_hd = figure (tmp_fig_cnt); % handle for plot of a single robot's target PDF
                 clf(tmp_hd);
                 shading interp
@@ -69,15 +68,16 @@ classdef Sim
                     plot(fld.target.pos(1), fld.target.pos(2), 'k+','MarkerSize',25,'LineWidth',3);
                     set(gca,'fontsize',30)
                 end
+                title(sprintf('DBF Robot %d',k))
                 xlabel(['Step=',num2str(count)],'FontSize',30);
+                tmp_fig_cnt = tmp_fig_cnt+1;
             end
             %}
             
             %% Consensus
             % plot figures for selected robots
             %
-            for k = 1:this.sim_r_idx
-                tmp_fig_cnt = tmp_fig_cnt+1;
+            for k = 1:this.sim_r_idx                
                 tmp_hd = figure (tmp_fig_cnt); % handle for plot of a single robot's target PDF
                 clf(tmp_hd);
                 shading interp
@@ -105,14 +105,16 @@ classdef Sim
                     plot(fld.target.pos(1), fld.target.pos(2), 'k+','MarkerSize',25,'LineWidth',3);
                     set(gca,'fontsize',30)
                 end
+                title(sprintf('Consensus Robot %d',k))
                 xlabel(['Step=',num2str(count)],'FontSize',30);
+                tmp_fig_cnt = tmp_fig_cnt+1;
             end
             %}
             
             %% Centralized
             %
             % plot figures for central map
-            tmp_fig_cnt = tmp_fig_cnt+1;
+            
             tmp_hd = figure (tmp_fig_cnt); % handle for plot of a single robot's target PDF
             clf(tmp_hd);
             shading interp
@@ -136,6 +138,8 @@ classdef Sim
             set(line_hdl,'Marker','.','Color','k','MarkerSize',3,'LineWidth',2);
             plot(fld.target.pos(1), fld.target.pos(2), 'k+','MarkerSize',25,'LineWidth',3);
             set(gca,'fontsize',30)
+            title('CF Robot 1')
+            tmp_fig_cnt = tmp_fig_cnt+1;
             %}
             
             % save plots
@@ -163,7 +167,6 @@ classdef Sim
             end
         end
             %}
-            
         end
         
         function this = compareMetrics(this)
@@ -243,9 +246,9 @@ classdef Sim
             
             %% %%%%%%%%%%%%%% plot the performance metrics %%%%%%%%%%%%%%%%%
             plot_rbt_idx = this.sim_r_idx; % draw robot 1, 3, 5
-            tmp_fig_cnt = this.fig_cnt;
+            tmp_fig_cnt = this.fig_cnt+7;
             % ml error
-            tmp_fig_cnt = tmp_fig_cnt+1;
+%             tmp_fig_cnt = tmp_fig_cnt+1;
             hf_err = figure(tmp_fig_cnt);
             line_clr = ['r','g','b','c','m','k'];
             line_marker = {'o','*','s','d','^','h'};

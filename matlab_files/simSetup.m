@@ -4,7 +4,7 @@
 save_data = false; % save data or not
 show_plot = true; %false; % draw plots or not
 
-sim_len = 30;%50; % max step
+sim_len = 50;%50; % max step
 % rounds of consensus at each time step
 cons_step = 10;
 cons_fig = false; % whether to show intermediate step of consensus
@@ -13,7 +13,7 @@ cons_fig = false; % whether to show intermediate step of consensus
 trial_num = 2; % 10 % number of trials to run
 
 % select the motion of agents and target
-selection = 2;
+selection = 4;
 switch selection
     case 1,  r_move= 0; tar_move=0;
     case 2,  r_move= 0; tar_move=1;
@@ -81,8 +81,6 @@ ty_set = [55, 49, 86, 77, 71, 9, 11, 13, 77, 90];
 
 % communication neighbor
 rbt_nbhd = {[2,6],[1,3],[2,4],[3,5],[4,6],[1,5]};
-
-
             
 mode_num = 4;
 
