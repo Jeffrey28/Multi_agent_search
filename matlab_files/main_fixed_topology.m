@@ -41,6 +41,7 @@ inPara_sim.trial_num = trial_num;
 inPara_sim.dt = dt;
 inPara_sim.selection = selection;
 inPara_sim.cons_fig = cons_fig;
+inPara_sim.sensor_type = 'brg'; % 'bin': binary,'ran': range-only,'brg': bearing-only,'rb': range-bearing
 sim = Sim(inPara_sim);
 
 for trial_cnt = 1:trial_num
@@ -66,6 +67,9 @@ for trial_cnt = 1:trial_num
             inPara_rbt.sen_cov = 100*eye(2);%rbt_spec(rbt_cnt).sen_cov;
             inPara_rbt.inv_sen_cov = 0.01*eye(2);%rbt_spec(rbt_cnt).inv_sen_cov;
             inPara_rbt.sen_offset = 0; %rbt_spec(rbt_cnt).sen_offset;
+            inPara_rbt.cov_ran = 1;
+            inPara_rbt.dist_ran = 10;
+            inPara_rbt.cov_brg = 0.01;
             inPara_rbt.fld_size = fld_size;
             inPara_rbt.max_step = sim_len;
             inPara_rbt.nbhd_idx = rbt_nbhd{rbt_cnt};
@@ -95,7 +99,20 @@ for trial_cnt = 1:trial_num
     %% %%%%%%%%%%%%%% main code of simulation %%%%%%%%%%%%%%%%%%
     count = 1;
     
-    while(1)                
+    while(1)                        
+        % following code should appear at the end of the code. Putting them
+        % here is only for debugging purpose
+        %% target moves
+        if tar_move == 1
+            fld = fld.targetMove();
+        end
+        
+        %% robot moves
+        if r_move == 1
+            for ii = 1:num_robot
+                 rbt{ii} = rbt{ii}.robotMove();
+             end
+         end
         
         %% filtering
         % Bayesian Updating steps:
@@ -110,7 +127,17 @@ for trial_cnt = 1:trial_num
         for ii = 1:num_robot
             rbt{ii}.step_cnt = count;
             % observe
-            rbt{ii} = rbt{ii}.sensorGenBin(fld); % simulate the sensor measurement
+            
+            switch sim.sensor_type
+                case 'bin'
+                    rbt{ii} = rbt{ii}.sensorGenBin(fld); % simulate the sensor measurement
+                case 'ran'
+                    rbt{ii} = rbt{ii}.sensorGenRan(fld);
+                case 'brg'
+                    rbt{ii} = rbt{ii}.sensorGenBrg(fld);
+                case 'rb'
+                    rbt{ii} = rbt{ii}.sensorGenRb(fld);
+            end
                         
             % update own observation                      
             inPara1 = struct('selection',selection);
@@ -194,20 +221,6 @@ for trial_cnt = 1:trial_num
          end
          
          count = count + 1;
-         
-         % following code should appear at the end of the code. Putting them
-         % here is only for debugging purpose
-         %% target moves
-         if tar_move == 1
-             fld = fld.targetMove();
-         end
-         
-         %% robot moves
-         if r_move == 1
-             for ii = 1:num_robot
-                 rbt{ii} = rbt{ii}.robotMove();
-             end
-         end
          
          %% compute metrics
          for ii = 1:num_robot

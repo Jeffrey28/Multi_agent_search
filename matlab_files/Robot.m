@@ -16,9 +16,15 @@ classdef Robot
         center; % center of the circular motion
         
         % sensor specs
+        % binary sensor
         sen_cov;
         inv_sen_cov;
         sen_offset;
+        % range-only sensor
+        cov_ran; 
+        dist_ran;
+        % bearing-only sensor
+        cov_brg;
         
         % observation
         z; % observation measurement
@@ -75,6 +81,10 @@ classdef Robot
             this.sen_cov = inPara.sen_cov;
             this.inv_sen_cov = inPara.inv_sen_cov;
             this.sen_offset = inPara.sen_offset;
+            this.cov_ran = inPara.cov_ran;
+            this.dist_ran = inPara.dist_ran;
+            this.cov_brg = inPara.cov_brg;
+            
             this.dbf_map = ones(inPara.fld_size(1),inPara.fld_size(2));
             this.dbf_map = this.dbf_map/sum(sum(this.dbf_map));
             this.cons_map = this.dbf_map;
@@ -180,10 +190,10 @@ classdef Robot
             
             if z ~= -100
                 tmp_lkhd = normpdf(in_range_dist,z,cov_ran);
-                lkhd_map = zeros(1,length(ptx));
+                lkhd_map = zeros(1,length(ptx(:)));
                 lkhd_map(tmp_idx) = tmp_lkhd;
             else
-                lkhd_map = ones(1,length(ptx));
+                lkhd_map = ones(1,length(ptx(:)));
                 lkhd_map(tmp_idx) = 0;
             end
             lkhd_map = (reshape(lkhd_map,ylen,xlen))';            

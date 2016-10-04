@@ -15,6 +15,7 @@ classdef Sim
         fld_set; % record all field objects
         sim_res; % records the metrics of different filtering methods
         fig_cnt; % counter for figure
+        sensor_type;
     end
     
     methods
@@ -30,6 +31,7 @@ classdef Sim
             this.sim_r_idx = inPara.sim_r_idx;
             this.trial_num = inPara.trial_num;
             this.fig_cnt = 1;
+            this.sensor_type = inPara.sensor_type;
         end
        
         
@@ -73,13 +75,13 @@ classdef Sim
             
             %% Consensus
             % plot figures for selected robots
-            %{
-            for k = 1:tihs.sim_r_idx
+            %
+            for k = 1:this.sim_r_idx
                 tmp_fig_cnt = tmp_fig_cnt+1;
                 tmp_hd = figure (tmp_fig_cnt); % handle for plot of a single robot's target PDF
                 clf(tmp_hd);
                 shading interp
-                contourf((rbt(k).cons_map)','LineColor','none');
+                contourf((rbt{k}.cons_map)','LineColor','none');
                 load('MyColorMap','mymap')
                 colormap(mymap);
                 colorbar
@@ -108,13 +110,13 @@ classdef Sim
             %}
             
             %% Centralized
-            %{
+            %
             % plot figures for central map
             tmp_fig_cnt = tmp_fig_cnt+1;
             tmp_hd = figure (tmp_fig_cnt); % handle for plot of a single robot's target PDF
             clf(tmp_hd);
             shading interp
-            contourf((rbt.cent_map)','LineColor','none');
+            contourf((rbt{1}.cent_map)','LineColor','none');
             load('MyColorMap','mymap')
             colormap(mymap);
             colorbar
@@ -132,7 +134,7 @@ classdef Sim
             % draw target trajectory
             line_hdl = line(fld.target.traj(1,:), fld.target.traj(2,:));
             set(line_hdl,'Marker','.','Color','k','MarkerSize',3,'LineWidth',2);
-            plot(fld.tx, fld.ty, 'k+','MarkerSize',25,'LineWidth',3);
+            plot(fld.target.pos(1), fld.target.pos(2), 'k+','MarkerSize',25,'LineWidth',3);
             set(gca,'fontsize',30)
             %}
             

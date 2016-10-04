@@ -13,7 +13,7 @@ cons_fig = false; % whether to show intermediate step of consensus
 trial_num = 2; % 10 % number of trials to run
 
 % select the motion of agents and target
-selection = 1;
+selection = 2;
 switch selection
     case 1,  r_move= 0; tar_move=0;
     case 2,  r_move= 0; tar_move=1;
