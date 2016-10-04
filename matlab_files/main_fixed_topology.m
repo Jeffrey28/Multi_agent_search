@@ -110,7 +110,7 @@ for trial_cnt = 1:trial_num
         for ii = 1:num_robot
             rbt{ii}.step_cnt = count;
             % observe
-            rbt{ii} = rbt{ii}.sensorGen(fld); % simulate the sensor measurement
+            rbt{ii} = rbt{ii}.sensorGenBin(fld); % simulate the sensor measurement
                         
             % update own observation                      
             inPara1 = struct('selection',selection);

@@ -98,9 +98,12 @@ classdef Robot
             this.step_cnt = 0;
         end
         
+        %% sensor modeling
         % generate a random measurment and computes the probability
         % likelihood map
-        function this = sensorGen(this,fld)
+        
+        %% Binary sensor
+        function this = sensorGenBin(this,fld)
             % generate sensor measurement
             x_r = this.pos;
             x_t = fld.target.pos;
@@ -114,7 +117,7 @@ classdef Robot
             this.k = this.step_cnt;
             
             % generate the likelihood map for all possible target locations
-            tmp_lkhd_map = this.sensorProb(fld);
+            tmp_lkhd_map = this.sensorProbBin(fld);
             if tmp_z == 0
                 tmp_lkhd_map = 1-tmp_lkhd_map;
             end
@@ -123,7 +126,7 @@ classdef Robot
         end
         
         % computes probability likelihood map
-        function lkhd_map = sensorProb(this,fld)
+        function lkhd_map = sensorProbBin(this,fld)
             x_r = this.pos;
             inv_cov = this.inv_sen_cov;
             offset = this.sen_offset;
@@ -139,6 +142,85 @@ classdef Robot
             lkhd_map = exp(-1/2*(reshape(tmp_diag,ylen,xlen))');% note meshgrid first goes along y and then x direction.
         end
         
+        %% Range-only sensor
+        function this = sensorGenRan(this,fld)
+            % generate sensor measurement
+            x_r = this.pos;
+            x_t = fld.target.pos;
+            cov_ran = this.cov_ran;
+            dist_ran = this.dist_ran;
+            if norm(x_t-x_r) <= dist_ran
+                this.z = norm(x_t-x_r)+normrnd(0,cov_ran);
+            else
+                this.z = -100;
+            end
+               
+            this.k = this.step_cnt;
+            
+            % generate the likelihood map for all possible target locations
+            this.lkhd_map = this.sensorProbRan(fld);
+        end
+        
+        % computes probability likelihood map
+        function lkhd_map = sensorProbRan(this,fld)
+            x_r = this.pos;
+            z = this.z;
+            cov_ran = this.cov_ran;
+            dist_ran = this.dist_ran;
+            
+            xlen = fld.fld_size(1);
+            ylen = fld.fld_size(2);
+            [ptx,pty] = meshgrid(1:xlen,1:ylen);
+            pt = [ptx(:)';pty(:)'];            
+            pt = bsxfun(@minus,pt,x_r);
+            dist = sqrt(sum(pt.^2,1));
+            % find the points that are within the sensor range
+            tmp_idx = (dist <= dist_ran);
+            in_range_dist = dist(tmp_idx);
+            
+            if z ~= -100
+                tmp_lkhd = normpdf(in_range_dist,z,cov_ran);
+                lkhd_map = zeros(1,length(ptx));
+                lkhd_map(tmp_idx) = tmp_lkhd;
+            else
+                lkhd_map = ones(1,length(ptx));
+                lkhd_map(tmp_idx) = 0;
+            end
+            lkhd_map = (reshape(lkhd_map,ylen,xlen))';            
+        end
+        
+        %% Bearing-only sensor
+        function this = sensorGenBrg(this,fld)
+            % generate sensor measurement
+            x_r = this.pos;
+            x_t = fld.target.pos;
+            tmp_vec = x_t-x_r;                      
+            cov_brg = this.cov_brg;
+            this.z = atan2(tmp_vec(2),tmp_vec(1))+normrnd(0,cov_brg);              
+            this.k = this.step_cnt;
+            
+            % generate the likelihood map for all possible target locations
+            this.lkhd_map = this.sensorProbBrg(fld);
+        end
+        
+        % computes probability likelihood map
+        function lkhd_map = sensorProbBrg(this,fld)
+            x_r = this.pos;
+            z = this.z;
+            cov_brg = this.cov_brg;            
+            
+            xlen = fld.fld_size(1);
+            ylen = fld.fld_size(2);
+            [ptx,pty] = meshgrid(1:xlen,1:ylen);
+            pt = [ptx(:)';pty(:)'];            
+            pt = bsxfun(@minus,pt,x_r);
+            angles = atan2(pt(2,:),pt(1,:))';
+            
+            tmp_lkhd = normpdf(angles,z,cov_brg);
+            lkhd_map = (reshape(tmp_lkhd,ylen,xlen))';
+        end
+        
+        %% data storage and update 
         function this = updOwnMsmt(this,inPara)
             % (1) self-observation
             % update robot's own measurement in the communication buffer
@@ -225,6 +307,7 @@ classdef Robot
             end
         end
         
+        %% filters
         function this = DBF(this,inPara)
             % filtering
             selection = inPara.selection;
@@ -241,7 +324,7 @@ classdef Robot
             elseif (selection == 2) || (selection == 4)
                 upd_matrix = this.upd_matrix{1};
                 %% update by bayes rule
-                % note: main computation resource are used in calling sensorProb function.
+                % note: main computation resource are used in calling sensorProbBin function.
                 % when using grid map, can consider precomputing
                 % results and save as a lookup table
                
@@ -487,10 +570,12 @@ classdef Robot
 %             end
         end      
                 
+        %% robot motion
         function this = robotMove(this)
             % needs to write up
         end
         
+        %% metrics
         function this = computeMetrics(this,fld,id)
             % Computing Performance Metrics
             count = this.step_cnt;
