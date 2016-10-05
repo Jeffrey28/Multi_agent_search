@@ -103,7 +103,7 @@ classdef Sim
             
             %% Consensus
             % plot figures for selected robots
-            %
+            %{
             for k = 1:this.sim_r_idx                
                 tmp_hd = figure (tmp_fig_cnt); % handle for plot of a single robot's target PDF
                 clf(tmp_hd);
@@ -140,7 +140,7 @@ classdef Sim
             %}
             
             %% Centralized
-            %
+            %{
             % plot figures for central map
             
             tmp_hd = figure (tmp_fig_cnt); % handle for plot of a single robot's target PDF

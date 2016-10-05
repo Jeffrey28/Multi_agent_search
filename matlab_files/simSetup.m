@@ -4,7 +4,7 @@
 set(0,'DefaultFigureWindowStyle','docked')
 
 save_data = false; % save data or not
-show_plot = false; % draw plots or not
+show_plot = true; % draw plots or not
 save_plot = false; % save plots or not
 
 sim_len = 50;%50; % max step
@@ -16,7 +16,7 @@ cons_fig = false; % whether to show intermediate step of consensus
 trial_num = 10; % 10 % number of trials to run
 
 % select the motion of agents and target
-selection = 1;
+selection = 4;
 switch selection
     case 1,  r_move= 0; tar_move=0;
     case 2,  r_move= 0; tar_move=1;

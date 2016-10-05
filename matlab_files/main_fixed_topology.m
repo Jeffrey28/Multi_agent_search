@@ -44,7 +44,7 @@ inPara_sim.cons_fig = cons_fig;
 inPara_sim.sensor_type = 'rb'; % 'bin': binary,'ran': range-only,'brg': bearing-only,'rb': range-bearing
 sim = Sim(inPara_sim);
 
-for trial_cnt = 1:trial_num
+for trial_cnt = 4%1:trial_num
     % initialize field class    
     target.pos = [tx_set(trial_cnt);ty_set(trial_cnt)];
     target.u_set = u_set;
@@ -175,15 +175,15 @@ for trial_cnt = 1:trial_num
         % step 3
         % dbf
         for ii = 1:num_robot                        
-            inPara3 = struct('selection',selection);
+            inPara3 = struct('selection',selection,'target_model',fld.target.model_idx);
             rbt{ii} = rbt{ii}.DBF(inPara3);                        
         end    
 
          %% Concensus        
-         %
+         %{
          % update own map using own measurement
          for ii = 1:num_robot  
-             inPara4 = struct('selection',selection);
+             inPara4 = struct('selection',selection,'target_model',fld.target.model_idx);
              rbt{ii} = rbt{ii}.updMap(inPara4);
          end
          
@@ -205,7 +205,7 @@ for trial_cnt = 1:trial_num
          %}
         
          %% centeralized filter
-         %
+         %{
          % use the first robot as the centralized filter
          rbt{1}.buffer_cent.pos = rbt{1}.pos;
          rbt{1}.buffer_cent.z = rbt{1}.z;
@@ -220,6 +220,7 @@ for trial_cnt = 1:trial_num
          end
          inPara6 = struct;
          inPara6.selection = selection;
+         inPara6.target_model = fld.target.model_idx;
          
          rbt{1} = rbt{1}.CF(inPara6);
          %}

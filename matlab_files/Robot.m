@@ -379,6 +379,7 @@ classdef Robot
         function this = DBF(this,inPara)
             % filtering
             selection = inPara.selection;
+            target_model = inPara.target_model;
             if (selection == 1) || (selection == 3)
                 % calculate probility of latest z               
                 for jj=1:this.num_robot % Robot Iteration
@@ -390,7 +391,7 @@ classdef Robot
                 this.dbf_map=this.dbf_map/sum(sum(this.dbf_map));
                                 
             elseif (selection == 2) || (selection == 4)
-                upd_matrix = this.upd_matrix{1};
+                upd_matrix = this.upd_matrix{target_model};
                 %% update by bayes rule
                 % note: main computation resource are used in calling sensorProbBin function.
                 % when using grid map, can consider precomputing
@@ -471,30 +472,19 @@ classdef Robot
             % update own map using its own measurement, used for consensus
             % and centralized filters
             selection = inPara.selection;
+            target_model = inPara.target_model;
             
             % consensus map
             if (selection == 1) || (selection == 3)
                 this.cons_map = this.cons_map.*this.lkhd_map;
             elseif (selection == 2) || (selection == 4)
-                upd_matrix = this.upd_matrix{1};
+                upd_matrix = this.upd_matrix{target_model};
                 tmp_map = (this.cons_map)';
                 tmp_map2 = upd_matrix*tmp_map(:);
                 tmp_map = (reshape(tmp_map2,size(tmp_map)))';
                 this.cons_map = tmp_map.*this.lkhd_map;
             end
             this.cons_map = this.cons_map/sum(sum(this.cons_map));
-            
-%             % centralized map
-%             if (selection == 1) || (selection == 3)
-%                 this.cent_map = this.cent_map.*this.lkhd_map;
-%             elseif (selection == 2) || (selection == 4)
-%                 upd_matrix = this.upd_matrix{1};
-%                 tmp_map = (this.cent_map)';
-%                 tmp_map2 = upd_matrix*tmp_map(:);
-%                 tmp_map = (reshape(tmp_map2,size(tmp_map)))';
-%                 this.cent_map = tmp_map.*this.lkhd_map;
-%             end
-%             this.cent_map = this.cent_map/sum(sum(this.cent_map));
         end
         
         function this = cons(this,inPara)
@@ -599,13 +589,15 @@ classdef Robot
             % (3) repeat step (1)
             
             selection = inPara.selection;
+            target_model = inPara.target_model;
+            
             if (selection == 1) || (selection == 3)
                 for ii = 1:this.num_robot
                     this.cent_map = this.cent_map.*this.buffer_cent.lkhd_map{ii};
                 end
             elseif (selection == 2) || (selection == 4)
                 % prediction step
-                upd_matrix = this.upd_matrix{1};
+                upd_matrix = this.upd_matrix{target_model};
                 tmp_map = this.cent_map;
                 tmp_map2 = upd_matrix*tmp_map(:);
                 tmp_map = reshape(tmp_map2,size(tmp_map));

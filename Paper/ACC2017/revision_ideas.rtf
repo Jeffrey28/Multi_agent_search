@@ -1,6 +1,6 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;\red127\green127\blue127;}
+{\colortbl;\red255\green255\blue255;\red127\green127\blue127;\red255\green0\blue0;}
 {\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid1\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid2\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li1440\lin1440 }{\listname ;}\listid1}
 {\list\listtemplateid2\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid101\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid102\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li1440\lin1440 }{\listname ;}\listid2}
 {\list\listtemplateid3\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid201\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid202\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li1440\lin1440 }{\listname ;}\listid3}
@@ -25,8 +25,8 @@ first, solve soundness problems\
 \ls1\ilvl0\cf0 {\listtext	2.	}in simulation, compare with the works mentioned in \'93Soundness\'94.\
 \pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
 \ls1\ilvl1\cf0 {\listtext	\uc0\u8259 	}show the robustness to uncertainty (+), communication efficiency (+) and memory usage(-)\
-{\listtext	\uc0\u8259 	}randomly generate initial positions of robots, target. \
-{\listtext	\uc0\u8259 	}add noise to target motion model\
+{\listtext	\uc0\u8259 	}\cf2 randomly generate initial positions of robots, target. \
+{\listtext	\uc0\u8259 	}add noise to target motion model\cf0 \
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls1\ilvl0\cf0 {\listtext	3.	}Second, solve other issues in content (novelty and writing)\
 \pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
@@ -52,10 +52,10 @@ first, solve soundness problems\
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls3\ilvl0\cf0 {\listtext	2.	}modify for journal paper\
 \pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
-\ls3\ilvl1\cf0 {\listtext	\uc0\u8259 	}use general sensor model, consider cases of heterogeneous sensor model, sensor with and without bias. then prove two parts: consensus of estimation, then consistency to true value. Consensus seems to be easier to be satisfied, while the consistency may require some additional assumption of sensors, e.g. unbiased, not time-variant or the parameter is not state dependent.\
-{\listtext	\uc0\u8259 	}when doing simulation, consider different cases: binary sensor, range-only sensor, range-bearing sensor. also, use MobileSim to generate high-fidelity simulation results. refer to simulation part in previous note (5/17/16)\
-{\listtext	\uc0\u8259 	}consider the case when the total number of UGVs are unknown (LIFO is okay, but DBF may be an issue. refer to Leung\'92s paper to see how they deal with this issue).\
-{\listtext	\uc0\u8259 	}think if I can prove consistency for moving target case\
+\ls3\ilvl1\cf0 {\listtext	\uc0\u8259 	}use general sensor model, consider cases of heterogeneous sensor model, sensor with and without bias. then prove two parts: consensus of estimation, then consistency to true value. Consensus seems to be easier to be satisfied, while the consistency may require some additional assumption of sensors, e.g. unbiased, not time-variant or the parameter is not state dependent. \cf3 can say unbiased case leads to consistency and consensus but bias may lead to inconsistency. needs to run simulation.\cf0 \
+{\listtext	\uc0\u8259 	}when doing simulation, consider different cases: binary sensor, range-only sensor, range-bearing sensor. also, use MobileSim to generate high-fidelity simulation results. refer to simulation part in previous note (5/17/16) \cf3 can do\cf0 \
+{\listtext	\uc0\u8259 	}consider the case when the total number of UGVs are unknown (LIFO is okay, but DBF may be an issue. refer to Leung\'92s paper to see how they deal with this issue). \cf3 may be a little time consuming, can consider to be used in ASME journal\cf0 \
+{\listtext	\uc0\u8259 	}think if I can prove consistency for moving target case \cf3 might be hard, wait for Ying Sun\cf0 \
 {\listtext	\uc0\u8259 	}solve issues in 5/17/16 note, the following issues and the ones from CDC reviewers.\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \

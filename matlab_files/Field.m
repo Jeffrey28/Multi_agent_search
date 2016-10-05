@@ -36,13 +36,13 @@ classdef Field
                 % Target Moves
                 % if current model makes target out of field, choose the next
                 % motion model in fld.target.dx_set and fld.target.dy_set
-                tmp_pos = this.target.pos + tmp_u_set(tmp_idx)*this.dt;                
+                tmp_pos = this.target.pos + tmp_u_set(:,tmp_idx)*this.dt;                
                 while (tmp_pos(1) <= 0 || tmp_pos(2) <= 0 || tmp_pos(1) >= this.fld_size(1) || tmp_pos(2) >= this.fld_size(2))
                     tmp_idx = rem(tmp_idx+1,length(this.target.u_set));
                     if tmp_idx == 0
                         tmp_idx = length(this.target.u_set);
                     end
-                    tmp_pos = this.target.pos + tmp_u_set(tmp_idx)*this.dt;
+                    tmp_pos = this.target.pos + tmp_u_set(:,tmp_idx)*this.dt;
                 end
                 this.target.pos = tmp_pos;
                 this.target.traj = [this.target.traj;tmp_pos];
