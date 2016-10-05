@@ -1,8 +1,11 @@
 % set up for the main program
 
 %% %%%%%%% General Setup %%%%%%%%%%
+set(0,'DefaultFigureWindowStyle','docked')
+
 save_data = false; % save data or not
-show_plot = true; %false; % draw plots or not
+show_plot = true; % draw plots or not
+save_plot = false; % save plots or not
 
 sim_len = 50;%50; % max step
 % rounds of consensus at each time step
@@ -10,10 +13,10 @@ cons_step = 10;
 cons_fig = false; % whether to show intermediate step of consensus
 
 % Setup for multiple trials
-trial_num = 2; % 10 % number of trials to run
+trial_num = 10; % 10 % number of trials to run
 
 % select the motion of agents and target
-selection = 4;
+selection = 1;
 switch selection
     case 1,  r_move= 0; tar_move=0;
     case 2,  r_move= 0; tar_move=1;
@@ -75,12 +78,16 @@ save('sensor_spec.mat','rbt');
 rbt_spec = load('rbt_spec.mat');
 rbt_spec = rbt_spec.rbt;
 
-% these are randomly generated target positions
-tx_set = [68, 55, 41, 10, 75, 35, 60, 72, 14, 16];
-ty_set = [55, 49, 86, 77, 71, 9, 11, 13, 77, 90];
+% these are randomly generated target positions from [20,80] at each
+% direction
+tx_set = [68 36 24 80 48 29 42 44 54 68];
+ty_set = [33 42 43 64 69 65 32 23 79 20];
+
+% tx_set = [68, 55, 41, 10, 75, 35, 60, 72, 14, 16];
+% ty_set = [55, 49, 86, 77, 71, 9, 11, 13, 77, 90];
 
 % communication neighbor
-rbt_nbhd = {[2,6],[1,3],[2,4],[3,5],[4,6],[1,5]};
+rbt_nbhd = {[2,6],[1,3],[2,4],[3,5],[4,6],[1,5]}; %{[],[],[],[],[],[]};
             
 mode_num = 4;
 

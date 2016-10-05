@@ -162,7 +162,7 @@ classdef Robot
             cov_ran = this.cov_ran;
             dist_ran = this.dist_ran;
             if norm(x_t-x_r) <= dist_ran
-                this.z = norm(x_t-x_r)+normrnd(0,cov_ran);
+                this.z = normrnd(norm(x_t-x_r),cov_ran);
             else
                 this.z = -100;
             end
@@ -208,7 +208,7 @@ classdef Robot
             x_t = fld.target.pos;
             tmp_vec = x_t-x_r;                      
             cov_brg = this.cov_brg;
-            this.z = atan2(tmp_vec(2),tmp_vec(1))+normrnd(0,cov_brg);              
+            this.z = normrnd(atan2(tmp_vec(2),tmp_vec(1)),cov_brg);              
             this.k = this.step_cnt;
             
             % generate the likelihood map for all possible target locations

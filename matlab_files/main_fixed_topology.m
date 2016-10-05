@@ -44,7 +44,7 @@ inPara_sim.cons_fig = cons_fig;
 inPara_sim.sensor_type = 'brg'; % 'bin': binary,'ran': range-only,'brg': bearing-only,'rb': range-bearing
 sim = Sim(inPara_sim);
 
-for trial_cnt = 1:trial_num
+for trial_cnt = 1%:trial_num
     % initialize field class    
     target.pos = [tx_set(trial_cnt);ty_set(trial_cnt)];
     target.u_set = u_set;
@@ -67,9 +67,9 @@ for trial_cnt = 1:trial_num
             inPara_rbt.sen_cov = 100*eye(2);%rbt_spec(rbt_cnt).sen_cov;
             inPara_rbt.inv_sen_cov = 0.01*eye(2);%rbt_spec(rbt_cnt).inv_sen_cov;
             inPara_rbt.sen_offset = 0; %rbt_spec(rbt_cnt).sen_offset;
-            inPara_rbt.cov_ran = 1;
-            inPara_rbt.dist_ran = 10;
-            inPara_rbt.cov_brg = 0.25;
+            inPara_rbt.cov_ran = 3;
+            inPara_rbt.dist_ran = 50;
+            inPara_rbt.cov_brg = 0.2;
             inPara_rbt.fld_size = fld_size;
             inPara_rbt.max_step = sim_len;
             inPara_rbt.nbhd_idx = rbt_nbhd{rbt_cnt};
@@ -89,9 +89,9 @@ for trial_cnt = 1:trial_num
             inPara_rbt.sen_cov = 100*eye(2);%rbt_spec(rbt_cnt).sen_cov;
             inPara_rbt.inv_sen_cov = 0.01*eye(2);%rbt_spec(rbt_cnt).inv_sen_cov;
             inPara_rbt.sen_offset = 0; %rbt_spec(rbt_cnt).sen_offset;
-            inPara_rbt.cov_ran = 1;
-            inPara_rbt.dist_ran = 10;
-            inPara_rbt.cov_brg = 0.25;
+            inPara_rbt.cov_ran = 3;
+            inPara_rbt.dist_ran = 50;
+            inPara_rbt.cov_brg = 0.2;
             inPara_rbt.fld_size = fld_size;
             inPara_rbt.max_step = sim_len;
             inPara_rbt.nbhd_idx = rbt_nbhd{rbt_cnt};
@@ -222,7 +222,7 @@ for trial_cnt = 1:trial_num
          %% draw current step
          % draw plot
          if show_plot
-             sim.plotSim(rbt,fld,count);
+             sim.plotSim(rbt,fld,count,save_plot);
          end
                 
          %% go to next iteration

@@ -1,3 +1,6 @@
+% pre-generate the update matrix corresponding to the prediction step in
+% filtering
+
 mode_num = 4;
 
 u_set = [[1;1],[-1;-1],[1;-1],[-1;1]]; %inPara.u_set; 
