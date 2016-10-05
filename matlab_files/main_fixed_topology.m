@@ -41,10 +41,10 @@ inPara_sim.trial_num = trial_num;
 inPara_sim.dt = dt;
 inPara_sim.selection = selection;
 inPara_sim.cons_fig = cons_fig;
-inPara_sim.sensor_type = 'brg'; % 'bin': binary,'ran': range-only,'brg': bearing-only,'rb': range-bearing
+inPara_sim.sensor_type = 'rb'; % 'bin': binary,'ran': range-only,'brg': bearing-only,'rb': range-bearing
 sim = Sim(inPara_sim);
 
-for trial_cnt = 1%:trial_num
+for trial_cnt = 1:trial_num
     % initialize field class    
     target.pos = [tx_set(trial_cnt);ty_set(trial_cnt)];
     target.u_set = u_set;
@@ -70,6 +70,8 @@ for trial_cnt = 1%:trial_num
             inPara_rbt.cov_ran = 3;
             inPara_rbt.dist_ran = 50;
             inPara_rbt.cov_brg = 0.2;
+            inPara_rbt.dist_ranbrg = 50;
+            inPara_rbt.cov_ranbrg = eye(2);
             inPara_rbt.fld_size = fld_size;
             inPara_rbt.max_step = sim_len;
             inPara_rbt.nbhd_idx = rbt_nbhd{rbt_cnt};
@@ -79,6 +81,7 @@ for trial_cnt = 1%:trial_num
             inPara_rbt.upd_matrix = upd_matrix;
             rbt{rbt_cnt} = Robot(inPara_rbt);
         end
+        
     elseif r_move == 1
         for rbt_cnt = 1:num_robot
             inPara_rbt = struct;
@@ -92,6 +95,8 @@ for trial_cnt = 1%:trial_num
             inPara_rbt.cov_ran = 3;
             inPara_rbt.dist_ran = 50;
             inPara_rbt.cov_brg = 0.2;
+            inPara_rbt.dist_ranbrg = 50;
+            inPara_rbt.cov_ranbrg = eye(2);
             inPara_rbt.fld_size = fld_size;
             inPara_rbt.max_step = sim_len;
             inPara_rbt.nbhd_idx = rbt_nbhd{rbt_cnt};
@@ -146,7 +151,7 @@ for trial_cnt = 1%:trial_num
                 case 'brg'
                     rbt{ii} = rbt{ii}.sensorGenBrg(fld);
                 case 'rb'
-                    rbt{ii} = rbt{ii}.sensorGenRb(fld);
+                    rbt{ii} = rbt{ii}.sensorGenRanBrg(fld);
             end
                         
             % update own observation                      

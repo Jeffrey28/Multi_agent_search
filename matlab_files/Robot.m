@@ -25,6 +25,9 @@ classdef Robot
         dist_ran;
         % bearing-only sensor
         cov_brg;
+        % range-bearing sensor
+        cov_ranbrg;
+        dist_ranbrg;
         
         % observation
         z; % observation measurement
@@ -80,12 +83,16 @@ classdef Robot
                 this.pos = [inPara.center(1);inPara.center(2)+this.r]; % initial position is at the top of the circle
                 this.traj = this.pos;
             end
+            
+            % sensor spec
             this.sen_cov = inPara.sen_cov;
             this.inv_sen_cov = inPara.inv_sen_cov;
             this.sen_offset = inPara.sen_offset;
             this.cov_ran = inPara.cov_ran;
             this.dist_ran = inPara.dist_ran;
             this.cov_brg = inPara.cov_brg;
+            this.cov_ranbrg = inPara.cov_ranbrg;
+            this.dist_ranbrg = inPara.dist_ranbrg;
             
             this.dbf_map = ones(inPara.fld_size(1),inPara.fld_size(2));
             this.dbf_map = this.dbf_map/sum(sum(this.dbf_map));
@@ -230,6 +237,55 @@ classdef Robot
             
             tmp_lkhd = normpdf(angles,z,cov_brg);
             lkhd_map = (reshape(tmp_lkhd,ylen,xlen))';
+        end
+        
+        %% Range-Bearing sensor
+        function this = sensorGenRanBrg(this,fld)
+            % generate sensor measurement
+            x_r = this.pos;
+            x_t = fld.target.pos;
+            tmp_vec = x_t-x_r;                      
+            cov_ranbrg = this.cov_ranbrg;
+            dist_ranbrg = this.dist_ranbrg;
+            
+            if norm(x_t-x_r) <= dist_ranbrg
+                this.z = (mvnrnd([tmp_vec(1),tmp_vec(2)],cov_ranbrg))';
+            else
+                this.z = [-100;-100];
+            end
+            
+            this.k = this.step_cnt;
+            
+            % generate the likelihood map for all possible target locations
+            this.lkhd_map = this.sensorProbRanBrg(fld);
+        end
+        
+        % computes probability likelihood map
+        function lkhd_map = sensorProbRanBrg(this,fld)
+            x_r = this.pos;
+            z = this.z;
+            cov_ranbrg = this.cov_ranbrg;
+            dist_ranbrg = this.dist_ranbrg;
+            
+            xlen = fld.fld_size(1);
+            ylen = fld.fld_size(2);
+            [ptx,pty] = meshgrid(1:xlen,1:ylen);
+            pt = [ptx(:)';pty(:)'];            
+            pt = bsxfun(@minus,pt,x_r);
+            dist = sqrt(sum(pt.^2,1));
+            % find the points that are within the sensor range
+            tmp_idx = (dist <= dist_ranbrg);
+%             in_range_dist = dist(tmp_idx);
+            
+            if (z(1) ~= -100) && (z(2)~= -100)
+                tmp_lkhd = mvnpdf(pt(:,tmp_idx)',z',cov_ranbrg);
+                lkhd_map = zeros(1,length(ptx(:)));
+                lkhd_map(tmp_idx) = tmp_lkhd;
+            else
+                lkhd_map = ones(1,length(ptx(:)));
+                lkhd_map(tmp_idx) = 0;
+            end
+            lkhd_map = (reshape(lkhd_map,ylen,xlen))';            
         end
         
         %% data storage and update 

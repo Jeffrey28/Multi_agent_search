@@ -4,7 +4,7 @@
 set(0,'DefaultFigureWindowStyle','docked')
 
 save_data = false; % save data or not
-show_plot = true; % draw plots or not
+show_plot = false; % draw plots or not
 save_plot = false; % save plots or not
 
 sim_len = 50;%50; % max step
