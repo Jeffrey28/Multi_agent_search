@@ -80,8 +80,6 @@ classdef Sim
                 xlabel(['Step=',num2str(count)],'FontSize',30);
                 tmp_fig_cnt = tmp_fig_cnt+1;
                 
-                
-                
                 % save figure      
                 if save_plot
                     if (count == 1) || (count == 3) || (count == 5) || (count == 7) ||...
@@ -103,7 +101,7 @@ classdef Sim
             
             %% Consensus
             % plot figures for selected robots
-            %{
+            %
             for k = 1:this.sim_r_idx                
                 tmp_hd = figure (tmp_fig_cnt); % handle for plot of a single robot's target PDF
                 clf(tmp_hd);
@@ -140,7 +138,7 @@ classdef Sim
             %}
             
             %% Centralized
-            %{
+            %
             % plot figures for central map
             
             tmp_hd = figure (tmp_fig_cnt); % handle for plot of a single robot's target PDF
@@ -150,7 +148,7 @@ classdef Sim
             load('MyColorMap','mymap')
             colormap(mymap);
             colorbar
-            xlabel(['Step=',num2str(count)],'FontSize',16);
+            xlabel(['Step=',num2str(count)],'FontSize',30);
             
             hold on;
             
@@ -169,32 +167,6 @@ classdef Sim
             set(gca,'fontsize',30)
             title('CF Robot 1')
 %             tmp_fig_cnt = tmp_fig_cnt+1;
-            %}
-            
-            % save plots
-            %
-%             if (count == 1) || (count == 3) || (count == 5) || (count == 7) ||...
-%                     (count == 10) || (count == 20) || (count == 30) || (count == 40)
-%                 switch this.selection
-%                     case 1,  tag = 'sta_sen_sta_tar';
-%                     case 2,  tag = 'sta_sen_mov_tar';
-%                     case 3,  tag = 'mov_sen_sta_tar';
-%                     case 4,  tag = 'mov_sen_mov_tar';
-%                 end
-%                 %         file_name1 = sprintf('./figures/data_exchange_switch/%s_%d_%s',tag,count,datestr(now,1));
-%                 %         saveas(hf1,file_name1,'fig')
-%                 %         saveas(hf1,file_name1,'jpg')
-% %                 for k = this.sim_r_idx
-% %                     tmp_hf = figure(k+2);
-%                     file_name2 = sprintf('./figures/data_exchange/Journal/%s_rbt%d_step%d_%s',tag,k,count,datestr(now,1));
-% %                     if save_file == 1
-% %                         saveas(tmp_hf,file_name2,'fig')
-% %                         saveas(tmp_hf,file_name2,'jpg')
-% %                     end
-%                     saveas(dbf_hd,file_name2,'jpg')
-% %                 end
-%                 
-%             end
             %}
         end
         

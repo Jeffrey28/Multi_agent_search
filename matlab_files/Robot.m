@@ -16,13 +16,14 @@ classdef Robot
         center; % center of the circular motion
         
         % sensor specs
+        sensor_type;
         % binary sensor
         sen_cov;
         inv_sen_cov;
         sen_offset;
         % range-only sensor
-        cov_ran; 
-        dist_ran;
+        cov_ran; % coveriance of uncertainty 
+        dist_ran; % sensoring range
         % bearing-only sensor
         cov_brg;
         % range-bearing sensor
@@ -32,6 +33,10 @@ classdef Robot
         % observation
         z; % observation measurement
         k; % measurement time
+        % an array saving the model index of the target at each step, this 
+        % is because in my current formulation the target may change model 
+        % to avoid moving out of the field
+        tar_mod; 
         
         % filtering
         nbhd_record; % record some useful info about neighbors, e.g. the time steps that have been used for updating the prob map
@@ -85,6 +90,9 @@ classdef Robot
             end
             
             % sensor spec
+            this.tar_mod = [];
+            
+            this.sensor_type = inPara.sensor_type;
             this.sen_cov = inPara.sen_cov;
             this.inv_sen_cov = inPara.inv_sen_cov;
             this.sen_offset = inPara.sen_offset;
@@ -391,7 +399,7 @@ classdef Robot
                 this.dbf_map=this.dbf_map/sum(sum(this.dbf_map));
                                 
             elseif (selection == 2) || (selection == 4)
-                upd_matrix = this.upd_matrix{target_model};
+%                 upd_matrix = this.upd_matrix{target_model};
                 %% update by bayes rule
                 % note: main computation resource are used in calling sensorProbBin function.
                 % when using grid map, can consider precomputing
@@ -404,6 +412,7 @@ classdef Robot
 %                 display(this.idx)
                 for t = (this.talign_t+1):this.step_cnt
                     display(t)
+                    upd_matrix = this.upd_matrix{this.tar_mod(t)};
                     %% one-step prediction step                     
                     % p(x_k+1) = sum_{x_k} p(x_k+1|x_k)p(x_k)
                     % note, data in upd_matrix is first along y direction 

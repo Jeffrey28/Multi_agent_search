@@ -44,7 +44,7 @@ inPara_sim.cons_fig = cons_fig;
 inPara_sim.sensor_type = 'rb'; % 'bin': binary,'ran': range-only,'brg': bearing-only,'rb': range-bearing
 sim = Sim(inPara_sim);
 
-for trial_cnt = 4%1:trial_num
+for trial_cnt = 1:trial_num
     % initialize field class    
     target.pos = [tx_set(trial_cnt);ty_set(trial_cnt)];
     target.u_set = u_set;
@@ -60,56 +60,60 @@ for trial_cnt = 4%1:trial_num
     
     inPara_rbt = struct('num_robot',num_robot,'dt',dt);
     rbt = cell(num_robot,1);
-    if r_move == 0
-        for rbt_cnt = 1:num_robot
-            inPara_rbt = struct;
+    
+    for rbt_cnt = 1:num_robot
+        inPara_rbt = struct;
+        if r_move == 0
             inPara_rbt.pos = rbt_spec(rbt_cnt).init_pos(:,trial_cnt);
-            inPara_rbt.sen_cov = 100*eye(2);%rbt_spec(rbt_cnt).sen_cov;
-            inPara_rbt.inv_sen_cov = 0.01*eye(2);%rbt_spec(rbt_cnt).inv_sen_cov;
-            inPara_rbt.sen_offset = 0; %rbt_spec(rbt_cnt).sen_offset;
-            inPara_rbt.cov_ran = 3;
-            inPara_rbt.dist_ran = 50;
-            inPara_rbt.cov_brg = 0.2;
-            inPara_rbt.dist_ranbrg = 50;
-            inPara_rbt.cov_ranbrg = eye(2);
-            inPara_rbt.fld_size = fld_size;
-            inPara_rbt.max_step = sim_len;
-            inPara_rbt.nbhd_idx = rbt_nbhd{rbt_cnt};
-            inPara_rbt.r_move = r_move;
-            inPara_rbt.num_robot = num_robot;
-            inPara_rbt.idx = rbt_cnt;
-            inPara_rbt.upd_matrix = upd_matrix;
-            rbt{rbt_cnt} = Robot(inPara_rbt);
-        end
-        
-    elseif r_move == 1
-        for rbt_cnt = 1:num_robot
-            inPara_rbt = struct;
+        elseif r_move == 1
             inPara_rbt.center = rbt_spec(rbt_cnt).init_pos(:,rbt_cnt);
             inPara_rbt.r = 5;
             inPara_rbt.T = 20;
             inPara_rbt.w = 2*pi/inPara_rbt.T;
-            inPara_rbt.sen_cov = 100*eye(2);%rbt_spec(rbt_cnt).sen_cov;
-            inPara_rbt.inv_sen_cov = 0.01*eye(2);%rbt_spec(rbt_cnt).inv_sen_cov;
-            inPara_rbt.sen_offset = 0; %rbt_spec(rbt_cnt).sen_offset;
-            inPara_rbt.cov_ran = 3;
-            inPara_rbt.dist_ran = 50;
-            inPara_rbt.cov_brg = 0.2;
-            inPara_rbt.dist_ranbrg = 50;
-            inPara_rbt.cov_ranbrg = eye(2);
-            inPara_rbt.fld_size = fld_size;
-            inPara_rbt.max_step = sim_len;
-            inPara_rbt.nbhd_idx = rbt_nbhd{rbt_cnt};
-            inPara_rbt.r_move = r_move;
-            inPara_rbt.num_robot = num_robot;
-            inPara_rbt.idx = rbt_cnt;
-            inPara_rbt.upd_matrix = upd_matrix;
-            rbt{rbt_cnt} = Robot(inPara_rbt);
-%             inPara_pred.u_set = target.u_set;
-%             inPara_pred.V_set = target.V_set;
-%             rbt = rbt.predStep(inPara_pred);
         end
-    end        
+        inPara_rbt.sen_cov = 100*eye(2);
+        inPara_rbt.inv_sen_cov = 0.01*eye(2);
+        inPara_rbt.sen_offset = 0;
+        inPara_rbt.cov_ran = 3;
+        inPara_rbt.dist_ran = 50;
+        inPara_rbt.cov_brg = 0.2;
+        inPara_rbt.dist_ranbrg = 50;
+        inPara_rbt.cov_ranbrg = 10*eye(2);
+        inPara_rbt.fld_size = fld_size;
+        inPara_rbt.max_step = sim_len;
+        inPara_rbt.nbhd_idx = rbt_nbhd{rbt_cnt};
+        inPara_rbt.r_move = r_move;
+        inPara_rbt.num_robot = num_robot;
+        inPara_rbt.idx = rbt_cnt;
+        inPara_rbt.upd_matrix = upd_matrix;
+        inPara_rbt.sensor_type = sensor_set{rbt_cnt};
+        rbt{rbt_cnt} = Robot(inPara_rbt);
+    end
+        
+%         for rbt_cnt = 1:num_robot
+%             inPara_rbt = struct;
+%             inPara_rbt.center = rbt_spec(rbt_cnt).init_pos(:,rbt_cnt);
+%             inPara_rbt.r = 5;
+%             inPara_rbt.T = 20;
+%             inPara_rbt.w = 2*pi/inPara_rbt.T;
+%             inPara_rbt.sen_cov = 100*eye(2);%rbt_spec(rbt_cnt).sen_cov;
+%             inPara_rbt.inv_sen_cov = 0.01*eye(2);%rbt_spec(rbt_cnt).inv_sen_cov;
+%             inPara_rbt.sen_offset = 0; %rbt_spec(rbt_cnt).sen_offset;
+%             inPara_rbt.cov_ran = 3;
+%             inPara_rbt.dist_ran = 50;
+%             inPara_rbt.cov_brg = 0.2;
+%             inPara_rbt.dist_ranbrg = 50;
+%             inPara_rbt.cov_ranbrg = eye(2);
+%             inPara_rbt.fld_size = fld_size;
+%             inPara_rbt.max_step = sim_len;
+%             inPara_rbt.nbhd_idx = rbt_nbhd{rbt_cnt};
+%             inPara_rbt.r_move = r_move;
+%             inPara_rbt.num_robot = num_robot;
+%             inPara_rbt.idx = rbt_cnt;
+%             inPara_rbt.upd_matrix = upd_matrix;
+%             rbt{rbt_cnt} = Robot(inPara_rbt);
+%         end
+%     end        
     
     %% %%%%%%%%%%%%%% main code of simulation %%%%%%%%%%%%%%%%%%
     count = 1;
@@ -125,7 +129,8 @@ for trial_cnt = 4%1:trial_num
         %% robot moves
         if r_move == 1
             for ii = 1:num_robot
-                 rbt{ii} = rbt{ii}.robotMove();
+                rbt{ii}.tar_mod = [rbt{ii}.tar_mod,fld.target.model_idx];
+                rbt{ii} = rbt{ii}.robotMove();
              end
          end
         
@@ -142,8 +147,7 @@ for trial_cnt = 4%1:trial_num
         for ii = 1:num_robot
             rbt{ii}.step_cnt = count;
             % observe
-            
-            switch sim.sensor_type
+            switch rbt{ii}.sensor_type
                 case 'bin'
                     rbt{ii} = rbt{ii}.sensorGenBin(fld); % simulate the sensor measurement
                 case 'ran'
@@ -180,7 +184,7 @@ for trial_cnt = 4%1:trial_num
         end    
 
          %% Concensus        
-         %{
+         %
          % update own map using own measurement
          for ii = 1:num_robot  
              inPara4 = struct('selection',selection,'target_model',fld.target.model_idx);
@@ -205,7 +209,7 @@ for trial_cnt = 4%1:trial_num
          %}
         
          %% centeralized filter
-         %{
+         %
          % use the first robot as the centralized filter
          rbt{1}.buffer_cent.pos = rbt{1}.pos;
          rbt{1}.buffer_cent.z = rbt{1}.z;
@@ -247,19 +251,7 @@ for trial_cnt = 4%1:trial_num
     end
         
     sim.rbt_set{trial_cnt}.rbt = rbt;
-    sim.fld_set{trial_cnt}.fld = fld;
-    
-%     %% target moves
-%     if tar_move == 1
-%         fld = fld.targetMove();
-%     end
-%     
-%     %% robot moves
-%     if r_move == 1
-%         for ii = 1:num_robot
-%             rbt{ii} = rbt{ii}.robotMove();
-%         end
-%     end
+    sim.fld_set{trial_cnt}.fld = fld;   
 end
 
 %% %%%%%%%%%%%%%%%%%%%%%% Simulation Results %%%%%%%%%%%%%%%%%%%%%%
