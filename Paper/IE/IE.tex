@@ -808,105 +808,99 @@ Since $P^i_{pdf}(x^g)$ and $P^i_{pdf}(x^{g^*})$ are bounded, then
 \lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g)}{P^i_{pdf}(x^{g^*})}= 0.
 \end{equation}\normalsize
 
-%The binary observations subject to Bernoulli distribution $B(1,p_j)$, yielding
-%\small\begin{equation*}
-%P(z^j_l|x^g)=p^{z^j_l}_j(1-p_j)^{1-z^j_l},
-%\end{equation*}\normalsize
-%where $p_j=P(z^j_l=1|x^g)$. 
-%Utilizing the facts: (1) $z^j_l$ are conditionally independent samples from $B(1,p_j^*)$ and (2) $k-N<k^i_j\leq k$, the law of large numbers yields
-%\small\begin{equation*}
-%%\lim\limits_{k\rightarrow \infty}
-%\frac{1}{k}\sum\limits_{l=1}^{k^i_j}z^j_l\overset{P}{\longrightarrow}p^*_j,\quad 
-%%\lim\limits_{k\rightarrow\infty}
-%\frac{1}{k}(k^i_j-\sum\limits_{l=1}^{k^i_j}z^j_l)\overset{P}{\longrightarrow}1-p^*_j,
-%\end{equation*}\normalsize
-%where $p_j^*=P(z^j_l=1|x^{g^*})$ and ``$\overset{P}{\longrightarrow}$" denotes ``convergence in probability''.
-%Then, 
-%\small\begin{equation}\label{eqn:cmp_lim2}
-%%\lim\limits_{k\rightarrow \infty}
-%\frac{1}{k}\sum\limits_{l=1}^{k_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}\overset{P}{\longrightarrow}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln \frac{1-p_j}{1-p^*_j}.
-%\end{equation}\normalsize
-%
-%Note that the right-hand side of \Cref{eqn:cmp_lim2} achieves maximum value 0 if and only if $p_j=p_j^*$. 
-%Define 
-%\small\begin{equation*}
-%c(x^g)=\sum\limits_{j=1}^{N}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln\frac{1-p_j}{1-p^*_j}.
-%\end{equation*}\normalsize
-
-Define $p^{j^*}_{1}=P(z^j_l=1|x^{g^*})$ and $p^{j}_{1}=P(z^j_l=1|x^{g})$.
 Utilizing the facts: (1) $z^j_l$ are conditionally independent samples from $B(1,p^{j^*}_{1})$ and (2) $k-N<k^i_j\leq k$, the law of large numbers yields
-\small\begin{equation*}
-%\lim\limits_{k\rightarrow \infty}
-\frac{1}{k}\sum\limits_{l=1}^{k^i_j}z^j_l\overset{P}{\longrightarrow}p^{j^*}_{1},\quad 
-%\lim\limits_{k\rightarrow\infty}
-\frac{1}{k}(k^i_j-\sum\limits_{l=1}^{k^i_j}z^j_l)\overset{P}{\longrightarrow}1-p^{j^*}_{1},
-\end{equation*}\normalsize
-where ``$\overset{P}{\longrightarrow}$" denotes ``convergence in probability''.
-Then, 
-\small\begin{equation}\label{eqn:cmp_lim2}
-%\lim\limits_{k\rightarrow \infty}
-\frac{1}{k}\sum\limits_{l=1}^{k_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}\overset{P}{\longrightarrow}p^{j^*}_{1}\ln \frac{p^{j}_{1}}{p^{j^*}_{1}}+(1-p^{j^*}_{1})\ln \frac{1-p^{j}_{1}}{1-p^{j^*}_{1}}.
-\end{equation}\normalsize
+%\small\begin{equation*}
+%\frac{1}{k}\sum\limits_{l=1}^{k^i_j}z^j_l\overset{P}{\longrightarrow}p^{j^*}_{1},\quad 
+%\frac{1}{k}(k^i_j-\sum\limits_{l=1}^{k^i_j}z^j_l)\overset{P}{\longrightarrow}1-p^{j^*}_{1},
+%\end{equation*}\normalsize
+%Then, 
+\small\begin{subequations}\label{eqn:cmp_lim2}
+\begin{align}
+\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}&\overset{P}{\longrightarrow}\mathbb{E}_{z^j_l} \left[\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}\right]\\
+&=\int_{z^j_l} P(z^j_l|x^{g^*})\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})} dz^j_l\\
+&=-D_{KL}\left(P(z^j_l|x^{g^*})\|P(z^j_l|x^g)\right),
+\end{align}
+\end{subequations}\normalsize
+where ``$\overset{P}{\longrightarrow}$" represents ``convergence in probability'' and $D_{KL}(P_1\|P_2)$ denotes the Kullback?Leibler (KL) divergence between two probability distribution $P_1$ and $P_2$.
+KL divergence has the property that
+\begin{subequations}
+	\begin{gather*}
+	\forall P_1,\,P_2, \; D_{KL}(P_1\|P_2)\leq 0\\
+	\text{equality holds iff } \; P_1=P_2.
+	\end{gather*}
+\end{subequations}
+This leads to the following conclusion:
+\begin{subequations}
+	\begin{align}
+		\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}<0,&\quad x^g\neq x^{g^*}\\
+		\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}=0,&\quad x^g= x^{g^*}.
+	\end{align}
+\end{subequations}
 
-Note that the right-hand side of \Cref{eqn:cmp_lim2} achieves maximum value 0 if and only if $p^{j}_{1}=p^{j^*}_{1}$. 
-Define 
-\small\begin{equation*}
-c(x^g)=\sum\limits_{j=1}^{N}p^{j^*}_{1}\ln \frac{p^{j}_{1}}{p^{j^*}_{1}}+(1-p^{j^*}_{1})\ln\frac{1-p^{j}_{1}}{1-p^{j^*}_{1}}.
-\end{equation*}\normalsize
-
-Considering \Cref{eqn:cmp_lim1} and \Cref{eqn:cmp_lim2}, the limit of \Cref{eqn:cmp_log} is
-\small \begin{equation}\label{eqn:lim}
-% \lim\limits_{k\rightarrow \infty}
- \frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}\overset{P}{\longrightarrow}c(x^g)
-% \sum\limits_{j=1}^{N}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln \frac{1-p_j}{1-p^*_j}
-\end{equation}\normalsize
- 
-It follows from \Cref{eqn:lim} that
-\small\begin{equation}\label{eqn:lim2}
-\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})e^{c(x^g)k}}\overset{P}{\longrightarrow}1.
-\end{equation}\normalsize
-
-Define the set $\bar{X}^T=S\setminus \left\lbrace x^{g^*}\right\rbrace$ and $c_M=\max\limits_{x^g\in\bar{X}^T}c(x^g)$.
-Then $c_M<0$.
-Summing \Cref{eqn:lim2} over $\bar{X}^T$ yields
-\small\begin{equation}\label{eqn:lim3}
-\frac{\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})e^{\left[c_M-c(x^g)\right]k}}{{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}e^{c_Mk}}\overset{P}{\longrightarrow} |\bar{X}^T|,
-\end{equation}\normalsize
-where $|\bar{X}^T|$ denotes the cardinality of $\bar{X}^T$.
-
-Since $c_M<0$,  ${P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}e^{c_Mk}{\longrightarrow}0$, \Cref{eqn:lim3} implies
-\begin{equation}\label{eqn:lim4}
-\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})e^{\left[c_M-c(x^g)\right]k}\overset{P}{\longrightarrow}0.
-\end{equation}
-
-Utilizing the relation 
-\begin{equation*}
-0\leq P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})\leq P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})e^{\left[c_M-c(x^g)\right]k},
-\end{equation*}
-it can be derived from \Cref{eqn:lim4} that
-\small\begin{equation*}
-\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})\overset{P}{\longrightarrow} 0.
-\end{equation*}\normalsize
+Then by considering the limiting case of \Cref{eqn:cmp_log}, we can get:
+\begin{subequations}
+	\begin{align}
+	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}<0,&\quad x^g\neq x^{g^*}\label{subeqn:limit1}\\
+	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}=0,&\quad x^g= x^{g^*}\label{subeqn:limit2}.
+	\end{align}
+\end{subequations}
+\Cref{subeqn:limit1,subeqn:limit2} imply that
+\begin{subequations}
+	\begin{align}
+	\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}\overset{P}{\longrightarrow}0,&\quad x^g\neq x^{g^*}\\
+	\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}\overset{P}{\longrightarrow}1,&\quad x^g= x^{g^*}.
+	\end{align}
+\end{subequations}
 Therefore,
 \small\begin{equation*}
-	\lim\limits_{k\rightarrow \infty}
-	P(x^g=x^{g^*}|\mathbf{z}^{i}_{1:k})=1-\lim\limits_{k\rightarrow \infty}\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})=1.
+\lim\limits_{k\rightarrow \infty}
+P(x^g=x^{g^*}|\mathbf{z}^{i}_{1:k})=1.
 \end{equation*}\normalsize
-%\begin{enumerate}
-%	\item When $p_j\neq p^*_j$, i.e., $x^g\notin x^g_{eq}$,
-%	\begin{align*}
-%%		\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^i_{1:k})} & <0,
-%		\sum\limits_{j=1}^{N}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln \frac{1-p_j}{1-p^*_j} & <0,
-%		\;\text{thus }\\
-%		\lim\limits_{k\rightarrow \infty}\frac{P^i_{pdf}(x^g|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^i_{1:k})} & =0
-%	\end{align*}	
-%	\item When $p_j= p^*_j$, i.e., $x^g\in x^g_{eq}$, \begin{align*}
-%%	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^i_{1:k})} & =0,
-%	\sum\limits_{j=1}^{N}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln \frac{1-p_j}{1-p^*_j} & = 0,
-%	\;\text{thus }\\
-%	\lim\limits_{k\rightarrow \infty}\frac{P^i_{pdf}(x^g|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^i_{1:k})} & =1
-%	\end{align*}
-%\end{enumerate}
+
+%Note that the right-hand side of \Cref{eqn:cmp_lim2} achieves maximum value 0 if and only if $p^{j}_{1}=p^{j^*}_{1}$. 
+%Define 
+%\small\begin{equation*}
+%c(x^g)=\sum\limits_{j=1}^{N}p^{j^*}_{1}\ln \frac{p^{j}_{1}}{p^{j^*}_{1}}+(1-p^{j^*}_{1})\ln\frac{1-p^{j}_{1}}{1-p^{j^*}_{1}}.
+%\end{equation*}\normalsize
+%
+%Considering \Cref{eqn:cmp_lim1} and \Cref{eqn:cmp_lim2}, the limit of \Cref{eqn:cmp_log} is
+%\small \begin{equation}\label{eqn:lim}
+%% \lim\limits_{k\rightarrow \infty}
+% \frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}\overset{P}{\longrightarrow}c(x^g)
+%% \sum\limits_{j=1}^{N}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln \frac{1-p_j}{1-p^*_j}
+%\end{equation}\normalsize
+% 
+%It follows from \Cref{eqn:lim} that
+%\small\begin{equation}\label{eqn:lim2}
+%\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})e^{c(x^g)k}}\overset{P}{\longrightarrow}1.
+%\end{equation}\normalsize
+%
+%Define the set $\bar{X}^T=S\setminus \left\lbrace x^{g^*}\right\rbrace$ and $c_M=\max\limits_{x^g\in\bar{X}^T}c(x^g)$.
+%Then $c_M<0$.
+%Summing \Cref{eqn:lim2} over $\bar{X}^T$ yields
+%\small\begin{equation}\label{eqn:lim3}
+%\frac{\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})e^{\left[c_M-c(x^g)\right]k}}{{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}e^{c_Mk}}\overset{P}{\longrightarrow} |\bar{X}^T|,
+%\end{equation}\normalsize
+%where $|\bar{X}^T|$ denotes the cardinality of $\bar{X}^T$.
+%
+%Since $c_M<0$,  ${P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}e^{c_Mk}{\longrightarrow}0$, \Cref{eqn:lim3} implies
+%\begin{equation}\label{eqn:lim4}
+%\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})e^{\left[c_M-c(x^g)\right]k}\overset{P}{\longrightarrow}0.
+%\end{equation}
+%
+%Utilizing the relation 
+%\begin{equation*}
+%0\leq P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})\leq P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})e^{\left[c_M-c(x^g)\right]k},
+%\end{equation*}
+%it can be derived from \Cref{eqn:lim4} that
+%\small\begin{equation*}
+%\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})\overset{P}{\longrightarrow} 0.
+%\end{equation*}\normalsize
+%Therefore,
+%\small\begin{equation*}
+%	\lim\limits_{k\rightarrow \infty}
+%	P(x^g=x^{g^*}|\mathbf{z}^{i}_{1:k})=1-\lim\limits_{k\rightarrow \infty}\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})=1.
+%\end{equation*}\normalsize
 \end{proof}
 
 \subsection{Proof for moving UGVs}
