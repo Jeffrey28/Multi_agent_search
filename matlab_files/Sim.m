@@ -15,7 +15,7 @@ classdef Sim
         fld_set; % record all field objects
         sim_res; % records the metrics of different filtering methods
         fig_cnt; % counter for figure
-        sensor_type;
+        sensor_set_type; % the type of robot team        
     end
     
     methods
@@ -31,7 +31,7 @@ classdef Sim
             this.sim_r_idx = inPara.sim_r_idx;
             this.trial_num = inPara.trial_num;
             this.fig_cnt = 1;
-            this.sensor_type = inPara.sensor_type;
+            this.sensor_set_type = inPara.sensor_set_type;
             this.selection = inPara.selection;
         end
        
@@ -90,8 +90,15 @@ classdef Sim
                             case 3,  tag = 'mov_sen_sta_tar';
                             case 4,  tag = 'mov_sen_mov_tar';
                         end
+                        
+                        switch this.sensor_set_type
+                            case 'brg', tag2 = 'brg';
+                            case 'ran', tag2 = 'ran';
+                            case 'rb', tag2 = 'rb';
+                            case 'htr', tag2 = 'hetero';
+                        end
                         file_name2 = sprintf('./figures/data_exchange/Journal/%s_%s_rbt%d_step%d_%s',...
-                            this.sensor_type,tag,k,count,datestr(now,1));
+                            tag2,tag,k,count,datestr(now,1));
                         saveas(dbf_hd,file_name2,'fig')
                         saveas(dbf_hd,file_name2,'jpg')
                     end
@@ -255,7 +262,7 @@ classdef Sim
             line_marker = {'o','*','s','d','^','h'};
             count = this.sim_len;
             % for LIFO-DBF, we draw different robot's performance metrics
-            for ii = plot_rbt_idx
+            for ii = [1,3,5]%plot_rbt_idx
                 plot(1:count-2,tmp_sim_res.ml_err_dbf_mean(ii,1:count-2),line_clr(ii),'LineWidth',2,'Marker',line_marker{ii},'MarkerSize',2); hold on;
                 % errorbar(1:count-2,tmp_sim_res.ml_err_dbf_mean(i,1:count-2),sqrt(tmp_sim_res.ml_err_dbf_cov(i,1:count-2)),...
                 %         line_clr(i),'LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
@@ -287,7 +294,7 @@ classdef Sim
             hf_ent = figure(tmp_fig_cnt);
             line_clr = ['r','g','b','c','m','k'];
             line_marker = {'o','*','s','d','^','h'};
-            for ii=plot_rbt_idx
+            for ii=[1,3,5]%plot_rbt_idx
                 plot(1:count-2,tmp_sim_res.ent_dbf_mean(ii,1:count-2),line_clr(ii),'LineWidth',2,'Marker',line_marker{ii},'MarkerSize',2); hold on;
                 %     errorbar(1:count-2,tmp_sim_res.entropy_dbf_mean(i,1:count-2),sqrt(tmp_sim_res.entropy_dbf_cov(i,1:count-2)),line_clr(i),'LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
             end
@@ -321,7 +328,14 @@ classdef Sim
                 case 4,  tag = 'mov_sen_mov_tar';
             end
             
-            file_name = sprintf('./figures/data_exchange/Journal/%s_robot_%s.mat',tag,datestr(now,1));            
+            switch this.sensor_set_type
+                case 'brg', tag2 = 'brg';
+                case 'ran', tag2 = 'ran';
+                case 'rb', tag2 = 'rb';
+                case 'htr', tag2 = 'hetero';
+            end
+            
+            file_name = sprintf('./figures/data_exchange/Journal/%s_%s_%s.mat',tag2,tag,datestr(now,1));            
         end
     end
 end

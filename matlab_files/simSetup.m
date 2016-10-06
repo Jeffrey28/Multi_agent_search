@@ -4,8 +4,8 @@
 set(0,'DefaultFigureWindowStyle','docked')
 
 save_data = false; % save data or not
-show_plot = true; % draw plots or not
-save_plot = true; % save plots or not
+show_plot = false; % draw plots or not
+save_plot = false; % save plots or not
 
 sim_len = 50;%50; % max step
 % rounds of consensus at each time step
@@ -16,7 +16,7 @@ cons_fig = false; % whether to show intermediate step of consensus
 trial_num = 10; % 10 % number of trials to run
 
 % select the motion of agents and target
-selection = 1;
+selection = 4;
 switch selection
     case 1,  r_move= 0; tar_move=0;
     case 2,  r_move= 0; tar_move=1;
@@ -33,7 +33,17 @@ else
 end
 
 % the sensor type of each robot
-sensor_set = {'brg','ran','rb','brg','ran','rb'};
+sensor_set_type = 'htr'; %'brg':bearing ,'ran':range, 'rb':range-bearing, 'htr':heterogeneous
+switch sensor_set_type
+    case 'brg'
+        sensor_set = {'brg','brg','brg','brg','brg','brg'};
+    case 'ran'
+        sensor_set = {'ran','ran','ran','ran','ran','ran'};
+    case 'rb'
+        sensor_set = {'rb','rb','rb','rb','rb','rb'};
+    case 'htr'
+        sensor_set = {'brg','ran','rb','brg','ran','rb'};
+end
 
 num_robot = 6;
 

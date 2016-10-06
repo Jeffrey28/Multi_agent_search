@@ -41,7 +41,7 @@ inPara_sim.trial_num = trial_num;
 inPara_sim.dt = dt;
 inPara_sim.selection = selection;
 inPara_sim.cons_fig = cons_fig;
-inPara_sim.sensor_type = 'rb'; % 'bin': binary,'ran': range-only,'brg': bearing-only,'rb': range-bearing
+inPara_sim.sensor_set_type = sensor_set_type; % 'bin': binary,'ran': range-only,'brg': bearing-only,'rb': range-bearing
 sim = Sim(inPara_sim);
 
 for trial_cnt = 1:trial_num
@@ -74,11 +74,11 @@ for trial_cnt = 1:trial_num
         inPara_rbt.sen_cov = 100*eye(2);
         inPara_rbt.inv_sen_cov = 0.01*eye(2);
         inPara_rbt.sen_offset = 0;
-        inPara_rbt.cov_ran = 3;
+        inPara_rbt.cov_ran = 30;%3;
         inPara_rbt.dist_ran = 50;
-        inPara_rbt.cov_brg = 0.2;
+        inPara_rbt.cov_brg = 2;%0.2;
         inPara_rbt.dist_ranbrg = 50;
-        inPara_rbt.cov_ranbrg = 10*eye(2);
+        inPara_rbt.cov_ranbrg = 100*eye(2);%10
         inPara_rbt.fld_size = fld_size;
         inPara_rbt.max_step = sim_len;
         inPara_rbt.nbhd_idx = rbt_nbhd{rbt_cnt};
@@ -212,13 +212,13 @@ for trial_cnt = 1:trial_num
          %
          % use the first robot as the centralized filter
          rbt{1}.buffer_cent.pos = rbt{1}.pos;
-         rbt{1}.buffer_cent.z = rbt{1}.z;
+         rbt{1}.buffer_cent.z = {rbt{1}.z};
          rbt{1}.buffer_cent.k = rbt{1}.k;
          rbt{1}.buffer_cent.lkhd_map = {rbt{1}.lkhd_map};
          
          for ii = 2:num_robot
              rbt{1}.buffer_cent.pos = [rbt{1}.buffer_cent.pos,rbt{ii}.pos];
-             rbt{1}.buffer_cent.z = [rbt{1}.buffer_cent.z,rbt{ii}.z];
+             rbt{1}.buffer_cent.z = [rbt{1}.buffer_cent.z,{rbt{ii}.z}];
              rbt{1}.buffer_cent.k = [rbt{1}.buffer_cent.k,rbt{ii}.k];
              rbt{1}.buffer_cent.lkhd_map = [rbt{1}.buffer_cent.lkhd_map,rbt{ii}.lkhd_map];
          end
@@ -259,7 +259,7 @@ end
 met = sim.compareMetrics();
 % 
 % % save data (workspace)
-% if save_data
-%     file_name = sim.saveSimData();
-%     save(file_name,'sim','fld')
-% end
+if save_data
+    file_name = sim.saveSimData();
+    save(file_name)
+end
