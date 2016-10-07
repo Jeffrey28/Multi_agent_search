@@ -16,7 +16,7 @@ cons_fig = false; % whether to show intermediate step of consensus
 trial_num = 10; % 10 % number of trials to run
 
 % select the motion of agents and target
-selection = 4;
+selection = 1;
 switch selection
     case 1,  r_move= 0; tar_move=0;
     case 2,  r_move= 0; tar_move=1;
@@ -33,7 +33,7 @@ else
 end
 
 % the sensor type of each robot
-sensor_set_type = 'brg'; %'brg':bearing ,'ran':range, 'rb':range-bearing, 'htr':heterogeneous
+sensor_set_type = 'ran'; %'brg':bearing ,'ran':range, 'rb':range-bearing, 'htr':heterogeneous
 switch sensor_set_type
     case 'brg'
         sensor_set = {'brg','brg','brg','brg','brg','brg'};

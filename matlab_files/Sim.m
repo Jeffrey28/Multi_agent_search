@@ -97,7 +97,7 @@ classdef Sim
                             case 'rb', tag2 = 'rb';
                             case 'htr', tag2 = 'hetero';
                         end
-                        file_name2 = sprintf('./figures/data_exchange/Journal/%s_%s_rbt%d_step%d_%s',...
+                        file_name2 = sprintf('./figures/data_exchange/Journal/%s_%s_rbt%d_offset_step%d_%s',...
                             tag2,tag,k,count,datestr(now,1));
                         saveas(dbf_hd,file_name2,'fig')
                         saveas(dbf_hd,file_name2,'jpg')

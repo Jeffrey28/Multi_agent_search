@@ -1203,13 +1203,37 @@ Similar results.
 		\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_entropy}
 		\caption{Entropy of Individual PDF}%\label{fig:sta_sen_sta_tar_entropy}
 	\end{subfigure}
-	
-	%	\begin{subfigure}[b]{0.4\textwidth}
-	%		\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_30}
-	%		\caption{Step 30}\label{fig:sta_sen_sta_tar_all}
-	%	\end{subfigure}
 	\caption{(a)-(d) The $1^\text{st}$ UGV's individual PDF at different times. The square denotes the current UGV and stars represent other UGVs. The cross stands for the target. (e) Average position estimation errors of $1^\text{st}$, $3^\text{rd}$ and $5^\text{th}$ UGV's LIFO-DBF, CbDF and CF. (f) Average entropy of individual PDFs.}
 	%\label{fig:sta_sen_sta_tar}
+	\vspace{-1.2em}
+\end{figure}
+
+\subsection{Sensors with Unknown Bias}
+When sensors have unknown bias, no guarantee on the estimation results can retain. 
+In fact, in the extreme case when the covariance of the uncertainty is negligible but bias of sensors differs, no meaningful estimation can be obtained.
+\Cref{fig:sta_sen_sta_tar_offset} shows range-only sensors with constant but unknown biases, in which case no compensation can be applied.
+The covariance of uncertainty is set large to keep the existence of a point that can account for sensors' measurement.
+We can see that the estimation still converges, while consistency is missing.
+\begin{figure}%[thpb]
+	\centering
+	\begin{subfigure}[b]{0.21\textwidth}
+		\includegraphics[width=\textwidth]{figures/ran_sta_sen_sta_tar_rbt3_offset_step1}
+		\caption{Step 1}%\label{fig:sta_sen_sta_tar_sing1}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.21\textwidth}
+		\includegraphics[width=\textwidth]{figures/ran_sta_sen_sta_tar_rbt3_offset_step5}
+		\caption{Step 5}%\label{fig:sta_sen_sta_tar_sing2}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.21\textwidth}
+		\includegraphics[width=\textwidth]{figures/ran_sta_sen_sta_tar_rbt3_offset_step10}
+		\caption{Step 10}%\label{fig:sta_sen_sta_tar_sing3}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.21\textwidth}
+		\includegraphics[width=\textwidth]{figures/ran_sta_sen_sta_tar_rbt3_offset_step30}
+		\caption{Step 30}%\label{fig:sta_sen_sta_tar_sing4}
+	\end{subfigure}
+	\caption{(a)-(d) The $1^\text{st}$ UGV's individual PDF at different times. The square denotes the current UGV and stars represent other UGVs. The cross stands for the target. (e) Average position estimation errors of $1^\text{st}$, $3^\text{rd}$ and $5^\text{th}$ UGV's LIFO-DBF, CbDF and CF. (f) Average entropy of individual PDFs.}
+	\label{fig:sta_sen_sta_tar_offset}
 	\vspace{-1.2em}
 \end{figure}
 

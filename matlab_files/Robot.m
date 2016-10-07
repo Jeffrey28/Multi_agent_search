@@ -24,8 +24,10 @@ classdef Robot
         % range-only sensor
         cov_ran; % coveriance of uncertainty 
         dist_ran; % sensoring range
+        offset_ran; 
         % bearing-only sensor
         cov_brg;
+        offset_brg;
         % range-bearing sensor
         cov_ranbrg;
         dist_ranbrg;
@@ -98,7 +100,9 @@ classdef Robot
             this.sen_offset = inPara.sen_offset;
             this.cov_ran = inPara.cov_ran;
             this.dist_ran = inPara.dist_ran;
+            this.offset_ran = inPara.offset_ran;
             this.cov_brg = inPara.cov_brg;
+            this.offset_brg = inPara.offset_brg;
             this.cov_ranbrg = inPara.cov_ranbrg;
             this.dist_ranbrg = inPara.dist_ranbrg;
             
@@ -176,8 +180,10 @@ classdef Robot
             x_t = fld.target.pos;
             cov_ran = this.cov_ran;
             dist_ran = this.dist_ran;
+            offset = this.offset_ran;
+            new_mean = norm(x_t-x_r)+offset;
             if norm(x_t-x_r) <= dist_ran
-                this.z = normrnd(norm(x_t-x_r),cov_ran);
+                this.z = normrnd(new_mean,cov_ran);
             else
                 this.z = -100;
             end
@@ -223,7 +229,10 @@ classdef Robot
             x_t = fld.target.pos;
             tmp_vec = x_t-x_r;                      
             cov_brg = this.cov_brg;
-            this.z = normrnd(atan2(tmp_vec(2),tmp_vec(1)),cov_brg);              
+            % consider offset
+            offset = this.offset_brg;
+            new_mean = atan2(tmp_vec(2),tmp_vec(1))+offset;
+            this.z = normrnd(new_mean,cov_brg);              
             this.k = this.step_cnt;
             
             % generate the likelihood map for all possible target locations
@@ -310,24 +319,12 @@ classdef Robot
                 this.buffer(this.idx).k = this.step_cnt;
                 this.buffer(this.idx).lkhd_map = this.lkhd_map;
                 
-                % assign this probability to rbt_cons and rbt_cent to
-                % save computation resource
-                %                 rbt.cons_prob = rbt.buffer(rbt.idx).prob;
-                %                 rbt.cent_prob = rbt.buffer(rbt.idx).prob;
-                %                 rbt_cons(i).prob = rbtBuffer{i}.rbt(i).prob;
-                %                 rbt_cent.prob{i} = rbtBuffer{i}.rbt(i).prob;
-                
             elseif (selection == 2) || (selection == 4)
                 % moving target
                 this.buffer(this.idx).pos = [this.buffer(this.idx).pos,this.pos];
                 this.buffer(this.idx).z = [this.buffer(this.idx).z,this.z];
                 this.buffer(this.idx).k = [this.buffer(this.idx).k,this.k];
-                this.buffer(this.idx).lkhd_map{this.step_cnt} = this.lkhd_map;
-                
-                % assign this probability to rbt_cons and rbt_cent to
-                % save computation resource
-                %                 rbt.cons_prob = rbt.buffer(rbt.idx).prob;
-                %                 rbt.cent_prob = rbt.buffer(rbt.idx).prob;                
+                this.buffer(this.idx).lkhd_map{this.step_cnt} = this.lkhd_map;             
             end
         end
         
@@ -437,12 +434,7 @@ classdef Robot
                             talign_flag = 0;
                         end
                     end
-                    
-                    % assign the probability to rbt_cons and rbt_cent to
-                    % save computation resource
-                    %                         rbt_cons(ii).prob = rbtBuffer{ii}.rbt(ii).prob;
-                    %                         rbt_cent.prob{ii} = rbtBuffer{ii}.rbt(ii).prob;
-                    
+                                        
                     % after the first loop, the robot's aligned time
                     % increase by one if the robot's buffer is no later
                     % than the previous aligned time
@@ -503,31 +495,6 @@ classdef Robot
             % (2) send/receive the probability map for time k from neighbors
             % (3) repeat step (1)            
             
-            % update using new observation
-            %{
-            if (Selection == 1) || (Selection == 3)
-                % update probability map
-                for i=1:NumOfRobot
-                    tmp_cons_map = rbt_cons(i).map.*rbt_cons(i).prob;
-                    rbt_cons(i).map = tmp_cons_map/sum(sum(tmp_cons_map));
-                end
-                %
-            elseif (Selection == 2) || (Selection == 4)
-                for i=1:NumOfRobot
-                    tmp_cons_map = rbt_cons(i).map;
-                    % prediction step
-                    tmp_map_cons2 = zeros(size(tmp_cons_map));
-                    for k = 1:size(pt,1)
-                        tmp_map_cons2 = tmp_map_cons2+upd_cell1{k,model_idx}*tmp_cons_map(pt(k,1),pt(k,2));
-                    end
-                    tmp_cons_map = tmp_map_cons2;
-                    
-                    % update step
-                    tmp_cons_map = tmp_cons_map.*rbt_cons(i).prob;
-                    rbt_cons(i).map = tmp_cons_map/sum(sum(tmp_cons_map));
-                end
-            end
-            %}
             rbt_nbhd_set = inPara.rbt_nbhd_set;
             cons_fig = inPara.cons_fig;
             % consensus step
@@ -548,46 +515,6 @@ classdef Robot
                 % hold on;                
                 plot(this.pos(1), this.pos(2), 's','MarkerSize',8,'LineWidth',3);       
             end
-            
-            
-%             for i=1:NumOfRobot % Robot Iteration
-%                 rbtCon(i).map=rbt_cons(i).map;
-%             end
-%             
-%             for ConStep=1:ConsenStep % Consensus cycle
-%                 if ConsenFigure==1
-%                     fig_cnt = fig_cnt+1;
-%                     h_cons = figure(fig_cnt);
-%                     clf(h_cons);
-%                 end
-%                 for i=1:NumOfRobot % Robot Iteration
-%                     neighNum=length(this(i).neighbour)+1;
-%                     tempRbtCon(i).map = rbtCon(i).map;
-%                     for t=this(i).neighbour
-%                         tempRbtCon(i).map=tempRbtCon(i).map+rbtCon(t).map;
-%                     end
-%                     tempRbtCon(i).map=tempRbtCon(i).map/neighNum;
-%                 end
-%                 % plot local PDFs after concensus
-%                 for i=1:NumOfRobot
-%                     rbtCon(i).map=tempRbtCon(i).map;
-%                     if ConsenFigure==1
-%                         figure(fig_cnt)
-%                         subplot(2,3,i); contourf((rbtCon(i).map)'); title(['Sensor ',num2str(i)]);
-%                         hold on;
-%                         for j=1:NumOfRobot
-%                             if i==j
-%                                 plot(this(j).x, this(j).y, 's','Color',this(j).color,'MarkerSize',8,'LineWidth',3);
-%                             else
-%                                 plot(this(j).x, this(j).y, 'p','Color',this(j).color, 'MarkerSize',8,'LineWidth',1.5);
-%                             end
-%                         end
-%                     end
-%                 end
-%             end
-%             for i=1:NumOfRobot % Robot Iteration
-%                 rbt_cons(i).map=rbtCon(i).map;
-%             end
         end
         
         function this = CF(this,inPara)
@@ -617,31 +544,7 @@ classdef Robot
                 end
                 this.cent_map = tmp_map;
             end
-            this.cent_map = this.cent_map/sum(sum(this.cent_map));            
-            
-            
-%             tmp_cent_map = rbt_cent.map;
-%             if (Selection == 1) || (Selection == 3)
-%                 % update step
-%                 for i = 1:NumOfRobot
-%                     tmp_cent_map = tmp_cent_map.*rbt_cent.prob{i};
-%                 end
-%                 rbt_cent.map = tmp_cent_map/sum(sum(tmp_cent_map));
-%                 
-%             elseif (Selection == 2) || (Selection == 4)
-%                 % prediction step
-%                 tmp_cent_map2 = zeros(size(tmp_cent_map));
-%                 for k = 1:size(pt,1)
-%                     tmp_cent_map2 = tmp_cent_map2+upd_cell1{k,model_idx}*tmp_cent_map(pt(k,1),pt(k,2));
-%                 end
-%                 tmp_cent_map = tmp_cent_map2;
-%                 
-%                 % update step
-%                 for i=1:NumOfRobot
-%                     tmp_cent_map = tmp_cent_map.*rbt_cent.prob{i};
-%                 end
-%                 rbt_cent.map = tmp_cent_map/sum(sum(tmp_cent_map));
-%             end
+            this.cent_map = this.cent_map/sum(sum(this.cent_map)); 
         end      
                 
         %% robot motion
