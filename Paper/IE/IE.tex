@@ -121,6 +121,7 @@ The effectiveness of this method is demonstrated by comparing with consensus-bas
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{INTRODUCTION}
+\todohere{mention the relation between BF and KF, PF}
 Distributed filtering that focuses on using a group of networked UGVs to collectively infer environment status has been used for various applications, such as intruder detection \cite{chamberland2007wireless}, pedestrian tracking \cite{wang2007wlan} and micro-environmental monitoring \cite{cao2008development}. 
 Several techniques have been developed for distributed filtering.
 For example, Olfati-Saber (2005) proposed a distributed Kalman filter (DKF) for estimating states of linear systems with Gaussian process and measurement noise \cite{2005distributed}.
@@ -221,77 +222,138 @@ The Bayesian filter is run locally on each UGV based on its own and received obs
 \subsection{Target and Sensor Model}
 %Probabilistic Model of Binary Sensor}
 %In this paper, distributed Bayesian filter is used to estimate the true target position by a network of binary sensors.
-The target motion takes a discrete-time model that can described by
+The target motion takes a deterministic discrete-time model that can be described by
+
+\todohere{this may make people wonder if LIFO-DBF can be applied to system with noise?}
 \begin{equation}
 \small
 \label{eqn:tar_motion_model}
-x^g_{k+1}=f(x^g_k,u^g_k,w^g_k),
+x^g_{k+1}=f(x^g_k,u^g_k),
 %x^g_{k+1}=A_kx^g_k+B_ku^g_k+\epsilon,
 \end{equation}\normalsize
-where $x^g_k\in \mathbb{R}^{2}$ denotes the target position at time $k$; $u^g_k\in\mathbb{R}^{2\times 1}$ represents the control input of the target; and $w^g_k$ denotes the process noise.
+where $x^g_k\in \mathbb{R}^{2}$ denotes the target position at time $k$; $u^g_k$ represents the control input of the target.
 %$A_k\in\mathbb{R}^{2\times 2},\;B_k\in\mathbb{R}^{2\times 2}$ and $\epsilon$ denotes the process noise.
 
-Each UGV's sensor constantly measures the target position and 
-the measurement by $i^\text{th}$ UGV is modeled as
-\begin{equation*}\small
-	z^i_k = 
-	\begin{cases}
-		1\qquad h^i(x^g_k;x^i_k)\geq \gamma\\
-		0 \qquad h^i(x^g_k;x^i_k) < \gamma
-	\end{cases},
-\end{equation*}\normalsize
-%\begin{equation*}\small
-%y^i_k=h^i(x^g_k;x^i_k),\; x^g_k\in S,
-%\end{equation*}\normalsize
-where $z^i_k$ denotes the measurement by $i^\text{th}$ sensor at time $k$; $h^i$ is the sensor property that characterizes the target position. 
-For example, $h^i$ can represent the power received by an ultrasonic sensor.
-When the received signal $y^i_k$ is greater than a threshold $\gamma$, indicating that the target is detected, the sensor returns $1$; otherwise, $0$ is returned by the sensor.
-%A binary sensor does not provide $y^i_k$ as its output. 
-%Instead, it only gives one of two possible values: $1$ when the signal $y^i_k$ is greater than a threshold $\gamma$, indicating the target is detected in the sensor's field of view; otherwise, $0$ is given by the sensor. Such model is shown below:
-%\begin{equation*}\small
-%z^i_k = 
-%\begin{cases}
-%1\qquad y^i_k\geq \gamma\\
-%0 \qquad y^i_k < \gamma
-%\end{cases},
-%\end{equation*}\normalsize
-%where $z^i_k$ denotes the measurement by $i^\text{th}$ sensor at time $k$.
-%The observation of $i^\text{th}$ sensor at $k^\text{th}$ time step is denoted as $z^i_k$, the value of which follows a Bernoulli distribution.
-% and subjects to Bernoulli distribution $B(1,p_{i,k})$.
+Each UGV constantly measures the target position and the sensor measurement of $i^\text{th}$ UGV can be described by a stochastic model:
+\begin{equation}
+z^i_k = g_i(x^g_k,w^i_k;y^i_k),
+\end{equation}
+where $w^i_k$ is the white measurement noise and $y^i_k=[x^i_k;\theta^i_k]$ represents the sensor state, consisting of the sensor position $x^i_k$ and direction $\theta^i_k$.
+$g_i$ depends on the type of the sensor. Let $\mathcal{F}(y^i_k)$ denote the sensor field of view (FOV), $g_i$ for several typical sensor types can be defined as follows:
 
-We use a likelihood function to represent the probability of the target being detected by the binary sensor:
+\textbf{Range-only sensors:} when the target is within the sensor's FOV, the measurement only depends on the relative distance between the sensor and the target.
+%\begin{subequations}
+%	\begin{align}
+\begin{equation}
+g_i(x^g_k,w^i_k;x^i_k)=
+\begin{cases}
+\|x^g_k-x^i_k\|_2+w^i_k\; &\text{if}\, x^g_k\in\mathcal{F}(y^i_k),\\
+\emptyset\; &\text{if}\, x^g_k\notin\mathcal{F}(y^i_k).
+\end{cases}
+\end{equation}		
+%		w^i_k&\sim\mathcal{N}(0,\sigma^i),
+%	\end{align}
+%\end{subequations}
+
+\textbf{Bearing-only sensors:} when the target is within the sensor's FOV, the measurement only depends on the relative bearing between the sensor and the target.
+\begin{equation}
+g_i(x^g_k,w^i_k;x^i_k)=
+\begin{cases}
+\measuredangle (x^g_k-x^i_k)+w^i_k\; &\text{if}\, x^g_k\in\mathcal{F}(y^i_k),\\
+\emptyset\; &\text{if}\, x^g_k\notin\mathcal{F}(y^i_k).
+\end{cases}
+\end{equation}
+
+\textbf{Range-bearing sensors:} when the target is within the sensor's FOV, the measurement is the relative distance and bearing between the sensor and the target.
+\begin{equation}
+g_i(x^g_k,w^i_k;x^i_k)=
+\begin{cases}
+x^g_k-x^i_k+w^i_k\; &\text{if}\, x^g_k\in\mathcal{F}(y^i_k),\\
+\emptyset\; &\text{if}\, x^g_k\notin\mathcal{F}(y^i_k).
+\end{cases}
+\end{equation}
+
+%the measurement by $i^\text{th}$ UGV is modeled as
+%\begin{equation*}\small
+%	z^i_k = 
+%	\begin{cases}
+%		1\qquad h^i(x^g_k;x^i_k)\geq \gamma\\
+%		0 \qquad h^i(x^g_k;x^i_k) < \gamma
+%	\end{cases},
+%\end{equation*}\normalsize
+%%\begin{equation*}\small
+%%y^i_k=h^i(x^g_k;x^i_k),\; x^g_k\in S,
+%%\end{equation*}\normalsize
+%where $z^i_k$ denotes the measurement by $i^\text{th}$ sensor at time $k$; $h^i$ is the sensor property that characterizes the target position. 
+%For example, $h^i$ can represent the power received by an ultrasonic sensor.
+%When the received signal $y^i_k$ is greater than a threshold $\gamma$, indicating that the target is detected, the sensor returns $1$; otherwise, $0$ is returned by the sensor.
+%%A binary sensor does not provide $y^i_k$ as its output. 
+%%Instead, it only gives one of two possible values: $1$ when the signal $y^i_k$ is greater than a threshold $\gamma$, indicating the target is detected in the sensor's field of view; otherwise, $0$ is given by the sensor. Such model is shown below:
+%%\begin{equation*}\small
+%%z^i_k = 
+%%\begin{cases}
+%%1\qquad y^i_k\geq \gamma\\
+%%0 \qquad y^i_k < \gamma
+%%\end{cases},
+%%\end{equation*}\normalsize
+%%where $z^i_k$ denotes the measurement by $i^\text{th}$ sensor at time $k$.
+%%The observation of $i^\text{th}$ sensor at $k^\text{th}$ time step is denoted as $z^i_k$, the value of which follows a Bernoulli distribution.
+%% and subjects to Bernoulli distribution $B(1,p_{i,k})$.
+
+A probabilistic sensor model that describes the conditional probability of a certain measurement given sensor and target state is a key component for Bayesian filtering.
+We use a likelihood function to represent the probability of the target being detected by a sensor:
 % as a function of the target and sensor positions:
 %The following likelihood function gives the probability for $i^\text{th}$ sensor to obtain $z^i_k$:
 %\small\begin{equation}\label{eqn:bin_sensor}
 %	P(z^i_k|x^g_k;x^R_k)=p^{z^i_k}_{i,k}(1-p_{i,k})^{1-z^i_k},
 %\end{equation}\normalsize
 %where $p_{i,k}=P(z^i_k=1|x^g_k;x^R_k)$; $x^g_k$ and $x^R_k$ denote the target and UGV position at $k$, respectively.
-\small\begin{equation}\label{eqn:bin_sensor1}
-p^i_{1,k}=P(z^i_k=1|x^g_k;x^i_k)\in \left[0,1\right],\; x^g_k\in S,
+\small\begin{equation}\label{eqn:prob_sensor1}
+p^i_{1,k}=P(z^i_k\neq\emptyset|x^g_k;x^i_k)\in \left[0,1\right],\; x^g_k\in S,
 \end{equation}\normalsize
 where $x^i_k$ is the $i^\text{th}$ sensor's position.
 %; $X^g$ represents the set of all possible target positions.
 Correspondingly, the likelihood function for no target being detected is:
-\small\begin{equation}\label{eqn:bin_sensor0}
-p^i_{0,k}=P(z^i_k=0|x^g_k;x^{i}_k)=1-p^i_{1,k}.
+\small\begin{equation}\label{eqn:prob_sensor0}
+p^i_{0,k}=P(z^i_k=\emptyset|x^g_k;x^{i}_k)=1-p^i_{1,k}.
 \end{equation}\normalsize
 %\Cref{eqn:bin_sensor} actually defines a binary sensor model parameterized by $x^g_k$ and $x^R_k$.
 
-The combination of \Cref{eqn:bin_sensor1} and \Cref{eqn:bin_sensor0} forms the probabilistic model for a binary sensor, and the measurement follows a Bernoulli distribution $B(1,p^i_{1,k})$, i.e.
-\small\begin{equation*}
-P(z^i_k|x^g;x^i_k)=(p^i_{1,k})^{z^i_k}(p^i_{0,k})^{1-z^j_l}.
-\end{equation*}\normalsize
+The combination of \Cref{eqn:prob_sensor1} and \Cref{eqn:prob_sensor0} forms the probabilistic model for a sensor.
+If $w^i_k$ is a zero-mean Gaussian white noise, then the probabilistic sensor model can be described as
+\begin{equation}
+	p^i_{1,k}\sim
+	\begin{cases}
+		\mathcal{N}(\bar{z}^i_k,\Sigma^i_k) & \text{if}\,x^g_k\in\mathcal{F}(y^i_k)\\
+		0 & \text{if}\,x^g_k\in\mathcal{F}(y^i_k),
+	\end{cases}
+\end{equation}
+where $\bar{z}^i_k$ is the nominal value of the measurement and equals $\|x^g_k-x^i_k\|$, $\measuredangle(x^g_k-x^i_k)$ and $x^g_k-x^i_k$ for range-only, bearing-only and range-bearing sensors, correspondingly.
+
+Consequently,
+\begin{equation}
+p^i_{0,k}\sim
+\begin{cases}
+0 & \text{if}\,x^g_k\in\mathcal{F}(y^i_k)\\
+1 & \text{if}\,x^g_k\in\mathcal{F}(y^i_k).
+\end{cases}
+\end{equation}
+
+%, and the measurement follows a Bernoulli distribution $B(1,p^i_{1,k})$, i.e.
+%\small\begin{equation*}
+%P(z^i_k|x^g;x^i_k)=(p^i_{1,k})^{z^i_k}(p^i_{0,k})^{1-z^j_l}.
+%\end{equation*}\normalsize
 % parameterized by $x^g_k$ and $x^i_k$. 
 
 For the purpose of simplicity, we will not explicitly write $x^{i}_k$ in the sensor model for the rest of the paper.
 %, with which all observations are generated. 
 
-%\begin{rem}
-The commonly used likelihood functions for binary sensors include Gaussian function \cite{bonnie2012modelling,liu2015model} and step function \cite{djuric2008target}. For example, a Guassian function sensor model is defined as
-\small\begin{equation}\label{eqn:gauss_sensor}
-	p^i_{1,k}=e^{-\frac{1}{2}(x_k^g-x_k^i)^T{\Sigma}^{-1}(x_k^g-x_k^i)},
-\end{equation}\normalsize
-where $\Sigma$ is a positive definite covariance matrix characterizing the sensoring range and uncertainty.
+%%\begin{rem}
+%The commonly used likelihood functions for binary sensors include Gaussian function \cite{bonnie2012modelling,liu2015model} and step function \cite{djuric2008target}. For example, a Guassian function sensor model is defined as
+%\small\begin{equation}\label{eqn:gauss_sensor}
+%	p^i_{1,k}=e^{-\frac{1}{2}(x_k^g-x_k^i)^T{\Sigma}^{-1}(x_k^g-x_k^i)},
+%\end{equation}\normalsize
+%where $\Sigma$ is a positive definite covariance matrix characterizing the sensoring range and uncertainty.
 
 %\small\begin{subequations}\label{eqn:gauss_sensor}
 %	\begin{align}
@@ -307,10 +369,12 @@ where $\Sigma$ is a positive definite covariance matrix characterizing the senso
 \end{rem}
 
 \begin{rem} 
-	The proposed LIFO protocol to be described in \cref{sec:LIFO-dbf} is applicable for both homogeneous and heterogeneous binary sensors. 
-	A homogeneous model can simplify the analysis of completeness, while a heterogeneous model is closer to real sensing characteristics.
-	In addition, it also works for other types of sensors, such as laser scanners and cameras.
+	The proposed LIFO protocol to be described in \cref{sec:LIFO-dbf} and the consistency property proved in \Cref{sec:consist_proof} are applicable for general sensors, not limited to the ones described in this section. In addition, they also do not rely on the Gaussian noise assumption.
+%	both homogeneous and heterogeneous binary sensors. 
+%	A homogeneous model can simplify the analysis of completeness, while a heterogeneous model is closer to real sensing characteristics.
+%	In addition, it also works for other types of sensors, such as laser scanners and cameras.
 \end{rem}
+
 \subsection{Graphical Model of Communication Topology}
 The UGV network is assumed to be connected, i.e., there exists a path, either direct or indirect, between every pair of UGVs.
 Under this assumption, consider an undirected and fixed graph $G=(V,E)$, where $V=\left\lbrace 1,\dots,N\right\rbrace $ represents the index set of UGVs and $E=V\times V$ denotes the edge set. 
@@ -371,13 +435,13 @@ where $P(x^g_k|x^g_{k-1})$ is a Markov motion model of the target defined by \Cr
 %This model describes
 which maps the state transition probability of the target from a prior state $x^g_{k-1}$ to posterior state $x^g_k$. 
 Note that the target is static in many search applications, such as the indoor search for stationary objects \cite{kulich2014single}. 
-For a static target, its Markov motion model is simplified to be
-\small\begin{equation*}
+For the deterministic target motion model, as defined in \Cref{eqn:tar_motion_model}, its Markov motion model is simplified to be
+\small\begin{equation}\label{eqn:markov_model}
 P(x^g_k|x^g_{k-1})=\begin{cases}
 1 & \text{if}\; x^g_k=x^g_{k-1}\\
 0 & \text{if}\; x^g_k\neq x^g_{k-1}
 \end{cases}.
-\end{equation*}\normalsize
+\end{equation}\normalsize
 %and \Cref{eqn:bayes_pred} can be reduced to $P^i_{pdf}(x^g_{k}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})=P^i_{pdf}(x^g_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})$.
 
 \subsubsection{Updating}
@@ -611,6 +675,46 @@ K_i=1/\int P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k-1})\prod\limits_{j=1}^{N}P(z^j_{k^i
 	\vspace{-1em}
 \end{figure}
 
+\begin{algorithm}
+	\caption{LIFO-DBF Algorithm}\label{alg:lifo-dbf}
+	\begin{algorithmic}
+		\State For $i^\text{th}$ UGV at $k^\text{th}$ step:
+		\State After updating CB by \cref{alg:lifo},	
+		\State \textbf{(1)} The stored individual PDF for time $(k-N)$ is:
+		\small\begin{equation*}
+		P^i_{pdf}(x^g_{k-N}|z^1_{1:k-N},\dots,z^N_{1:k-N})
+		\end{equation*}\normalsize		
+		\State\textbf{(2)} Initialize a virtual PDF by assigning the individual PDF to it:
+		\small\begin{equation*}
+		P^i_{virt}(x^g_{k-N})=P^i_{pdf}(x^g_{k-N}|z^1_{1:k-N},\dots,z^N_{1:k-N})
+		\end{equation*}\normalsize		
+		\State\textbf{(3)} From $\xi=1$ to $N$, iteratively repeat two steps of Bayesian filtering:
+		%	\begin{enumerate}
+		%		\item 
+		
+		\State(3.1) Prediction 
+		\small\begin{align*}
+		&P_{virt}^{pre}(x^g_{k-N+\xi})\\=&\int P(x^g_{k-N+\xi}|x^g_{k-N+\xi-1})P^i_{virt}(x^g_{k-N+\xi-1})dx^g_{k-N+\xi-1}
+		\end{align*} \normalsize
+		
+		%		\item 
+		\State(3.2) Updating
+		\small\begin{gather*}
+		P^i_{virt}(x^g_{k-N+\xi})=K_\xi P_{virt}^{pre}(x^g_{k-N+\xi})\prod\limits_{j\in\Omega^i_{\xi}}P(z^j_{k-N+\xi}|x^g_{k-N+\xi})\\
+		K_\xi=1/\int P_{virt}^{pre}(x^g_{k-N+\xi})\prod\limits_{j\in\Omega^i_{\xi}}P(z^j_{k-N+\xi}|x^g_{k-N+\xi})dx^g_{k-N+\xi}
+		\end{gather*} \normalsize
+		%	\end{enumerate}
+		
+		\State(3.3) When $\xi=1$, store the virtual PDF as the individual PDF for time $(k-N+1)$
+		\begin{equation*}
+		P^i_{pdf}(x^g_{k-N+1}|z^1_{1:k-N+1},\dots,z^N_{1:k-N+1})=P^i_{virt}(x^g_{k-N+1}).
+		\end{equation*}
+		
+		\State\textbf{(4)} Individual PDF of $i^\text{th}$ UGV at time $k$ is
+		$P^i_{pdf}(x^g_{k}|\mathbf{z}^{i}_{1:k})=P^i_{virt}(x^g_k)$.		
+	\end{algorithmic}
+\end{algorithm}
+
 \subsection{Algorithm of LIFO-DBF for Moving Target}\label{subsec:LIFO-dbf-mov-tar}
 This section derives the LIFO-DBF for localizing a moving target. 
 Instead of storing last-step PDF, at time $k$ each UGV maintains an individual PDF of time $(k-N)$ and a collection of historical observations, called the \textit{record set}, from time $(k-N+1)$ to $k$. 
@@ -690,9 +794,18 @@ The \textbf{LIFO-DBF algorithm} for moving target is then stated in \cref{alg:li
 %\end{rem}
 
 \section{Proof of Consistency}\label{sec:consist_proof} %and Consensus
-This section proves the consistency of LIFO-DBF under a general assumption of sensors, i.e. a set of heterogeneous sensors. 
-Only proofs for localizing a static target are presented, including static UGVs and moving UGVs.
-The proof of LIFO-DBF for localizing a moving target is similar but requires extra algebraic manipulation, which is omitted due to space limit.
+This section proves the consistency of LIFO-DBF under general types of sensors, i.e. a set of heterogeneous sensors.
+Consistency is an important evaluation metric for stochastic filtering approaches \cite{}.
+It differs from the concept of consensus: the latter implies that the estimation results of all sensors are the same; the former not only implies achieving consensus asymptotically, but also requires the estimated position converges to the true target position.
+Therefore, consistency is a stronger concept than consensus.
+
+We first prove the consistency for static UGVs and static target.
+The consistency for moving UGVs and moving target are then consecutively proved.
+For simplicity and clarity, we assume $S$ is finite and $x^{g^*}$ is the true position of target.
+\todohere{maybe try to find a term in literature that describes the non-uniqueness of target position for range-only or bearing-only sensors with 360 degree FOV.}
+
+%Only proofs for localizing a static target are presented, including static UGVs and moving UGVs.
+%The proof of LIFO-DBF for localizing a moving target is similar but requires extra algebraic manipulation, which is omitted due to space limit.
 
 %Considering $S$ is finite and $x^{g^*}$ is the true location of target, define an \textit{equivalent-location} set $x^g_{eq}\subseteq S$ such that 
 %\small\begin{equation*}
@@ -722,51 +835,11 @@ The proof of LIFO-DBF for localizing a moving target is similar but requires ext
 	
 %\end{rem}
 
-\begin{algorithm}
-	\caption{LIFO-DBF Algorithm}\label{alg:lifo-dbf}
-	\begin{algorithmic}
-		\State For $i^\text{th}$ UGV at $k^\text{th}$ step:
-		\State After updating CB by \cref{alg:lifo},	
-		\State \textbf{(1)} The stored individual PDF for time $(k-N)$ is:
-		\small\begin{equation*}
-		P^i_{pdf}(x^g_{k-N}|z^1_{1:k-N},\dots,z^N_{1:k-N})
-		\end{equation*}\normalsize		
-		\State\textbf{(2)} Initialize a virtual PDF by assigning the individual PDF to it:
-		\small\begin{equation*}
-		P^i_{virt}(x^g_{k-N})=P^i_{pdf}(x^g_{k-N}|z^1_{1:k-N},\dots,z^N_{1:k-N})
-		\end{equation*}\normalsize		
-		\State\textbf{(3)} From $\xi=1$ to $N$, iteratively repeat two steps of Bayesian filtering:
-		%	\begin{enumerate}
-		%		\item 
-		
-		\State(3.1) Prediction 
-		\small\begin{align*}
-		&P_{virt}^{pre}(x^g_{k-N+\xi})\\=&\int P(x^g_{k-N+\xi}|x^g_{k-N+\xi-1})P^i_{virt}(x^g_{k-N+\xi-1})dx^g_{k-N+\xi-1}
-		\end{align*} \normalsize
-		
-		%		\item 
-		\State(3.2) Updating
-		\small\begin{gather*}
-		P^i_{virt}(x^g_{k-N+\xi})=K_\xi P_{virt}^{pre}(x^g_{k-N+\xi})\prod\limits_{j\in\Omega^i_{\xi}}P(z^j_{k-N+\xi}|x^g_{k-N+\xi})\\
-		K_\xi=1/\int P_{virt}^{pre}(x^g_{k-N+\xi})\prod\limits_{j\in\Omega^i_{\xi}}P(z^j_{k-N+\xi}|x^g_{k-N+\xi})dx^g_{k-N+\xi}
-		\end{gather*} \normalsize
-		%	\end{enumerate}
-		
-		\State(3.3) When $\xi=1$, store the virtual PDF as the individual PDF for time $(k-N+1)$
-		\begin{equation*}
-		P^i_{pdf}(x^g_{k-N+1}|z^1_{1:k-N+1},\dots,z^N_{1:k-N+1})=P^i_{virt}(x^g_{k-N+1}).
-		\end{equation*}
-		
-		\State\textbf{(4)} Individual PDF of $i^\text{th}$ UGV at time $k$ is
-		$P^i_{pdf}(x^g_{k}|\mathbf{z}^{i}_{1:k})=P^i_{virt}(x^g_k)$.		
-	\end{algorithmic}
-\end{algorithm}
-
-\subsection{Proof for static UGVs}
-Assume $S$ is finite and $x^{g^*}$ is the true position of target, the consistency of LIFO-DBF for static UGVs is stated as follows: 
+\subsection{Static UGVs and Static Target}
+Assume $S$ is finite (e.g. a finely discretized field) and $x^{g^*}$ is the true position of target, the consistency of LIFO-DBF for static UGVs is stated as follows: 
 %\todohere{converge to a set or treat the PDF as a r.v.?}
 \begin{thm}\label{thm:LIFO-dbf-sta-tar}
-	When UGVs are static, the estimated target position converges to the true position of target in probability using LIFO-DBF, i.e.,
+	Assume UGVs are static and the sensors are unbiased, the estimated target position converges to the true position of target in probability using LIFO-DBF, i.e.,
 %	the set of estimated target position of each UGV converges to $ x^g_{eq}$ in probability using LIFO-DBF when the number of observations tends to infinity, i.e.,
 	\small\begin{equation*}
 	\lim\limits_{k\rightarrow \infty}
@@ -783,11 +856,11 @@ Assume $S$ is finite and $x^{g^*}$ is the true position of target, the consisten
 
 \begin{proof}	
 Considering the conditional independence of observations given $x^g\in S$, the batch form of DBF at $k^\text{th}$ step is:
-\small\begin{subequations}
-	\begin{align*}
+\small\begin{subequations}\label{eqn:bayes_batch}
+	\begin{align}
 		P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})&=P^i_{pdf}(x^g|z^1_{1:k^i_1},\dots,z^N_{1:k^i_N})\\
 		&=\frac{P^i_{pdf}(x^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g)}{\sum\limits_{x^g\in S}P^i_{pdf}(x^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g)},
-	\end{align*}
+	\end{align}
 \end{subequations}\normalsize
 where $P^i_{pdf}$ is $i^\text{th}$ initial individual PDF. 
 It is known from \Cref{cor1} and \Cref{cor2} that $k-N<k^i_j\leq k$.
@@ -903,9 +976,34 @@ P(x^g=x^{g^*}|\mathbf{z}^{i}_{1:k})=1.
 %\end{equation*}\normalsize
 \end{proof}
 
-\subsection{Proof for moving UGVs}
-The difficulty of consistency proof for moving UGVs lies in the fact that each UGV makes observations at multiple positions.
-Here, the main idea is to classify UGV observation positions into two disjoint sets: \textit{infinite-observation spots} that contain positions where a UGV constantly makes observations as time tends to infinity, and \textit{finite-observation spots} that contain positions where the UGV makes finite observations.
+\subsection{Static UGVs and Moving Target}
+\begin{thm}\label{thm:LIFO-dbf-mov-tar}
+	Assume UGVs are static, sensors are unbiased and the target is moving deterministically, the estimated target position converges to the true position of the target in probability using LIFO-DBF, i.e.,
+	\small\begin{equation*}
+	\lim\limits_{k\rightarrow \infty}P(x_k^g=x_k^{g^*}|\mathbf{z}^i_{1:k})=
+	%		\begin{cases}
+	%		1 & \text{if}\; i=1\\
+	%		0 & \text{if}\; i\neq 1
+	%		\end{cases},\;
+	1,\;i=1,\dots,N.
+	\end{equation*}\normalsize
+\end{thm}
+\begin{proof}
+	Since the target motion model is deterministic, as defined in \Cref{eqn:markov_model}, the integration in the prediction step \Cref{eqn:bayes_pred} can be removed as no uncertainty exists in $P(x_k^g|x^g_{k-1})$.
+	\Cref{eqn:bayes_batch} now becomes
+	\small\begin{subequations}
+		\begin{align*}
+		P^i_{pdf}(x_k^g|\mathbf{z}^{i}_{1:k})&=P^i_{pdf}(x_k^g|z^1_{1:k^i_1},\dots,z^N_{1:k^i_N})\\
+		&=\frac{P^i_{pdf}(x_0^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g_l)P(x^g_l|x^g_{l-1})}{\sum\limits_{x^g_k\in S}P^i_{pdf}(x^g_0)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g_l)P(x^g_l|x^g_{l-1})}
+		\end{align*}
+	\end{subequations}\normalsize
+	The updating terms $P(x^g_i|x^g_{i-1})$ in nominator and denominator cancel when comparing $P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})$ with $P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})$, yielding the same result as \Cref{eqn:cmp}. Therefore, the rest of the proof is similar to that of \Cref{thm:LIFO-dbf-sta-tar}.
+\end{proof}
+
+\subsection{Moving UGVs}
+This subsection considers the case of using moving UGVs to localize a target, either static or moving.
+The difficulty of consistency proof for this case lies in the fact that each UGV makes observations at multiple positions.
+Here, the main idea is to classify UGV observation positions into two disjoint sets: \textit{infinite-observation spots} that contain positions where a UGV constantly makes observations as time tends to infinity, and \textit{finite-observation spots} that contain positions where the UGV makes finite observations (i.e. the positions where the UGV never visits again after a finite time period).
 %, as $k\rightarrow\infty$.
 Before stating the main theorem, the following lemma is introduced.
 \begin{lem}\label{lem1}
@@ -916,11 +1014,9 @@ Before stating the main theorem, the following lemma is introduced.
 Let $n^{i,k}_j$ denote the times that $i^\text{th}$ UGV visits $j^\text{th}$ position up to time $k$. Then, $\sum\limits_{j} n^{i,k}_j=k$. It is straightforward to see that $\exists n^{i,k}_j,$ such that $n^{i,k}_j\rightarrow \infty,$ as $k\rightarrow \infty$.
 \end{proof}
 \medskip
-%The main theory of consistency of LIFO-DBF for moving UGVs is stated as follows:
-\begin{thm}\label{thm:LIFO-dbf-mov-tar}
-	If UGVs move within a collection of finite positions, the estimated target position converges to the true position of target in probability using LIFO-DBF, i.e.,
-%	the probability of estimated target position belonging to $ x^g_{eq}$ converges to one, i.e.,
-%	the set of estimated target position of each UGV converges to $x^g_{eq}$ in probability using LIFO-DBF when the number of observations tends to infinity, i.e.,
+
+\begin{thm}\label{thm:LIFO-dbf-mov-sen}
+	Assume UGVs move within a collection of finite positions and sensors are unbiased, the estimated target position converges to the true position of target in probability using LIFO-DBF, i.e.,
 	\small\begin{equation*}
 		\lim\limits_{k\rightarrow \infty}P(x^g=x^{g^*}|\mathbf{z}^i_{1:k})=
 %		\begin{cases}
@@ -929,13 +1025,11 @@ Let $n^{i,k}_j$ denote the times that $i^\text{th}$ UGV visits $j^\text{th}$ pos
 %		\end{cases},\;
 		1,\;i=1,\dots,N.
 	\end{equation*}\normalsize
-%	where $\mathbf{z}^i_{1:k}=\left[z^1_{1:k^i_1},\dots,z^N_{1:k^i_N}\right]$.
-%	, $\left\lbrace k_1,\dots,k_N\right\rbrace$ are the timestamps of $i^\text{th}$ UGV's latest knowledge of all UGVs' observations.
 \end{thm}
 
 \begin{proof}
-%Let $M^i\subseteq\left\lbrace 1,\dots,k_j\right\rbrace\times X^R $ denote the set of pair $(k,x^R)$ to indicate $j^\text{th}$ UGV's position at the corresponding time of observation.
-Similar to \Cref{thm:LIFO-dbf-sta-tar}, the batch form of DBF at $k^\text{th}$ step is
+	Without loss of generality, we assume the target is static. The proof when target is moving is similar.
+According to \Cref{thm:LIFO-dbf-sta-tar}, the batch form of DBF at $k^\text{th}$ step is
 \small\begin{equation}\label{eqn:cmp2}
 \frac{P^i_{pdf}(x^g|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{g^{*}}|\mathbf{z}^i_{1:k})}=\frac{P^i_{pdf}(x^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g;x^R_l)}{P^i_{pdf}(x^{g^{*}})\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^{g^{*}};x^R_l)}.
 \end{equation}\normalsize
@@ -944,9 +1038,16 @@ The only difference from \Cref{eqn:cmp} is that $P(z^j_l|x^g;x^R_l)$ in \Cref{eq
 %, needs to be grouped according to the UGV position. 
 For each UGV, there exists at least one position where infinite observations are made as $k\rightarrow \infty$, according to \Cref{lem1}. 
 All positions can be classified into finite-observation spots and infinite-observation spots. 
-For the former, by referring to \Cref{eqn:lim} in proof of \Cref{thm:LIFO-dbf-sta-tar}, it is easy to know that their contribution to \Cref{eqn:cmp2} is zero when $k\rightarrow \infty$.
+For the former, by referring to \Cref{eqn:lim} in proof of \Cref{thm:LIFO-dbf-sta-tar}, it is easy to know that their contribution to \Cref{eqn:cmp2} diminishes when $k\rightarrow \infty$.
 Therefore, \Cref{eqn:cmp2} can be reduced to only consider infinite-observation spots, which is similar to proof of \Cref{thm:LIFO-dbf-sta-tar}.
 \end{proof}
+
+\begin{rem}
+	The assumption of unbiased sensors are important for the consistency. In fact, with unknown bias, the distribution of $z^j_l$ differs from $P(z^j_l|x^{g^*})$, which invalidates the derivation in \Cref{eqn:cmp_lim2} and thus the consistency proof. 
+	This assumption also makes intuitive sense.
+	In the extreme case, if each sensor has a very large measurement offset, then the estimated target position of each sensor (without communicating measurement with other sensors) will be very different from each other's. 
+	Therefore, no common target position can be obtained when they fuse measurement from other sensors.
+\end{rem}
 \medskip
 %\begin{rem}
 %%	When $x^g_{eq}$ only contains $x^{T^{*}}$, consistency means the estimated target position converges to true target position in probability. Additionally, 
@@ -960,6 +1061,8 @@ Therefore, \Cref{eqn:cmp2} can be reduced to only consider infinite-observation 
 %\end{rem}
 
 \section{Simulation and Experiment}\label{sec:sim}
+\todohere{This section needs a major revision. also notice to simplify the description of each plot.}
+
 \begin{figure}%[thpb]
 	\centering
 	\begin{subfigure}[b]{0.21\textwidth}
@@ -999,36 +1102,37 @@ Therefore, \Cref{eqn:cmp2} can be reduced to only consider infinite-observation 
 \begin{figure}%[thpb]
 	\centering
 	\begin{subfigure}[b]{0.21\textwidth}
-		\includegraphics[width=\textwidth]{figures/brg_mov_sen_mov_tar_rbt6_step1}
-		\caption{Step 1}\label{fig:mov_sen_mov_tar_sing1}
+		\includegraphics[width=\textwidth]{figures/hetero_sta_sen_sta_tar_rbt5_step1}
+		\caption{Step 1}%\label{fig:sta_sen_sta_tar_sing1}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.21\textwidth}
-		\includegraphics[width=\textwidth]{figures/brg_mov_sen_mov_tar_rbt6_step5}
-		\caption{Step 5}\label{fig:mov_sen_mov_tar_sing2}
-	\end{subfigure}	
+		\includegraphics[width=\textwidth]{figures/hetero_sta_sen_sta_tar_rbt5_step5}
+		\caption{Step 5}%\label{fig:sta_sen_sta_tar_sing2}
+	\end{subfigure}
 	\begin{subfigure}[b]{0.21\textwidth}
-		\includegraphics[width=\textwidth]{figures/brg_mov_sen_mov_tar_rbt6_step10}
-		\caption{Step 10}\label{fig:mov_sen_mov_tar_sing3}
-	\end{subfigure}	
+		\includegraphics[width=\textwidth]{figures/hetero_sta_sen_sta_tar_rbt5_step10}
+		\caption{Step 10}%\label{fig:sta_sen_sta_tar_sing3}
+	\end{subfigure}
 	\begin{subfigure}[b]{0.21\textwidth}
-		\includegraphics[width=\textwidth]{figures/brg_mov_sen_mov_tar_rbt6_step30}
-		\caption{Step 30}\label{fig:mov_sen_mov_tar_sing4}
+		\includegraphics[width=\textwidth]{figures/hetero_sta_sen_sta_tar_rbt5_step30}
+		\caption{Step 30}%\label{fig:sta_sen_sta_tar_sing4}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.23\textwidth}
-		\includegraphics[width=\textwidth]{figures/mov_pos_err.pdf}
-		\caption{Position Error}\label{fig:mov_sen_mov_tar_pos_err}
+		\includegraphics[width=\textwidth]{figures/hetero_sta_sen_sta_tar_pos_err}
+		\caption{Position Error}%\label{fig:sta_sen_sta_tar_pos_err}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.23\textwidth}
-		\includegraphics[width=\textwidth]{figures/mov_entropy.pdf}
-		\caption{Entropy of Individual PDF}\label{fig:mov_sen_mov_tar_entropy}
+		\includegraphics[width=\textwidth]{figures/hetero_sta_sen_sta_tar_entropy}
+		\caption{Entropy of Individual PDF}%\label{fig:sta_sen_sta_tar_entropy}
 	\end{subfigure}
-%	\begin{subfigure}[b]{0.4\textwidth}
-%		\includegraphics[width=\textwidth]{figures/mov_sen_mov_tar_40}
-%		\caption{Step 40}\label{fig:mov_sen_mov_tar_all}
-%	\end{subfigure}
-	\caption{(a)-(d) The $6^\text{th}$ UGV's individual PDFs at different times. (e) Average position estimation errors. (f) Average entropy of individual PDFs.}
-	\label{fig:mov_sen_mov_tar}
-	\vspace{-1.1em}
+	
+	%	\begin{subfigure}[b]{0.4\textwidth}
+	%		\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_30}
+	%		\caption{Step 30}\label{fig:sta_sen_sta_tar_all}
+	%	\end{subfigure}
+	\caption{(a)-(d) The $1^\text{st}$ UGV's individual PDF at different times. The square denotes the current UGV and stars represent other UGVs. The cross stands for the target. (e) Average position estimation errors of $1^\text{st}$, $3^\text{rd}$ and $5^\text{th}$ UGV's LIFO-DBF, CbDF and CF. (f) Average entropy of individual PDFs.}
+	%\label{fig:sta_sen_sta_tar}
+	\vspace{-1.2em}
 \end{figure}
 
 Simulation has been conducted to demonstrate the effectiveness of LIFO-DBF for target localization using a team of six UGVs.
@@ -1050,6 +1154,8 @@ The networked UGVs take a ring communication topology that each UGV can communic
 %where $x^s$ denotes the UGV position where current observation is obtained. 
 %Figure 4 shows the 1-D illustration of Gaussian binary sensor model.
 %where $x^R$ denotes the UGV position, which is included in UGV state $y^R$.
+DBF is implemented using grid-based method, by which the space is finely discretized \cite{}. 
+Other approaches, such as particle filters \cite{}, can also be used.
 Two types of scenarios are used: in first scenario, both UGVs and the target are static;
 %, which acts as a proof of concept of LIFO-DBF for static target.
 the second scenario subsequently deals with six moving UGVs for localizing a moving target. 
@@ -1061,9 +1167,9 @@ The CF assumes a central unit that can constantly receive and fuse all UGVs' lat
 Ten test trials with randomly generated initial UGV and target positions are run and each trial is terminated after 50 time steps.
 The average error between the estimated and true target position and the average entropy of individual PDFs of all 10 trials are compared among these three approaches.
 
-\subsection{Homogeneous Sensors}
+\subsection{Static UGVs, Static Target}
 We assume all UGVs are equipped with bearing-only sensors.
-\subsubsection{Static UGVs, Static Target}\label{subsec:sim1}
+\subsubsection{Homogeneous Sensors}\label{subsec:sim1}
 Six static UGVs, as represented by green stars and red square in \cref{fig:sta_sen_sta_tar_sing1}, are placed in the field.
 The target is also assumed to be static, with $A$ being an identity matrix and $B_k$ being a zero matrix in \cref{eqn:tar_motion_model}.
 % shows a test trial when both the UGVs and the target are static. %of the positions of six static UGVs are shown as stars and square.
@@ -1088,7 +1194,9 @@ It is worth noting that, LIFO-DBF achieves similar asymptotic performance as the
 The CbDF has the worst performance among these three filtering approaches. 
 It results in slow reduction of entropy and the position error remains large.
 
-\subsubsection{Moving UGVs, Moving Target}
+\subsection{Moving UGVs, Moving Target}
+Six UGVs are equipped with heterogeneous sensors, with two having range-only sensors, two having bearing-only sensors and two having range-bearing sensors.
+
 In this scenario, each UGV follows a pre-defined circular trajectory.
 %The third scenario contains six moving sensors and one moving target. 
 The target motion is modeled as a single-integrator with process noise.
@@ -1127,56 +1235,41 @@ However, it is worth noting that, CbDF requires multiple rounds of exchanging in
 %'s approach of transmitting the communication buffer once at each time step.
 Considering the small difference in position estimation error and significantly faster entropy reduction, LIFO-DBF is still preferable over CbDF for moving target scenario.
 
-%\begin{figure}%[thpb]
-%	\centering
-%	\includegraphics[width=0.5\textwidth]{figures/entropy_all}
-%	\caption{Entropy of individual PDFs over time: (a) static UGVs and static target; (b) moving UGVs and moving target.}
-%	\label{fig:entropy}
-%\end{figure}
-
-\subsection{Heterogeneous Sensors}
-Six UGVs are equipped with heterogeneous sensors, with two having range-only sensors, two having bearing-only sensors and two having range-bearing sensors.
-
-\subsubsection{Static UGVs, Static Target}
-Similar results.
 \begin{figure}%[thpb]
 	\centering
 	\begin{subfigure}[b]{0.21\textwidth}
-		\includegraphics[width=\textwidth]{figures/hetero_sta_sen_sta_tar_rbt5_step1}
-		\caption{Step 1}%\label{fig:sta_sen_sta_tar_sing1}
+		\includegraphics[width=\textwidth]{figures/brg_mov_sen_mov_tar_rbt6_step1}
+		\caption{Step 1}\label{fig:mov_sen_mov_tar_sing1}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.21\textwidth}
-		\includegraphics[width=\textwidth]{figures/hetero_sta_sen_sta_tar_rbt5_step5}
-		\caption{Step 5}%\label{fig:sta_sen_sta_tar_sing2}
-	\end{subfigure}
+		\includegraphics[width=\textwidth]{figures/brg_mov_sen_mov_tar_rbt6_step5}
+		\caption{Step 5}\label{fig:mov_sen_mov_tar_sing2}
+	\end{subfigure}	
 	\begin{subfigure}[b]{0.21\textwidth}
-		\includegraphics[width=\textwidth]{figures/hetero_sta_sen_sta_tar_rbt5_step10}
-		\caption{Step 10}%\label{fig:sta_sen_sta_tar_sing3}
-	\end{subfigure}
+		\includegraphics[width=\textwidth]{figures/brg_mov_sen_mov_tar_rbt6_step10}
+		\caption{Step 10}\label{fig:mov_sen_mov_tar_sing3}
+	\end{subfigure}	
 	\begin{subfigure}[b]{0.21\textwidth}
-		\includegraphics[width=\textwidth]{figures/hetero_sta_sen_sta_tar_rbt5_step30}
-		\caption{Step 30}%\label{fig:sta_sen_sta_tar_sing4}
+		\includegraphics[width=\textwidth]{figures/brg_mov_sen_mov_tar_rbt6_step30}
+		\caption{Step 30}\label{fig:mov_sen_mov_tar_sing4}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.23\textwidth}
-		\includegraphics[width=\textwidth]{figures/hetero_sta_sen_sta_tar_pos_err}
-		\caption{Position Error}%\label{fig:sta_sen_sta_tar_pos_err}
+		\includegraphics[width=\textwidth]{figures/mov_pos_err.pdf}
+		\caption{Position Error}\label{fig:mov_sen_mov_tar_pos_err}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.23\textwidth}
-		\includegraphics[width=\textwidth]{figures/hetero_sta_sen_sta_tar_entropy}
-		\caption{Entropy of Individual PDF}%\label{fig:sta_sen_sta_tar_entropy}
+		\includegraphics[width=\textwidth]{figures/mov_entropy.pdf}
+		\caption{Entropy of Individual PDF}\label{fig:mov_sen_mov_tar_entropy}
 	\end{subfigure}
-	
 	%	\begin{subfigure}[b]{0.4\textwidth}
-	%		\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_30}
-	%		\caption{Step 30}\label{fig:sta_sen_sta_tar_all}
+	%		\includegraphics[width=\textwidth]{figures/mov_sen_mov_tar_40}
+	%		\caption{Step 40}\label{fig:mov_sen_mov_tar_all}
 	%	\end{subfigure}
-	\caption{(a)-(d) The $1^\text{st}$ UGV's individual PDF at different times. The square denotes the current UGV and stars represent other UGVs. The cross stands for the target. (e) Average position estimation errors of $1^\text{st}$, $3^\text{rd}$ and $5^\text{th}$ UGV's LIFO-DBF, CbDF and CF. (f) Average entropy of individual PDFs.}
-	%\label{fig:sta_sen_sta_tar}
-	\vspace{-1.2em}
+	\caption{(a)-(d) The $6^\text{th}$ UGV's individual PDFs at different times. (e) Average position estimation errors. (f) Average entropy of individual PDFs.}
+	\label{fig:mov_sen_mov_tar}
+	\vspace{-1.1em}
 \end{figure}
 
-\subsubsection{Moving UGVs, Moving Target}
-Similar results. 
 \begin{figure}%[thpb]
 	\centering
 	\begin{subfigure}[b]{0.21\textwidth}
@@ -1208,34 +1301,6 @@ Similar results.
 	\vspace{-1.2em}
 \end{figure}
 
-\subsection{Sensors with Unknown Bias}
-When sensors have unknown bias, no guarantee on the estimation results can retain. 
-In fact, in the extreme case when the covariance of the uncertainty is negligible but bias of sensors differs, no meaningful estimation can be obtained.
-\Cref{fig:sta_sen_sta_tar_offset} shows range-only sensors with constant but unknown biases, in which case no compensation can be applied.
-The covariance of uncertainty is set large to keep the existence of a point that can account for sensors' measurement.
-We can see that the estimation still converges, while consistency is missing.
-\begin{figure}%[thpb]
-	\centering
-	\begin{subfigure}[b]{0.21\textwidth}
-		\includegraphics[width=\textwidth]{figures/ran_sta_sen_sta_tar_rbt3_offset_step1}
-		\caption{Step 1}%\label{fig:sta_sen_sta_tar_sing1}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.21\textwidth}
-		\includegraphics[width=\textwidth]{figures/ran_sta_sen_sta_tar_rbt3_offset_step5}
-		\caption{Step 5}%\label{fig:sta_sen_sta_tar_sing2}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.21\textwidth}
-		\includegraphics[width=\textwidth]{figures/ran_sta_sen_sta_tar_rbt3_offset_step10}
-		\caption{Step 10}%\label{fig:sta_sen_sta_tar_sing3}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.21\textwidth}
-		\includegraphics[width=\textwidth]{figures/ran_sta_sen_sta_tar_rbt3_offset_step30}
-		\caption{Step 30}%\label{fig:sta_sen_sta_tar_sing4}
-	\end{subfigure}
-	\caption{(a)-(d) The $1^\text{st}$ UGV's individual PDF at different times. The square denotes the current UGV and stars represent other UGVs. The cross stands for the target. (e) Average position estimation errors of $1^\text{st}$, $3^\text{rd}$ and $5^\text{th}$ UGV's LIFO-DBF, CbDF and CF. (f) Average entropy of individual PDFs.}
-	\label{fig:sta_sen_sta_tar_offset}
-	\vspace{-1.2em}
-\end{figure}
 
 \subsection{Experiment}
 

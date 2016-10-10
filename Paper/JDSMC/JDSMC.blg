@@ -1,0 +1,70 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: JDSMC.aux
+The style file: IEEEtran.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: references.bib
+Repeated entry---line 351 of file references.bib
+ : @article{hlinka2012likelihood
+ :                              ,
+I'm skipping whatever remains of this entry
+-- IEEEtran.bst version 1.11 (2003/04/02) by Michael Shell.
+-- http://www.ctan.org/tex-archive/macros/latex/contrib/supported/IEEEtran/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+Warning--empty year in 2005distributed
+Warning--empty year in gu2007distributed
+Warning--empty year in bandyopadhyay2014distributed
+Warning--empty year in zuo2006bandwidth
+Warning--empty year in vemula2006target
+Warning--empty year in beaudeau2012target
+Warning--empty year in sheng2005distributed
+Warning--empty year in djuric2011non
+Warning--empty year in bonnie2012modelling
+
+Done.
+You've used 25 entries,
+            3975 wiz_defined-function locations,
+            942 strings with 12136 characters,
+and the built_in function-call counts, 22517 in all, are:
+= -- 1829
+> -- 503
+< -- 254
++ -- 289
+- -- 70
+* -- 1092
+:= -- 3207
+add.period$ -- 53
+call.type$ -- 25
+change.case$ -- 25
+chr.to.int$ -- 603
+cite$ -- 34
+duplicate$ -- 1559
+empty$ -- 1742
+format.name$ -- 92
+if$ -- 5243
+int.to.chr$ -- 0
+int.to.str$ -- 25
+missing$ -- 229
+newline$ -- 95
+num.names$ -- 25
+pop$ -- 493
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 2
+skip$ -- 1746
+stack$ -- 0
+substring$ -- 1433
+swap$ -- 1369
+text.length$ -- 53
+text.prefix$ -- 0
+top$ -- 5
+type$ -- 0
+warning$ -- 9
+while$ -- 122
+width$ -- 27
+write$ -- 263
+(There was 1 error message)
