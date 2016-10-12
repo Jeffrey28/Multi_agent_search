@@ -8,6 +8,8 @@ classdef Sim
         cons_fig;
         num_robot;
         r_init_pos_set;
+        fld_size;
+        t_init_pos_set;
         sim_r_idx;
         trial_num;
         selection;
@@ -28,6 +30,8 @@ classdef Sim
             this.cons_step = inPara.cons_step;
             this.num_robot = inPara.num_robot;
             this.r_init_pos_set = inPara.r_init_pos_set;
+            this.t_init_pos_set = inPara.t_init_pos_set;
+            this.fld_size = inPara.fld_size;
             this.sim_r_idx = inPara.sim_r_idx;
             this.trial_num = inPara.trial_num;
             this.fig_cnt = 1;
@@ -264,17 +268,20 @@ classdef Sim
             % for LIFO-DBF, we draw different robot's performance metrics
             for ii = [1,3,5]%plot_rbt_idx
                 plot(1:count-2,tmp_sim_res.ml_err_dbf_mean(ii,1:count-2),line_clr(ii),'LineWidth',2,'Marker',line_marker{ii},'MarkerSize',2); hold on;
-                % errorbar(1:count-2,tmp_sim_res.ml_err_dbf_mean(i,1:count-2),sqrt(tmp_sim_res.ml_err_dbf_cov(i,1:count-2)),...
-                %         line_clr(i),'LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+%                 semilogy(1:count-2,tmp_sim_res.ml_err_dbf_mean(ii,1:count-2),line_clr(ii),'LineWidth',2,'Marker',line_marker{ii},'MarkerSize',2); hold on;
+%                 errorbar(1:count-2,tmp_sim_res.ml_err_dbf_mean(ii,1:count-2),sqrt(tmp_sim_res.ml_err_dbf_cov(ii,1:count-2)),...
+%                         line_clr(ii),'LineWidth',2,'Marker',line_marker{ii},'MarkerSize',2); hold on;
             end
             
             % for consensus, we draw one robot's performance metrics.
             plot(1:count-2,tmp_sim_res.ml_err_cons_mean(1,1:count-2),line_clr(2),'LineStyle','--','LineWidth',2,'Marker',line_marker{2},'MarkerSize',2); hold on;
+%             semilogy(1:count-2,tmp_sim_res.ml_err_cons_mean(1,1:count-2),line_clr(2),'LineStyle','--','LineWidth',2,'Marker',line_marker{2},'MarkerSize',2); hold on;
             % errorbar(1:count-2,tmp_sim_res.ml_err_cons_mean(1,1:count-2),sqrt(tmp_sim_res.ml_err_cons_cov(1,1:count-2)),...
             %     line_clr(1),'LineStyle','--','LineWidth',2,'Marker',line_marker{1},'MarkerSize',2); hold on;
             
             % only on centralized filter
             plot(1:count-2,tmp_sim_res.ml_err_cent_mean(1:count-2),line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{6},'MarkerSize',2); hold on;
+%             semilogy(1:count-2,tmp_sim_res.ml_err_cent_mean(1:count-2),line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{6},'MarkerSize',2); hold on;
             % errorbar(1:count-2,tmp_sim_res.ml_err_cent_mean(1:count-2),sqrt(tmp_sim_res.ml_err_cent_cov(1:count-2)),...
             %     line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{6},'MarkerSize',2); hold on;
             xlim([0,count-1])
@@ -286,7 +293,7 @@ classdef Sim
             
             title('Target Position Error','FontSize',30);
             set(gca,'fontsize',30)
-            xlabel('Time','FontSize',30);
+            xlabel('Time (Step)','FontSize',30);
             ylabel('Position Error','FontSize',30);
                     
             % entropy
@@ -313,7 +320,7 @@ classdef Sim
             
             title('Entropy of the Target PDF','FontSize',30);
             set(gca,'fontsize',30)
-            xlabel('Time','FontSize',30);
+            xlabel('Time (Step)','FontSize',30);
             ylabel('Entropy','FontSize',30);
             
             this.sim_res = tmp_sim_res;
@@ -335,7 +342,7 @@ classdef Sim
                 case 'htr', tag2 = 'hetero';
             end
             
-            file_name = sprintf('./figures/data_exchange/Journal/%s_%s_%s.mat',tag2,tag,datestr(now,1));            
+            file_name = sprintf('./figures/data_exchange/Journal/metrics_%s_%s_%s.mat',tag2,tag,datestr(now,1));            
         end
     end
 end

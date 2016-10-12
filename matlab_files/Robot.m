@@ -95,9 +95,9 @@ classdef Robot
             this.tar_mod = [];
             
             this.sensor_type = inPara.sensor_type;
-            this.sen_cov = inPara.sen_cov;
-            this.inv_sen_cov = inPara.inv_sen_cov;
-            this.sen_offset = inPara.sen_offset;
+%             this.sen_cov = inPara.sen_cov;
+%             this.inv_sen_cov = inPara.inv_sen_cov;
+%             this.sen_offset = inPara.sen_offset;
             this.cov_ran = inPara.cov_ran;
             this.dist_ran = inPara.dist_ran;
             this.offset_ran = inPara.offset_ran;
@@ -470,8 +470,7 @@ classdef Robot
         end
         
         function this = updMap(this,inPara)
-            % update own map using its own measurement, used for consensus
-            % and centralized filters
+            % update own map using its own measurement, used for consensus filter
             selection = inPara.selection;
             target_model = inPara.target_model;
             

@@ -2,14 +2,7 @@
 %2345678901234567890123456789012345678901234567890123456789012345678901234567890
 %        1         2         3         4         5         6         7         8
 
-\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
-
-%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
-
-\IEEEoverridecommandlockouts                              % This command is only needed if 
-                                                          % you want to use the \thanks command
-
-\overrideIEEEmargins                                      % Needed to meet printer requirements.
+\documentclass[journal]{IEEEtranTIE}
 
 % See the \addtolength command later in the file to balance the column lengths
 % on the last page of the document
@@ -32,6 +25,7 @@
 \newtheorem{cor}{\bfseries Corollary}
 \newtheorem{prop}{\bfseries Proposition}
 \newtheorem{rem}{\bfseries Remark}
+\newtheorem{proof}{\bfseries Proof}
 
 % format for argmin, argmax
 \newcommand{\argmax}{\operatornamewithlimits{argmax}}
@@ -408,7 +402,7 @@ All of them are undirected and connected topologies.
 \subsection{Distributed Bayesian Filter for Multiple UGVs}\label{subsec:dbf}
 The generic distributed Bayesian filter (DBF) is introduced in this section.
 %, which is also stated in \cite{bandyopadhyay2014distributed} and \cite{julian2012distributed}. 
-Each UGV has its individual estimation of probability density function (PDF) of target position, called \textit{individual PDF}. 
+Each UGV has its individual estimation of the probability density function (PDF) of target position, called \textit{individual PDF}. 
 The individual PDF of $i^\text{th}$ UGV at time $k$ is defined as
 % ,z^{\mathcal{Q}_i}_{1:k})
 $P^i_{pdf}(x^g_{k}|\mathbf{z}^i_{1:k})$, where $\mathbf{z}^i_{1:k}$ denotes the set of observations by $i^\text{th}$ UGV and by UGVs in $\mathcal{Q}_i$ that are transmitted to $i^\text{th}$ UGV by time $k$.
@@ -794,15 +788,14 @@ The \textbf{LIFO-DBF algorithm} for moving target is then stated in \cref{alg:li
 %\end{rem}
 
 \section{Proof of Consistency}\label{sec:consist_proof} %and Consensus
-This section proves the consistency of LIFO-DBF under general types of sensors, i.e. a set of heterogeneous sensors.
+This section proves the consistency of the maximum a posteriori (MAP) estimator of LIFO-DBF under unbiased sensors (sensors without offset).
 Consistency is an important evaluation metric for stochastic filtering approaches \cite{}.
 It differs from the concept of consensus: the latter implies that the estimation results of all sensors are the same; the former not only implies achieving consensus asymptotically, but also requires the estimated position converges to the true target position.
 Therefore, consistency is a stronger concept than consensus.
 
 We first prove the consistency for static UGVs and static target.
-The consistency for moving UGVs and moving target are then consecutively proved.
-For simplicity and clarity, we assume $S$ is finite and $x^{g^*}$ is the true position of target.
-\todohere{maybe try to find a term in literature that describes the non-uniqueness of target position for range-only or bearing-only sensors with 360 degree FOV.}
+The consistency for moving UGVs and moving target are subsequently proved.
+For simplicity and clarity, we assume $S$ is a finite set (e.g. a finely discretized field) and $x^{g^*}$ is the true position of target.
 
 %Only proofs for localizing a static target are presented, including static UGVs and moving UGVs.
 %The proof of LIFO-DBF for localizing a moving target is similar but requires extra algebraic manipulation, which is omitted due to space limit.
@@ -836,35 +829,41 @@ For simplicity and clarity, we assume $S$ is finite and $x^{g^*}$ is the true po
 %\end{rem}
 
 \subsection{Static UGVs and Static Target}
-Assume $S$ is finite (e.g. a finely discretized field) and $x^{g^*}$ is the true position of target, the consistency of LIFO-DBF for static UGVs is stated as follows: 
+%Assume $S$ is finite (e.g. a finely discretized field) and $x^{g^*}$ is the true position of target, 
+The consistency of LIFO-DBF for static UGVs and target is stated as follows: 
 %\todohere{converge to a set or treat the PDF as a r.v.?}
 \begin{thm}\label{thm:LIFO-dbf-sta-tar}
-	Assume UGVs are static and the sensors are unbiased, the estimated target position converges to the true position of target in probability using LIFO-DBF, i.e.,
-%	the set of estimated target position of each UGV converges to $ x^g_{eq}$ in probability using LIFO-DBF when the number of observations tends to infinity, i.e.,
+	Assume both UGVs and the target are static, and the sensors are unbiased, the MAP estimator of target position converges in probability to the true position of the target using LIFO-DBF, i.e.,
+%	\small\begin{equation*}
+%	\lim\limits_{k\rightarrow \infty}
+%	P_{pdf}^i(x^g=x^{g^*}|\mathbf{z}^{i}_{1:k})=
+%	1,\;i=1,\dots,N.
+%	\end{equation*}\normalsize
 	\small\begin{equation*}
 	\lim\limits_{k\rightarrow \infty}
-	P(x^g=x^{g^*}|\mathbf{z}^{i}_{1:k})=
-%	\begin{cases}
-%	1 & \text{if}\; i=1\\
-%	0 & \text{if}\; i\neq 1
-%	\end{cases},\;
-	1,\;i=1,\dots,N.
+	P(x_{MAP}=x^{g^*}|\mathbf{z}^{i}_{1:k})=
+	1,\;i=1,\dots,N,
 	\end{equation*}\normalsize
-%	where $\mathbf{z}^{CB,i}_{1:k}=\left[z^1_{1:k^i_1},\dots,z^N_{1:k^i_N}\right] $.
-%	, $\left\lbrace k_1,\dots,k_N\right\rbrace $ are the timestamps of the $i^\text{th}$ UGV's latest knowledge of all UGVs' observations.
+	where 
+	\small\begin{equation*}
+	x_{MAP}=\arg\max\limits_{x^g}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k}).
+	\end{equation*}
 \end{thm}
 
-\begin{proof}	
-Considering the conditional independence of observations given $x^g\in S$, the batch form of DBF at $k^\text{th}$ step is:
+\begin{proof}
+First look at the asymptotic behavior of $P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})$.
+The batch form of DBF at $k^\text{th}$ step is:
 \small\begin{subequations}\label{eqn:bayes_batch}
 	\begin{align}
 		P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})&=P^i_{pdf}(x^g|z^1_{1:k^i_1},\dots,z^N_{1:k^i_N})\\
-		&=\frac{P^i_{pdf}(x^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g)}{\sum\limits_{x^g\in S}P^i_{pdf}(x^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g)},
+		&=\frac{P^i_{pdf}(x^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g)}{\sum\limits_{x^g\in S}P^i_{pdf}(x^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g)}\label{eqn:bayes_batch2}.
 	\end{align}
 \end{subequations}\normalsize
-where $P^i_{pdf}$ is $i^\text{th}$ initial individual PDF. 
-It is known from \Cref{cor1} and \Cref{cor2} that $k-N<k^i_j\leq k$.
-\addtocounter{equation}{-1}\\
+%where $P^i_{pdf}$ is $i^\text{th}$ initial individual PDF. 
+The decomposition into multiplication in \Cref{eqn:bayes_batch2} results from the conditional independence of observations given $x^g$.
+%It is known from \Cref{cor1} and \Cref{cor2} that $k-N<k^i_j\leq k$.\\
+%\addtocounter{equation}{-1}\\
+
 
 Comparing $P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})$ with $P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})$ yields
 \small\begin{equation}\label{eqn:cmp}
@@ -881,7 +880,7 @@ Since $P^i_{pdf}(x^g)$ and $P^i_{pdf}(x^{g^*})$ are bounded, then
 \lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g)}{P^i_{pdf}(x^{g^*})}= 0.
 \end{equation}\normalsize
 
-Utilizing the facts: (1) $z^j_l$ are conditionally independent samples from $B(1,p^{j^*}_{1})$ and (2) $k-N<k^i_j\leq k$, the law of large numbers yields
+Utilizing the facts: (1) $z^j_l$ are conditionally independent samples from $P(z^j_l|x^g)$ and (2) $k-N<k^i_j\leq k$, the law of large numbers yields
 %\small\begin{equation*}
 %\frac{1}{k}\sum\limits_{l=1}^{k^i_j}z^j_l\overset{P}{\longrightarrow}p^{j^*}_{1},\quad 
 %\frac{1}{k}(k^i_j-\sum\limits_{l=1}^{k^i_j}z^j_l)\overset{P}{\longrightarrow}1-p^{j^*}_{1},
@@ -889,46 +888,79 @@ Utilizing the facts: (1) $z^j_l$ are conditionally independent samples from $B(1
 %Then, 
 \small\begin{subequations}\label{eqn:cmp_lim2}
 \begin{align}
-\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}&\overset{P}{\longrightarrow}\mathbb{E}_{z^j_l} \left[\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}\right]\\
-&=\int_{z^j_l} P(z^j_l|x^{g^*})\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})} dz^j_l\\
+\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}&\overset{P}{\longrightarrow}\mathbb{E}_{z^j_l} \left[\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}\right]\\
+&=\int_{z^j_l} P(z^j_l|x^{g^*})\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})} dz^j_l\\
 &=-D_{KL}\left(P(z^j_l|x^{g^*})\|P(z^j_l|x^g)\right),
 \end{align}
 \end{subequations}\normalsize
-where ``$\overset{P}{\longrightarrow}$" represents ``convergence in probability'' and $D_{KL}(P_1\|P_2)$ denotes the Kullback?Leibler (KL) divergence between two probability distribution $P_1$ and $P_2$.
-KL divergence has the property that
+where ``$\overset{P}{\longrightarrow}$" represents ``convergence in probability'' and $D_{KL}(P_1\|P_2)$ denotes the Kullback-Leibler (KL) divergence between two probability distribution $P_1$ and $P_2$.
+The KL divergence has the property that
 \begin{subequations}
 	\begin{gather*}
-	\forall P_1,\,P_2, \; D_{KL}(P_1\|P_2)\leq 0\\
+	\forall P_1,\,P_2, \; D_{KL}(P_1\|P_2)\leq 0,\\
 	\text{equality holds iff } \; P_1=P_2.
 	\end{gather*}
 \end{subequations}
 This leads to the following conclusion:
-\begin{subequations}
-	\begin{align}
-		\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}<0,&\quad x^g\neq x^{g^*}\\
-		\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}=0,&\quad x^g= x^{g^*}.
-	\end{align}
-\end{subequations}
+%\begin{subequations}
+%	\begin{align}
+%		\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}<0,&\quad x^g\neq x^{g^*}\\
+%		\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}=0,&\quad x^g= x^{g^*}.
+%	\end{align}
+%\end{subequations}
+
+\begin{equation}
+	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}\;
+	\begin{cases}
+		<0,&\quad x^g\neq x^{g^*},\\
+		=0,&\quad x^g= x^{g^*}.
+	\end{cases}
+\end{equation}
+
+
 
 Then by considering the limiting case of \Cref{eqn:cmp_log}, we can get:
-\begin{subequations}
-	\begin{align}
-	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}<0,&\quad x^g\neq x^{g^*}\label{subeqn:limit1}\\
-	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}=0,&\quad x^g= x^{g^*}\label{subeqn:limit2}.
-	\end{align}
-\end{subequations}
-\Cref{subeqn:limit1,subeqn:limit2} imply that
-\begin{subequations}
-	\begin{align}
-	\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}\overset{P}{\longrightarrow}0,&\quad x^g\neq x^{g^*}\\
-	\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}\overset{P}{\longrightarrow}1,&\quad x^g= x^{g^*}.
-	\end{align}
-\end{subequations}
+%\begin{subequations}
+%	\begin{align}
+%	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}<0,&\quad x^g\neq x^{g^*}\label{subeqn:limit1}\\
+%	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}=0,&\quad x^g= x^{g^*}\label{subeqn:limit2}.
+%	\end{align}
+%\end{subequations}
+
+\begin{equation}\label{subeqn:limit}
+	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}\;
+	\begin{cases}
+		<0,&\quad x^g\neq x^{g^*},\\
+		=0,&\quad x^g= x^{g^*}.
+	\end{cases}	
+\end{equation}
+
+\Cref{subeqn:limit} implies that
+%\begin{subequations}
+%	\begin{align}
+%	\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}\overset{P}{\longrightarrow}0,&\quad x^g\neq x^{g^*}\\
+%	\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}\overset{P}{\longrightarrow}1,&\quad x^g= x^{g^*}.
+%	\end{align}
+%\end{subequations}
+
+\begin{equation}
+	\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}\overset{P}{\longrightarrow}
+	\begin{cases}
+		0,&\quad x^g\neq x^{g^*},\\
+		1,&\quad x^g= x^{g^*}.
+	\end{cases}
+\end{equation}
+
 Therefore,
 \small\begin{equation*}
 \lim\limits_{k\rightarrow \infty}
-P(x^g=x^{g^*}|\mathbf{z}^{i}_{1:k})=1.
+P_{pdf}^i(x^g=x^{g^*}|\mathbf{z}^{i}_{1:k})=1.
 \end{equation*}\normalsize
+It is then straightforward to show
+\begin{equation*}
+\lim\limits_{k\rightarrow \infty}
+P(x_{MAP}=x^{g^*}|\mathbf{z}^{i}_{1:k})=1.
+\end{equation*}
 
 %Note that the right-hand side of \Cref{eqn:cmp_lim2} achieves maximum value 0 if and only if $p^{j}_{1}=p^{j^*}_{1}$. 
 %Define 
@@ -977,33 +1009,32 @@ P(x^g=x^{g^*}|\mathbf{z}^{i}_{1:k})=1.
 \end{proof}
 
 \subsection{Static UGVs and Moving Target}
+The consistency of LIFO-DBF for static UGVs and moving target is stated as follows:
 \begin{thm}\label{thm:LIFO-dbf-mov-tar}
-	Assume UGVs are static, sensors are unbiased and the target is moving deterministically, the estimated target position converges to the true position of the target in probability using LIFO-DBF, i.e.,
+	Assume UGVs are static, sensors are unbiased and the target is moving deterministically, the MAP estimator of the target position converges in probability to the true position of the target using LIFO-DBF, i.e.,
 	\small\begin{equation*}
-	\lim\limits_{k\rightarrow \infty}P(x_k^g=x_k^{g^*}|\mathbf{z}^i_{1:k})=
-	%		\begin{cases}
-	%		1 & \text{if}\; i=1\\
-	%		0 & \text{if}\; i\neq 1
-	%		\end{cases},\;
+	\lim\limits_{k\rightarrow \infty}P(x_{MAP}=x_k^{g^*}|\mathbf{z}^i_{1:k})=
 	1,\;i=1,\dots,N.
+%	P(x_k^g=x_k^{g^*}|\mathbf{z}^i_{1:k})=1,\;i=1,\dots,N.
 	\end{equation*}\normalsize
 \end{thm}
 \begin{proof}
-	Since the target motion model is deterministic, as defined in \Cref{eqn:markov_model}, the integration in the prediction step \Cref{eqn:bayes_pred} can be removed as no uncertainty exists in $P(x_k^g|x^g_{k-1})$.
+	Since the target motion model is deterministic, as defined in \Cref{eqn:markov_model}, the integration in the prediction step (\Cref{eqn:bayes_pred}) can be removed, as no uncertainty exists in $P(x_k^g|x^g_{k-1})$.
+	
 	\Cref{eqn:bayes_batch} now becomes
 	\small\begin{subequations}
 		\begin{align*}
 		P^i_{pdf}(x_k^g|\mathbf{z}^{i}_{1:k})&=P^i_{pdf}(x_k^g|z^1_{1:k^i_1},\dots,z^N_{1:k^i_N})\\
-		&=\frac{P^i_{pdf}(x_0^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g_l)P(x^g_l|x^g_{l-1})}{\sum\limits_{x^g_k\in S}P^i_{pdf}(x^g_0)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g_l)P(x^g_l|x^g_{l-1})}
+		&=\frac{P^i_{pdf}(x_0^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g_l)P(x^g_l|x^g_{l-1})}{\sum\limits_{x^g_k\in S}P^i_{pdf}(x^g_0)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g_l)P(x^g_l|x^g_{l-1})}.
 		\end{align*}
 	\end{subequations}\normalsize
-	The updating terms $P(x^g_i|x^g_{i-1})$ in nominator and denominator cancel when comparing $P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})$ with $P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})$, yielding the same result as \Cref{eqn:cmp}. Therefore, the rest of the proof is similar to that of \Cref{thm:LIFO-dbf-sta-tar}.
+	The updating terms $P(x^g_l|x^g_{l-1})$ cancel when comparing $P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})$ with $P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})$, yielding the same result as \Cref{eqn:cmp}. Therefore, the rest of the proof is similar to that of \Cref{thm:LIFO-dbf-sta-tar}.
 \end{proof}
 
 \subsection{Moving UGVs}
 This subsection considers the case of using moving UGVs to localize a target, either static or moving.
 The difficulty of consistency proof for this case lies in the fact that each UGV makes observations at multiple positions.
-Here, the main idea is to classify UGV observation positions into two disjoint sets: \textit{infinite-observation spots} that contain positions where a UGV constantly makes observations as time tends to infinity, and \textit{finite-observation spots} that contain positions where the UGV makes finite observations (i.e. the positions where the UGV never visits again after a finite time period).
+Here, the main idea of proof is to classify UGV observation positions into two disjoint sets: \textit{infinite-observation spots} that contain positions where a UGV makes infinitely many observations as time tends to infinity, and \textit{finite-observation spots} that contain positions where the UGV makes finitely many observations (i.e. the positions where the UGV never visits again after a finite time period).
 %, as $k\rightarrow\infty$.
 Before stating the main theorem, the following lemma is introduced.
 \begin{lem}\label{lem1}
@@ -1016,19 +1047,16 @@ Let $n^{i,k}_j$ denote the times that $i^\text{th}$ UGV visits $j^\text{th}$ pos
 \medskip
 
 \begin{thm}\label{thm:LIFO-dbf-mov-sen}
-	Assume UGVs move within a collection of finite positions and sensors are unbiased, the estimated target position converges to the true position of target in probability using LIFO-DBF, i.e.,
+	Assume UGVs move within a collection of finite positions and sensors are unbiased, the MAP estimator of target position converges in probability to the true position of the target using LIFO-DBF, i.e.,
 	\small\begin{equation*}
-		\lim\limits_{k\rightarrow \infty}P(x^g=x^{g^*}|\mathbf{z}^i_{1:k})=
-%		\begin{cases}
-%		1 & \text{if}\; i=1\\
-%		0 & \text{if}\; i\neq 1
-%		\end{cases},\;
-		1,\;i=1,\dots,N.
+		\lim\limits_{k\rightarrow \infty}
+		P(x_{MAP}=x^{g^*}|\mathbf{z}^i_{1:k})=1,\;i=1,\dots,N.
+%		P(x^g=x^{g^*}|\mathbf{z}^i_{1:k})=1,\;i=1,\dots,N.
 	\end{equation*}\normalsize
 \end{thm}
 
 \begin{proof}
-	Without loss of generality, we assume the target is static. The proof when target is moving is similar.
+	Without loss of generality, we assume the target is static. The proof when target is moving deterministically is similar.
 According to \Cref{thm:LIFO-dbf-sta-tar}, the batch form of DBF at $k^\text{th}$ step is
 \small\begin{equation}\label{eqn:cmp2}
 \frac{P^i_{pdf}(x^g|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{g^{*}}|\mathbf{z}^i_{1:k})}=\frac{P^i_{pdf}(x^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g;x^R_l)}{P^i_{pdf}(x^{g^{*}})\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^{g^{*}};x^R_l)}.
@@ -1038,14 +1066,14 @@ The only difference from \Cref{eqn:cmp} is that $P(z^j_l|x^g;x^R_l)$ in \Cref{eq
 %, needs to be grouped according to the UGV position. 
 For each UGV, there exists at least one position where infinite observations are made as $k\rightarrow \infty$, according to \Cref{lem1}. 
 All positions can be classified into finite-observation spots and infinite-observation spots. 
-For the former, by referring to \Cref{eqn:lim} in proof of \Cref{thm:LIFO-dbf-sta-tar}, it is easy to know that their contribution to \Cref{eqn:cmp2} diminishes when $k\rightarrow \infty$.
-Therefore, \Cref{eqn:cmp2} can be reduced to only consider infinite-observation spots, which is similar to proof of \Cref{thm:LIFO-dbf-sta-tar}.
+For the former, by referring to \Cref{eqn:cmp_lim2}, it is easy to know that their contribution to \Cref{eqn:cmp2} diminishes when $k\rightarrow \infty$.
+Therefore, \Cref{eqn:cmp2} can be reduced to only considering infinite-observation spots and the rest of proof is similar to that of \Cref{thm:LIFO-dbf-sta-tar}.
 \end{proof}
 
 \begin{rem}
-	The assumption of unbiased sensors are important for the consistency. In fact, with unknown bias, the distribution of $z^j_l$ differs from $P(z^j_l|x^{g^*})$, which invalidates the derivation in \Cref{eqn:cmp_lim2} and thus the consistency proof. 
+	The assumption of unbiased sensors are important for the consistency. In fact, with unknown non-zero bias, the distribution of $z^j_l$ differs from $P(z^j_l|x^{g^*})$, which invalidates the derivation in \Cref{eqn:cmp_lim2} and the consistency proof. 
 	This assumption also makes intuitive sense.
-	In the extreme case, if each sensor has a very large measurement offset, then the estimated target position of each sensor (without communicating measurement with other sensors) will be very different from each other's. 
+	In the extreme case, if each sensor has a very large measurement offset, then the estimated target position of each sensor (without communicating with other sensors) will be very different from each other's.
 	Therefore, no common target position can be obtained when they fuse measurement from other sensors.
 \end{rem}
 \medskip
@@ -1082,11 +1110,13 @@ Therefore, \Cref{eqn:cmp2} can be reduced to only consider infinite-observation 
 		\caption{Step 30}\label{fig:sta_sen_sta_tar_sing4}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.23\textwidth}
+%		\includegraphics[width=\textwidth]{figures/test}
 		\includegraphics[width=\textwidth]{figures/brg_sta_sen_sta_tar_pos_err}
 		\caption{Position Error}\label{fig:sta_sen_sta_tar_pos_err}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.23\textwidth}
-		\includegraphics[width=\textwidth]{figures/brg_sta_sen_sta_tar_entropy}
+		\includegraphics[width=\textwidth]{figures/test2}
+%		{figures/brg_sta_sen_sta_tar_entropy}
 		\caption{Entropy of Individual PDF}\label{fig:sta_sen_sta_tar_entropy}
 	\end{subfigure}
 	

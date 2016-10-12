@@ -36,6 +36,8 @@ inPara_sim.sim_len = sim_len;
 inPara_sim.cons_step = cons_step;
 inPara_sim.num_robot = num_robot;
 inPara_sim.r_init_pos_set = extractfield(rbt_spec,'init_pos');
+inPara_sim.fld_size = fld_size;
+inPara_sim.t_init_pos_set = [tx_set;ty_set];
 inPara_sim.sim_r_idx = sim_r_idx;
 inPara_sim.trial_num = trial_num;
 inPara_sim.dt = dt;
@@ -44,7 +46,7 @@ inPara_sim.cons_fig = cons_fig;
 inPara_sim.sensor_set_type = sensor_set_type; % 'bin': binary,'ran': range-only,'brg': bearing-only,'rb': range-bearing
 sim = Sim(inPara_sim);
 
-for trial_cnt = 2%1:trial_num
+for trial_cnt = 1:trial_num
     % initialize field class    
     target.pos = [tx_set(trial_cnt);ty_set(trial_cnt)];
     target.u_set = u_set;
@@ -71,16 +73,22 @@ for trial_cnt = 2%1:trial_num
             inPara_rbt.T = 20;
             inPara_rbt.w = 2*pi/inPara_rbt.T;
         end
-        inPara_rbt.sen_cov = 100*eye(2);
-        inPara_rbt.inv_sen_cov = 0.01*eye(2);
-        inPara_rbt.sen_offset = 0;
-        inPara_rbt.cov_ran = 3;%3;30
+        
+        % binary sensor
+%         inPara_rbt.sen_cov = 100*eye(2);
+%         inPara_rbt.inv_sen_cov = 0.01*eye(2);
+%         inPara_rbt.sen_offset = 0;
+        % range-only sensor
+        inPara_rbt.cov_ran = 5;%3;30
         inPara_rbt.dist_ran = 50;
-        inPara_rbt.offset_ran = 5;
-        inPara_rbt.cov_brg = 2;%2
-        inPara_rbt.offset_brg = 0.1;
-        inPara_rbt.dist_ranbrg = 50;
+        inPara_rbt.offset_ran = 0;
+        % bearing-only sensor
+        inPara_rbt.cov_brg = 0.5;%2
+        inPara_rbt.offset_brg = 0;
+        % range-bearing sensor
+        inPara_rbt.dist_ranbrg = 20;
         inPara_rbt.cov_ranbrg = 10*eye(2);%100
+        
         inPara_rbt.fld_size = fld_size;
         inPara_rbt.max_step = sim_len;
         inPara_rbt.nbhd_idx = rbt_nbhd{rbt_cnt};
@@ -111,15 +119,7 @@ for trial_cnt = 2%1:trial_num
          end
         
         %% filtering
-        % Bayesian Updating steps:
-        % (1) observe and update the stored own observations at time k
-        % (2) exchange and update stored observations
-        % (3) update probability map
-        % (4) repeat step (1)
-                
-        % step 1
-        % own measurement
-        
+        % generate sensor measurement
         for ii = 1:num_robot
             rbt{ii}.step_cnt = count;
             % observe
@@ -140,8 +140,22 @@ for trial_cnt = 2%1:trial_num
         end        
         
         %% LIFO-DBF
-        % step 2       
-        % exchange
+        % (1) exchange stored observations
+        % (2) observe and update the stored own observations at time k        
+        % (3) update probability map
+        % (4) repeat step (1)
+        % so measurement from other sensors are one-step behind
+        
+        % note, step (2) is in previous code section (update own measurement)
+        % so continue to step (3)
+        
+        % step (3) dbf
+        for ii = 1:num_robot                        
+            inPara3 = struct('selection',selection,'target_model',fld.target.model_idx);
+            rbt{ii} = rbt{ii}.DBF(inPara3);                        
+        end    
+
+        % step (1) exchange
         tmp_rbt = rbt; % use tmp_rbt in data exchange
         
         for ii = 1:num_robot
@@ -152,22 +166,21 @@ for trial_cnt = 2%1:trial_num
         end
         rbt = tmp_rbt;
         
-        % step 3
-        % dbf
-        for ii = 1:num_robot                        
-            inPara3 = struct('selection',selection,'target_model',fld.target.model_idx);
-            rbt{ii} = rbt{ii}.DBF(inPara3);                        
-        end    
-
          %% Concensus        
-         %
-         % update own map using own measurement
+         % (1) exchange pdfs to achieve concensus
+         % (2) observe and update the stored own observations at time k
+         % (3) update probability map
+         % (4) repeat step (1)
+         % so consensus actually uses more information than DBF at each
+         % step when doing metric comparison 
+         
+         % step (3) update own map using own measurement
          for ii = 1:num_robot  
              inPara4 = struct('selection',selection,'target_model',fld.target.model_idx);
              rbt{ii} = rbt{ii}.updMap(inPara4);
          end
          
-         % exchange with neighbors to achieve consensus
+         % step (1) exchange with neighbors to achieve consensus
          % consider comparing with the Indian guy's NL combination rule.         
          cons_cnt = 1;
          while (cons_cnt <= cons_step)
@@ -185,7 +198,10 @@ for trial_cnt = 2%1:trial_num
          %}
         
          %% centeralized filter
-         %
+         % (1) observe and update the stored observations of all sensor at time k
+         % (2) update probability map
+         % (2) repeat step (1)         
+         
          % use the first robot as the centralized filter
          rbt{1}.buffer_cent.pos = rbt{1}.pos;
          rbt{1}.buffer_cent.z = {rbt{1}.z};
@@ -232,10 +248,15 @@ end
 
 %% %%%%%%%%%%%%%%%%%%%%%% Simulation Results %%%%%%%%%%%%%%%%%%%%%%
 % % compare the performance of different methods
-met = sim.compareMetrics();
-% 
-% % save data (workspace)
+sim = sim.compareMetrics();
+
+% save data 
+% note 'sim' contains all data about rbt, fld and simulation results.
+% However it is so huge that we cannot save all...
 if save_data
+    sim_for_save = sim;
+    sim_for_save.rbt_set = {};
+    sim_for_save.fld_set = {};
     file_name = sim.saveSimData();
-    save(file_name)
+    save(file_name,'sim_for_save','-v7')
 end

@@ -1,0 +1,80 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: ALL_1x-TIE-2xxx.aux
+The style file: Bibliography/IEEEtranTIE.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 9000 items from 6000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: Bibliography/IEEEabrv.bib
+Database file #2: Bibliography/BIB_1x-TIE-2xxx.bib
+-- IEEEtran.bst version 1.12 (2007/01/11) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+
+Done.
+You've used 7 entries,
+            7058 wiz_defined-function locations,
+            2065 strings with 30559 characters,
+and the built_in function-call counts, 7793 in all, are:
+= -- 1167
+> -- 79
+< -- 44
++ -- 44
+- -- 12
+* -- 300
+:= -- 900
+add.period$ -- 14
+call.type$ -- 7
+change.case$ -- 88
+chr.to.int$ -- 84
+cite$ -- 7
+duplicate$ -- 489
+empty$ -- 473
+format.name$ -- 15
+if$ -- 1961
+int.to.chr$ -- 0
+int.to.str$ -- 7
+missing$ -- 75
+newline$ -- 46
+num.names$ -- 7
+pop$ -- 160
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 2
+skip$ -- 1135
+stack$ -- 0
+substring$ -- 188
+swap$ -- 332
+text.length$ -- 16
+text.prefix$ -- 0
+top$ -- 5
+type$ -- 7
+warning$ -- 0
+while$ -- 21
+width$ -- 8
+write$ -- 99
