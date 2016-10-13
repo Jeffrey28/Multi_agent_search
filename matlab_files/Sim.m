@@ -72,6 +72,7 @@ classdef Sim
                     line_hdl = line(fld.target.traj(1,:), fld.target.traj(2,:));
                     set(line_hdl,'Marker','.','Color','k','MarkerSize',3,'LineWidth',2);
                     plot(fld.target.pos(1), fld.target.pos(2), 'k+','MarkerSize',25,'LineWidth',3);
+                    plot(fld.target.traj(1,:), fld.target.traj(2,:), 'LineWidth',3);
                     set(gca,'fontsize',30)
                     
 %                     % debug purpose for bearing-only sensor, can comment out later
@@ -101,10 +102,30 @@ classdef Sim
                             case 'rb', tag2 = 'rb';
                             case 'htr', tag2 = 'hetero';
                         end
-                        file_name2 = sprintf('./figures/data_exchange/Journal/%s_%s_rbt%d_offset_step%d_%s',...
+                        file_name2 = sprintf('./figures/data_exchange/Journal/%s_%s_rbt%d_step%d_%s',...
                             tag2,tag,k,count,datestr(now,1));
                         saveas(dbf_hd,file_name2,'fig')
                         saveas(dbf_hd,file_name2,'jpg')
+                        
+                        file_name_map = sprintf('./figures/data_exchange/Journal/process_plot/%s_%s_map_rbt%d_step%d_%s',...
+                            tag2,tag,k,count,datestr(now,1));
+                        
+                        tmp_map = rbt{k}.dbf_map;
+                        save(file_name_map,'tmp_map');
+                        % save all robot's trajectory when k is the last
+                        % element of this.sim_r_idx
+                        if k == this.sim_r_idx(end)
+                            file_name_tar_traj = sprintf('./figures/data_exchange/Journal/process_plot/%s_%s_tar_traj_%s',...
+                                    tag2,tag,datestr(now,1));
+                            tmp_tar_traj = fld.target.traj;
+                            save(file_name_tar_traj,'tmp_tar_traj');
+                            for j = 1:this.num_robot
+                                file_name_rbt_traj = sprintf('./figures/data_exchange/Journal/process_plot/%s_%s_rbt%d_traj_%s',...
+                                    tag2,tag,j,datestr(now,1));
+                                tmp_rbt_traj = rbt{j}.traj;
+                                save(file_name_rbt_traj,'tmp_rbt_traj');
+                            end
+                        end
                     end
                 end
             end
@@ -140,6 +161,7 @@ classdef Sim
                     line_hdl = line(fld.target.traj(1,:), fld.target.traj(2,:));
                     set(line_hdl,'Marker','.','Color','k','MarkerSize',3,'LineWidth',2);
                     plot(fld.target.pos(1), fld.target.pos(2), 'k+','MarkerSize',25,'LineWidth',3);
+                    plot(fld.target.traj(1,:), fld.target.traj(2,:),'LineWidth',3);
                     set(gca,'fontsize',30)
                 end
                 title(sprintf('Consensus Robot %d',k))
@@ -175,6 +197,7 @@ classdef Sim
             line_hdl = line(fld.target.traj(1,:), fld.target.traj(2,:));
             set(line_hdl,'Marker','.','Color','k','MarkerSize',3,'LineWidth',2);
             plot(fld.target.pos(1), fld.target.pos(2), 'k+','MarkerSize',25,'LineWidth',3);
+            plot(fld.target.traj(1,:), fld.target.traj(2,:), 'LineWidth',3);
             set(gca,'fontsize',30)
             title('CF Robot 1')
 %             tmp_fig_cnt = tmp_fig_cnt+1;

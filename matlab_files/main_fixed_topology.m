@@ -21,7 +21,7 @@
 % continued debugging the code. will implement different sensor model
 
 % main function for running the simulation
-clear; clc; close all
+clear all; clc; close all
 
 %% %%%%%%% Simulation %%%%%%%%%%
 
@@ -46,7 +46,7 @@ inPara_sim.cons_fig = cons_fig;
 inPara_sim.sensor_set_type = sensor_set_type; % 'bin': binary,'ran': range-only,'brg': bearing-only,'rb': range-bearing
 sim = Sim(inPara_sim);
 
-for trial_cnt = 1:trial_num
+for trial_cnt = 7%1:trial_num
     % initialize field class    
     target.pos = [tx_set(trial_cnt);ty_set(trial_cnt)];
     target.u_set = u_set;
@@ -69,9 +69,9 @@ for trial_cnt = 1:trial_num
             inPara_rbt.pos = rbt_spec(rbt_cnt).init_pos(:,trial_cnt);
         elseif r_move == 1
             inPara_rbt.center = rbt_spec(rbt_cnt).init_pos(:,rbt_cnt);
-            inPara_rbt.r = 5;
-            inPara_rbt.T = 20;
-            inPara_rbt.w = 2*pi/inPara_rbt.T;
+            inPara_rbt.r = r_set(rbt_cnt);
+            inPara_rbt.T = T_set(rbt_cnt);
+            inPara_rbt.w = dir_set(rbt_cnt)*2*pi/inPara_rbt.T;
         end
         
         % binary sensor
@@ -79,15 +79,15 @@ for trial_cnt = 1:trial_num
 %         inPara_rbt.inv_sen_cov = 0.01*eye(2);
 %         inPara_rbt.sen_offset = 0;
         % range-only sensor
-        inPara_rbt.cov_ran = 5;%3;30
+        inPara_rbt.cov_ran = 5;%5
         inPara_rbt.dist_ran = 50;
         inPara_rbt.offset_ran = 0;
         % bearing-only sensor
-        inPara_rbt.cov_brg = 0.5;%2
+        inPara_rbt.cov_brg = 0.5;%0.5
         inPara_rbt.offset_brg = 0;
         % range-bearing sensor
         inPara_rbt.dist_ranbrg = 20;
-        inPara_rbt.cov_ranbrg = 10*eye(2);%100
+        inPara_rbt.cov_ranbrg = 1*eye(2);%100
         
         inPara_rbt.fld_size = fld_size;
         inPara_rbt.max_step = sim_len;

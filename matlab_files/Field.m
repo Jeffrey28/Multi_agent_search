@@ -19,12 +19,14 @@ classdef Field
         function this = targetMove(this)
             
             tmp_u_set = this.target.u_set;
+            tmp_v = this.target.V_set;
             tmp_idx = this.target.model_idx;
             if this.tar_move == 1
                 % Target Moves
                 % if current model makes target out of field, choose the next
                 % motion model in fld.target.dx_set and fld.target.dy_set
-                tmp_pos = this.target.pos + tmp_u_set(:,tmp_idx)*this.dt;                
+                tmp_pos = this.target.pos + tmp_u_set(:,tmp_idx)*this.dt;  
+%                 tmp_pos = this.target.pos + tmp_u_set(:,tmp_idx)*this.dt+(mvnrnd([0,0],tmp_v))';
                 while (tmp_pos(1) <= 0 || tmp_pos(2) <= 0 || tmp_pos(1) >= this.fld_size(1) || tmp_pos(2) >= this.fld_size(2))
                     tmp_idx = rem(tmp_idx+1,length(this.target.u_set));
                     if tmp_idx == 0
@@ -33,7 +35,7 @@ classdef Field
                     tmp_pos = this.target.pos + tmp_u_set(:,tmp_idx)*this.dt;
                 end
                 this.target.pos = tmp_pos;
-                this.target.traj = [this.target.traj;tmp_pos];
+                this.target.traj = [this.target.traj,tmp_pos];
                 this.target.model_idx = tmp_idx;
                 
             end

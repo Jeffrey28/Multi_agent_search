@@ -58,6 +58,10 @@ B.~J. Julian, M.~Angermann, M.~Schwager, and D.~Rus, ``Distributed robotic
   sensor networks: An information-theoretic approach,'' \emph{The International
   Journal of Robotics Research}, vol.~31, no.~10, pp. 1134--1154, 2012.
 
+\bibitem{chen2003bayesian}
+Z.~Chen, ``Bayesian filtering: From kalman filters to particle filters, and
+  beyond,'' \emph{Statistics}, vol. 182, no.~1, pp. 1--69, 2003.
+
 \bibitem{olfati2007consensus}
 R.~Olfati-Saber, A.~Fax, and R.~M. Murray, ``Consensus and cooperation in
   networked multi-agent systems,'' \emph{Proceedings of the IEEE}, vol.~95,
@@ -118,22 +122,6 @@ P.~M. Djuri{\'c}, J.~Beaudeau, and M.~F. Bugallo, ``Non-centralized target
   tracking with mobile agents,'' in \emph{Acoustics, Speech and Signal
   Processing (ICASSP), 2011 IEEE International Conference on}, pp. 5928--5931.
 
-\bibitem{bonnie2012modelling}
-D.~Bonnie, S.~Candido, T.~Bretl, and S.~Hutchinson, ``Modelling search with a
-  binary sensor utilizing self-conjugacy of the exponential family,'' in
-  \emph{Robotics and Automation (ICRA), 2012 IEEE International Conference on},
-  pp. 3975--3982.
-
-\bibitem{liu2015model}
-C.~Liu, S.~E. Li, and J.~K. Hedrick, ``Model predictive control-based
-  probabilistic search method for autonomous ground robot in a dynamic
-  environment,'' in \emph{ASME 2015 Dynamic Systems and Control Conference}.
-
-\bibitem{djuric2008target}
-P.~M. Djuri{\'c}, M.~Vemula, and M.~F. Bugallo, ``Target tracking by particle
-  filtering in binary sensor networks,'' \emph{Signal Processing, IEEE
-  Transactions on}, vol.~56, no.~6, pp. 2229--2238, 2008.
-
 \bibitem{bourgault2003optimal}
 F.~Bourgault, T.~Furukawa, and H.~F. Durrant-Whyte, ``Optimal search for a lost
   target in a bayesian world,'' in \emph{Field and service robotics}.\hskip 1em
@@ -158,5 +146,9 @@ G.~Thatte and U.~Mitra, ``Sensor selection and power allocation for distributed
 M.~Kulich, L.~Preucil, and J.~J. Miranda~Bront, ``Single robot search for a
   stationary object in an unknown environment,'' in \emph{Robotics and
   Automation (ICRA), 2014 IEEE International Conference on}, pp. 5830--5835.
+
+\bibitem{amemiya1985advanced}
+T.~Amemiya, \emph{Advanced econometrics}.\hskip 1em plus 0.5em minus
+  0.4em\relax Harvard university press, 1985.
 
 \end{thebibliography}

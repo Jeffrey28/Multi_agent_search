@@ -177,9 +177,10 @@ plot(tar_pos(:,1),tar_pos(:,2));
 
 %% %%%%%%%%%%%%%%%%%%%%%% experiment analysis
 %% process experiment data
-%
+% this cell is from Jan 2016 experiment. will be modified for new experiment data
+%{
 % read sonar reading from csv file
-addpath('/Users/changliu/Documents/Git/Autonomous_agent_search/multi_agent_search/experiment/data');
+addpath('/Users/changliu/Documents/Git/Multi_agent_search/experiment/data');
 clear;
 name_set = {'0dot5','1dot0','2dot0','3dot0','4dot0'};
 nomi_dist = [0.5,1:4];% nominal distance
@@ -252,4 +253,83 @@ for jj = 5%1:dataset_num
     plot(tmp_offset(:,1),tmp_offset(:,2),color_set{jj});
 end
 % legend('0.5','1','2','3','4');
+%}
+
+%% %%%%%%%%%%%%%%%%%%%%%% experiment analysis
+% this cell analyzes the experiment data from Oct 2016
+% read sonar reading from csv file
+addpath('/Users/changliu/Documents/Git/Multi_agent_search/experiment/sonar_modeling_data/2016Oct/101216');
+clear;
+name_set = {'20inch','40inch','60inch','80inch','100inch','120inch','140inch','160inch','180inch'};
+nomi_dist = (20:20:180)*2.54/100; % nominal distance (covert from inch to meter)
+% name_set = {'0dot5','1dot0','2dot0','3dot0','4dot0'};
+% nomi_dist = [0.5,1:4];
+dataset_num = length(name_set);
+sonar_m = zeros(2,dataset_num); % sonar mean for all dataset
+sonar_cov = zeros(2*dataset_num,2); % sonar covariance for all dataset
+sonar_offset_m = zeros(2,dataset_num); % sonar offset mean for all dataset
+sonar_offset_cov = zeros(2*dataset_num,2); % sonar offset covariance for all dataset
+
+mean_meas = zeros(length(name_set),1);
+cov_meas = cell(length(name_set),1);
+
+start_row = 4; % start recording the data from 4th row. 1st row is the header, 2nd-3rd row are usually data from last test
+for jj = 1:dataset_num
+%     [data_s,~] = readtext(sprintf('sonar_exp_101216_%s.csv',name_set{jj}));
+    [data_s,~] = readtext(sprintf('101216_%s.csv',name_set{jj}));
+    sonar_rd = struct();
+    sonar_rd.time = [data_s{start_row:end,1}]'; % this time seems to be the epoch time
+    sonar_rd.stamp = [data_s{start_row:end,3}]'; % don't understand why stamp is different from time
+    
+    % convert from epoch time to human-readable time
+    sonar_rd.time = sonar_rd.time * 1e-9;% # of seconds since 1970.1.1 0h 0m 0s. The original time is in nano-second.
+    % epoch time -> MATLAB datenum
+    dnum = datenum(1970,1,1,0,0,sonar_rd.time);
+    % split time into parts
+    [Y, M, D, H, MN, S] = datevec(dnum);
+    
+    sonar_rd.stamp = sonar_rd.stamp * 1e-9;
+    % epoch time -> MATLAB datenum
+    dnum2 = datenum(1970,1,1,0,0,sonar_rd.stamp);
+    % split time into parts
+    [Y2, M2, D2, H2, MN2, S2] = datevec(dnum2);
+    sonar_rd.sec_time = H2*3600+MN2*60+S2;% this is the time in seconds taking into account hour, min and second. not starting from 1970 but current day.
+    
+    sonar_rd.pts = zeros(size(data_s,1)-(start_row-1),16);
+    % read readings from 8 front sonars
+    for ii = 1:8
+        sonar_rd.pts(:,2*(ii-1)+1) = [data_s{start_row:end,3*(ii-1)+5}];
+        sonar_rd.pts(:,2*ii) = [data_s{start_row:end,3*(ii-1)+6}];
+    end
+    
+    % Compute object distance
+    % compute measured distance
+    num = length(sonar_rd.time); % number of readings
+%     sonar_ori = [90,50,30,10,-10,-30,-50,-90]/180*pi;
+    obj_pos = zeros(2*num,8); % there are 8 sonar readings [x1;y1;x2;y2;...;x8;y8]
+%     offset_pos = zeros(size(obj_pos)); % offset of coordinates based on nominal distance
+    obj_dist = zeros(num,8); % there are 8 sonar readings [dis1,...,dis8]
+%     obj_ori = zeros(num,8); % orientation relative to robot local cooridnate
+    for ii = 1:num
+        tmp_loc_pos = reshape(sonar_rd.pts(ii,:),2,8); % convert the local coordinate into 2*8 format instead of 1*16 format
+        obj_pos(2*(ii-1)+1:2*ii,:) = tmp_loc_pos;
+        obj_dist(ii,:) = sqrt(sum(tmp_loc_pos.^2,1));
+%         obj_ori(ii,:) = atan2(tmp_loc_pos(2,:),tmp_loc_pos(1,:)); % check if this is close to 0 deg
+%         offset_pos(2*(ii-1)+1:2*ii,:) = obj_pos(2*(ii-1)+1:2*ii,:)-nomi_dist(jj)*[cos(obj_ori(ii,:));sin(obj_ori(ii,:))];
+    end
+    
+    sonar_idx = 4; % the sonar of interest
+    meas_dist = obj_dist(:,sonar_idx);
+    % data measured from 180inch contains some missing measurement, remove
+    % them
+    rmv_idx = meas_dist > 5.05;
+    meas_dist(rmv_idx) = [];
+    
+    mean_meas(jj) = mean(meas_dist);
+    cov_meas{jj} = std(meas_dist);    
+end
+% line fitting
+X = [ones(length(nomi_dist),1),nomi_dist'];
+y = mean_meas;
+B = X\y; % coefficient for linear fitting
 %}

@@ -5,9 +5,9 @@ set(0,'DefaultFigureWindowStyle','docked')
 set(0,'defaultAxesFontName', 'Times New Roman')
 set(0,'defaultTextFontName', 'Times New Roman')
 
-save_data = true; % save data or not
-show_plot = false; % draw plots or not
-save_plot = false; % save plots or not
+save_data = false; % save data or not
+show_plot = true; % draw plots or not
+save_plot = true; % save plots or not
 
 sim_len = 50;%50; % max step
 % rounds of consensus at each time step
@@ -31,7 +31,7 @@ end
 if r_move == 0
     sim_r_idx = [1,3,5];
 else
-    sim_r_idx = [2,4,6];
+    sim_r_idx = [1,3,5];
 end
 
 % the sensor type of each robot
@@ -102,17 +102,22 @@ ty_set = [33 42 43 64 69 65 32 23 79 20];
 % tx_set = [68, 55, 41, 10, 75, 35, 60, 72, 14, 16];
 % ty_set = [55, 49, 86, 77, 71, 9, 11, 13, 77, 90];
 
+% radius, period and moving direction (clockwise or counterclockwise) of sensor circular trajectory
+r_set = [5 10 7 10 15 7];
+T_set = [20,15,30,25,15,20];
+dir_set = [1 -1 1 -1 -1 -1];
+
 % communication neighbor
 rbt_nbhd = {[2,6],[1,3],[2,4],[3,5],[4,6],[1,5]}; %{[],[],[],[],[],[]};
             
 mode_num = 4;
 
 u_set = [[1;1],[-1;-1],[1;-1],[-1;1]]; %inPara.u_set; 
-V_set = 0.01*eye(2);
+V_set = 0.01*eye(2);%
 
 % load update matrices
 if exist('upd_matrix','var') == 0
-    load('upd_matrix.mat','upd_matrix');
+    load('upd_matrix_v001.mat','upd_matrix');
 end
 
 %% Compute the sensor probility matrix

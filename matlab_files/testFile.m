@@ -8,7 +8,7 @@
 
 %% write data to cvs, which will be then copied for matplotlib plotting
 filepath = './figures/data_exchange/Journal/';
-filename = [filepath,'metrics_hetero_mov_sen_mov_tar_11-Oct-2016'];
+filename = [filepath,'metrics_brg_sta_sen_sta_tar_12-Oct-2016'];
 load(filename);
 
 var_name_set = {'ml_err_dbf_mean','ml_err_cons_mean','ml_err_cent_mean',...

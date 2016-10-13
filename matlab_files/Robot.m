@@ -83,10 +83,10 @@ classdef Robot
                 this.pos = inPara.pos; % sensor position
                 this.traj = this.pos;
             elseif inPara.r_move == 1
-                this.T = 20; % period of circling motion
+                this.T = inPara.T; % period of circling motion
                 this.center = inPara.center;
-                this.r = inPara.r; %15;
-                this.w = 2*pi/this.T;
+                this.r = inPara.r;
+                this.w = inPara.w;
                 this.pos = [inPara.center(1);inPara.center(2)+this.r]; % initial position is at the top of the circle
                 this.traj = this.pos;
             end

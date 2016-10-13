@@ -114,8 +114,8 @@ The effectiveness of this method is demonstrated by comparing with consensus-bas
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\todohere{consider using "measurement" instead of "observations" as the main term.}
 \section{INTRODUCTION}
-\todohere{mention the relation between BF and KF, PF}
 Distributed filtering that focuses on using a group of networked UGVs to collectively infer environment status has been used for various applications, such as intruder detection \cite{chamberland2007wireless}, pedestrian tracking \cite{wang2007wlan} and micro-environmental monitoring \cite{cao2008development}. 
 Several techniques have been developed for distributed filtering.
 For example, Olfati-Saber (2005) proposed a distributed Kalman filter (DKF) for estimating states of linear systems with Gaussian process and measurement noise \cite{2005distributed}.
@@ -124,7 +124,8 @@ Madhavan et al. (2004) presented a distributed extended Kalman filter for nonlin
 This filter was used to generate local terrain maps by using pose estimates to combine elevation gradient and vision-based depth with environmental features.
 Gu (2007) proposed a distributed particle filter for Markovian target tracking over an undirected sensor network \cite{gu2007distributed}. 
 Gaussian mixture models (GMM) were adopted to approximate the posterior distribution from weighted particles and the parameters of GMM were exchanged via average consensus filter.
-As a generic filtering scheme for nonlinear systems and arbitrary noise distributions, distributed Bayesian filters (DBF) have received increasing interest during past years \cite{bandyopadhyay2014distributed,julian2012distributed}, which is the focus of this study.
+As a generic filtering scheme for general system dynamics and arbitrary noise distributions, distributed Bayesian filters (DBF) have received increasing interest during past years \cite{bandyopadhyay2014distributed,julian2012distributed} and is the focus of this study.
+It is worth noting that Bayesian filters can be reduced to Kalman filters and particle filters under appropriate conditions \cite{chen2003bayesian}.
 %This study focuses on developing a distributed Bayesian filter (DBF) that is applicable for state estimation of general nonlinear systems and the proposed DBF is applied to search and tracking (SAT) of both static and moving targets.
 
 The design of distributed filtering algorithms depends on the communication topology of multi-UGV network, which can be classified into two types: fusion center (FC)-based and neighborhood (NB)-based.
@@ -209,9 +210,9 @@ Simulation results are presented in \cref{sec:sim} and \cref{sec:conclu} conclud
 \section{PROBLEM FORMULATION}\label{sec:prob_form}
 Consider a network of $N$ UGVs in a bounded two-dimensional space $S$. 
 The aim of UGVs is to efficiently localize a target in $S$. 
-For the purpose of simplicity, each UGV is assumed to be equipped with a binary sensor for environmental perception. 
-Due to the limit of communication range, each UGV can only exchange observations with its neighbors. 
-The Bayesian filter is run locally on each UGV based on its own and received observations via single-hopping to estimate true position of target.
+Each UGV is equipped with a noisy sensor for environmental perception. 
+Due to the limit of communication range, each UGV can only share information locally by exchanging measurements with its neighbors. 
+The Bayesian filter is run locally on each UGV based on its own and received measurements via single-hopping to estimate true position of the target.
 
 \subsection{Target and Sensor Model}
 %Probabilistic Model of Binary Sensor}
@@ -789,9 +790,9 @@ The \textbf{LIFO-DBF algorithm} for moving target is then stated in \cref{alg:li
 
 \section{Proof of Consistency}\label{sec:consist_proof} %and Consensus
 This section proves the consistency of the maximum a posteriori (MAP) estimator of LIFO-DBF under unbiased sensors (sensors without offset).
-Consistency is an important evaluation metric for stochastic filtering approaches \cite{}.
-It differs from the concept of consensus: the latter implies that the estimation results of all sensors are the same; the former not only implies achieving consensus asymptotically, but also requires the estimated position converges to the true target position.
-Therefore, consistency is a stronger concept than consensus.
+An estimator of a state is said to be consistent if it converges in probability to the true value of the state \cite{amemiya1985advanced}.
+Consistency is an important metric for stochastic filtering approaches \cite{chen2003bayesian} and it differs from the concept of consensus; consensus implies that the estimation results of all sensors converge to a same value, while consistency not only implies achieving consensus asymptotically, but also requires the estimated value converge to the true value (true target position).
+%Therefore, consistency is a stronger concept than consensus.
 
 We first prove the consistency for static UGVs and static target.
 The consistency for moving UGVs and moving target are subsequently proved.
@@ -1115,8 +1116,7 @@ Therefore, \Cref{eqn:cmp2} can be reduced to only considering infinite-observati
 		\caption{Position Error}\label{fig:sta_sen_sta_tar_pos_err}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.23\textwidth}
-		\includegraphics[width=\textwidth]{figures/test2}
-%		{figures/brg_sta_sen_sta_tar_entropy}
+		\includegraphics[width=\textwidth]		{figures/brg_sta_sen_sta_tar_entropy}%{figures/test2}
 		\caption{Entropy of Individual PDF}\label{fig:sta_sen_sta_tar_entropy}
 	\end{subfigure}
 	
@@ -1192,7 +1192,7 @@ the second scenario subsequently deals with six moving UGVs for localizing a mov
 
 In both scenarios, LIFO-DBF is compared with two commonly adopted approaches in multi-agent filtering: the consensus-based distributed filtering (CbDF) method and the centralized filtering (CF) method.
 The CbDF requires UGVs to continually exchange their individual PDFs with direct neighbors, computing the average of all received and its own target PDFs. 
-Multiple rounds of communication and averaging are conducted at each time step to ensure the convergence of each UGV's individual PDFs.
+Multiple rounds of communication and averaging are conducted during the ``Sending Step'' and ``Receiving Step'' in \Cref{alg:lifo} at each round to ensure the convergence of each UGV's individual PDFs.
 The CF assumes a central unit that can constantly receive and fuse all UGVs' latest observations into a single PDF.
 Ten test trials with randomly generated initial UGV and target positions are run and each trial is terminated after 50 time steps.
 The average error between the estimated and true target position and the average entropy of individual PDFs of all 10 trials are compared among these three approaches.
