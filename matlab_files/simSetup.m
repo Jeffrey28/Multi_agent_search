@@ -8,6 +8,7 @@ set(0,'defaultTextFontName', 'Times New Roman')
 save_data = false; % save data or not
 show_plot = true; % draw plots or not
 save_plot = true; % save plots or not
+sim_mode = true;
 
 sim_len = 50;%50; % max step
 % rounds of consensus at each time step
@@ -35,7 +36,7 @@ else
 end
 
 % the sensor type of each robot
-sensor_set_type = 'htr'; %'brg':bearing ,'ran':range, 'rb':range-bearing, 'htr':heterogeneous
+sensor_set_type = 'brg'; %'brg':bearing ,'ran':range, 'rb':range-bearing, 'htr':heterogeneous
 switch sensor_set_type
     case 'brg'
         sensor_set = {'brg','brg','brg','brg','brg','brg'};
