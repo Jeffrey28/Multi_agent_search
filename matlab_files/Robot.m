@@ -9,6 +9,7 @@ classdef Robot
         % motion state
         traj;
         pos; % robot position
+        state; % state = [position;heading]. used in sonar sensor model
         % used for circular motion of robot
         T; % period of circular motion
         r; % radius
@@ -31,6 +32,10 @@ classdef Robot
         % range-bearing sensor
         cov_ranbrg;
         dist_ranbrg;
+        % P3DX sonar sensor
+        dist_sonar;
+        cov_sonar;
+        ang_sonar;
         
         % observation
         z; % observation measurement
@@ -89,6 +94,9 @@ classdef Robot
                 this.w = inPara.w;
                 this.pos = [inPara.center(1);inPara.center(2)+this.r]; % initial position is at the top of the circle
                 this.traj = this.pos;
+            elseif inPara.r_move == 2
+                this.state = inPara.state; % sensor position
+                this.traj = this.state(1:2);
             end
             
             % sensor spec
@@ -105,6 +113,9 @@ classdef Robot
             this.offset_brg = inPara.offset_brg;
             this.cov_ranbrg = inPara.cov_ranbrg;
             this.dist_ranbrg = inPara.dist_ranbrg;
+            this.dist_sonar = inPara.dist_sonar;
+            this.cov_sonar = inPara.cov_sonar;
+            this.ang_sonar = inPara.ang_sonar;
             
             this.dbf_map = ones(inPara.fld_size(1),inPara.fld_size(2));
             this.dbf_map = this.dbf_map/sum(sum(this.dbf_map));
@@ -305,6 +316,49 @@ classdef Robot
             lkhd_map = (reshape(lkhd_map,ylen,xlen))';            
         end
         
+        %% P3DX onboard sonar
+        function this = sensorGenSonar(this,fld,meas)
+            this.z = meas;
+            this.k = this.step_cnt;            
+            % generate the likelihood map for all possible target locations
+            this.lkhd_map = this.sensorProbSonar(fld);
+        end
+        
+        function lkhd_map = sensorProbSonar(this,fld)
+            x_r = this.state;
+            z = this.z;
+            cov_sonar = this.cov_sonar;
+            dist_sonar = this.dist_sonar;
+            ang_sonar = this.ang_sonar;
+            
+            xlen = fld.fld_size(1);
+            ylen = fld.fld_size(2);
+            [ptx,pty] = meshgrid(1:xlen,1:ylen);
+            pt = [ptx(:)';pty(:)'];            
+            pt = bsxfun(@minus,pt,x_r(1:2));
+            dist = sqrt(sum(pt.^2,1));
+            ang = atan2(pt(2,:),pt(1,:));
+%             tmp_idx = ang<0; % if -pi <= ang <= 0, make it within [pi,2*pi]
+%             ang(tmp_idx) = ang(tmp_idx)+2*pi;            
+            ang = ang-x_r(3); % relative heading angle from the center to the target           
+            
+            % find the points that are within the sensor range and FOV
+            tmp_idx = (dist <= dist_sonar) & (sin(ang)>=-sin(ang_sonar/2))...
+                & (sin(ang)<=sin(ang_sonar/2))& (cos(ang)>=cos(ang_sonar/2));%(ang>=-ang_sonar/2) & (ang<=ang_sonar/2);
+            in_range_dist = dist(tmp_idx);
+            
+            if (z ~= -100)
+                tmp_lkhd = normpdf(in_range_dist,z,cov_sonar);
+                lkhd_map = 0.01*ones(1,length(ptx(:)));
+                lkhd_map(tmp_idx) = tmp_lkhd;
+            else
+                lkhd_map = ones(1,length(ptx(:)));
+                lkhd_map(tmp_idx) = 0;
+            end
+            lkhd_map = (reshape(lkhd_map,ylen,xlen))';            
+        end
+        
+        
         %% data storage and update 
         function this = updOwnMsmt(this,inPara)
             % (1) self-observation
@@ -384,7 +438,7 @@ classdef Robot
         function this = DBF(this,inPara)
             % filtering
             selection = inPara.selection;
-            target_model = inPara.target_model;
+%             target_model = inPara.target_model;
             if (selection == 1) || (selection == 3)
                 % calculate probility of latest z               
                 for jj=1:this.num_robot % Robot Iteration

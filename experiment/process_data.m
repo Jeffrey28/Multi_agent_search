@@ -257,7 +257,6 @@ end
 
 %% %%%%%%%%%%%%%%%%%%%%%% experiment analysis -- sonar modeling
 % this cell analyzes the experiment data from Oct 2016
-
 %{
 % read sonar reading from csv file
 addpath('/Users/changliu/Documents/Git/Multi_agent_search/experiment/sonar_modeling_data/2016Oct/101216');
@@ -331,30 +330,41 @@ for jj = 1:dataset_num
     cov_meas{jj} = std(meas_dist);    
 end
 % line fitting
-X = [ones(length(nomi_dist),1),nomi_dist'];
-y = mean_meas;
+X = [ones(length(nomi_dist),1),mean_meas];
+y = nomi_dist';
 B = X\y; % coefficient for linear fitting
+
+% compare the fitting results
+% figure
+% hold on
+% plot(X(:,2),y)
+% plot(X(:,2),X*B)
+% display(y-X*B)
 %}
 
 %% %%%%%%%%%%%%%%%%%%%%%  experiment analysis -- localization data interpretation
+%
 % addpath('/Users/changliu/Documents/Git/Multi_agent_search/experiment/localization');
 clear;
 % meas_data{1} is a N-by-4 matrix, first two columns correspond to robot
 % position, third for orientation and last one for measured distance.
-meas_data = cell(3);
+meas_data = cell(3,1);
 all_name_set = {{'20inch','40inch','60inch','80inch','100inch','120inch','140inch','160inch','180inch'};...
     {'30inch','50inch','70inch','90inch','110inch'};...
     {'30inch','50inch','70inch','90inch','100inch'}};
-all_r_state = {[1 1 -pi/2],[ 1 1 pi],[1 1 0]};
+
+all_r_state = {[123.5*ones(9,1)*2.54/100 (358-(210:-20:50))'*2.54/100 3*pi/2*ones(9,1)],...
+    [(250.7-(30:20:110))'*2.54/100 124*ones(5,1)*2.54/100 pi*ones(5,1)],...
+    [[(30:20:90)';100]*2.54/100 124.5*ones(5,1)*2.54/100 zeros(5,1)]};
+
 
 for rbt_idx = 1:3
     % ind_meas_data is the individual robot's measurement data and its state
     ind_meas_data = zeros(0,4);
 
-    name_set = {'20inch','40inch','60inch','80inch','100inch','120inch','140inch','160inch','180inch'};
-%     nomi_dist = (20:20:180)*2.54/100; % nominal distance (covert from inch to meter)
-    % name_set = {'0dot5','1dot0','2dot0','3dot0','4dot0'};
-    % nomi_dist = [0.5,1:4];
+    name_set = all_name_set{rbt_idx};
+%     nomi_dist = all_r_state*2.54/100; % nominal distance (covert from inch to meter)
+    
     dataset_num = length(name_set);
     sonar_m = zeros(2,dataset_num); % sonar mean for all dataset
     sonar_cov = zeros(2*dataset_num,2); % sonar covariance for all dataset
@@ -417,3 +427,6 @@ for rbt_idx = 1:3
     
     meas_data{rbt_idx} = ind_meas_data;
 end
+
+save('./localization/exp_meas_data','meas_data')
+%}

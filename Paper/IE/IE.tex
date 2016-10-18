@@ -17,6 +17,7 @@
 %\usepackage{times} % assumes new font selection scheme installed
 \usepackage{amsmath,amssymb,amsfonts} % assumes amsmath package installed
 \usepackage{algorithm,algpseudocode}
+\usepackage{gensymb} % enable the use of degree symbol
 %\usepackage{booktabs}
 
 % format for theorems etc.
@@ -219,7 +220,6 @@ The Bayesian filter is run locally on each UGV based on its own and received mea
 %In this paper, distributed Bayesian filter is used to estimate the true target position by a network of binary sensors.
 The target motion takes a deterministic discrete-time model that can be described by
 
-\todohere{this may make people wonder if LIFO-DBF can be applied to system with noise?}
 \begin{equation}
 \small
 \label{eqn:tar_motion_model}
@@ -1090,7 +1090,6 @@ Therefore, \Cref{eqn:cmp2} can be reduced to only considering infinite-observati
 %\end{rem}
 
 \section{Simulation and Experiment}\label{sec:sim}
-\todohere{This section needs a major revision. also notice to simplify the description of each plot.}
 
 \begin{figure}%[thpb]
 	\centering
@@ -1133,41 +1132,36 @@ Therefore, \Cref{eqn:cmp2} can be reduced to only considering infinite-observati
 	\centering
 	\begin{subfigure}[b]{0.24\textwidth}
 		\includegraphics[width=\textwidth]{figures/hetero_sta_sen_sta_tar_rbt5_step1}
-		\caption{Step 1}%\label{fig:sta_sen_sta_tar_sing1}
+		\caption{Step 1}\label{fig:htr_sta_sen_sta_tar_sing1}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.24\textwidth}
 		\includegraphics[width=\textwidth]{figures/hetero_sta_sen_sta_tar_rbt5_step3}
-		\caption{Step 5}%\label{fig:sta_sen_sta_tar_sing2}
+		\caption{Step 5}\label{fig:htr_sta_sen_sta_tar_sing2}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.24\textwidth}
 		\includegraphics[width=\textwidth]{figures/hetero_sta_sen_sta_tar_rbt5_step5}
-		\caption{Step 10}%\label{fig:sta_sen_sta_tar_sing3}
+		\caption{Step 10}\label{fig:htr_sta_sen_sta_tar_sing3}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.24\textwidth}
 		\includegraphics[width=\textwidth]{figures/hetero_sta_sen_sta_tar_rbt5_step10}
-		\caption{Step 30}%\label{fig:sta_sen_sta_tar_sing4}
+		\caption{Step 30}\label{fig:htr_sta_sen_sta_tar_sing4}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.24\textwidth}
 		\includegraphics[width=\textwidth]{figures/hetero_sta_sen_sta_tar_pos_err}
-		\caption{Position Error}%\label{fig:sta_sen_sta_tar_pos_err}
+		\caption{Position Error}\label{fig:htr_sta_sen_sta_tar_pos_err}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.24\textwidth}
 		\includegraphics[width=\textwidth]{figures/hetero_sta_sen_sta_tar_entropy}
-		\caption{Entropy of Individual PDF}%\label{fig:sta_sen_sta_tar_entropy}
+		\caption{Entropy of Individual PDF}\label{fig:htr_sta_sen_sta_tar_entropy}
 	\end{subfigure}
-	
-	%	\begin{subfigure}[b]{0.4\textwidth}
-	%		\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_30}
-	%		\caption{Step 30}\label{fig:sta_sen_sta_tar_all}
-	%	\end{subfigure}
 	\caption{(a)-(d) The $1^\text{st}$ UGV's individual PDF at different times. The square denotes the current UGV and stars represent other UGVs. The cross stands for the target. (e) Average position estimation errors of $1^\text{st}$, $3^\text{rd}$ and $5^\text{th}$ UGV's LIFO-DBF, CbDF and CF. (f) Average entropy of individual PDFs.}
-	%\label{fig:sta_sen_sta_tar}
+	\label{fig:htr_sta_sen_sta_tar}
 	\vspace{-1.2em}
 \end{figure}
 
-Simulation has been conducted to demonstrate the effectiveness of LIFO-DBF for target localization using a team of six UGVs.
+Simulation has been conducted to evaluate the effectiveness of LIFO-DBF for target localization using a team of six UGVs.
 %In all scenarios, each UGV is equipped with a binary sensor. 
-The networked UGVs take a ring communication topology that each UGV can communicate with two fixed nearest neighbors.
+The networked UGVs take a ring communication topology that each UGV can communicate with two fixed neighbors.
 %The probabilistic sensor model
 % \cref{eqn:bin_sensor1,eqn:bin_sensor0}, 
 %takes the form defined in \Cref{eqn:gauss_sensor}.
@@ -1184,27 +1178,34 @@ The networked UGVs take a ring communication topology that each UGV can communic
 %where $x^s$ denotes the UGV position where current observation is obtained. 
 %Figure 4 shows the 1-D illustration of Gaussian binary sensor model.
 %where $x^R$ denotes the UGV position, which is included in UGV state $y^R$.
-DBF is implemented using grid-based method, by which the space is finely discretized \cite{}. 
-Other approaches, such as particle filters \cite{}, can also be used.
+DBF is implemented using the histogram filter method, by which the continuous space is finely discretized into finitely many regions and the individual PDF is approximated by the cumulative probability of each region \cite{thrun2005probabilistic}. 
+%Other approaches, such as particle filters \cite{}, can also be used.
 Two types of scenarios are used: in first scenario, both UGVs and the target are static;
 %, which acts as a proof of concept of LIFO-DBF for static target.
 the second scenario subsequently deals with six moving UGVs for localizing a moving target. 
+In each scenario, we also test two different kinds of UGV team: the first UGV team, called the homogeneous team, is equipped with bearing-only sensors; in the second team, called the heterogeneous team, three UGVs are equipped with bearing-only sensor and the other three equipped with range-only sensors.
+The bearing-only sensors are assumed to have large enough sensing range to cover the simulation field and the measurement noise is a zero-mean Gaussian white noise with standard deviation being $0.5$.
+The range-only sensors are assumed to have $360\degree$ field of view but limited sensing range ($50m$).
+The measurement noise is a zero-mean Gaussian white noise with standard deviation being $5$.
 
-In both scenarios, LIFO-DBF is compared with two commonly adopted approaches in multi-agent filtering: the consensus-based distributed filtering (CbDF) method and the centralized filtering (CF) method.
-The CbDF requires UGVs to continually exchange their individual PDFs with direct neighbors, computing the average of all received and its own target PDFs. 
-Multiple rounds of communication and averaging are conducted during the ``Sending Step'' and ``Receiving Step'' in \Cref{alg:lifo} at each round to ensure the convergence of each UGV's individual PDFs.
+In both scenarios, LIFO-DBF is compared with two commonly adopted approaches in multi-agent filtering: the consensus-based distributed filtering (CbDF) method \cite{olfati2006belief} and the centralized filtering (CF) method \cite{veeravalli2012distributed}.
+The CbDF requires UGVs to continually exchange their individual PDFs with direct neighbors, computing the average of its own and the received target PDFs. 
+Multiple rounds of communication and averaging are conducted during the ``Sending Step'' and ``Receiving Step'' in \Cref{alg:lifo} at each step to ensure the convergence of UGV's individual PDFs.
 The CF assumes a central unit that can constantly receive and fuse all UGVs' latest observations into a single PDF.
 Ten test trials with randomly generated initial UGV and target positions are run and each trial is terminated after 50 time steps.
-The average error between the estimated and true target position and the average entropy of individual PDFs of all 10 trials are compared among these three approaches.
+The average error between the estimated and true target position and the average entropy of individual PDFs of all 10 trials using these three approaches are compared.
 
 \subsection{Static UGVs, Static Target}
-We assume all UGVs are equipped with bearing-only sensors.
-\subsubsection{Homogeneous Sensors}\label{subsec:sim1}
-Six static UGVs, as represented by green stars and red square in \cref{fig:sta_sen_sta_tar_sing1}, are placed in the field.
-The target is also assumed to be static, with $A$ being an identity matrix and $B_k$ being a zero matrix in \cref{eqn:tar_motion_model}.
+%In this test, all UGVs are equipped with bearing-only sensors.\label{subsec:sim1}
+The individual PDF of each UGV is initialized as a uniform distribution over a bounded search space. 
+At each time step, each UGV executes the LIFO-DBF for static target (\Cref{subsec:LIFO-dbf-sta-tar}) to update their estimation of target position.
+The evolution of the $1^\text{st}$ robot's individual PDF is shown in \Cref{fig:sta_sen_sta_tar_sing1,fig:sta_sen_sta_tar_sing2,fig:sta_sen_sta_tar_sing3,fig:sta_sen_sta_tar_sing4}. 
+Since the robot is equipped with a noisy bearing-only sensor, the measurement at step $1$ results in a wide distribution of the target position, with the peak centered along the noise-corrupted measured direction from the sensor to the target, as \Cref{fig:sta_sen_sta_tar_sing1} illustrates.
+%six static UGVs, as represented by green stars and red square in , are placed in the field.
+%The target is also assumed to be static, with $A$ being an identity matrix and $B_k$ being a zero matrix in \cref{eqn:tar_motion_model}.
 % shows a test trial when both the UGVs and the target are static. %of the positions of six static UGVs are shown as stars and square.
 %Due to space constraint, only the individual PDF of the first UGV is shown.
-The individual PDF of the first UGV at different time steps are shown in \cref{fig:sta_sen_sta_tar_sing1,fig:sta_sen_sta_tar_sing2,fig:sta_sen_sta_tar_sing3,fig:sta_sen_sta_tar_sing4}.
+%The individual PDF of the first UGV at different time steps are shown in \cref{fig:sta_sen_sta_tar_sing1,fig:sta_sen_sta_tar_sing2,fig:sta_sen_sta_tar_sing3,fig:sta_sen_sta_tar_sing4}.
 %Each UGV constantly receives binary observations of the target.
 %The LIFO-DBF for static target is implemented on each UGV for target localization.
 %The networked UGVs use a ring communication topology that each UGV can communicate with two fixed neighbors.
@@ -1212,57 +1213,44 @@ The individual PDF of the first UGV at different time steps are shown in \cref{f
 %After the initial observation, each UGV forms a circular individual PDF, centered at its own position.
 %\cref{fig:sta_sen_sta_tar_sing1} shows the individual PDF after initial observation for $1^\text{st}$ UGV.
 %The circular PDF happens because the Gaussian sensor model (\Cref{eqn:gauss_sensor}) only depends on the distance between UGV and target.
-It can be noticed that, as more measurements are fused, the individual PDF asymptotically concentrates to the true location of the target (\cref{fig:sta_sen_sta_tar_sing4}), which accords with the consistency of LIFO-DBF.
+As more measurements are fused, the individual PDF asymptotically concentrates to the true location of the target, which accords with the consistency of LIFO-DBF.
 %In fact, with the Guassian sensor model (\Cref{eqn:gauss_sensor}), all positions with equal distance to a UGV belong to the same equi-parameter set of the UGV.
 %Considering the system of six UGVs located separately, the equi-parameter set that contains the actual target position only contains one element.
 %\cref{fig:entropy} (a) shows the decrease of the entropy of each UGV's individual PDF, indicating the reduction of the uncertainty in PDF estimation.
 
-LIFO-DBF is compared with CbDF and CF, results of which are presented in \cref{fig:sta_sen_sta_tar_pos_err,fig:sta_sen_sta_tar_entropy}.
+The \Cref{fig:sta_sen_sta_tar_pos_err,fig:sta_sen_sta_tar_entropy} shows the comparison of LIFO-DBF with CbDF and CF.
 Unsurprisingly, the CF achieves the best performance in terms of both small position estimation error and fast reduction of entropy. 
 This happens because the central unit has access to the latest observations of all UGVs, thus making most use of all available information.
 It is worth noting that, LIFO-DBF achieves similar asymptotic performance as the CF, both in position estimation error and entropy reduction; this is achieved even though each UGV only communicates with its two neighboring UGVs, which requires less communication burden than the CF.
 The CbDF has the worst performance among these three filtering approaches. 
 It results in slow reduction of entropy and the position error remains large.
+This happens because for nonlinear systems, Bayes filtering (\Cref{eqn:bayes_pred,eqn:bayes_upd}) is a nonlinear process.
+Using the linear average consensus law to fuse individual PDFs thus deviates from the actual Bayesian filtering and therefore cannot fully exploit the information of new measurements to reduce the uncertainty of estimation.
+
+The \Cref{fig:htr_sta_sen_sta_tar} shows the simulation results of the heterogeneous team.
+The individual PDF of the UGV with a noisy range-only sensor is presented in \Cref{fig:htr_sta_sen_sta_tar_sing1,fig:htr_sta_sen_sta_tar_sing2,fig:htr_sta_sen_sta_tar_sing3,fig:htr_sta_sen_sta_tar_sing4}.
+At step $1$, the target is detected and the individual PDF is updates such that the peak of the  distribution centers at the positions the distance from which to the sensor equals the noise-corrupted measured value. 
+Similar to the case of using the homogeneous team, the individual PDF asymptotically concentrates to the true target position.
+Due to the use of various sensors, the estimation accuracy increases faster than the homogeneous team case, as shown in \Cref{fig:htr_sta_sen_sta_tar_pos_err,fig:htr_sta_sen_sta_tar_entropy}.
+It can also be noticed that, LIFO-DBF achieves similar performance as CF, while the performance of CbDF is worst.
 
 \subsection{Moving UGVs, Moving Target}
-Six UGVs are equipped with heterogeneous sensors, with two having range-only sensors, two having bearing-only sensors and two having range-bearing sensors.
+In this scenario, each UGV follows a pre-defined circular trajectory. 
+The target motion is modeled as a single-integrator with unit velocity on both directions.
+Each UGV executes the LIFO-DBF for moving target (\cref{subsec:LIFO-dbf-mov-tar}) to estimation.
+\Cref{fig:mov_sen_mov_tar_sing1,fig:mov_sen_mov_tar_sing2,fig:mov_sen_mov_tar_sing3,fig:mov_sen_mov_tar_sing4} and \Cref{fig:htr_mov_sen_mov_tar_sing1,fig:htr_mov_sen_mov_tar_sing2,fig:htr_mov_sen_mov_tar_sing3,fig:htr_mov_sen_mov_tar_sing4} illustrate the evolution of individual PDF for homogeneous and heterogeneous teams, respectively.
+They all present similar asymptotic behavior of individual PDFs as in aforementioned simulations.
+Note that \Cref{fig:htr_mov_sen_mov_tar_sing1} shows the individual PDF at step $1$ when the target is out of the sensing domain of the $5^\text{th}$ UGV's range-only sensor.
+%It can be noticed that the individual PDF concentrates to the true target location when the target constantly moves.
 
-In this scenario, each UGV follows a pre-defined circular trajectory.
-%The third scenario contains six moving sensors and one moving target. 
-The target motion is modeled as a single-integrator with process noise.
-%, where $A_k$ is an identity matrix and $B_k=\begin{bmatrix}
-%\Delta T & 0\\
-%0 & \Delta T
-%\end{bmatrix},$ %$u=\begin{bmatrix}v(1)\\v(2)\end{bmatrix}$,%\left[v(1);v(2)\right]^T$.
-%\small$x^g(k+1)=x^g(k)+v\Delta T$\normalsize,
-%where $v$ is the constant velocity of the target; 
-%with $\Delta T$ being the sampling time.
-%The six UGVs move within the field to estimate the target position, using the same topology and neighborhood as in \cref{subsec:sim1}.
-\cref{fig:mov_sen_mov_tar_sing1,fig:mov_sen_mov_tar_sing2,fig:mov_sen_mov_tar_sing3,fig:mov_sen_mov_tar_sing4} illustrates the test trial, in which
-%when the UGVs move in circles.
-%The motion planning of UGVs for effective target search has received much attention in the past years. 
-%Readers interested in this topic can refer to \cite{tisdale2009autonomous,furukawa2006recursive}.
-%In this work, UGV positions are randomly generated at each time.
-% in order to demonstrate the effectiveness of LIFO-DBF.
-%Readers interested in the motion planning of UGVs for effective target localization can refer to \cite{tisdale2009autonomous}. %,furukawa2006recursive
-%The target dynamics is given by a single-integrator model: $x^g(k+1)=x^g(k)+v\Delta T$,
-%\small\begin{equation*}
-%x^g(k+1)=x^g(k)+v\Delta T
-%\end{equation*}\normalsize
-the LIFO-DBF described in \cref{subsec:LIFO-dbf-mov-tar} is utilized for target localization.
-%\cref{fig:mov_sen_mov_tar} shows the estimation results of the moving target. 
-It can be noticed that the individual PDF concentrates to the true target location when the target constantly moves.
-%\cref{fig:entropy} (b) shows the decrease of the entropy of the posterior distribution.
-
-\cref{fig:mov_sen_mov_tar_pos_err,fig:mov_sen_mov_tar_entropy} compares LIFO-DBF with CbDF and CF.
-Similar to results in \cref{subsec:sim1}, CF achieves best performance with smallest position estimation error and fastest entropy reduction; LIFO-DBF shows similar asymptotic performance as the CF; and
-CbDF has the slowest entropy reduction among all three filtering approaches.
-However, CbDF achieves comparable position estimation error as the CF, which are marginally better than LIFO-DBF.
-This is not an unexpected result: due to the consensus procedure, CbDF is able to fuse the latest individual PDFs of each UGV via the averaging process. 
-This is especially useful when the environment is dynamically changing.
-In contrast, LIFO-DBF for each UGV only uses delayed information from neighboring UGVs, thus gaining less knowledge about the target's current position.
-However, it is worth noting that, CbDF requires multiple rounds of exchanging individual PDFs, which incurs much higher communication burden than LIFO-DBF at each time step.
-%'s approach of transmitting the communication buffer once at each time step.
+\cref{fig:mov_sen_mov_tar_pos_err,fig:mov_sen_mov_tar_entropy} and \cref{fig:htr_mov_sen_mov_tar_pos_err,fig:htr_mov_sen_mov_tar_entropy} compare LIFO-DBF with CbDF and CF.
+%Similar to results in \cref{subsec:sim1}, CF achieves best performance with smallest position estimation error and fastest entropy reduction; LIFO-DBF shows similar asymptotic performance as the CF; and
+%CbDF has the slowest entropy reduction among all three filtering approaches.
+It is worth noting that, for the heterogeneous team, CbDF achieves comparable position estimation error performance as the CF and LIFO-DBF.
+%This is not an unexpected result: due to the consensus procedure, CbDF is able to fuse the latest individual PDFs of each UGV via the averaging process. 
+%This is especially useful when the environment is dynamically changing.
+%In contrast, LIFO-DBF for each UGV only uses delayed information from neighboring UGVs, thus gaining less knowledge about the target's current position.
+However, CbDF requires multiple rounds of exchanging individual PDFs, which incurs much higher communication burden than LIFO-DBF at each time step.
 Considering the small difference in position estimation error and significantly faster entropy reduction, LIFO-DBF is still preferable over CbDF for moving target scenario.
 
 \begin{figure}%[thpb]
@@ -1304,27 +1292,27 @@ Considering the small difference in position estimation error and significantly 
 	\centering
 	\begin{subfigure}[b]{0.24\textwidth}
 		\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_rbt5_step1}
-		\caption{Step 1}%\label{fig:sta_sen_sta_tar_sing1}
+		\caption{Step 1}\label{fig:htr_mov_sen_mov_tar_sing1}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.24\textwidth}
 		\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_rbt5_step3}
-		\caption{Step 5}%\label{fig:sta_sen_sta_tar_sing2}
+		\caption{Step 5}\label{fig:htr_mov_sen_mov_tar_sing2}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.24\textwidth}
 		\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_rbt5_step5}
-		\caption{Step 10}%\label{fig:sta_sen_sta_tar_sing3}
+		\caption{Step 10}\label{fig:htr_mov_sen_mov_tar_sing3}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.24\textwidth}
 		\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_rbt5_step10}
-		\caption{Step 30}%\label{fig:sta_sen_sta_tar_sing4}
+		\caption{Step 30}\label{fig:htr_mov_sen_mov_tar_sing4}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.24\textwidth}
 		\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_pos_err}
-		\caption{Position Error}%\label{fig:sta_sen_sta_tar_pos_err}
+		\caption{Position Error}\label{fig:htr_mov_sen_mov_tar_pos_err}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.24\textwidth}
 		\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_entropy}
-		\caption{Entropy of Individual PDF}%\label{fig:sta_sen_sta_tar_entropy}
+		\caption{Entropy of Individual PDF}\label{fig:htr_mov_sen_mov_tar_entropy}
 	\end{subfigure}
 	\caption{(a)-(d) The $1^\text{st}$ UGV's individual PDF at different times. The square denotes the current UGV and stars represent other UGVs. The cross stands for the target. (e) Average position estimation errors of $1^\text{st}$, $3^\text{rd}$ and $5^\text{th}$ UGV's LIFO-DBF, CbDF and CF. (f) Average entropy of individual PDFs.}
 	%\label{fig:sta_sen_sta_tar}
@@ -1369,7 +1357,7 @@ Imperfect communication, including package loss and transmission delay, requires
 % and may affect its consistency properties.
 % out-of-order measurement 
 %In addition, combining LIFO-DBF with UGV motion planning is promising for more effective SAT of target.
-
+\todohere{can list some benefits of concensus method as mentioned by CDC reviewer. also mention that sensor placement may help improve the result.}
 
 \addtolength{\textheight}{0cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens

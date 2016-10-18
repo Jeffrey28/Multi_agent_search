@@ -58,6 +58,8 @@ classdef Sim
                 for j=1:this.num_robot
                     % draw robot trajectory
                     if j==k
+                        display(rbt{j}.traj(1,:)) 
+                        display(rbt{j}.traj(2,:))
                         line_hdl = line(rbt{j}.traj(1,:), rbt{j}.traj(2,:));
                         set(line_hdl,'Marker','.','Color','r','MarkerSize',3,'LineWidth',2);
                         plot(rbt{j}.traj(1,end), rbt{j}.traj(2,end), 's','Color','r','MarkerSize',25,'LineWidth',3);
@@ -133,7 +135,7 @@ classdef Sim
             
             %% Consensus
             % plot figures for selected robots
-            %
+            %{
             for k = 1:this.sim_r_idx                
                 tmp_hd = figure (tmp_fig_cnt); % handle for plot of a single robot's target PDF
                 clf(tmp_hd);
@@ -171,7 +173,7 @@ classdef Sim
             %}
             
             %% Centralized
-            %
+            %{
             % plot figures for central map
             
             tmp_hd = figure (tmp_fig_cnt); % handle for plot of a single robot's target PDF
@@ -318,7 +320,7 @@ classdef Sim
             set(gca,'fontsize',30)
             xlabel('Time (Step)','FontSize',30);
             ylabel('Position Error','FontSize',30);
-                    
+            
             % entropy
             tmp_fig_cnt = tmp_fig_cnt+1;
             hf_ent = figure(tmp_fig_cnt);
@@ -348,7 +350,155 @@ classdef Sim
             
             this.sim_res = tmp_sim_res;
         end
-       
+        
+        function this = compareMetricsExp(this)
+            % draw metrics for LIFO-DBF only. used for analyzing experiment
+            % data
+            tmp_sim_res.ml_err_dbf = zeros(this.num_robot,this.sim_len);
+            tmp_sim_res.ent_dbf = zeros(this.num_robot,this.sim_len);
+%             tmp_sim_res = this.sim_res;
+                for ii = 1:this.num_robot
+                    %                     display(ii)
+                    % ml error
+                    tmp_sim_res.ml_err_dbf(ii,:) = this.rbt_set{1}.rbt{ii}.ml_err_dbf;
+%                     tmp_sim_res.ml_err_cons(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.ml_err_cons;
+                    
+                    % norm of cov of pdf
+%                     tmp_sim_res.pdf_norm_dbf(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.pdf_norm_dbf;
+%                     tmp_sim_res.pdf_norm_cons(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.pdf_norm_cons;
+                    
+                    % entropy of pdf
+                    tmp_sim_res.ent_dbf(ii,:) = this.rbt_set{1}.rbt{ii}.ent_dbf;
+%                     tmp_sim_res.ent_cons(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.ent_cons;
+                end
+%                 tmp_sim_res.ml_err_cent(jj,:) = this.rbt_set{jj}.rbt{1}.ml_err_cent;
+%                 tmp_sim_res.pdf_norm_cent(jj,:) = this.rbt_set{jj}.rbt{1}.pdf_norm_cent;
+%                 tmp_sim_res.ent_cent(jj,:) = this.rbt_set{jj}.rbt{1}.ent_cent;
+            
+%             
+%             for ii = 1:this.num_robot
+%                 % ml error
+%                 % dbf
+%                 tmp_ml_err_dbf = squeeze(tmp_sim_res.ml_err_dbf(ii,:,:));
+%                 tmp_sim_res.ml_err_dbf_mean(ii,:) = mean(tmp_ml_err_dbf,1);
+%                 tmp_sim_res.ml_err_dbf_cov(ii,:) = diag(cov(tmp_ml_err_dbf))';
+%                 
+% %                 % consensus
+% %                 tmp_ml_err_cons = squeeze(tmp_sim_res.ml_err_cons(ii,:,:));
+% %                 tmp_sim_res.ml_err_cons_mean(ii,:) = mean(tmp_ml_err_cons,1);
+% %                 tmp_sim_res.ml_err_cons_cov(ii,:) = diag(cov(tmp_ml_err_cons)');
+%                 
+%                 % norm of cov of pdf
+%                 % dbf
+%                 tmp_pdf_norm_dbf = squeeze(tmp_sim_res.pdf_norm_dbf(ii,:,:));
+%                 tmp_sim_res.pdf_norm_dbf_mean(ii,:) = mean(tmp_pdf_norm_dbf,1);
+%                 tmp_sim_res.pdf_norm_dbf_cov(ii,:) = diag(cov(tmp_pdf_norm_dbf)');
+%                 
+% %                 % consensus
+% %                 tmp_pdf_norm_cons = squeeze(tmp_sim_res.pdf_norm_cons(ii,:,:));
+% %                 tmp_sim_res.pdf_norm_cons_mean(ii,:) = mean(tmp_pdf_norm_cons,1);
+% %                 tmp_sim_res.pdf_norm_cons_cov(ii,:) = diag(cov(tmp_pdf_norm_cons)');
+%                 
+%                 % entropy of pdf
+%                 % dbf
+%                 tmp_ent_dbf = squeeze(tmp_sim_res.ent_dbf(ii,:,:));
+%                 tmp_sim_res.ent_dbf_mean(ii,:) = mean(tmp_ent_dbf,1);
+%                 tmp_sim_res.ent_dbf_cov(ii,:) = diag(cov(tmp_ent_dbf)');
+%                 
+% %                 % consensus
+% %                 tmp_ent_cons = squeeze(tmp_sim_res.ent_cons(ii,:,:));
+% %                 tmp_sim_res.ent_cons_mean(ii,:) = mean(tmp_ent_cons,1);
+% %                 tmp_sim_res.ent_cons_cov(ii,:) = diag(cov(tmp_ent_cons)');
+%             end
+%             
+            % ml error
+            % centralized
+%             tmp_ml_err_cent = tmp_sim_res.ml_err_cent;
+%             tmp_sim_res.ml_err_cent_mean = mean(tmp_ml_err_cent,1);
+%             tmp_sim_res.ml_err_cent_cov = diag(cov(tmp_ml_err_cent)');
+            
+            % norm of cov of pdf
+            % centralized
+%             tmp_pdf_norm_cent = tmp_sim_res.pdf_norm_cent;
+%             tmp_sim_res.pdf_norm_cent_mean = mean(tmp_pdf_norm_cent,1);
+%             tmp_sim_res.pdf_norm_cent_cov = diag(cov(tmp_pdf_norm_cent)');
+            
+            % entropy of pdf
+            % centralized
+%             tmp_ent_cent = tmp_sim_res.ent_cent;
+%             tmp_sim_res.ent_cent_mean = mean(tmp_ent_cent,1);
+%             tmp_sim_res.ent_cent_cov = diag(cov(tmp_ent_cent)');
+            
+            %% %%%%%%%%%%%%%% plot the performance metrics %%%%%%%%%%%%%%%%%
+            plot_rbt_idx = this.sim_r_idx; % draw robot 1, 3, 5
+            tmp_fig_cnt = this.fig_cnt+7;
+            % ml error
+            %             tmp_fig_cnt = tmp_fig_cnt+1;
+            hf_err = figure(tmp_fig_cnt);
+            line_clr = ['r','g','b','c','m','k'];
+            line_marker = {'o','*','s','d','^','h'};
+            count = this.sim_len;
+            % for LIFO-DBF, we draw different robot's performance metrics
+            for ii = plot_rbt_idx
+                plot(1:count-2,tmp_sim_res.ml_err_dbf(ii,1:count-2),line_clr(ii),'LineWidth',2,'Marker',line_marker{ii},'MarkerSize',2); hold on;
+                %                 semilogy(1:count-2,tmp_sim_res.ml_err_dbf_mean(ii,1:count-2),line_clr(ii),'LineWidth',2,'Marker',line_marker{ii},'MarkerSize',2); hold on;
+                %                 errorbar(1:count-2,tmp_sim_res.ml_err_dbf_mean(ii,1:count-2),sqrt(tmp_sim_res.ml_err_dbf_cov(ii,1:count-2)),...
+                %                         line_clr(ii),'LineWidth',2,'Marker',line_marker{ii},'MarkerSize',2); hold on;
+            end
+            
+            % for consensus, we draw one robot's performance metrics.
+%             plot(1:count-2,tmp_sim_res.ml_err_cons_mean(1,1:count-2),line_clr(2),'LineStyle','--','LineWidth',2,'Marker',line_marker{2},'MarkerSize',2); hold on;
+            %             semilogy(1:count-2,tmp_sim_res.ml_err_cons_mean(1,1:count-2),line_clr(2),'LineStyle','--','LineWidth',2,'Marker',line_marker{2},'MarkerSize',2); hold on;
+            % errorbar(1:count-2,tmp_sim_res.ml_err_cons_mean(1,1:count-2),sqrt(tmp_sim_res.ml_err_cons_cov(1,1:count-2)),...
+            %     line_clr(1),'LineStyle','--','LineWidth',2,'Marker',line_marker{1},'MarkerSize',2); hold on;
+            
+            % only on centralized filter
+%             plot(1:count-2,tmp_sim_res.ml_err_cent_mean(1:count-2),line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{6},'MarkerSize',2); hold on;
+            %             semilogy(1:count-2,tmp_sim_res.ml_err_cent_mean(1:count-2),line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{6},'MarkerSize',2); hold on;
+            % errorbar(1:count-2,tmp_sim_res.ml_err_cent_mean(1:count-2),sqrt(tmp_sim_res.ml_err_cent_cov(1:count-2)),...
+            %     line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{6},'MarkerSize',2); hold on;
+            xlim([0,count-1])
+            
+            % add legend
+            [~, hobj1] = legend('DBF-R1','DBF-R3','DBF-R5');%,'Consen','Central');
+            textobj = findobj(hobj1, 'type', 'text');
+            set(textobj, 'fontsize', 15);
+            
+            title('Target Position Error','FontSize',30);
+            set(gca,'fontsize',30)
+            xlabel('Time (Step)','FontSize',30);
+            ylabel('Position Error','FontSize',30);
+            
+            % entropy
+            tmp_fig_cnt = tmp_fig_cnt+1;
+            hf_ent = figure(tmp_fig_cnt);
+            line_clr = ['r','g','b','c','m','k'];
+            line_marker = {'o','*','s','d','^','h'};
+            for ii = plot_rbt_idx
+                plot(1:count-2,tmp_sim_res.ent_dbf(ii,1:count-2),line_clr(ii),'LineWidth',2,'Marker',line_marker{ii},'MarkerSize',2); hold on;
+                %     errorbar(1:count-2,tmp_sim_res.entropy_dbf_mean(i,1:count-2),sqrt(tmp_sim_res.entropy_dbf_cov(i,1:count-2)),line_clr(i),'LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+            end
+            
+%             plot(1:count-2,tmp_sim_res.ent_cons_mean(1,1:count-2),line_clr(2),'LineStyle','--','LineWidth',2,'Marker',line_marker{2},'MarkerSize',2); hold on;
+            % errorbar(1:count-2,tmp_sim_res.entropy_cons_mean(1,1:count-2),sqrt(tmp_sim_res.entropy_cons_cov(1,1:count-2)),line_clr(1),'LineStyle','--','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+            
+%             plot(1:count-2,tmp_sim_res.ent_cent_mean(1:count-2),line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{6},'MarkerSize',2); hold on;
+            % errorbar(1:count-2,tmp_sim_res.entropy_cent_mean(1:count-2),sqrt(tmp_sim_res.entropy_cent_cov(1:count-2)),line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{i},'MarkerSize',2); hold on;
+            xlim([0,count-1])
+            
+            % add legend
+            [~, hobj3] = legend('DBF-R1','DBF-R3','DBF-R5');%,'Consen','Central');
+            textobj = findobj(hobj3, 'type', 'text');
+            set(textobj, 'fontsize', 15);
+            
+            title('Entropy of the Target PDF','FontSize',30);
+            set(gca,'fontsize',30)
+            xlabel('Time (Step)','FontSize',30);
+            ylabel('Entropy','FontSize',30);
+            
+            this.sim_res = tmp_sim_res;
+        end
+        
         function file_name = saveSimData(this)
             % make the file name for simulation data
             switch this.selection
@@ -367,5 +517,20 @@ classdef Sim
             
             file_name = sprintf('./figures/data_exchange/Journal/metrics_%s_%s_%s.mat',tag2,tag,datestr(now,1));            
         end
+        
+        function file_name = saveExpData(this)
+            % make the file name for simulation data
+            switch this.selection
+                case 1,  tag = 'sta_sen_sta_tar';
+                case 2,  tag = 'sta_sen_mov_tar';
+                case 3,  tag = 'mov_sen_sta_tar';
+                case 4,  tag = 'mov_sen_mov_tar';
+            end
+            
+            tag2 = 'sonar';
+            
+            file_name = sprintf('./figures/data_exchange/Journal/metrics_%s_%s_%s.mat',tag2,tag,datestr(now,1));            
+        end
+        
     end
 end
