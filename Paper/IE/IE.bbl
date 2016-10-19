@@ -23,16 +23,16 @@ J.-F. Chamberland and V.~V. Veeravalli, ``Wireless sensors in distributed
   detection applications,'' \emph{Signal Processing Magazine, IEEE}, vol.~24,
   no.~3, pp. 16--25, 2007.
 
-\bibitem{wang2007wlan}
-H.~Wang, H.~Lenz, A.~Szabo, J.~Bamberger, and U.~D. Hanebeck, ``Wlan-based
-  pedestrian tracking using particle filters and low-cost mems sensors,'' in
-  \emph{Positioning, Navigation and Communication, 2007. WPNC'07. 4th Workshop
-  on}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2007, pp. 1--7.
+\bibitem{wang2012cooperative}
+Z.~Wang and D.~Gu, ``Cooperative target tracking control of multiple robots,''
+  \emph{IEEE Transactions on Industrial Electronics}, vol.~59, no.~8, pp.
+  3232--3240, 2012.
 
-\bibitem{cao2008development}
-X.~Cao, J.~Chen, Y.~Zhang, and Y.~Sun, ``Development of an integrated wireless
-  sensor network micro-environmental monitoring system,'' \emph{ISA
-  transactions}, vol.~47, no.~3, pp. 247--255, 2008.
+\bibitem{song2012mobile}
+H.~Song, V.~Shin, and M.~Jeon, ``Mobile node localization using fusion
+  prediction-based interacting multiple model in cricket sensor network,''
+  \emph{IEEE Transactions on Industrial Electronics}, vol.~59, no.~11, pp.
+  4349--4359, 2012.
 
 \bibitem{2005distributed}
 R.~Olfati-Saber, ``Distributed kalman filter with embedded consensus filters,''
@@ -71,6 +71,12 @@ R.~Olfati-Saber, A.~Fax, and R.~M. Murray, ``Consensus and cooperation in
 L.~Zuo, K.~Mehrotra, P.~K. Varshney, and C.~K. Mohan, ``Bandwidth-efficient
   target tracking in distributed sensor networks using particle filters,'' in
   \emph{Information Fusion, 2006 9th International Conference on}.
+
+\bibitem{he2014networked}
+X.~He, Z.~Wang, X.~Wang, and D.~Zhou, ``Networked strong tracking filtering
+  with multiple packet dropouts: algorithms and applications,'' \emph{IEEE
+  Transactions on Industrial Electronics}, vol.~61, no.~3, pp. 1454--1463,
+  2014.
 
 \bibitem{hlinka2013distributed}
 O.~Hlinka, F.~Hlawatsch, and P.~M. Djuric, ``Distributed particle filtering in
@@ -122,6 +128,15 @@ P.~M. Djuri{\'c}, J.~Beaudeau, and M.~F. Bugallo, ``Non-centralized target
   tracking with mobile agents,'' in \emph{Acoustics, Speech and Signal
   Processing (ICASSP), 2011 IEEE International Conference on}, pp. 5928--5931.
 
+\bibitem{bishop2010optimality}
+A.~N. Bishop, B.~Fidan, B.~D. Anderson, K.~Do{\u{g}}an{\c{c}}ay, and P.~N.
+  Pathirana, ``Optimality analysis of sensor-target localization geometries,''
+  \emph{Automatica}, vol.~46, no.~3, pp. 479--492, 2010.
+
+\bibitem{thrun2005probabilistic}
+S.~Thrun, W.~Burgard, and D.~Fox, \emph{Probabilistic robotics}.\hskip 1em plus
+  0.5em minus 0.4em\relax MIT press, 2005.
+
 \bibitem{bourgault2003optimal}
 F.~Bourgault, T.~Furukawa, and H.~F. Durrant-Whyte, ``Optimal search for a lost
   target in a bayesian world,'' in \emph{Field and service robotics}.\hskip 1em
@@ -142,18 +157,14 @@ G.~Thatte and U.~Mitra, ``Sensor selection and power allocation for distributed
   estimation in sensor networks: Beyond the star topology,'' \emph{Signal
   Processing, IEEE Transactions on}, vol.~56, no.~7, pp. 2649--2661, 2008.
 
-\bibitem{kulich2014single}
-M.~Kulich, L.~Preucil, and J.~J. Miranda~Bront, ``Single robot search for a
-  stationary object in an unknown environment,'' in \emph{Robotics and
-  Automation (ICRA), 2014 IEEE International Conference on}, pp. 5830--5835.
-
 \bibitem{amemiya1985advanced}
 T.~Amemiya, \emph{Advanced econometrics}.\hskip 1em plus 0.5em minus
   0.4em\relax Harvard university press, 1985.
 
-\bibitem{thrun2005probabilistic}
-S.~Thrun, W.~Burgard, and D.~Fox, \emph{Probabilistic robotics}.\hskip 1em plus
-  0.5em minus 0.4em\relax MIT press, 2005.
+\bibitem{mackay2003information}
+D.~J. MacKay, \emph{Information theory, inference and learning
+  algorithms}.\hskip 1em plus 0.5em minus 0.4em\relax Cambridge university
+  press, 2003.
 
 \bibitem{olfati2006belief}
 R.~Olfati-Saber, E.~Franco, E.~Frazzoli, and J.~S. Shamma, ``Belief consensus

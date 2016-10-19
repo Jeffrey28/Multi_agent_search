@@ -15,9 +15,9 @@
 \usepackage[noadjust]{cite}
 %\usepackage{mathptmx} % assumes new font selection scheme installed
 %\usepackage{times} % assumes new font selection scheme installed
-\usepackage{amsmath,amssymb,amsfonts} % assumes amsmath package installed
 \usepackage{algorithm,algpseudocode}
 \usepackage{gensymb} % enable the use of degree symbol
+\usepackage{amsmath,amssymb,amsfonts,amsthm} % assumes amsmath package installed
 %\usepackage{booktabs}
 
 % format for theorems etc.
@@ -26,7 +26,7 @@
 \newtheorem{cor}{\bfseries Corollary}
 \newtheorem{prop}{\bfseries Proposition}
 \newtheorem{rem}{\bfseries Remark}
-\newtheorem{proof}{\bfseries Proof}
+\newtheorem*{proof*}{\bfseries Proof}
 
 % format for argmin, argmax
 \newcommand{\argmax}{\operatornamewithlimits{argmax}}
@@ -70,10 +70,14 @@
 	\renewcommand{\todohere}[1]{}
 	}
 
+%---------- Macros for this paper
+% random variables
+\newcommand{\X}{X}
+\newcommand{\Z}{Z}
+\newcommand{\xg}{x^g}
 
 \title{\LARGE \bf
 Distributed Bayesian Filters for Multi-Vehicle Network by Using Latest-In-and-Full-Out Exchange Protocol of Observations}
-
 
 \author{Chang Liu$^{1}$, Shengbo Eben Li$^{2}$ and J. Karl Hedrick$^{3}$% <-this % stops a space
 \thanks{*The first two authors, C. Liu and S. Li, have equally contributed to this research.}% <-this % stops a space
@@ -81,7 +85,6 @@ Distributed Bayesian Filters for Multi-Vehicle Network by Using Latest-In-and-Fu
 \thanks{$^{2}$Shengbo Eben Li is with the Department of Automotive Engineering, Tsinghua University, Beijing, 100084, China. He has worked at Department of Mechanical Engineering, University of California, Berkeley as a visiting scholar. Email: {\tt\small lisb04@gmail.com}}%
 \thanks{$^{3}$J. Karl Hedrick is with the Vehicle Dynamics \& Control Lab, Department of Mechanical Engineering, University of California, Berkeley, Berkeley, CA 94709, USA. Email: {\tt\small khedrick@me.berkeley.edu}}%
 }
-
 
 \begin{document}
 
@@ -95,29 +98,28 @@ Distributed Bayesian Filters for Multi-Vehicle Network by Using Latest-In-and-Fu
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-
 This paper presents a measurement dissemination-based distributed Bayesian filtering (DBF) approach for a network of unmanned ground vehicles (UGVs).
 The DBF utilizes the Latest-In-and-Full-Out (LIFO) local exchange protocol of sensor measurements for data communication within the network.
 % for target search and tracking.
 Different from existing statistics dissemination-based approaches that transmit posterior distributions or likelihood functions, each UGV under LIFO only exchanges with neighboring UGVs a full communication buffer consisting of latest available measurements,
 %receives the latest available measurements and then broadcasts full communication buffer to its neighborhood, 
 which significantly reduces the transmission burden between each pair of UGVs to scale linearly with the size of the network.
-Under the condition of fixed and undirected topology, LIFO can guarantee non-intermittent dissemination of all observations over the network within finite time.
-%, with each robot non-intermittently receiving observations of all others.
+Under the condition of fixed and undirected topology, LIFO can guarantee non-intermittent dissemination of all measurements over the network within finite time.
+%, with each robot non-intermittently receiving measurements of all others.
 Two types of LIFO-based DBF algorithms are then derived to estimate individual probability density function (PDF) for a static target and for a moving target, respectively. 
-For the static target, each UGV locally fuses the newly received observations while for the moving target, a set of historical observations is stored and sequentially fused. 
-%Upon obtaining the latest available observations of all robots, an iterative Bayesian filtering procedure is applied that alternates between prediction and updating steps. 
+For the static target, each UGV locally fuses the newly received measurements while for the moving target, a set of historical measurements is stored and sequentially fused. 
+%Upon obtaining the latest available measurements of all robots, an iterative Bayesian filtering procedure is applied that alternates between prediction and updating steps. 
 The consistency of LIFO-based DBF is proved that the estimated target position converges in probability to the true target position.
-% when the number of observations tends to infinity.
+% when the number of measurements tends to infinity.
 %the agreement between robots' estimated target position and the actual position.
-The effectiveness of this method is demonstrated by comparing with consensus-based distributed filters and a centralized filter in simulations of target localization.
+The effectiveness of this method is demonstrated in both simulation and experiment.
+%by comparing with consensus-based distributed filters and a centralized filter in simulations of target localization.
 \end{abstract}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\todohere{consider using "measurement" instead of "observations" as the main term.}
 \section{INTRODUCTION}
-Distributed filtering that focuses on using a group of networked UGVs to collectively infer environment status has been used for various applications, such as intruder detection \cite{chamberland2007wireless}, pedestrian tracking \cite{wang2007wlan} and micro-environmental monitoring \cite{cao2008development}. 
+Distributed filtering that focuses on using a group of networked UGVs to collectively infer environment status has been used for various applications, such as intruder detection \cite{chamberland2007wireless}, moving target tracking \cite{wang2012cooperative} and object localization \cite{song2012mobile}. 
 Several techniques have been developed for distributed filtering.
 For example, Olfati-Saber (2005) proposed a distributed Kalman filter (DKF) for estimating states of linear systems with Gaussian process and measurement noise \cite{2005distributed}.
 Each DKF used additional low-pass and band-pass consensus filters to compute the average of weighted measurements and inverse-covariance matrices.
@@ -131,13 +133,13 @@ It is worth noting that Bayesian filters can be reduced to Kalman filters and pa
 
 The design of distributed filtering algorithms depends on the communication topology of multi-UGV network, which can be classified into two types: fusion center (FC)-based and neighborhood (NB)-based.
 In FC-based approaches, each UGV uses a filter to estimate local statistics of environment status based on its own measurement.
-The local statistics is then transmitted (possibly via multi-hopping) to a single FC, where a global posterior distribution (or statistical moments in DKF \cite{olfati2007consensus}) is calculated at each filtering cycle after receiving all local information \cite{zuo2006bandwidth}. %,vemula2006target
+The local statistics is then transmitted (possibly via multi-hopping) to a single FC, where a global posterior distribution (or statistical moments in DKF \cite{olfati2007consensus}) is calculated at each filtering cycle after receiving all local information \cite{zuo2006bandwidth,he2014networked}. %,vemula2006target
 %At each filtering cycle, fusion center calculates the global state estimate only after receiving latest local estimates of all robots \cite{zuo2006bandwidth,vemula2006target}.
 % has been a common structure for distributed filtering, in which local information collected by robots is transmitted (possibly via multi-hopping) to the fusion center for forming global estimation \cite{zuo2006bandwidth,ribeiro2006bandwidth}. 
 %FC-based DBF is efficient for estimation in that it can collectively utilize all robots' information and thus useful for applications that only require information at a single central unit, such as in environmental monitoring.
 %However, FC-based DBF requires constant communication link between each robot and the center, which is challenging for applications of robots in vast or complex areas.
 In NB-based approaches, a set of UGVs execute distributed filters to estimate individual posterior distribution. 
-Consensus of individual estimates is achieved by solely communicating statistics and/or observations within local neighbors of these UGVs.
+Consensus of individual estimates is achieved by solely communicating statistics and/or measurements within local neighbors of these UGVs.
 %Only communication between neighboring agents is allowed.
 The NB-based methods have become popular in recent years since such approaches do not require complex routing protocols or global knowledge of the network and therefore are robust to changes in network topology and to link failures.
 %, and thus suitable for networks with mobile agents.
@@ -158,7 +160,7 @@ For example, Sheng et al. (2005) proposed a multiple leader-based distributed pa
 Sensors are grouped into multiple uncorrelated cliques, in each of which a leader is assigned to perform particle filtering and the particle information is then exchanged among leaders.
 %Distributed filters were run on a set of leader agents in uncorrelated sensor cliques and the particles were approximated as GMMs, the parameters of which were then exchanged among leaders for global estimation.
 %In \cite{ram2007stochastic}, a circular topology that each sensor could only communicate with a fixed neighboring sensor was deployed for parameter estimation of a spatial field. 
-%State estimates were updated using by sensors when passed along the circular topology Each sensor generates  based on that of the previous sensor and its own observation and sequentially passes the estimate to its neighbor.
+%State estimates were updated using by sensors when passed along the circular topology Each sensor generates  based on that of the previous sensor and its own measurement and sequentially passes the estimate to its neighbor.
 In consensus-based distributed filters, every UGV diffuses statistics among neighbors, via which global agreement of the statistics is achieved by using consensus protocols \cite{olfati2007consensus,ren2005consensus,jadbabaie2003coordination}.
 % by which all UGVs exchange statistics and executes consensus algorithms with neighbors, as proposed in , for fusion of statistics.
 %For example, \todohere{find example on likelihood exchange} Julian et al. (2012) proposed a weighted-linear-average algorithm for fusing\todohere{find a more detailed word} posterior functions of environment status \cite{julian2012distributed}.
@@ -169,7 +171,7 @@ Saptarshi et al. (2014) presented a Bayesian consensus filter that uses logarith
 %The DPF can work even when the network diameter, the maximum in/out degree, and the number of UGVs are unknown.
 Other examples can be found in \cite{julian2012distributed,beaudeau2012target}.
 %There are other types of variants, for example, in \cite{ram2007stochastic}, a circular topology that each sensor can only communicate with a fixed neighboring sensor is deployed for parameter estimation of a spatial field. 
-%Each sensor generates state estimate based on that of the previous sensor and its own observation and sequentially passes the estimate to its neighbor.
+%Each sensor generates state estimate based on that of the previous sensor and its own measurement and sequentially passes the estimate to its neighbor.
 %who using the incremental Robbins-Monro gradient algorithm locally at each sensor.
 
 Despite the popularity of statistics dissemination strategy, exchanging statistics can consume high communication resources.
@@ -178,25 +180,25 @@ Despite the popularity of statistics dissemination strategy, exchanging statisti
 %which can be infeasible in vast area or complex environment.
 % such as marine search, seismological rescue, etc. 
 One promising remedy is to disseminate measurement instead of statistics among neighbors, which, however, has not been fully exploited.
-% strategy has been developed for NB-based DBFs, by which raw or quantized observations are exchanged among UGVs.
-%This study focuses on the strategy of exchanging observations in the neighborhood of each UGV, called the \textit{measurement dissemination-based} strategy, for the purpose of achieving a consensus of the probability density function (PDF) of the tracked target.  
-One pioneering work was done by Coates et al. (2004), who used adaptive encoding of observations to minimize communication overhead \cite{coates2004distributed}.
-Ribeiro et al. (2006) exchanged quantized observations along with error-variance limits considering more pragmatic signal models \cite{ribeiro2006bandwidth}.
-A recent work was conducted by Djuric et al. (2011), who proposed to broadcast raw measurements to other agents, and therefore each UGV has a complete set of observations of other UGVs for executing particle filtering \cite{djuric2011non}. 
-%At each time instant, a subset of UGVs that are in proximity of the tracked targets share their observations for target position estimation.
+% strategy has been developed for NB-based DBFs, by which raw or quantized measurements are exchanged among UGVs.
+%This study focuses on the strategy of exchanging measurements in the neighborhood of each UGV, called the \textit{measurement dissemination-based} strategy, for the purpose of achieving a consensus of the probability density function (PDF) of the tracked target.  
+One pioneering work was done by Coates et al. (2004), who used adaptive encoding of measurements to minimize communication overhead \cite{coates2004distributed}.
+Ribeiro et al. (2006) exchanged quantized measurements along with error-variance limits considering more pragmatic signal models \cite{ribeiro2006bandwidth}.
+A recent work was conducted by Djuric et al. (2011), who proposed to broadcast raw measurements to other agents, and therefore each UGV has a complete set of measurements of other UGVs for executing particle filtering \cite{djuric2011non}. 
+%At each time instant, a subset of UGVs that are in proximity of the tracked targets share their measurements for target position estimation.
 % to all the remaining agents and apply local particle filter for target tracking 
-%Another example can be found in \cite{rosencrantz2002decentralized}, in which both observations and statistics were exchanged among sensors for distributed surveillance of the environment.
+%Another example can be found in \cite{rosencrantz2002decentralized}, in which both measurements and statistics were exchanged among sensors for distributed surveillance of the environment.
 A shortcoming of aforementioned works is that their communication topologies are assumed to be a complete graph that every pair of distinct UGVs is directly connected by a unique edge, which is not always feasible in reality.
 
 This paper extends existing works by introducing a Latest-In-and-Full-Out (LIFO) protocol into distributed Bayesian filters (DBF) for networked UGVs. 
-Each UGV is only allowed to broadcast observations to its neighbors by using single-hopping and then implements individual Bayesian filter locally after receiving transmitted observations.
+Each UGV is only allowed to broadcast measurements to its neighbors by using single-hopping and then implements individual Bayesian filter locally after receiving transmitted measurements.
 The main benefit of using LIFO is on the reduction of communication burden, with the transmission data volume scaling linearly with the UGV number, while a statistics dissemination-based strategy can suffer from the order of environmental size.
-%In addition, LIFO spreads all UGVs' observations among the network via multi-hopping, ensuring each UGV's access to all others' historical observations.
-%After receiving observations from neighbors, each UGV runs Bayesian filter locally for environment state estimation. 
+%In addition, LIFO spreads all UGVs' measurements among the network via multi-hopping, ensuring each UGV's access to all others' historical measurements.
+%After receiving measurements from neighbors, each UGV runs Bayesian filter locally for environment state estimation. 
 The proposed LIFO-based DBF has following properties:
-(1)	For a fixed and undirected network, LIFO guarantees the global dissemination of observations over the network in a non-intermittent manner.
-%, with each UGV non-intermittently receiving (delayed) observations of all other UGVs via local communication.
-(2)	The corresponding DBF ensures the consistency of estimated target position, i.e., the estimated position converges in probability to the true target position when the number of observations tends to infinity.
+(1)	For a fixed and undirected network, LIFO guarantees the global dissemination of measurements over the network in a non-intermittent manner.
+%, with each UGV non-intermittently receiving (delayed) measurements of all other UGVs via local communication.
+(2)	The corresponding DBF ensures the consistency of estimated target position, i.e., the estimated position converges in probability to the true target position when the number of measurements tends to infinity.
 %, which also implies the consensus of target PDFs.
 %which refers to the agreement between UGVs' estimates of target position and the true position of the target. 
 %Moreover, consistency implies the consensus of UGVs' target PDFs.
@@ -223,61 +225,62 @@ The target motion takes a deterministic discrete-time model that can be describe
 \begin{equation}
 \small
 \label{eqn:tar_motion_model}
-x^g_{k+1}=f(x^g_k,u^g_k),
-%x^g_{k+1}=A_kx^g_k+B_ku^g_k+\epsilon,
+\xg_{k+1}=f(\xg_k,u^g_k),
+%x_{k+1}=A_kx_k+B_ku^g_k+\epsilon,
 \end{equation}\normalsize
-where $x^g_k\in \mathbb{R}^{2}$ denotes the target position at time $k$; $u^g_k$ represents the control input of the target.
+where $\xg_k\in \mathbb{R}^{2}$ denotes the target position at time $k$; $u^g_k$ represents the control input of the target.
 %$A_k\in\mathbb{R}^{2\times 2},\;B_k\in\mathbb{R}^{2\times 2}$ and $\epsilon$ denotes the process noise.
 
 Each UGV constantly measures the target position and the sensor measurement of $i^\text{th}$ UGV can be described by a stochastic model:
 \begin{equation}
-z^i_k = g_i(x^g_k,w^i_k;y^i_k),
+z^i_k = h_i(\xg_k,w^i_k;y^i_k),
 \end{equation}
 where $w^i_k$ is the white measurement noise and $y^i_k=[x^i_k;\theta^i_k]$ represents the sensor state, consisting of the sensor position $x^i_k$ and direction $\theta^i_k$.
-$g_i$ depends on the type of the sensor. Let $\mathcal{F}(y^i_k)$ denote the sensor field of view (FOV), $g_i$ for several typical sensor types can be defined as follows:
+The measurement function $h_i$ depends on the type of the sensor. Let $\mathcal{F}(y^i_k)$ denote the sensor's sensing domain, $h_i$ for several typical sensor types are defined as follows \cite{bishop2010optimality}:
 
-\textbf{Range-only sensors:} when the target is within the sensor's FOV, the measurement only depends on the relative distance between the sensor and the target.
+\textbf{Range-only sensors:} when the target is within the sensor's sensing domain, the measurement only depends on the relative distance between the sensor and the target.
 %\begin{subequations}
 %	\begin{align}
-\begin{equation}
-g_i(x^g_k,w^i_k;x^i_k)=
+\begin{equation}\label{eqn:ran_only}
+h_i(\xg_k,w^i_k;y^i_k)=
 \begin{cases}
-\|x^g_k-x^i_k\|_2+w^i_k\; &\text{if}\, x^g_k\in\mathcal{F}(y^i_k),\\
-\emptyset\; &\text{if}\, x^g_k\notin\mathcal{F}(y^i_k).
-\end{cases}
+\|\xg_k-x^i_k\|_2+w^i_k\; &\text{if}\, \xg_k\in\mathcal{F}(y^i_k)\\
+\emptyset\; &\text{if}\, \xg_k\notin\mathcal{F}(y^i_k)
+\end{cases}.
 \end{equation}		
 %		w^i_k&\sim\mathcal{N}(0,\sigma^i),
 %	\end{align}
 %\end{subequations}
 
-\textbf{Bearing-only sensors:} when the target is within the sensor's FOV, the measurement only depends on the relative bearing between the sensor and the target.
+\textbf{Bearing-only sensors:} when the target is within the sensor's sensing domain, the measurement only depends on the relative bearing between the sensor and the target.
 \begin{equation}
-g_i(x^g_k,w^i_k;x^i_k)=
+h_i(\xg_k,w^i_k;y^i_k)=
 \begin{cases}
-\measuredangle (x^g_k-x^i_k)+w^i_k\; &\text{if}\, x^g_k\in\mathcal{F}(y^i_k),\\
-\emptyset\; &\text{if}\, x^g_k\notin\mathcal{F}(y^i_k).
-\end{cases}
+\measuredangle (\xg_k-x^i_k)+w^i_k\; &\text{if}\, \xg_k\in\mathcal{F}(y^i_k)\\
+\emptyset\; &\text{if}\, \xg_k\notin\mathcal{F}(y^i_k)
+\end{cases},
 \end{equation}
+where $\measuredangle$ denotes the relative angle from the sensor to the target.
 
-\textbf{Range-bearing sensors:} when the target is within the sensor's FOV, the measurement is the relative distance and bearing between the sensor and the target.
-\begin{equation}
-g_i(x^g_k,w^i_k;x^i_k)=
-\begin{cases}
-x^g_k-x^i_k+w^i_k\; &\text{if}\, x^g_k\in\mathcal{F}(y^i_k),\\
-\emptyset\; &\text{if}\, x^g_k\notin\mathcal{F}(y^i_k).
-\end{cases}
-\end{equation}
+%\textbf{Range-bearing sensors:} when the target is within the sensor's FOV, the measurement is the relative distance and bearing between the sensor and the target.
+%\begin{equation}
+%h_i(x_k,w^i_k;x^i_k)=
+%\begin{cases}
+%x_k-x^i_k+w^i_k\; &\text{if}\, x_k\in\mathcal{F}(y^i_k),\\
+%\emptyset\; &\text{if}\, x_k\notin\mathcal{F}(y^i_k).
+%\end{cases}
+%\end{equation}
 
 %the measurement by $i^\text{th}$ UGV is modeled as
 %\begin{equation*}\small
 %	z^i_k = 
 %	\begin{cases}
-%		1\qquad h^i(x^g_k;x^i_k)\geq \gamma\\
-%		0 \qquad h^i(x^g_k;x^i_k) < \gamma
+%		1\qquad h^i(x_k;x^i_k)\geq \gamma\\
+%		0 \qquad h^i(x_k;x^i_k) < \gamma
 %	\end{cases},
 %\end{equation*}\normalsize
 %%\begin{equation*}\small
-%%y^i_k=h^i(x^g_k;x^i_k),\; x^g_k\in S,
+%%y^i_k=h^i(x_k;x^i_k),\; x_k\in S,
 %%\end{equation*}\normalsize
 %where $z^i_k$ denotes the measurement by $i^\text{th}$ sensor at time $k$; $h^i$ is the sensor property that characterizes the target position. 
 %For example, $h^i$ can represent the power received by an ultrasonic sensor.
@@ -292,56 +295,54 @@ x^g_k-x^i_k+w^i_k\; &\text{if}\, x^g_k\in\mathcal{F}(y^i_k),\\
 %%\end{cases},
 %%\end{equation*}\normalsize
 %%where $z^i_k$ denotes the measurement by $i^\text{th}$ sensor at time $k$.
-%%The observation of $i^\text{th}$ sensor at $k^\text{th}$ time step is denoted as $z^i_k$, the value of which follows a Bernoulli distribution.
+%%The measurement of $i^\text{th}$ sensor at $k^\text{th}$ time step is denoted as $z^i_k$, the value of which follows a Bernoulli distribution.
 %% and subjects to Bernoulli distribution $B(1,p_{i,k})$.
 
-A probabilistic sensor model that describes the conditional probability of a certain measurement given sensor and target state is a key component for Bayesian filtering.
-We use a likelihood function to represent the probability of the target being detected by a sensor:
+A probabilistic sensor model that describes the conditional probability of a certain measurement given sensor and target state is a key component for Bayesian filtering \cite{thrun2005probabilistic}.
+We define a likelihood function to represent the probability that the target is detected by the sensor:
 % as a function of the target and sensor positions:
 %The following likelihood function gives the probability for $i^\text{th}$ sensor to obtain $z^i_k$:
 %\small\begin{equation}\label{eqn:bin_sensor}
-%	P(z^i_k|x^g_k;x^R_k)=p^{z^i_k}_{i,k}(1-p_{i,k})^{1-z^i_k},
+%	P(z^i_k|x_k;x^R_k)=p^{z^i_k}_{i,k}(1-p_{i,k})^{1-z^i_k},
 %\end{equation}\normalsize
-%where $p_{i,k}=P(z^i_k=1|x^g_k;x^R_k)$; $x^g_k$ and $x^R_k$ denote the target and UGV position at $k$, respectively.
+%where $p_{i,k}=P(z^i_k=1|x_k;x^R_k)$; $x_k$ and $x^R_k$ denote the target and UGV position at $k$, respectively.
 \small\begin{equation}\label{eqn:prob_sensor1}
-p^i_{1,k}=P(z^i_k\neq\emptyset|x^g_k;x^i_k)\in \left[0,1\right],\; x^g_k\in S,
+p^i_{1,k}=P(\Z^i_k\neq\emptyset|\xg_k;y^i_k)\in \left[0,1\right],\; \xg_k\in S,
 \end{equation}\normalsize
-where $x^i_k$ is the $i^\text{th}$ sensor's position.
+where $\Z^i_k$ is a random variable denoting the possible measurement result; $x^i_k$ denotes the $i^\text{th}$ sensor's position.
 %; $X^g$ represents the set of all possible target positions.
 Correspondingly, the likelihood function for no target being detected is:
 \small\begin{equation}\label{eqn:prob_sensor0}
-p^i_{0,k}=P(z^i_k=\emptyset|x^g_k;x^{i}_k)=1-p^i_{1,k}.
+p^i_{0,k}=P(\Z^i_k=\emptyset|\xg_k;y^{i}_k)=1-p^i_{1,k}.
 \end{equation}\normalsize
-%\Cref{eqn:bin_sensor} actually defines a binary sensor model parameterized by $x^g_k$ and $x^R_k$.
+%\Cref{eqn:bin_sensor} actually defines a binary sensor model parameterized by $x_k$ and $x^R_k$.
 
-The combination of \Cref{eqn:prob_sensor1} and \Cref{eqn:prob_sensor0} forms the probabilistic model for a sensor.
-If $w^i_k$ is a zero-mean Gaussian white noise, then the probabilistic sensor model can be described as
-\begin{equation}
-	p^i_{1,k}\sim
+The combination of \Cref{eqn:prob_sensor1,eqn:prob_sensor0} forms the probabilistic model for a sensor.
+If $w^i_k$ is a zero-mean Gaussian white noise, then the probabilistic sensor model can be explicitly described as
+\begin{equation}\label{eqn:prob_sensor3}
+	p^i_{1,k}=%\sim
 	\begin{cases}
-		\mathcal{N}(\bar{z}^i_k,\Sigma^i_k) & \text{if}\,x^g_k\in\mathcal{F}(y^i_k)\\
-		0 & \text{if}\,x^g_k\in\mathcal{F}(y^i_k),
-	\end{cases}
+		\mathcal{N}(\bar{z}^i_k,\Sigma^i_k) & \text{if}\,\xg_k\in\mathcal{F}(y^i_k)\\
+		0 & \text{if}\,\xg_k\in\mathcal{F}(y^i_k)
+	\end{cases},
 \end{equation}
-where $\bar{z}^i_k$ is the nominal value of the measurement and equals $\|x^g_k-x^i_k\|$, $\measuredangle(x^g_k-x^i_k)$ and $x^g_k-x^i_k$ for range-only, bearing-only and range-bearing sensors, correspondingly.
+where $\bar{z}^i_k$ is the nominal value of the measurement and equals $\|\xg_k-x^i_k\|$ and $\measuredangle(\xg_k-x^i_k)$ for range-only and bearing-only sensors, correspondingly. %$x_k-x^i_k$  and range-bearing
 
 Consequently,
-\begin{equation}
-p^i_{0,k}\sim
+\begin{equation}\label{eqn:prob_sensor4}
+p^i_{0,k}=
 \begin{cases}
-0 & \text{if}\,x^g_k\in\mathcal{F}(y^i_k)\\
-1 & \text{if}\,x^g_k\in\mathcal{F}(y^i_k).
-\end{cases}
+0 & \text{if}\,\xg_k\in\mathcal{F}(y^i_k)\\
+1 & \text{if}\,\xg_k\in\mathcal{F}(y^i_k)
+\end{cases}.
 \end{equation}
-
 %, and the measurement follows a Bernoulli distribution $B(1,p^i_{1,k})$, i.e.
 %\small\begin{equation*}
-%P(z^i_k|x^g;x^i_k)=(p^i_{1,k})^{z^i_k}(p^i_{0,k})^{1-z^j_l}.
+%P(z^i_k|x;x^i_k)=(p^i_{1,k})^{z^i_k}(p^i_{0,k})^{1-z^j_l}.
 %\end{equation*}\normalsize
-% parameterized by $x^g_k$ and $x^i_k$. 
-
-For the purpose of simplicity, we will not explicitly write $x^{i}_k$ in the sensor model for the rest of the paper.
-%, with which all observations are generated. 
+% parameterized by $x_k$ and $x^i_k$. 
+For the purpose of simplicity, we will not explicitly write $y^{i}_k$ in the probabilistic sensor model for the rest of the paper.
+%, with which all measurements are generated. 
 
 %%\begin{rem}
 %The commonly used likelihood functions for binary sensors include Gaussian function \cite{bonnie2012modelling,liu2015model} and step function \cite{djuric2008target}. For example, a Guassian function sensor model is defined as
@@ -353,18 +354,19 @@ For the purpose of simplicity, we will not explicitly write $x^{i}_k$ in the sen
 %\small\begin{subequations}\label{eqn:gauss_sensor}
 %	\begin{align}
 %	p^i_{1,k}&=e^{-\frac{1}{2}(x_k^g-x_k^i)^T{\Sigma}^{-1}(x_k^g-x_k^i)}\\
-%	%		\exp\left\lbrace -\frac{1}{2}(x^g-x^R)^T{\Sigma}^{-1}(x^g-x^R)\right\rbrace \\
+%	%		\exp\left\lbrace -\frac{1}{2}(x-x^R)^T{\Sigma}^{-1}(x-x^R)\right\rbrace \\
 %	p^i_{0,k}&=1-p^i_{1,k}.
 %	\end{align}
 %\end{subequations}\normalsize
 %\end{rem}
 
 \begin{rem}
-	Given the knowledge of current target and UGV positions, current observation by each UGV can be considered conditionally independent from its own past observations and those by other UGVs \cite{bourgault2003optimal}.
+	Given the knowledge of current target position and UGV state, current measurement by each UGV can be considered conditionally independent from its own past measurements and those by other UGVs \cite{bourgault2003optimal}.
 \end{rem}
 
 \begin{rem} 
-	The proposed LIFO protocol to be described in \cref{sec:LIFO-dbf} and the consistency property proved in \Cref{sec:consist_proof} are applicable for general sensors, not limited to the ones described in this section. In addition, they also do not rely on the Gaussian noise assumption.
+	The proposed LIFO protocol to be described in \cref{sec:LIFO-dbf} and the consistency property proved in \Cref{sec:consist_proof} are applicable for general sensors, not limited to the ones described in this section. 
+%	In addition, they also do not rely on the Gaussian noise assumption.
 %	both homogeneous and heterogeneous binary sensors. 
 %	A homogeneous model can simplify the analysis of completeness, while a heterogeneous model is closer to real sensing characteristics.
 %	In addition, it also works for other types of sensors, such as laser scanners and cameras.
@@ -384,11 +386,11 @@ where $M_{(ij)}$ denotes the entity of adjacency matrix.
 The notation $M_{(ij)}=1$ indicates that a communication link exists between $i^\text{th}$ and $j^\text{th}$ UGV and $M_{(ij)}=0$ indicates no communication between them.
 
 The \textit{direct neighborhood} of $i^\text{th}$ UGV is defined as $\mathcal{N}_i=\left\lbrace j|M_{(ij)}=1,\forall j\in\left\lbrace1,\dots,N \right\rbrace \right\rbrace $. 
-All the UGVs in $\mathcal{N}_i$ can directly exchange information with $i^\text{th}$ UGV in one step. 
-%In addition to direct neighborhood, another set called \textit{available neighborhood} is defined as $\mathcal{Q}_i$, which contains indices of UGVs whose observations can be received by the $i^\text{th}$ UGV given a specific observation exchange protocol. 
-We also define another set $\mathcal{Q}_i$, called \textit{available neighborhood}, that contains indices of UGVs whose observations can be received by the $i^\text{th}$ UGV within single or multiple steps.
-%given a specific observation exchange protocol.
-Note that $\mathcal{N}_i\subseteq\mathcal{Q}_i$.
+All the UGVs in $\mathcal{N}_i$ can directly exchange information with $i^\text{th}$ UGV via single hopping. %in one step (single-hopping). 
+%In addition to direct neighborhood, another set called \textit{available neighborhood} is defined as $\mathcal{Q}_i$, which contains indices of UGVs whose measurements can be received by the $i^\text{th}$ UGV given a specific measurement exchange protocol. 
+We also define another set $\mathcal{Q}_i$, called \textit{available neighborhood}, that contains indices of UGVs whose measurements can be received by the $i^\text{th}$ UGV via single or multiple hoppings. %within single or multiple steps.
+%given a specific measurement exchange protocol.
+Therefore $\mathcal{N}_i\subseteq\mathcal{Q}_i$.
 %but when only single-hopping is allowed, $\mathcal{N}_i=\mathcal{Q}_i$. 
 \cref{fig:com_topo} illustrates three types of typical topologies: ring \cite{lawton2003decentralized}, line \cite{liu2010simple}, and star \cite{thatte2008sensor}. 
 All of them are undirected and connected topologies.
@@ -403,67 +405,72 @@ All of them are undirected and connected topologies.
 \subsection{Distributed Bayesian Filter for Multiple UGVs}\label{subsec:dbf}
 The generic distributed Bayesian filter (DBF) is introduced in this section.
 %, which is also stated in \cite{bandyopadhyay2014distributed} and \cite{julian2012distributed}. 
-Each UGV has its individual estimation of the probability density function (PDF) of target position, called \textit{individual PDF}. 
-The individual PDF of $i^\text{th}$ UGV at time $k$ is defined as
-% ,z^{\mathcal{Q}_i}_{1:k})
-$P^i_{pdf}(x^g_{k}|\mathbf{z}^i_{1:k})$, where $\mathbf{z}^i_{1:k}$ denotes the set of observations by $i^\text{th}$ UGV and by UGVs in $\mathcal{Q}_i$ that are transmitted to $i^\text{th}$ UGV by time $k$.
-%from time $1$ through $k$ and $z^{\mathcal{Q}_i}_{1:k}$ means the set of observations by UGVs in $\mathcal{Q}_i$ that are transmitted to $i^\text{th}$ UGV.
-%Note that if the observation by $j^\text{th}(j\in \mathcal{Q}_i)$ UGV at time $k'(k'\leq k)$ is not received by $i^\text{th}$ UGV, the corresponding element $z^j_{k'}$ in $z^{\mathcal{Q}_i}_{1:k}$ is empty and thus not utilized for computing $i^\text{th}$ individual PDF.
-The individual PDF is initialized as $P^i_{pdf}(x^g_0|\mathbf{z}^i_0)=P(x^g_0)$,
-%$P^i_{pdf}(x^g_0|z^i_0,z^{\mathcal{Q}_i}_0)=P(x^g_0)$, 
-given all available prior information including past experience and environmental knowledge. Under the framework of DBF, the individual PDF is recursively estimated by two steps, i.e., prediction step and updating step, based on observations of $i^\text{th}$ UGV and UGVs in $\mathcal{Q}_i$.
+%Each UGV has its individual estimation of the probability density function (PDF) of target position, called \textit{individual PDF}. 
+Let $\X^g_k\in S$ be a random variable that each UGV uses to represent the position of the target at time $k$.
+The probability density function (PDF) of $\X^g_k$, called \textit{individual PDF}, of $i^\text{th}$ UGV is then defined as
+%=\left\lbrace z^i_1,\dots,z^i_k\right\rbrace
+$P^i_{pdf}(\X^g_{k}|\mathbf{z}^i_{1:k})$, where $\mathbf{z}^i_{1:k}$ denotes the set of measurements by $i^\text{th}$ UGV and by UGVs in $\mathcal{Q}_i$ that have been transmitted to $i^\text{th}$ UGV by time $k$.
+%from time $1$ through $k$ and $z^{\mathcal{Q}_i}_{1:k}$ means the set of measurements by UGVs in $\mathcal{Q}_i$ that are transmitted to $i^\text{th}$ UGV.
+%Note that if the measurement by $j^\text{th}(j\in \mathcal{Q}_i)$ UGV at time $k'(k'\leq k)$ is not received by $i^\text{th}$ UGV, the corresponding element $z^j_{k'}$ in $z^{\mathcal{Q}_i}_{1:k}$ is empty and thus not utilized for computing $i^\text{th}$ individual PDF.
+The initial individual PDF $P^i_{pdf}(\X^g_0|\mathbf{z}^i_0)$ is constructed %=P(\X^g_0)
+%$P^i_{pdf}(x_0|z^i_0,z^{\mathcal{Q}_i}_0)=P(x_0)$, 
+given all available prior information including past experience and environmental knowledge. 
+It is important to initialize the individual PDF such that the probability density of true target position is nonzero, i.e., $P^i_{pdf}(\X^g_0|\mathbf{z}^i_0)\neq 0$.
+
+Under the framework of DBF, the individual PDF is recursively estimated by two steps: prediction step and updating step, based on measurements of $i^\text{th}$ UGV and UGVs in $\mathcal{Q}_i$.
  
 \subsubsection{Prediction}
-%The $i^\text{th}$ individual PDF at time $k-1$ is known, denoted as $P^i_{pdf}(x^g_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})$. 
-%At time $k$, the prior individual PDF $P^i_{pdf}(x^g_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})$ is first predicted forward by using the Chapman-Kolmogorov equation:
-At time $k$, the prior individual PDF $P^i_{pdf}(x^g_{k-1}|\mathbf{z}^i_{1:k-1})$ is first predicted forward by using the Chapman-Kolmogorov equation:
+%The $i^\text{th}$ individual PDF at time $k-1$ is known, denoted as $P^i_{pdf}(x_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})$. 
+%At time $k$, the prior individual PDF $P^i_{pdf}(x_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})$ is first predicted forward by using the Chapman-Kolmogorov equation:
+At time $k$, the prior individual PDF $P^i_{pdf}(\X^g_{k-1}|\mathbf{z}^i_{1:k-1})$ is first predicted forward by using the Chapman-Kolmogorov equation:
 %\small\begin{align}\label{eqn:bayes_pred}
-%&P^i_{pdf}(x^g_k|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})\notag\\
-%&=\int P(x^g_k|x^g_{k-1})P^i_{pdf}(x^g_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})dx^g_{k-1}
+%&P^i_{pdf}(x_k|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})\notag\\
+%&=\int P(x_k|x_{k-1})P^i_{pdf}(x_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})dx_{k-1}
 %\end{align}\normalsize
-\small\begin{equation}\label{eqn:bayes_pred}
-P^i_{pdf}(x^g_k|\mathbf{z}^i_{1:k-1})
-=\int P(x^g_k|x^g_{k-1})P^i_{pdf}(x^g_{k-1}|\mathbf{z}^i_{1:k-1})dx^g_{k-1}
+\small
+\begin{equation}\label{eqn:bayes_pred}
+P^i_{pdf}(\X^g_k|\mathbf{z}^i_{1:k-1})
+=\int\limits_{\X^g_{k-1}\in S} P(\X^g_k|\X^g_{k-1})P^i_{pdf}(\X^g_{k-1}|\mathbf{z}^i_{1:k-1})d\X^g_{k-1},
 \end{equation}\normalsize
-where $P(x^g_k|x^g_{k-1})$ is a Markov motion model of the target defined by \Cref{eqn:tar_motion_model},
+where $P(\X^g_k|\X^g_{k-1})$ represents the state transition probability of the target, based on the Markovian motion model (\Cref{eqn:tar_motion_model}). % from the prior position $\X^g_{k-1}$ to the posterior position $\X^g_k$, 
 % independent of UGV states. 
-%This model describes
-which maps the state transition probability of the target from a prior state $x^g_{k-1}$ to posterior state $x^g_k$. 
-Note that the target is static in many search applications, such as the indoor search for stationary objects \cite{kulich2014single}. 
-For the deterministic target motion model, as defined in \Cref{eqn:tar_motion_model}, its Markov motion model is simplified to be
+%This model describes 
+%Note that the target is static in many search applications, such as the indoor search for stationary objects \cite{kulich2014single}. 
+%, as defined in \Cref{eqn:tar_motion_model},
+For the deterministic motion model, the state transition probability is simplified to be
 \small\begin{equation}\label{eqn:markov_model}
-P(x^g_k|x^g_{k-1})=\begin{cases}
-1 & \text{if}\; x^g_k=x^g_{k-1}\\
-0 & \text{if}\; x^g_k\neq x^g_{k-1}
+P(\X^g_k=c_1|\X^g_{k-1}=c_2)=\begin{cases}
+1 & \text{if}\quad c_1=f(c_2,u_1)\\
+0 & \text{otherwise}
 \end{cases}.
 \end{equation}\normalsize
-%and \Cref{eqn:bayes_pred} can be reduced to $P^i_{pdf}(x^g_{k}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})=P^i_{pdf}(x^g_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})$.
+%and \Cref{eqn:bayes_pred} can be reduced to $P^i_{pdf}(x_{k}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})=P^i_{pdf}(x_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})$.
 
 \subsubsection{Updating}
-The $i^\text{th}$ individual PDF is then updated by Bayes' theorem using the set of newly received observations at time $k$, $\mathbf{z}^i_k$:
+The $i^\text{th}$ individual PDF is then updated by Bayes' theorem using the set of newly received measurements at time $k$, i.e., $\mathbf{z}^i_k$:
 %\small\begin{align}\label{eqn:bayes_upd}
-%&P^i_{pdf}(x^g_k|z^i_{1:k},z^{\mathcal{Q}_i}_{1:k})\notag\\
-%&=K_iP^i_{pdf}(x^g_k|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})P(z^i_k|x^g_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x^g_k)
+%&P^i_{pdf}(x_k|z^i_{1:k},z^{\mathcal{Q}_i}_{1:k})\notag\\
+%&=K_iP^i_{pdf}(x_k|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})P(z^i_k|x_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x_k)
 %\end{align}\normalsize
 %\small\begin{equation}\label{eqn:bayes_upd}
-%P^i_{pdf}(x^g_k|\mathbf{z}^i_{1:k})
-%=K_iP^i_{pdf}(x^g_k|\mathbf{z}^i_{1:k-1})P(z^i_k|x^g_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x^g_k)
+%P^i_{pdf}(x_k|\mathbf{z}^i_{1:k})
+%=K_iP^i_{pdf}(x_k|\mathbf{z}^i_{1:k-1})P(z^i_k|x_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x_k)
 %\end{equation}\normalsize
 \small\begin{equation}\label{eqn:bayes_upd}
-P^i_{pdf}(x^g_k|\mathbf{z}^i_{1:k})
-=K_iP^i_{pdf}(x^g_k|\mathbf{z}^i_{1:k-1})P(\mathbf{z}^i_k|x^g_k)
+P^i_{pdf}(\X^g_k|\mathbf{z}^i_{1:k})
+=K_iP^i_{pdf}(\X^g_k|\mathbf{z}^i_{1:k-1})P(\mathbf{z}^i_k|\X^g_k)
 \end{equation}\normalsize
 where $K_i$ is a normalization factor, given by:
 %\small\begin{align*}
-%K_i=1/\int P^i_{pdf}(x^g_k|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})P(z^i_k|x^g_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x^g_k)dx^g_k
+%K_i=1/\int P^i_{pdf}(x_k|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})P(z^i_k|x_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x_k)dx_k
 %\end{align*}\normalsize
 %\small\begin{align*}
-%K_i=1/\int P^i_{pdf}(x^g_k|\mathbf{z}^i_{1:k-1})P(z^i_k|x^g_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x^g_k)dx^g_k
+%K_i=1/\int P^i_{pdf}(x_k|\mathbf{z}^i_{1:k-1})P(z^i_k|x_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x_k)dx_k
 %\end{align*}\normalsize
 \small\begin{align*}
-K_i=1/\int P^i_{pdf}(x^g_k|\mathbf{z}^i_{1:k-1})P(\mathbf{z}^i_k|x^g_k)dx^g_k
+K_i=\left[\int\limits_{\X^g_k\in S} P^i_{pdf}(\X^g_k|\mathbf{z}^i_{1:k-1})P(\mathbf{z}^i_k|\X^g_k)d\X^g_k\right]^{-1};
 \end{align*}\normalsize
-and $P^i_{pdf}(x^g_k|\mathbf{z}^i_{1:k})$ is called posterior individual PDF; $P(z^i_k|x^g_k)$ is the likelihood function of observation $z^i_k$, described in \Cref{eqn:bin_sensor1} and \Cref{eqn:bin_sensor0}.
+$P^i_{pdf}(\X^g_k|\mathbf{z}^i_{1:k})$ is the posterior individual PDF; $P(z^i_k|\X^g_k)$ is the likelihood function of measurement $z^i_k$, as described in \Cref{eqn:prob_sensor3,eqn:prob_sensor4}.
 
 \begin{algorithm}
 	\caption{LIFO Protocol}
@@ -489,7 +496,7 @@ and $P^i_{pdf}(x^g_k|\mathbf{z}^i_{1:k})$ is called posterior individual PDF; $P
 		
 		\State (2.2) Observation Step: 
 		
-		The $i^\text{th}$ UGV updates $z^j_{k^i_j}\,(j=i)$ by its own observation at current step:
+		The $i^\text{th}$ UGV updates $z^j_{k^i_j}\,(j=i)$ by its own measurement at current step:
 		\begin{equation*}
 			z^j_{k^i_j}=z^i_k,\;k^i_j=k,\;\text{if }j=i.
 		\end{equation*}
@@ -513,81 +520,35 @@ and $P^i_{pdf}(x^g_k|\mathbf{z}^i_{1:k})$ is called posterior individual PDF; $P
 \end{algorithm}
 
 \section{Distributed Bayesian Filter via Latest-In-and-Full-Out Protocol}\label{sec:LIFO-dbf}
-This study proposes a Latest-In-and-Full-Out (LIFO) protocol for observation exchange and derives two corresponding distributed Bayesian filtering (DBF) algorithms, shorted as LIFO-DBF. 
+This study proposes a Latest-In-and-Full-Out (LIFO) protocol for measurement exchange and derives two corresponding distributed Bayesian filtering (DBF) algorithms, shorted as LIFO-DBF. 
 The data communication in LIFO is synchronized with the execution of DBF.
-In each step, LIFO only allows single-hopping communication within the direct neighborhood, but is able to broadcast observations of each UGV to any other agent after a finite number of steps.
+In each step, LIFO only allows single-hopping communication within the direct neighborhood, but is able to broadcast measurements of each UGV to any other agent after a finite number of steps.
 The individual PDF is forward predicted and updated in DBF after each LIFO cycle.
-The theoretical analysis show that LIFO-DBF can ensure the consistency and consensus of distributed estimation while requiring much less communication burden than statistics dissemination-based methods. 
+The theoretical analysis show that LIFO-DBF can ensure the consistency of distributed estimation while requiring much less communication burden than statistics dissemination-based methods. %and consensus
 
 \subsection{Latest-In-and-Full-Out (LIFO) Protocol}\label{subsec:LIFO}
-Under LIFO, each UGV contains a communication buffer (CB) to store its latest knowledge of observations of all UGVs: 
+Under LIFO, each UGV contains a communication buffer (CB) to store its latest knowledge of measurements of all UGVs: 
 \begin{equation*}
-\mathbf{z}^{CB,i}_k=\left[ z^1_{k^i_1},\dots,z^N_{k^i_N},x^1_{k^i_1},\dots,x^N_{k^i_N}\right]
+\mathbf{z}^{CB,i}_k=\left[ z^1_{k^i_1},\dots,z^N_{k^i_N},y^1_{k^i_1},\dots,y^N_{k^i_N}\right],
 \end{equation*}
-where $z^j_{k^i_j}$ represents the observation made by ${j^\text{th}}$ UGV at time $k^i_j$ and $x^j_{k^i_j}$ denotes the sensor position when the associated measurement $z^j_{k^i_j}$ is made. 
-We will not explicitly write $\left[x^1_{k^i_1},\dots,x^N_{k^i_N}\right]$ in $\mathbf{z}^{CB,i}_k$ for the rest of the paper for the purpose of simplicity.
+where $z^j_{k^i_j}$ represents the measurement made by ${j^\text{th}}$ UGV at time $k^i_j$ and $y^j_{k^i_j}$ denotes the sensor state when the associated measurement $z^j_{k^i_j}$ is made. 
+For the purpose of simplicity, we will not explicitly write $\left[y^1_{k^i_1},\dots,y^N_{k^i_N}\right]$ in $\mathbf{z}^{CB,i}_k$ for the rest of the paper.
 Note that under LIFO, $\mathcal{Q}_i=\left\lbrace 1,\dots,N\right\rbrace \setminus \left\lbrace i\right\rbrace$, which will be proved in \Cref{cor1}.
-At time $k$, $z^j_{k^i_j}$ is received and stored in ${i^\text{th}}$ UGV CB, in which $k^i_j$ is the latest observation time of ${j^\text{th}}$ UGV available to ${i^\text{th}}$ UGV. Due to the communication delay, $k^i_j<k, \forall j\neq i$ and $k^i_i=k$ always holds.
+At time $k$, $z^j_{k^i_j}$ is received and stored in ${i^\text{th}}$ UGV's CB, in which $k^i_j$ is the latest time of ${j^\text{th}}$ UGV's measurement that is available to ${i^\text{th}}$ UGV. Due to the communication delay, $k^i_j<k, \forall j\neq i$ and $k^i_i=k$ always hold.
 The \textbf{LIFO protocol} is stated in \cref{alg:lifo}.
 
-%The \textbf{LIFO protocol} is stated as follows:
-%
-%%\begin{tabular}{l}
-%%\toprule
-%%LIFO Algorithm\\
-%%\midrule
-%(1) Initialization:
-%The buffer of $i^\text{th}$ UGV is initialized when $k=0$: 
-%\begin{equation*}
-%%$\begin{array}{c}
-%	z^j_{k^i_j}=\emptyset,\; k^i_j=0,\;j=1:N
-%%\end{array}$\\
-%\end{equation*}
-%
-%(2) At $k^\text{th}$ step for $i^\text{th}$ UGV :
-%
-%(2.1) Receiving Step:
-%
-%The $i^\text{th}$ UGV receives all CBs of its direct neighborhood $\mathcal{N}_i$.
-%The received CBs are totally $|\mathcal{N}_i|$ groups, each of which corresponding to the (k-1)-step CB of a UGV in $\mathcal{N}_i$. 
-%The received CB from $l^\text{th}$ ($l\in \mathcal{N}_i$) UGV is denoted as
-%\begin{equation*}
-%\mathbf{z}^l_{k-1}=\left[ z^1_{(k-1)^l_1},\dots,z^N_{(k-1)^l_N}\right],\; l\in\mathcal{N}_i
-%\end{equation*}
-%
-%(2.2) Observation Step: 
-%
-%The $i^\text{th}$ UGV updates $z^j_{k^i_j}\,(j=i)$ by its own observation at current step:
-%\begin{equation*}
-%z^j_{k^i_j}=z^i_k,\;k^i_j=k,\;\text{if }j=i.
-%\end{equation*}
-%
-%(2.3) Comparison Step:
-%
-%The $i^\text{th}$ UGV updates other elements of its own CB, i.e., $z^j_{k^i_j}\,(j\neq i)$, by selecting the latest information among all received CBs from $\mathcal{N}_i$. For all $j\neq i$,
-%\begin{align*}
-%l_\text{latest}&=\argmax_{l\in \mathcal{N}_i,i}\left\lbrace\left(k-1\right)^i_j,\left(k-1\right)^l_j  \right\rbrace\\
-%z^j_{k^i_j}&=z^j_{\left(k-1\right)^{l_\text{latest}}_j},\; k^i_j=\left(k-1\right)^{l_\text{latest}}_j
-%\end{align*} 
-%
-%(2.4) Sending Step:
-%
-%The $i^\text{th}$ UGV broadcasts its updated CB to all of its neighbors defined in $\mathcal{N}_i$.
-%%\bottomrule
-%%\end{tabular}
-%
-%(3) $k\leftarrow k+1$ until stop $\hfill\blacksquare$\\
-
 \cref{fig:LIFO} illustrates the LIFO cycles with 3 UGVs using a line topology. 
-%Two facts can be noticed in \cref{fig:LIFO}: (1) all UGV CBs are filled within 3 steps, which means under LIFO each UGV has a maximum delay of 2 steps for receiving observations from other UGVs; (2) after filled, CBs are updated non-intermittently, which means each UGV continuously receives new observations of other UGVs. Extending the two facts to a network of $N$ UGVs, 
+%Two facts can be noticed in \cref{fig:LIFO}: (1) all UGV CBs are filled within 3 steps, which means under LIFO each UGV has a maximum delay of 2 steps for receiving measurements from other UGVs; (2) after filled, CBs are updated non-intermittently, which means each UGV continuously receives new measurements of other UGVs. Extending the two facts to a network of $N$ UGVs, 
 For general graphs, we have the following proposition:
 \medskip
 \begin{prop}\label{prop1}
-%For a fixed and undirected network of $N$ UGVs, LIFO uses the shortest path(s) between $i^\text{th}$ and $j^\text{th}$ UGV to exchange observation, the length of which is the delay $\tau_{i,j}$ between these two UGVs.
-For a fixed and undirected network of $N$ UGVs, the latest observations of $i^\text{th}$ and $j^\text{th}$ UGV are exchanged via the shortest path(s) under LIFO. The delay of exchange $\tau_{i,j}$ is equivalent to the length of the shortest path(s) between them.
+%For a fixed and undirected network of $N$ UGVs, LIFO uses the shortest path(s) between $i^\text{th}$ and $j^\text{th}$ UGV to exchange measurement, the length of which is the delay $\tau_{i,j}$ between these two UGVs.
+For a fixed and undirected network of $N$ UGVs, the latest measurements of $i^\text{th}$ and $j^\text{th}$ UGV are exchanged via the shortest path(s) under LIFO. The delay of exchange $\tau_{i,j}$ is equivalent to the length of the shortest path(s) between them.
 \end{prop}
+
 \begin{proof}
-Since the network is connected, there exists a minimum integer $\tau_{i,j}$ such that $M^{\tau_{i,j}}_{(i,j)}>0$ and $\tau_{i,j}$ is the length of a shortest path between $i^\text{th}$ and $j^\text{th}$ UGV. Under the LIFO, the latest observation of $i^\text{th}$ UGV will always be received and then propagated in the communication buffer of the UGVs on a shortest path. Therefore, the latest observation that $j^\text{th}$ UGV receives from $i^\text{th}$ UGV is delayed by $\tau_{i,j}$ iterations of communication.
+Since the network is connected, there exists a minimum integer $\tau_{i,j}$ such that $M^{\tau_{i,j}}_{(i,j)}>0$ and $\tau_{i,j}$ is the length of a shortest path between $i^\text{th}$ and $j^\text{th}$ UGV. Under the LIFO, the latest measurement of $i^\text{th}$ UGV will always be propagated via the CBs of UGVs along a shortest path between $i^\text{th}$ and $j^\text{th}$ UGV. 
+Therefore, the latest measurement that $j^\text{th}$ UGV receives from $i^\text{th}$ UGV is delayed by $\tau_{i,j}$ iterations of communication.
 \end{proof}
 %\begin{proof} 
 %Without loss of generality, assume that there is a unique shortest path between $i$ and $j$, denoted by $T^{j,i}_{n^*}=\left(v_1,\dots,v_{n^*}\right)$, with $v_1=j,v_{n^*}=i,v_{m+1}\in\mathcal{N}_{v_m}$. 
@@ -608,7 +569,8 @@ Since the network is connected, there exists a minimum integer $\tau_{i,j}$ such
 %\vspace{\baselineskip}
 \medskip
 \begin{cor}\label{cor1}
-For the same topology assumption in \Cref{prop1}, all elements in $\mathbf{z}^{CB,i}_k$ under LIFO become filled when $k\geq N$, i.e., $\mathcal{Q}_i = \left\lbrace1,\dots,N \right\rbrace \setminus \left\lbrace i\right\rbrace $.	
+For the same topology assumption in \Cref{prop1}, all elements in $\mathbf{z}^{CB,i}_k$ under LIFO become filled when $k\geq N$. 
+This also implies $\mathcal{Q}_i = \left\lbrace1,\dots,N \right\rbrace \setminus \left\lbrace i\right\rbrace $.	
 \end{cor}
 %\begin{proof}
 %In a network of $N$ UGVs, the maximal length of shortest paths is no greater than $N-1$. Based on \Cref{prop1}, $\tau_{i,j}\leq N-1$ and thus all elements of $\mathbf{z}^{CB,i}_k$ become filled when $k\geq N$.
@@ -624,9 +586,11 @@ For the same topology assumption in \Cref{prop1}, once all elements in $\mathbf{
 \medskip
 %\begin{rem}
 	Compared to statistics dissemination, LIFO is generally more communication-efficient for distributed filtering. 
-	To be specific, consider an $M\times M$ grid environment with a network of $N$ UGVs, the transmitted data of LIFO between each pair of UGVs are only the CB of each UGV and the corresponding UGV positions where observations were made, the size of which is $O(N)$, scaling linearly with UGV number. 
+	To be specific, assume the environment $S$ is represented by an $M\times M$ grid.
+%	To be specific, consider an $M\times M$ environment with 
+	For a network of $N$ UGVs, the transmitted data of LIFO between each pair of UGVs are only the CB of each UGV and the corresponding sensor states, the size of which is $O(N)$, scaling linearly with UGV number. 
 	On the contrary, the length of transmitted data for a statistics dissemination approach that transmits unparameterized posterior distributions or likelihood functions is $O(M^2)$, which is in the order of environmental size. 
-	Since $M$ is generally much larger than $N$ in applications such as target localization, LIFO requires much less communication resources.
+	Since $M$ is generally much larger than $N$ in applications such as target localization and environment exploration, LIFO requires much less communication resources.
 %\end{rem}
 
 \begin{figure}%[thpb]
@@ -639,32 +603,33 @@ For the same topology assumption in \Cref{prop1}, once all elements in $\mathbf{
 \subsection{Algorithm of LIFO-DBF for Static Target}\label{subsec:LIFO-dbf-sta-tar} 
 
 This section derives the LIFO-DBF algorithm for localizing a static target. 
-It is assumed that, all UGV know the sensor models of other UGVs.
-Each UGV stores last-step individual PDF, i.e., $P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k-1})$. 
+It is assumed that, all UGVs know the probabilistic sensor model of other UGVs.
+%Each UGV locally stores last-step individual PDF, i.e., $P^i_{pdf}(x|\mathbf{z}^{i}_{1:k-1})$. 
 According to \Cref{cor2}, $\mathbf{z}^i_k=\mathbf{z}^{CB,i}_k$ and $\mathbf{z}^{i}_{1:k}=\mathbf{z}^{CB,i}_{1:k}=\left[ z^1_{1:k^i_1},\dots,z^N_{1:k^i_N}\right]$.
-The assumption of static target can simplify the Bayesian filter as the prediction step becomes unnecessary. 
-Therefore, the $i^\text{th}$ individual PDF is only updated by 
+The assumption of static target can simplify the Bayesian filter as the prediction step becomes trivial. 
+At time $k$, the $i^\text{th}$ UGV starts from the last-step individual PDF that is locally stored, i.e., $P^i_{pdf}(x|\mathbf{z}^{i}_{1:k-1})$. 
+The $i^\text{th}$ individual PDF is then updated by fusing all measurements in $\mathbf{z}^i_k$:
 \small\begin{align}\label{eqn:LIFO-dbf-sta-tar}
-P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})&=K_iP^i_{pdf}(x^g_k|\mathbf{z}^i_{1:k-1})P(\mathbf{z}^i_k|x^g_k)\notag\\
-&=K_iP^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k-1})\prod\limits_{j=1}^{N}P(z^j_{k^i_j}|x^g)
+P^i_{pdf}(\X^g|\mathbf{z}^{i}_{1:k})&=K_iP^i_{pdf}(\X^g|\mathbf{z}^i_{1:k-1})P(\mathbf{z}^i_k|\X^g)\notag\\
+&=K_iP^i_{pdf}(\X^g|\mathbf{z}^{i}_{1:k-1})\prod\limits_{j=1}^{N}P(z^j_{k^i_j}|\X^g)
 \end{align}\normalsize
 
 %\small\begin{equation}\label{eqn:LIFO-dbf-sta-tar}
-%P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})=K_iP^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k-1})\prod\limits_{j=1}^{N}P(z^j_{k^i_j}|x^g)
+%P^i_{pdf}(x|\mathbf{z}^{i}_{1:k})=K_iP^i_{pdf}(x|\mathbf{z}^{i}_{1:k-1})\prod\limits_{j=1}^{N}P(z^j_{k^i_j}|x)
 %\end{equation}\normalsize
 where
 \small\begin{equation*}
-K_i=1/\int P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k-1})\prod\limits_{j=1}^{N}P(z^j_{k^i_j}|x^g)dx^g
+K_i=\left[\int\limits_{\X^g\in S} P^i_{pdf}(\X^g|\mathbf{z}^{i}_{1:k-1})\prod\limits_{j=1}^{N}P(z^j_{k^i_j}|\X^g)d\X^g\right]^{-1}.
 \end{equation*}\normalsize
 
 \begin{figure}%[thpb]
 	\centering
 	\includegraphics[width=0.51\textwidth]{figures/DBF_demo}
 	\caption{Example of LIFO-DBF for $1^\text{st}$ UGV at time $k$. 	 
-		Networked UGVs take a line topology.%, shown in the top. 
-		The stored individual PDF is $ P^1_{pdf}(k-N)$.
+		Networked UGVs take a line topology. %, shown in the top. 
+		The stored individual PDF is represented by $ P^1_{pdf}(k-N)$.
 		The UGV first calculates $ P^1_{virt}(k-N+1)$ using DBF and stores it as $ P^1_{pdf}(k-N+1)$. 
-		Repeating DBF until obtaining $ P^1_{pdf}(k)$, which is then used as the target PDF estimation of $1^\text{st}$ UGV at time $k$.
+		Repeating DBF until obtaining $ P^1_{pdf}(k)$, which is the individual PDF at time $k$.
 		In this example, $\Omega^1_{\xi}=\left\lbrace 1,2,\dots,N+1-\xi\right\rbrace $, $\xi=1,\dots,N$.}
 	\label{fig:LIFO-DBF}
 	\vspace{-1em}
@@ -677,11 +642,11 @@ K_i=1/\int P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k-1})\prod\limits_{j=1}^{N}P(z^j_{k^i
 		\State After updating CB by \cref{alg:lifo},	
 		\State \textbf{(1)} The stored individual PDF for time $(k-N)$ is:
 		\small\begin{equation*}
-		P^i_{pdf}(x^g_{k-N}|z^1_{1:k-N},\dots,z^N_{1:k-N})
+		P^i_{pdf}(x_{k-N}|z^1_{1:k-N},\dots,z^N_{1:k-N})
 		\end{equation*}\normalsize		
 		\State\textbf{(2)} Initialize a virtual PDF by assigning the individual PDF to it:
 		\small\begin{equation*}
-		P^i_{virt}(x^g_{k-N})=P^i_{pdf}(x^g_{k-N}|z^1_{1:k-N},\dots,z^N_{1:k-N})
+		P^i_{virt}(x_{k-N})=P^i_{pdf}(x_{k-N}|z^1_{1:k-N},\dots,z^N_{1:k-N})
 		\end{equation*}\normalsize		
 		\State\textbf{(3)} From $\xi=1$ to $N$, iteratively repeat two steps of Bayesian filtering:
 		%	\begin{enumerate}
@@ -689,103 +654,49 @@ K_i=1/\int P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k-1})\prod\limits_{j=1}^{N}P(z^j_{k^i
 		
 		\State(3.1) Prediction 
 		\small\begin{align*}
-		&P_{virt}^{pre}(x^g_{k-N+\xi})\\=&\int P(x^g_{k-N+\xi}|x^g_{k-N+\xi-1})P^i_{virt}(x^g_{k-N+\xi-1})dx^g_{k-N+\xi-1}
+		&P_{virt}^{pre}(x_{k-N+\xi})\\=&\int P(x_{k-N+\xi}|x_{k-N+\xi-1})P^i_{virt}(x_{k-N+\xi-1})dx_{k-N+\xi-1}
 		\end{align*} \normalsize
 		
 		%		\item 
 		\State(3.2) Updating
 		\small\begin{gather*}
-		P^i_{virt}(x^g_{k-N+\xi})=K_\xi P_{virt}^{pre}(x^g_{k-N+\xi})\prod\limits_{j\in\Omega^i_{\xi}}P(z^j_{k-N+\xi}|x^g_{k-N+\xi})\\
-		K_\xi=1/\int P_{virt}^{pre}(x^g_{k-N+\xi})\prod\limits_{j\in\Omega^i_{\xi}}P(z^j_{k-N+\xi}|x^g_{k-N+\xi})dx^g_{k-N+\xi}
+		P^i_{virt}(x_{k-N+\xi})=K_\xi P_{virt}^{pre}(x_{k-N+\xi})\prod\limits_{j\in\Omega^i_{\xi}}P(z^j_{k-N+\xi}|x_{k-N+\xi})\\
+		K_\xi=1/\int_S P_{virt}^{pre}(x_{k-N+\xi})\prod\limits_{j\in\Omega^i_{\xi}}P(z^j_{k-N+\xi}|x_{k-N+\xi})dx_{k-N+\xi}
 		\end{gather*} \normalsize
 		%	\end{enumerate}
 		
-		\State(3.3) When $\xi=1$, store the virtual PDF as the individual PDF for time $(k-N+1)$
+		\State(3.3) When $\xi=1$, if $z^j_{k_N+1}\neq\emptyset$ for $\forall j\in \left\lbrace1,\dots,N\right\rbrace$, store the virtual PDF as the individual PDF for time $(k-N+1)$:
 		\begin{equation*}
-		P^i_{pdf}(x^g_{k-N+1}|z^1_{1:k-N+1},\dots,z^N_{1:k-N+1})=P^i_{virt}(x^g_{k-N+1}).
+		P^i_{pdf}(x_{k-N+1}|z^1_{1:k-N+1},\dots,z^N_{1:k-N+1})=P^i_{virt}(x_{k-N+1}).
 		\end{equation*}
 		
 		\State\textbf{(4)} Individual PDF of $i^\text{th}$ UGV at time $k$ is
-		$P^i_{pdf}(x^g_{k}|\mathbf{z}^{i}_{1:k})=P^i_{virt}(x^g_k)$.		
+		$P^i_{pdf}(x_{k}|\mathbf{z}^{i}_{1:k})=P^i_{virt}(x_k)$.		
 	\end{algorithmic}
 \end{algorithm}
 
 \subsection{Algorithm of LIFO-DBF for Moving Target}\label{subsec:LIFO-dbf-mov-tar}
 This section derives the LIFO-DBF for localizing a moving target. 
-Instead of storing last-step PDF, at time $k$ each UGV maintains an individual PDF of time $(k-N)$ and a collection of historical observations, called the \textit{record set}, from time $(k-N+1)$ to $k$. 
-The $i^\text{th}$ individual PDF is then alternatively predicted and updated by using the aforementioned Bayesian filter (\Cref{eqn:bayes_pred} and \Cref{eqn:bayes_upd}) from $(k-N)$ to $k$.
+Instead of storing last-step PDF, at time $k$ each UGV maintains an individual PDF of time $(k-N)$ and a collection of historical measurements, called the \textit{record set}, from time $(k-N+1)$ to $k$. 
+The $i^\text{th}$ individual PDF is then alternatively predicted and updated by using the aforementioned Bayesian filter (\Cref{eqn:bayes_pred,eqn:bayes_upd}) from $(k-N)$ to $k$.
 \cref{fig:LIFO-DBF} illustrates the LIFO-DBF procedure for the $1^\text{st}$ UGV as an example.
-With a line topology, the record set of $1^\text{st}$ UGV is shown as a triangle.
-% shape formed by squares that contain observations from $(k-N+1)$ to $k$.
+%With a line topology, the record set of $1^\text{st}$ UGV is shown as a triangle.
+% shape formed by squares that contain measurements from $(k-N+1)$ to $k$.
 
-Let $\Omega^i_{\xi}\,\left(\xi=1,\dots,N\right) $ denote the index set of UGVs whose observation at time $(k-N+\xi)$ is stored in $i^\text{th}$ UGV's record set. 
+Let $\Omega^i_{\xi}\,\left(\xi=1,\dots,N\right) $ denote the index set of UGVs whose measurement at time $(k-N+\xi)$ is stored in $i^\text{th}$ UGV's record set. 
 The \textbf{LIFO-DBF algorithm} for moving target is then stated in \cref{alg:lifo-dbf}.
 
-
-
-%\begin{enumerate}
-%For $i^\text{th}$ UGV at $k^\text{th}$ step:
-%
-%	\textbf{(1)} The stored individual PDF for time $(k-N)$ is:
-%	\small\begin{equation*}
-%		P^i_{pdf}(x^g_{k-N}|z^1_{1:k-N},\dots,z^N_{1:k-N})
-%	\end{equation*}\normalsize
-%	
-%	\textbf{(2)} Initialize a virtual PDF by assigning the individual PDF to it:
-%	\small\begin{equation*}
-%		P^i_{virt}(x^g_{k-N})=P^i_{pdf}(x^g_{k-N}|z^1_{1:k-N},\dots,z^N_{1:k-N})
-%	\end{equation*}\normalsize
-%		
-%	\textbf{(3)} From $\xi=1$ to $N$, repeat two steps of Bayesian filtering:
-%%	\begin{enumerate}
-%%		\item 
-%
-%		(3.1) Prediction 
-%		\small\begin{align*}
-%		&P_{virt}^{pre}(x^g_{k-N+\xi})\\=&\int P(x^g_{k-N+\xi}|x^g_{k-N+\xi-1})P^i_{virt}(x^g_{k-N+\xi-1})dx^g_{k-N+\xi-1}
-%		\end{align*} \normalsize
-%				
-%%		\item 
-%		(3.2) Updating
-%		\small\begin{gather*}
-%		P^i_{virt}(x^g_{k-N+\xi})=K_\xi P_{virt}^{pre}(x^g_{k-N+\xi})\prod\limits_{j\in\Omega^i_{\xi}}P(z^j_{k-N+\xi}|x^g_{k-N+\xi})\\
-%		K_\xi=1/\int P_{virt}^{pre}(x^g_{k-N+\xi})\prod\limits_{j\in\Omega^i_{\xi}}P(z^j_{k-N+\xi}|x^g_{k-N+\xi})dx^g_{k-N+\xi}
-%		\end{gather*} \normalsize
-%%	\end{enumerate}
-%	
-%	\textbf{(4)} Store the first-step virtual PDF as the individual PDF for time $(k-N+1)$
-%	\begin{equation*}
-%		P^i_{pdf}(x^g_{k-N+1}|z^1_{1:k-N+1},\dots,z^N_{1:k-N+1})=P^i_{virt}(x^g_{k-N+1}).
-%	\end{equation*}
-%	$\hfill\blacksquare$
-%\end{enumerate}
-%1)	The stored individual PDF for $(k-N)^\text{th}$ step is $ P^i_{pdf}(x^g_{k-N}|z^1_{1:k-N},\dots,z^N_{1:k-N})$.
-%
-%2)	Initialize a virtual PDF by assigning the individual PDF to it:
-%$P_{virt}(x^g_{k-N})=P^i_{pdf}(x^g_{k-N}|z^1_{1:k-N},\dots,z^N_{1:k-N})$
-%
-%3)	From $\xi=1$ to N, repeat two steps of Bayesian filtering
-%(a)	Prediction 
-%\begin{align*}
-%&P_{virt}^{pre}(x^g_{k-N+\xi})\\=&\int P(x^g_{k-N+\xi}|x^g_{k-N+\xi-1})P_{virt}(x^g_{k-N+\xi-1})dx^g_{k-N+\xi-1}
-%\end{align*} 
-%(b)	Updating
-%\begin{gather*}
-%P_{virt}(x^g_{k-N+\xi})=K_\xi P_{virt}^{pre}(x^g_{k-N+\xi})\prod\limits_{j\in\Omega^i_{k-N+\xi}}P(z^j_{k_N+\xi|x^g_{k-N+\xi}})\\
-%K_\xi=1/\int P_{virt}^{pre}(x^g_{k-N+\xi})\prod\limits_{j\in\Omega^i_{k-N+\xi}}P(z^j_{k-N+\xi}|x^g_{k-N+\xi})dx^g_{k-N+\xi}
-%\end{gather*} 
-%  
-%4)	Store the first-step virtual PDF as the $(k-N+1)^\text{th}$ individual PDF: $P^i_{pdf}(x^g_{k-N+1}|z^1_{1:k-N+1},\dots,z^N_{1:k-N+1})=P_{virt}(x^g_{k-N+1}).$ 
-%The individual PDF of $i^\text{th}$ UGV at time $k$ is $P^i_{virt}(x^g_k)$.
 \medskip
 %\begin{rem}
 	It is worth noting that, for the static target, each UGV only needs current step CB to update individual PDFs. 
-	Therefore, besides storing individual PDFs, only current-step CB is stored in UGV memory and all historical CBs can be discarded, which means that the size of occupied memory is $O(N)$. 
-	On the contrary, for the moving target, each UGV needs to store a triangular matrix of historical observation 
-%	(except current step CB) 
-	with size of $O(N^2)$ and an individual PDF with size $O(M^2)$, which means that the size of occupied memory in each UGV is $O(M^2+N^2)$.
-	This is generally larger that statistics dissemination, the storage size of which is $O(M^2)$. 
-	Therefore, LIFO-DBF sacrifices storage size for reducing communication burden. This is desirable for real applications as local memory of vehicles are abundant compared to the limited bandwidth for communication.
+	Therefore, besides storing its own individual PDF, only current-step CB is stored in an UGV's memory and all previous CBs can be discarded, which means that the size of occupied memory is $O(N+M^2)$. 
+	On the contrary, for the moving target, each UGV needs to store a set of historical measurements 
+%	(except current step CB) triangular matrix
+	with size of $O(N^2)$ and an individual PDF with size $O(M^2)$, therefore the size of the occupied memory for each UGV is $O(M^2+N^2)$.
+	This is generally larger that that of statistics dissemination-based methods, the storage size of which is $O(M^2)$. 
+	In addition, additional computation power is needed for LIFO-DBF compared to statistics dissemination-based methods.
+	Therefore, LIFO-DBF sacrifices storage size and computation efficiency for reducing communication burden. 
+	This is desirable for real applications as local memory of vehicles are usually abundant compared to the limited bandwidth for communication.
 %\end{rem}
 
 \section{Proof of Consistency}\label{sec:consist_proof} %and Consensus
@@ -796,24 +707,24 @@ Consistency is an important metric for stochastic filtering approaches \cite{che
 
 We first prove the consistency for static UGVs and static target.
 The consistency for moving UGVs and moving target are subsequently proved.
-For simplicity and clarity, we assume $S$ is a finite set (e.g. a finely discretized field) and $x^{g^*}$ is the true position of target.
+For simplicity and clarity, we assume $S$ is a finite set (e.g. a finely discretized field) and $\xg$ is the true position of target.
 
 %Only proofs for localizing a static target are presented, including static UGVs and moving UGVs.
 %The proof of LIFO-DBF for localizing a moving target is similar but requires extra algebraic manipulation, which is omitted due to space limit.
 
-%Considering $S$ is finite and $x^{g^*}$ is the true location of target, define an \textit{equivalent-location} set $x^g_{eq}\subseteq S$ such that 
+%Considering $S$ is finite and $\xg$ is the true location of target, define an \textit{equivalent-location} set $x_{eq}\subseteq S$ such that 
 %\small\begin{equation*}
-%x^g_{eq}=\left\lbrace x^g\in S\arrowvert P(z_k|x^{T})=P(z_k|x^{g^*}),\; \forall z_k\in \left\lbrace 0,1\right\rbrace\right\rbrace ,
+%x_{eq}=\left\lbrace x\in S\arrowvert P(z_k|x^{T})=P(z_k|\xg),\; \forall z_k\in \left\lbrace 0,1\right\rbrace\right\rbrace ,
 %\end{equation*}\normalsize
-%i.e., $x^g\in x^g_{eq}$ gives the same observation likelihood as $x^{g^*}$ for given UGV positions.
-%%for any two parameters in $x^g_{eq}$, the sensor model with one of these two parameters generates equivalent probability value for the same observation $z_k$
-%Since $S$ is finite, $x^g_{eq}$ is also finite. 
-%%Let $x^g_{eq,1},\dots,x^g_{eq,u}$ denote all equi-parameter sets that partition $X^g$ such that following properties hold:
+%i.e., $x\in x_{eq}$ gives the same measurement likelihood as $\xg$ for given UGV positions.
+%%for any two parameters in $x_{eq}$, the sensor model with one of these two parameters generates equivalent probability value for the same measurement $z_k$
+%Since $S$ is finite, $x_{eq}$ is also finite. 
+%%Let $x_{eq,1},\dots,x_{eq,u}$ denote all equi-parameter sets that partition $X^g$ such that following properties hold:
 %%\begin{enumerate}
-%%	\item $\bigcup^u_{i=1} x^g_{eq,i}= X^g$
-%%	\item $x^g_{eq,i}\cap x^g_{eq,j}=\emptyset,\;i,j\in \left\lbrace 1,\dots,u\right\rbrace ,i\neq j.$
+%%	\item $\bigcup^u_{i=1} x_{eq,i}= X^g$
+%%	\item $x_{eq,i}\cap x_{eq,j}=\emptyset,\;i,j\in \left\lbrace 1,\dots,u\right\rbrace ,i\neq j.$
 %%\end{enumerate}
-%%Without loss of generality, assume $x^{g^*}\in x^g_{eq,1}$, where $x^{g^*}$ denotes the actual position of the target. 
+%%Without loss of generality, assume $\xg\in x_{eq,1}$, where $\xg$ denotes the actual position of the target. 
 %
 %%\todohere{double check if the following examples for equi-parameter set are accurate}
 %
@@ -825,63 +736,64 @@ For simplicity and clarity, we assume $S$ is a finite set (e.g. a finely discret
 %	When sensors are overlapped at a single point, ghost targets can exist on a circle that contains the true target.
 %	In theory, DBF cannot rule out ghost targets in such cases and prior knowledge is needed for further clarification.
 %%	Therefore, this study only proves the convergence to the equivalent-location set rather to the true location.
-%	However, by using high-fidelity sensors, such as cameras and laser scanners, and multiple observations from different UGV placements, equi-location set can be reduced to only contain true location of target.
+%	However, by using high-fidelity sensors, such as cameras and laser scanners, and multiple measurements from different UGV placements, equi-location set can be reduced to only contain true location of target.
 	
 %\end{rem}
 
 \subsection{Static UGVs and Static Target}
-%Assume $S$ is finite (e.g. a finely discretized field) and $x^{g^*}$ is the true position of target, 
+%Assume $S$ is finite (e.g. a finely discretized field) and $\xg$ is the true position of target, 
 The consistency of LIFO-DBF for static UGVs and target is stated as follows: 
 %\todohere{converge to a set or treat the PDF as a r.v.?}
 \begin{thm}\label{thm:LIFO-dbf-sta-tar}
 	Assume both UGVs and the target are static, and the sensors are unbiased, the MAP estimator of target position converges in probability to the true position of the target using LIFO-DBF, i.e.,
 %	\small\begin{equation*}
 %	\lim\limits_{k\rightarrow \infty}
-%	P_{pdf}^i(x^g=x^{g^*}|\mathbf{z}^{i}_{1:k})=
+%	P_{pdf}^i(x=\xg|\mathbf{z}^{i}_{1:k})=
 %	1,\;i=1,\dots,N.
 %	\end{equation*}\normalsize
 	\small\begin{equation*}
 	\lim\limits_{k\rightarrow \infty}
-	P(x_{MAP}=x^{g^*}|\mathbf{z}^{i}_{1:k})=
+	P(\X_{MAP}=\xg|\mathbf{z}^{i}_{1:k})=
 	1,\;i=1,\dots,N,
 	\end{equation*}\normalsize
 	where 
 	\small\begin{equation*}
-	x_{MAP}=\arg\max\limits_{x^g}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k}).
+	\X^{MAP}=\arg\max\limits_{\X^g}P^i_{pdf}(\X^g|\mathbf{z}^{i}_{1:k}).
 	\end{equation*}
 \end{thm}
 
 \begin{proof}
-First look at the asymptotic behavior of $P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})$.
+First look at the asymptotic behavior of $P^i_{pdf}(\X^g|\mathbf{z}^{i}_{1:k})$.
 The batch form of DBF at $k^\text{th}$ step is:
 \small\begin{subequations}\label{eqn:bayes_batch}
 	\begin{align}
-		P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})&=P^i_{pdf}(x^g|z^1_{1:k^i_1},\dots,z^N_{1:k^i_N})\\
-		&=\frac{P^i_{pdf}(x^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g)}{\sum\limits_{x^g\in S}P^i_{pdf}(x^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g)}\label{eqn:bayes_batch2}.
+		P^i_{pdf}(\X^g|\mathbf{z}^{i}_{1:k})&=P^i_{pdf}(\X^g|z^1_{1:k^i_1},\dots,z^N_{1:k^i_N})\\
+		&=\frac{P^i_{pdf}(\X^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|\X^g)}{\sum\limits_{\X^g\in S}P^i_{pdf}(\X^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|\X^g)}\label{eqn:bayes_batch2}.
 	\end{align}
 \end{subequations}\normalsize
 %where $P^i_{pdf}$ is $i^\text{th}$ initial individual PDF. 
-The decomposition into multiplication in \Cref{eqn:bayes_batch2} results from the conditional independence of observations given $x^g$.
+The decomposition into multiplication in \Cref{eqn:bayes_batch2} results from the conditional independence of measurements given $\X^g$.
 %It is known from \Cref{cor1} and \Cref{cor2} that $k-N<k^i_j\leq k$.\\
 %\addtocounter{equation}{-1}\\
 
 
-Comparing $P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})$ with $P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})$ yields
+Comparing the conditional probability of an arbitrary position $x\in S$ with that of target position $\xg$:
+%$P^i_{pdf}(\X^g=x|\mathbf{z}^{i}_{1:k})$ with $P^i_{pdf}(\X^g=\xg|\mathbf{z}^{i}_{1:k})$ yields
 \small\begin{equation}\label{eqn:cmp}
-\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}=\frac{P^i_{pdf}(x^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g)}{P^i_{pdf}(x^{g^*})\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^{g^*})}.
+\frac{P^i_{pdf}\X=x|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(\X=\xg|\mathbf{z}^{i}_{1:k})}=\frac{P^i_{pdf}(x)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x)}{P^i_{pdf}(\xg)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|\xg)}.
 \end{equation}\normalsize
 
 Take the logarithm of \Cref{eqn:cmp} and average it over $k$ steps:
 \small\begin{equation}\label{eqn:cmp_log}
- \frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}=\frac{1}{k}\ln\frac{P^i_{pdf}(x^g)}{P^i_{pdf}(x^{g^*})}+\sum\limits_{j=1}^{N}\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}.
+ \frac{1}{k}\ln\frac{P^i_{pdf}(x|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(\xg|\mathbf{z}^{i}_{1:k})}=\frac{1}{k}\ln\frac{P^i_{pdf}(x)}{P^i_{pdf}(\xg)}+\sum\limits_{j=1}^{N}\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x)}{P(z^j_l|\xg)}.
 \end{equation}\normalsize
 
-Since $P^i_{pdf}(x^g)$ and $P^i_{pdf}(x^{g^*})$ are bounded, then
+Since $P^i_{pdf}(x)$ and $P^i_{pdf}(\xg)$ are bounded and we can initialize $P^i_{pdf}(\xg)$ to be nonzero, then
 \small\begin{equation}\label{eqn:cmp_lim1}
-\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g)}{P^i_{pdf}(x^{g^*})}= 0.
+\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x)}{P^i_{pdf}(\xg)}= 0.
 \end{equation}\normalsize
 
-Utilizing the facts: (1) $z^j_l$ are conditionally independent samples from $P(z^j_l|x^g)$ and (2) $k-N<k^i_j\leq k$, the law of large numbers yields
+Utilizing the facts: (1) $z^j_l$ are conditionally independent samples from $P(z^j_l|x)$ and (2) $k-N<k^i_j\leq k$, the law of large numbers yields
 %\small\begin{equation*}
 %\frac{1}{k}\sum\limits_{l=1}^{k^i_j}z^j_l\overset{P}{\longrightarrow}p^{j^*}_{1},\quad 
 %\frac{1}{k}(k^i_j-\sum\limits_{l=1}^{k^i_j}z^j_l)\overset{P}{\longrightarrow}1-p^{j^*}_{1},
@@ -889,13 +801,13 @@ Utilizing the facts: (1) $z^j_l$ are conditionally independent samples from $P(z
 %Then, 
 \small\begin{subequations}\label{eqn:cmp_lim2}
 \begin{align}
-\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}&\overset{P}{\longrightarrow}\mathbb{E}_{z^j_l} \left[\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}\right]\\
-&=\int_{z^j_l} P(z^j_l|x^{g^*})\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})} dz^j_l\\
-&=-D_{KL}\left(P(z^j_l|x^{g^*})\|P(z^j_l|x^g)\right),
+\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x)}{P(z^j_l|\xg)}&\overset{P}{\longrightarrow}\mathbb{E}_{z^j_l} \left[\ln\frac{P(z^j_l|x)}{P(z^j_l|\xg)}\right]\\
+&=\int_{z^j_l} P(z^j_l|\xg)\ln\frac{P(z^j_l|x)}{P(z^j_l|\xg)} dz^j_l\\
+&=-D_{KL}\left(P(z^j_l|\xg)\|P(z^j_l|x)\right),
 \end{align}
 \end{subequations}\normalsize
 where ``$\overset{P}{\longrightarrow}$" represents ``convergence in probability'' and $D_{KL}(P_1\|P_2)$ denotes the Kullback-Leibler (KL) divergence between two probability distribution $P_1$ and $P_2$.
-The KL divergence has the property that
+The KL divergence has the property \cite{mackay2003information} that
 \begin{subequations}
 	\begin{gather*}
 	\forall P_1,\,P_2, \; D_{KL}(P_1\|P_2)\leq 0,\\
@@ -905,107 +817,105 @@ The KL divergence has the property that
 This leads to the following conclusion:
 %\begin{subequations}
 %	\begin{align}
-%		\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}<0,&\quad x^g\neq x^{g^*}\\
-%		\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}=0,&\quad x^g= x^{g^*}.
+%		\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x)}{P(z^j_l|\xg)}<0,&\quad x\neq \xg\\
+%		\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x)}{P(z^j_l|\xg)}=0,&\quad x= \xg.
 %	\end{align}
 %\end{subequations}
 
 \begin{equation}
-	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x^g)}{P(z^j_l|x^{g^*})}\;
+	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x)}{P(z^j_l|\xg)}\;
 	\begin{cases}
-		<0,&\quad x^g\neq x^{g^*},\\
-		=0,&\quad x^g= x^{g^*}.
-	\end{cases}
+		<0,&\quad x\neq \xg\\
+		=0,&\quad x= \xg
+	\end{cases}.
 \end{equation}
 
-
-
-Then by considering the limiting case of \Cref{eqn:cmp_log}, we can get:
+Then by considering the limiting case of \Cref{eqn:cmp_log}, we get:
 %\begin{subequations}
 %	\begin{align}
-%	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}<0,&\quad x^g\neq x^{g^*}\label{subeqn:limit1}\\
-%	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}=0,&\quad x^g= x^{g^*}\label{subeqn:limit2}.
+%	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(\xg|\mathbf{z}^{i}_{1:k})}<0,&\quad x\neq \xg\label{subeqn:limit1}\\
+%	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(\xg|\mathbf{z}^{i}_{1:k})}=0,&\quad x= \xg\label{subeqn:limit2}.
 %	\end{align}
 %\end{subequations}
 
 \begin{equation}\label{subeqn:limit}
-	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}\;
+	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(\xg|\mathbf{z}^{i}_{1:k})}\;
 	\begin{cases}
-		<0,&\quad x^g\neq x^{g^*},\\
-		=0,&\quad x^g= x^{g^*}.
-	\end{cases}	
+		<0,&\quad x\neq \xg\\
+		=0,&\quad x= \xg
+	\end{cases}.
 \end{equation}
 
 \Cref{subeqn:limit} implies that
 %\begin{subequations}
 %	\begin{align}
-%	\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}\overset{P}{\longrightarrow}0,&\quad x^g\neq x^{g^*}\\
-%	\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}\overset{P}{\longrightarrow}1,&\quad x^g= x^{g^*}.
+%	\frac{P^i_{pdf}(x|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(\xg|\mathbf{z}^{i}_{1:k})}\overset{P}{\longrightarrow}0,&\quad x\neq \xg\\
+%	\frac{P^i_{pdf}(x|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(\xg|\mathbf{z}^{i}_{1:k})}\overset{P}{\longrightarrow}1,&\quad x= \xg.
 %	\end{align}
 %\end{subequations}
 
 \begin{equation}
-	\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}\overset{P}{\longrightarrow}
+	\frac{P^i_{pdf}(x|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(\xg|\mathbf{z}^{i}_{1:k})}\overset{P}{\longrightarrow}
 	\begin{cases}
-		0,&\quad x^g\neq x^{g^*},\\
-		1,&\quad x^g= x^{g^*}.
-	\end{cases}
+		0,&\quad x\neq \xg\\
+		1,&\quad x= \xg
+	\end{cases}.
 \end{equation}
 
 Therefore,
 \small\begin{equation*}
 \lim\limits_{k\rightarrow \infty}
-P_{pdf}^i(x^g=x^{g^*}|\mathbf{z}^{i}_{1:k})=1.
+P_{pdf}^i(\X=\xg|\mathbf{z}^{i}_{1:k})=1.
 \end{equation*}\normalsize
 It is then straightforward to show
 \begin{equation*}
 \lim\limits_{k\rightarrow \infty}
-P(x_{MAP}=x^{g^*}|\mathbf{z}^{i}_{1:k})=1.
+P(\X^{MAP}=\xg|\mathbf{z}^{i}_{1:k})=1.
 \end{equation*}
 
 %Note that the right-hand side of \Cref{eqn:cmp_lim2} achieves maximum value 0 if and only if $p^{j}_{1}=p^{j^*}_{1}$. 
 %Define 
 %\small\begin{equation*}
-%c(x^g)=\sum\limits_{j=1}^{N}p^{j^*}_{1}\ln \frac{p^{j}_{1}}{p^{j^*}_{1}}+(1-p^{j^*}_{1})\ln\frac{1-p^{j}_{1}}{1-p^{j^*}_{1}}.
+%c(x)=\sum\limits_{j=1}^{N}p^{j^*}_{1}\ln \frac{p^{j}_{1}}{p^{j^*}_{1}}+(1-p^{j^*}_{1})\ln\frac{1-p^{j}_{1}}{1-p^{j^*}_{1}}.
 %\end{equation*}\normalsize
 %
 %Considering \Cref{eqn:cmp_lim1} and \Cref{eqn:cmp_lim2}, the limit of \Cref{eqn:cmp_log} is
 %\small \begin{equation}\label{eqn:lim}
 %% \lim\limits_{k\rightarrow \infty}
-% \frac{1}{k}\ln\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}\overset{P}{\longrightarrow}c(x^g)
+% \frac{1}{k}\ln\frac{P^i_{pdf}(x|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(\xg|\mathbf{z}^{i}_{1:k})}\overset{P}{\longrightarrow}c(x)
 %% \sum\limits_{j=1}^{N}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln \frac{1-p_j}{1-p^*_j}
 %\end{equation}\normalsize
 % 
 %It follows from \Cref{eqn:lim} that
 %\small\begin{equation}\label{eqn:lim2}
-%\frac{P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})e^{c(x^g)k}}\overset{P}{\longrightarrow}1.
+%\frac{P^i_{pdf}(x|\mathbf{z}^{i}_{1:k})}{P^i_{pdf}(\xg|\mathbf{z}^{i}_{1:k})e^{c(x)k}}\overset{P}{\longrightarrow}1.
 %\end{equation}\normalsize
 %
-%Define the set $\bar{X}^T=S\setminus \left\lbrace x^{g^*}\right\rbrace$ and $c_M=\max\limits_{x^g\in\bar{X}^T}c(x^g)$.
+%Define the set $\bar{X}^T=S\setminus \left\lbrace \xg\right\rbrace$ and $c_M=\max\limits_{x\in\bar{X}^T}c(x)$.
 %Then $c_M<0$.
 %Summing \Cref{eqn:lim2} over $\bar{X}^T$ yields
 %\small\begin{equation}\label{eqn:lim3}
-%\frac{\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})e^{\left[c_M-c(x^g)\right]k}}{{P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}e^{c_Mk}}\overset{P}{\longrightarrow} |\bar{X}^T|,
+%\frac{\sum\limits_{x\in \bar{X}^T}P^i_{pdf}(x|\mathbf{z}^{i}_{1:k})e^{\left[c_M-c(x)\right]k}}{{P^i_{pdf}(\xg|\mathbf{z}^{i}_{1:k})}e^{c_Mk}}\overset{P}{\longrightarrow} |\bar{X}^T|,
 %\end{equation}\normalsize
 %where $|\bar{X}^T|$ denotes the cardinality of $\bar{X}^T$.
 %
-%Since $c_M<0$,  ${P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})}e^{c_Mk}{\longrightarrow}0$, \Cref{eqn:lim3} implies
+%Since $c_M<0$,  ${P^i_{pdf}(\xg|\mathbf{z}^{i}_{1:k})}e^{c_Mk}{\longrightarrow}0$, \Cref{eqn:lim3} implies
 %\begin{equation}\label{eqn:lim4}
-%\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})e^{\left[c_M-c(x^g)\right]k}\overset{P}{\longrightarrow}0.
+%\sum\limits_{x\in \bar{X}^T}P^i_{pdf}(x|\mathbf{z}^{i}_{1:k})e^{\left[c_M-c(x)\right]k}\overset{P}{\longrightarrow}0.
 %\end{equation}
 %
 %Utilizing the relation 
 %\begin{equation*}
-%0\leq P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})\leq P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})e^{\left[c_M-c(x^g)\right]k},
+%0\leq P^i_{pdf}(x|\mathbf{z}^{i}_{1:k})\leq P^i_{pdf}(x|\mathbf{z}^{i}_{1:k})e^{\left[c_M-c(x)\right]k},
 %\end{equation*}
 %it can be derived from \Cref{eqn:lim4} that
 %\small\begin{equation*}
-%\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})\overset{P}{\longrightarrow} 0.
+%\sum\limits_{x\in \bar{X}^T}P^i_{pdf}(x|\mathbf{z}^{i}_{1:k})\overset{P}{\longrightarrow} 0.
 %\end{equation*}\normalsize
 %Therefore,
 %\small\begin{equation*}
 %	\lim\limits_{k\rightarrow \infty}
-%	P(x^g=x^{g^*}|\mathbf{z}^{i}_{1:k})=1-\lim\limits_{k\rightarrow \infty}\sum\limits_{x^g\in \bar{X}^T}P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})=1.
+%	P(x=\xg|\mathbf{z}^{i}_{1:k})=1-\lim\limits_{k\rightarrow \infty}\sum\limits_{x\in \bar{X}^T}P^i_{pdf}(x|\mathbf{z}^{i}_{1:k})=1.
 %\end{equation*}\normalsize
 \end{proof}
 
@@ -1014,32 +924,32 @@ The consistency of LIFO-DBF for static UGVs and moving target is stated as follo
 \begin{thm}\label{thm:LIFO-dbf-mov-tar}
 	Assume UGVs are static, sensors are unbiased and the target is moving deterministically, the MAP estimator of the target position converges in probability to the true position of the target using LIFO-DBF, i.e.,
 	\small\begin{equation*}
-	\lim\limits_{k\rightarrow \infty}P(x_{MAP}=x_k^{g^*}|\mathbf{z}^i_{1:k})=
+	\lim\limits_{k\rightarrow \infty}P(\X^{MAP}_k=\xg_k|\mathbf{z}^i_{1:k})=
 	1,\;i=1,\dots,N.
 %	P(x_k^g=x_k^{g^*}|\mathbf{z}^i_{1:k})=1,\;i=1,\dots,N.
 	\end{equation*}\normalsize
 \end{thm}
 \begin{proof}
-	Since the target motion model is deterministic, as defined in \Cref{eqn:markov_model}, the integration in the prediction step (\Cref{eqn:bayes_pred}) can be removed, as no uncertainty exists in $P(x_k^g|x^g_{k-1})$.
+	Since the target motion model is deterministic, as defined in \Cref{eqn:markov_model}, the integration in the prediction step (\Cref{eqn:bayes_pred}) can be removed, as no uncertainty exists in $P(\X_k|\X_{k-1})$.
 	
 	\Cref{eqn:bayes_batch} now becomes
 	\small\begin{subequations}
 		\begin{align*}
-		P^i_{pdf}(x_k^g|\mathbf{z}^{i}_{1:k})&=P^i_{pdf}(x_k^g|z^1_{1:k^i_1},\dots,z^N_{1:k^i_N})\\
-		&=\frac{P^i_{pdf}(x_0^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g_l)P(x^g_l|x^g_{l-1})}{\sum\limits_{x^g_k\in S}P^i_{pdf}(x^g_0)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g_l)P(x^g_l|x^g_{l-1})}.
+		P^i_{pdf}(\X_k|\mathbf{z}^{i}_{1:k})&=P^i_{pdf}(\X_k|z^1_{1:k^i_1},\dots,z^N_{1:k^i_N})\\
+		&=\frac{P^i_{pdf}(\X_0)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|\X_l)P(\X_l|\X_{l-1})}{\sum\limits_{\X_k\in S}P^i_{pdf}(\X_0)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|\X_l)P(\X_l|\X_{l-1})}.
 		\end{align*}
 	\end{subequations}\normalsize
-	The updating terms $P(x^g_l|x^g_{l-1})$ cancel when comparing $P^i_{pdf}(x^g|\mathbf{z}^{i}_{1:k})$ with $P^i_{pdf}(x^{g^*}|\mathbf{z}^{i}_{1:k})$, yielding the same result as \Cref{eqn:cmp}. Therefore, the rest of the proof is similar to that of \Cref{thm:LIFO-dbf-sta-tar}.
+	The updating terms $P(\X_l|\X_{l-1})$ cancel when comparing $P^i_{pdf}(\X_k=x_k|\mathbf{z}^{i}_{1:k})$ with $P^i_{pdf}(\X=\xg_k|\mathbf{z}^{i}_{1:k})$, yielding the same result as \Cref{eqn:cmp}. Therefore, the rest of the proof is similar to that of \Cref{thm:LIFO-dbf-sta-tar}.
 \end{proof}
 
 \subsection{Moving UGVs}
 This subsection considers the case of using moving UGVs to localize a target, either static or moving.
-The difficulty of consistency proof for this case lies in the fact that each UGV makes observations at multiple positions.
-Here, the main idea of proof is to classify UGV observation positions into two disjoint sets: \textit{infinite-observation spots} that contain positions where a UGV makes infinitely many observations as time tends to infinity, and \textit{finite-observation spots} that contain positions where the UGV makes finitely many observations (i.e. the positions where the UGV never visits again after a finite time period).
+The difficulty of consistency proof for this case lies in the fact that each UGV makes measurements at multiple positions.
+Here, the main idea of proof is to classify UGV measurement positions into two disjoint sets: \textit{infinite-measurement spots} that contain positions where a UGV makes infinitely many measurements as time tends to infinity, and \textit{finite-measurement spots} that contain positions where the UGV makes finitely many measurements (i.e., the positions where the UGV does not visit again after a finite time period).
 %, as $k\rightarrow\infty$.
 Before stating the main theorem, the following lemma is introduced.
 \begin{lem}\label{lem1}
-	For a set of UGVs moving within a collection of finite positions, each UGV has at least one position where infinite observations are made as $k$ tends to infinity.
+	For a set of UGVs moving within a collection of finite positions, each UGV has at least one position where infinite measurements are made as $k$ tends to infinity.
 \end{lem}
 
 \begin{proof}
@@ -1051,8 +961,8 @@ Let $n^{i,k}_j$ denote the times that $i^\text{th}$ UGV visits $j^\text{th}$ pos
 	Assume UGVs move within a collection of finite positions and sensors are unbiased, the MAP estimator of target position converges in probability to the true position of the target using LIFO-DBF, i.e.,
 	\small\begin{equation*}
 		\lim\limits_{k\rightarrow \infty}
-		P(x_{MAP}=x^{g^*}|\mathbf{z}^i_{1:k})=1,\;i=1,\dots,N.
-%		P(x^g=x^{g^*}|\mathbf{z}^i_{1:k})=1,\;i=1,\dots,N.
+		P(\X^{MAP}_k=\xg_k|\mathbf{z}^i_{1:k})=1,\;i=1,\dots,N.
+%		P(x=\xg|\mathbf{z}^i_{1:k})=1,\;i=1,\dots,N.
 	\end{equation*}\normalsize
 \end{thm}
 
@@ -1060,26 +970,26 @@ Let $n^{i,k}_j$ denote the times that $i^\text{th}$ UGV visits $j^\text{th}$ pos
 	Without loss of generality, we assume the target is static. The proof when target is moving deterministically is similar.
 According to \Cref{thm:LIFO-dbf-sta-tar}, the batch form of DBF at $k^\text{th}$ step is
 \small\begin{equation}\label{eqn:cmp2}
-\frac{P^i_{pdf}(x^g|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{g^{*}}|\mathbf{z}^i_{1:k})}=\frac{P^i_{pdf}(x^g)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^g;x^R_l)}{P^i_{pdf}(x^{g^{*}})\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^{g^{*}};x^R_l)}.
+\frac{P^i_{pdf}(\X=x|\mathbf{z}^i_{1:k})}{P^i_{pdf}(\X=\xg|\mathbf{z}^i_{1:k})}=\frac{P^i_{pdf}(x)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x;x^R_l)}{P^i_{pdf}(\xg)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|\xg;x^R_l)}.
 \end{equation}\normalsize
 
-The only difference from \Cref{eqn:cmp} is that $P(z^j_l|x^g;x^R_l)$ in \Cref{eqn:cmp2} varies as the UGV moves.
+The only difference from \Cref{eqn:cmp} is that $P(z^j_l|x;x^R_l)$ in \Cref{eqn:cmp2} varies as the UGV moves.
 %, needs to be grouped according to the UGV position. 
-For each UGV, there exists at least one position where infinite observations are made as $k\rightarrow \infty$, according to \Cref{lem1}. 
-All positions can be classified into finite-observation spots and infinite-observation spots. 
+For each UGV, there exists at least one position where infinite measurements are made as $k\rightarrow \infty$, according to \Cref{lem1}. 
+All positions can be classified into finite-measurement spots and infinite-measurement spots. 
 For the former, by referring to \Cref{eqn:cmp_lim2}, it is easy to know that their contribution to \Cref{eqn:cmp2} diminishes when $k\rightarrow \infty$.
-Therefore, \Cref{eqn:cmp2} can be reduced to only considering infinite-observation spots and the rest of proof is similar to that of \Cref{thm:LIFO-dbf-sta-tar}.
+Therefore, \Cref{eqn:cmp2} can be reduced to only considering infinite-measurement spots and the rest of proof is similar to that of \Cref{thm:LIFO-dbf-sta-tar}.
 \end{proof}
 
 \begin{rem}
-	The assumption of unbiased sensors are important for the consistency. In fact, with unknown non-zero bias, the distribution of $z^j_l$ differs from $P(z^j_l|x^{g^*})$, which invalidates the derivation in \Cref{eqn:cmp_lim2} and the consistency proof. 
+	The assumption of unbiased sensors are important for the consistency. In fact, with unknown non-zero bias, the distribution of $z^j_l$ differs from $P(z^j_l|\xg)$, which invalidates the derivation in \Cref{eqn:cmp_lim2} and the consistency proof. 
 	This assumption also makes intuitive sense.
-	In the extreme case, if each sensor has a very large measurement offset, then the estimated target position of each sensor (without communicating with other sensors) will be very different from each other's.
-	Therefore, no common target position can be obtained when they fuse measurement from other sensors.
+	In the extreme case, if each sensor has a very large unknown measurement offset, then the estimated target position of each sensor (without communicating with other sensors) will be very different from each other's.
+	Therefore, no common target position can be obtained when they fuse measurements.
 \end{rem}
 \medskip
 %\begin{rem}
-%%	When $x^g_{eq}$ only contains $x^{T^{*}}$, consistency means the estimated target position converges to true target position in probability. Additionally, 
+%%	When $x_{eq}$ only contains $x^{T^{*}}$, consistency means the estimated target position converges to true target position in probability. Additionally, 
 %	Consistency implies that all individual PDFs converge to the same distribution (true target PDF), thus the consensus is also guaranteed.
 %	It must be noted that traditional statistics dissemination-based methods only ensure consensus of individual PDFs \cite{bandyopadhyay2014distributed,julian2012distributed}. 
 %	To the best knowledge of authors, there is no proof of consistency on estimated target position.
@@ -1118,11 +1028,6 @@ Therefore, \Cref{eqn:cmp2} can be reduced to only considering infinite-observati
 		\includegraphics[width=\textwidth]		{figures/brg_sta_sen_sta_tar_entropy}%{figures/test2}
 		\caption{Entropy of Individual PDF}\label{fig:sta_sen_sta_tar_entropy}
 	\end{subfigure}
-	
-%	\begin{subfigure}[b]{0.4\textwidth}
-%		\includegraphics[width=\textwidth]{figures/sta_sen_sta_tar_30}
-%		\caption{Step 30}\label{fig:sta_sen_sta_tar_all}
-%	\end{subfigure}
 	\caption{(a)-(d) The $1^\text{st}$ UGV's individual PDF at different times. The square denotes the current UGV and stars represent other UGVs. The cross stands for the target. (e) Average position estimation errors of $1^\text{st}$, $3^\text{rd}$ and $5^\text{th}$ UGV's LIFO-DBF, CbDF and CF. (f) Average entropy of individual PDFs.}
 	\label{fig:sta_sen_sta_tar}
 	\vspace{-1.2em}
@@ -1169,13 +1074,13 @@ The networked UGVs take a ring communication topology that each UGV can communic
 %\small\begin{subequations}\label{eqn:gauss_sensor}
 %	\begin{align}
 %		P(z^i_k=1|x_k^g;x_k^i)&=e^{-\frac{1}{2}(x_k^g-x_k^i)^T{\Sigma}^{-1}(x_k^g-x_k^i)}\\
-%%		\exp\left\lbrace -\frac{1}{2}(x^g-x^R)^T{\Sigma}^{-1}(x^g-x^R)\right\rbrace \\
+%%		\exp\left\lbrace -\frac{1}{2}(x-x^R)^T{\Sigma}^{-1}(x-x^R)\right\rbrace \\
 %		P(z^i_k=0|x_k^g;x_k^i)&=1-P(z^i_k=1|x_k^g;x_k^i),
 %	\end{align}
 %\end{subequations}\normalsize
 %which reflects the fact that target detection becomes more probable as the UGV approaches the target position.
 %\end{align}\normalsize
-%where $x^s$ denotes the UGV position where current observation is obtained. 
+%where $x^s$ denotes the UGV position where current measurement is obtained. 
 %Figure 4 shows the 1-D illustration of Gaussian binary sensor model.
 %where $x^R$ denotes the UGV position, which is included in UGV state $y^R$.
 DBF is implemented using the histogram filter method, by which the continuous space is finely discretized into finitely many regions and the individual PDF is approximated by the cumulative probability of each region \cite{thrun2005probabilistic}. 
@@ -1191,7 +1096,7 @@ The measurement noise is a zero-mean Gaussian white noise with standard deviatio
 In both scenarios, LIFO-DBF is compared with two commonly adopted approaches in multi-agent filtering: the consensus-based distributed filtering (CbDF) method \cite{olfati2006belief} and the centralized filtering (CF) method \cite{veeravalli2012distributed}.
 The CbDF requires UGVs to continually exchange their individual PDFs with direct neighbors, computing the average of its own and the received target PDFs. 
 Multiple rounds of communication and averaging are conducted during the ``Sending Step'' and ``Receiving Step'' in \Cref{alg:lifo} at each step to ensure the convergence of UGV's individual PDFs.
-The CF assumes a central unit that can constantly receive and fuse all UGVs' latest observations into a single PDF.
+The CF assumes a central unit that can constantly receive and fuse all UGVs' latest measurements into a single PDF.
 Ten test trials with randomly generated initial UGV and target positions are run and each trial is terminated after 50 time steps.
 The average error between the estimated and true target position and the average entropy of individual PDFs of all 10 trials using these three approaches are compared.
 
@@ -1206,12 +1111,12 @@ Since the robot is equipped with a noisy bearing-only sensor, the measurement at
 % shows a test trial when both the UGVs and the target are static. %of the positions of six static UGVs are shown as stars and square.
 %Due to space constraint, only the individual PDF of the first UGV is shown.
 %The individual PDF of the first UGV at different time steps are shown in \cref{fig:sta_sen_sta_tar_sing1,fig:sta_sen_sta_tar_sing2,fig:sta_sen_sta_tar_sing3,fig:sta_sen_sta_tar_sing4}.
-%Each UGV constantly receives binary observations of the target.
+%Each UGV constantly receives binary measurements of the target.
 %The LIFO-DBF for static target is implemented on each UGV for target localization.
 %The networked UGVs use a ring communication topology that each UGV can communicate with two fixed neighbors.
 %\cref{fig:sta_sen_sta_tar} shows the estimation results of the static target. 
-%After the initial observation, each UGV forms a circular individual PDF, centered at its own position.
-%\cref{fig:sta_sen_sta_tar_sing1} shows the individual PDF after initial observation for $1^\text{st}$ UGV.
+%After the initial measurement, each UGV forms a circular individual PDF, centered at its own position.
+%\cref{fig:sta_sen_sta_tar_sing1} shows the individual PDF after initial measurement for $1^\text{st}$ UGV.
 %The circular PDF happens because the Gaussian sensor model (\Cref{eqn:gauss_sensor}) only depends on the distance between UGV and target.
 As more measurements are fused, the individual PDF asymptotically concentrates to the true location of the target, which accords with the consistency of LIFO-DBF.
 %In fact, with the Guassian sensor model (\Cref{eqn:gauss_sensor}), all positions with equal distance to a UGV belong to the same equi-parameter set of the UGV.
@@ -1220,7 +1125,7 @@ As more measurements are fused, the individual PDF asymptotically concentrates t
 
 The \Cref{fig:sta_sen_sta_tar_pos_err,fig:sta_sen_sta_tar_entropy} shows the comparison of LIFO-DBF with CbDF and CF.
 Unsurprisingly, the CF achieves the best performance in terms of both small position estimation error and fast reduction of entropy. 
-This happens because the central unit has access to the latest observations of all UGVs, thus making most use of all available information.
+This happens because the central unit has access to the latest measurements of all UGVs, thus making most use of all available information.
 It is worth noting that, LIFO-DBF achieves similar asymptotic performance as the CF, both in position estimation error and entropy reduction; this is achieved even though each UGV only communicates with its two neighboring UGVs, which requires less communication burden than the CF.
 The CbDF has the worst performance among these three filtering approaches. 
 It results in slow reduction of entropy and the position error remains large.
@@ -1319,31 +1224,60 @@ Considering the small difference in position estimation error and significantly 
 	\vspace{-1.2em}
 \end{figure}
 
-
 \subsection{Experiment}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.41\textwidth]{figures/exp_scene2}
+	\caption{Experiment Setup}\label{fig:exp_scene}
+\end{figure}
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{0.24\textwidth}
+		\includegraphics[width=\textwidth]{figures/sonar_pos_err}
+		\caption{Position Error}\label{fig:sonar_pos_err}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.24\textwidth}
+		\includegraphics[width=\textwidth]{figures/sonar_entropy}
+		\caption{Entropy of Individual PDF}\label{fig:sonar_entropy}
+	\end{subfigure}	
+\end{figure}
+We have conducted an experiment to validate the LIFO-DBF approach using sonar sensors mounted on a P3DX robot platform for localizing a static target(\Cref{fig:}).
+The sonar is tested to have a sensing field of view of $25\degree$ and a range of $5m$ and its measurement noise can be modeled as a zero-mean Gaussian random variable with standard deviation $2mm$.
+The experiment is conducted in a square room and the probability map is constructed on a grid that is evenly separated with $0.1m$ interval on each axis.
+To avoid the inaccuracy caused by sensor state estimation, we manually measure the sensing positions.
+Due to the limited robot platform, we collect the sensor measurement from different different positions and postprocess these data, treating them as the data from three different robots.
+The effect of the target size has been considered during the postprocessing.
+Experiment results show fast convergence between the MAP estimate of target position to the true position value.
+\Cref{fig:sonar_entropy} illustrates the entropy reduction over time.
+In the end, entropy reduces to zero and this corresponds to the case that all probability mass concentrates to the position of the target.
+The sudden drop of the entropy at step $48$ is because the sensor comes closer to the target and obtains a more accurate measurement of the target.
+Experiment results have shown the effectiveness of the LIFO-DBF for target localization.
+
+
+
 
 \section{CONCLUSION}\label{sec:conclu}
 This paper presents a measurement dissemination-based distributed Bayesian filtering (DBF) approach for a multi-UGV network, utilizing the Latest-In-and-Full-Out (LIFO) protocol for measurement exchange.
 %Different from statistics dissemination approaches that transmit posterior distributions or likelihood functions, each UGV under LIFO only exchanges with neighboring UGVs a full communication buffer consisting of latest available measurements,
 %which significantly reduces the transmission burden between each pair of UGVs from the order of environmental size to that of UGV number.
-%Under the condition of fixed and undirected topology, LIFO can guarantee non-intermittent dissemination of all observations over the network within finite time via local communication among direct neighborhood.
+%Under the condition of fixed and undirected topology, LIFO can guarantee non-intermittent dissemination of all measurements over the network within finite time via local communication among direct neighborhood.
 By exchanging full communication buffers among neighboring UGVs, LIFO significantly reduces the transmission burden between each pair of UGVs to scale linearly with the network size.
-%, with each UGV non-intermittently receiving observations of all others.
+%, with each UGV non-intermittently receiving measurements of all others.
 It should be noted that LIFO is a general measurement exchange protocol and thus applicable to various sorts of sensors.
 Two types of LIFO-based DBF algorithms are proposed to estimate individual PDFs for a static target and a moving target, respectively. 
-%For the static target, each UGV locally fuses the newly received observations while for the moving target, a record set of historical observations is stored and updated. 
+%For the static target, each UGV locally fuses the newly received measurements while for the moving target, a record set of historical measurements is stored and updated. 
 The consistency of LIFO-based DBF is proved by utilizing the law of large numbers, which ensures that the estimated target position converges in probability to the true target position.
-% when the number of observations tends to infinity.
+% when the number of measurements tends to infinity.
 %the agreement between UGVs' estimated target position and the actual position.
 %The effectiveness of this method is demonstrated by simulations.
 
 %In this study, we proposed the Latest-In-and-Full-Out (LIFO) strategy for distributed Bayesian filters (LIFO-DBF) in a multi-UGV network.
 %% with the application of distributed search and tracking (SAT) of target.
-%With fixed communication topology, LIFO guarantees the global dissemination of all UGVs' observations over the network only via local exchange of observations among neighbors.
+%With fixed communication topology, LIFO guarantees the global dissemination of all UGVs' measurements over the network only via local exchange of measurements among neighbors.
 %Once elements in communication buffer (CB) gets filled, each UGV can receive and update its CB non-intermittently under LIFO.
 %Two LIFO-DBFs are proposed for SAT of a static and a moving target, respectively. 
-%For the static target, each UGV locally fuses the latest knowledge of all UGVs' observations by only considering the updating step of the Bayesian filter. 
-%For the moving target, each UGV maintains a triangle matrix of historical observations and an iterative Bayesian filtering procedure is applied that alternates between prediction and updating steps upon obtaining the latest available observations of all UGVs. 
+%For the static target, each UGV locally fuses the latest knowledge of all UGVs' measurements by only considering the updating step of the Bayesian filter. 
+%For the moving target, each UGV maintains a triangle matrix of historical measurements and an iterative Bayesian filtering procedure is applied that alternates between prediction and updating steps upon obtaining the latest available measurements of all UGVs. 
 %The consistency of LIFO-DBF is proved by showing the asymptotic concentration of posterior individual PDF to the equi-parameter set containing the actual state, ensuring the agreement between UGVs' state estimate using LIFO-DBF and the actual environment state.
 %Simulations demonstrate the effectiveness of LIFO-DBF for SAT of both static and moving targets.
 
