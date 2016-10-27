@@ -103,7 +103,7 @@ for trial_cnt = 1
     end    
     
     %% %%%%%%%%%%%%%% main code of simulation %%%%%%%%%%%%%%%%%%
-    count = 1;%1;
+    count = 1;
     
     while(1)                          
         
@@ -209,6 +209,7 @@ for trial_cnt = 1
          % draw plot
          if show_plot
              sim.plotSim(rbt,fld,count,save_plot);
+%              pause()
          end                        
          
          %% compute metrics

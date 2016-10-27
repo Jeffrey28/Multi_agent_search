@@ -8,7 +8,7 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: references.bib
-Repeated entry---line 445 of file references.bib
+Repeated entry---line 456 of file references.bib
  : @article{hlinka2012likelihood
  :                              ,
 I'm skipping whatever remains of this entry
@@ -26,37 +26,37 @@ Warning--empty year in djuric2011non
 Done.
 You've used 31 entries,
             3975 wiz_defined-function locations,
-            977 strings with 12978 characters,
-and the built_in function-call counts, 26223 in all, are:
-= -- 2140
+            978 strings with 12999 characters,
+and the built_in function-call counts, 26081 in all, are:
+= -- 2127
 > -- 583
-< -- 285
-+ -- 338
-- -- 84
-* -- 1261
-:= -- 3803
+< -- 281
++ -- 336
+- -- 85
+* -- 1256
+:= -- 3792
 add.period$ -- 65
 call.type$ -- 31
 change.case$ -- 28
-chr.to.int$ -- 666
+chr.to.int$ -- 654
 cite$ -- 38
-duplicate$ -- 1827
-empty$ -- 2042
-format.name$ -- 109
-if$ -- 6086
+duplicate$ -- 1821
+empty$ -- 2034
+format.name$ -- 110
+if$ -- 6050
 int.to.chr$ -- 0
 int.to.str$ -- 31
-missing$ -- 276
+missing$ -- 277
 newline$ -- 113
 num.names$ -- 31
-pop$ -- 591
+pop$ -- 594
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 2055
+skip$ -- 2042
 stack$ -- 0
-substring$ -- 1582
-swap$ -- 1591
+substring$ -- 1554
+swap$ -- 1581
 text.length$ -- 63
 text.prefix$ -- 0
 top$ -- 5

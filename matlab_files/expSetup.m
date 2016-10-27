@@ -6,12 +6,12 @@ set(0,'defaultAxesFontName', 'Times New Roman')
 set(0,'defaultTextFontName', 'Times New Roman')
 
 save_data = false;
-save_data_exp = true; % save data or not
-show_plot = false; % draw plots or not
-save_plot = false; % save plots or not
+save_data_exp = false; % save data or not
+show_plot = true; % draw plots or not
+save_plot = true; % save plots or not
 exp_mode = true;
 
-sim_len = 60;%50; % max step
+sim_len = 70;%50; % max step
 % rounds of consensus at each time step
 cons_step = 10;
 cons_fig = false; % whether to show intermediate step of consensus
@@ -42,7 +42,7 @@ tar_move = 0;
 sim_r_idx = 1:3;
 
 % the sensor type of each robot
-sensor_set_type = 'ran'; %'brg':bearing ,'ran':range, 'rb':range-bearing, 'htr':heterogeneous
+sensor_set_type = 'sonar'; %'brg':bearing ,'ran':range, 'rb':range-bearing, 'htr':heterogeneous, 'sonar': sonar on p3dx
 switch sensor_set_type
     case 'brg'
         sensor_set = {'brg','brg','brg','brg','brg','brg'};
@@ -53,6 +53,8 @@ switch sensor_set_type
     case 'htr'
 %         sensor_set = {'brg','ran','rb','brg','ran','rb'};
         sensor_set = {'brg','brg','brg','ran','ran','ran'};
+    case 'sonar'
+        sensor_set = {'snr','snr','snr'};
 end
 
 num_robot = 3;

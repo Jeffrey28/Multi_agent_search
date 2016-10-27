@@ -58,8 +58,8 @@ classdef Sim
                 for j=1:this.num_robot
                     % draw robot trajectory
                     if j==k
-                        display(rbt{j}.traj(1,:)) 
-                        display(rbt{j}.traj(2,:))
+%                         display(rbt{j}.traj(1,:)) 
+%                         display(rbt{j}.traj(2,:))
                         line_hdl = line(rbt{j}.traj(1,:), rbt{j}.traj(2,:));
                         set(line_hdl,'Marker','.','Color','r','MarkerSize',3,'LineWidth',2);
                         plot(rbt{j}.traj(1,end), rbt{j}.traj(2,end), 's','Color','r','MarkerSize',25,'LineWidth',3);
@@ -87,10 +87,12 @@ classdef Sim
                 xlabel(['Step=',num2str(count)],'FontSize',30);
                 tmp_fig_cnt = tmp_fig_cnt+1;
                 
+                drawnow
+                
                 % save figure      
                 if save_plot
-                    if (count == 1) || (count == 3) || (count == 5) || (count == 7) ||...
-                            (count == 10) || (count == 20) || (count == 30) || (count == 40)
+                    if (count == 1) || (count == 5) || (count == 45) || (count == 60) % (count == 3) || (count == 7) ...
+%                             (count == 10) || (count == 20) || (count == 30) || (count == 40)
                         switch this.selection
                             case 1,  tag = 'sta_sen_sta_tar';
                             case 2,  tag = 'sta_sen_mov_tar';
@@ -103,17 +105,22 @@ classdef Sim
                             case 'ran', tag2 = 'ran';
                             case 'rb', tag2 = 'rb';
                             case 'htr', tag2 = 'hetero';
+                            case 'sonar', tag2 = 'sonar';
                         end
+                        
+                        % save the plot
                         file_name2 = sprintf('./figures/data_exchange/Journal/%s_%s_rbt%d_step%d_%s',...
                             tag2,tag,k,count,datestr(now,1));
                         saveas(dbf_hd,file_name2,'fig')
                         saveas(dbf_hd,file_name2,'jpg')
                         
+                        % save data of prob map
                         file_name_map = sprintf('./figures/data_exchange/Journal/process_plot/%s_%s_map_rbt%d_step%d_%s',...
                             tag2,tag,k,count,datestr(now,1));
                         
                         tmp_map = rbt{k}.dbf_map;
                         save(file_name_map,'tmp_map');
+                        
                         % save all robot's trajectory when k is the last
                         % element of this.sim_r_idx
                         if k == this.sim_r_idx(end)

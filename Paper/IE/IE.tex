@@ -25,8 +25,9 @@
 \newtheorem{lem}{\bfseries Lemma}
 \newtheorem{cor}{\bfseries Corollary}
 \newtheorem{prop}{\bfseries Proposition}
+\theoremstyle{remark}
 \newtheorem{rem}{\bfseries Remark}
-\newtheorem*{proof*}{\bfseries Proof}
+%\newtheorem*{proof*}{\bfseries Proof}
 
 % format for argmin, argmax
 \newcommand{\argmax}{\operatornamewithlimits{argmax}}
@@ -107,7 +108,7 @@ which significantly reduces the transmission burden between each pair of UGVs to
 Under the condition of fixed and undirected topology, LIFO can guarantee non-intermittent dissemination of all measurements over the network within finite time.
 %, with each robot non-intermittently receiving measurements of all others.
 Two types of LIFO-based DBF algorithms are then derived to estimate individual probability density function (PDF) for a static target and for a moving target, respectively. 
-For the static target, each UGV locally fuses the newly received measurements while for the moving target, a set of historical measurements is stored and sequentially fused. 
+For a static target, each UGV locally fuses the newly received measurements while for a moving target, a set of historical measurements is stored and sequentially fused. 
 %Upon obtaining the latest available measurements of all robots, an iterative Bayesian filtering procedure is applied that alternates between prediction and updating steps. 
 The consistency of LIFO-based DBF is proved that the estimated target position converges in probability to the true target position.
 % when the number of measurements tends to infinity.
@@ -122,7 +123,7 @@ The effectiveness of this method is demonstrated in both simulation and experime
 Distributed filtering that focuses on using a group of networked UGVs to collectively infer environment status has been used for various applications, such as intruder detection \cite{chamberland2007wireless}, moving target tracking \cite{wang2012cooperative} and object localization \cite{song2012mobile}. 
 Several techniques have been developed for distributed filtering.
 For example, Olfati-Saber (2005) proposed a distributed Kalman filter (DKF) for estimating states of linear systems with Gaussian process and measurement noise \cite{2005distributed}.
-Each DKF used additional low-pass and band-pass consensus filters to compute the average of weighted measurements and inverse-covariance matrices.
+Each DKF used low-pass and band-pass consensus filters to compute the average of weighted measurements and inverse-covariance matrices.
 Madhavan et al. (2004) presented a distributed extended Kalman filter for nonlinear systems \cite{madhavan2004distributed}.
 This filter was used to generate local terrain maps by using pose estimates to combine elevation gradient and vision-based depth with environmental features.
 Gu (2007) proposed a distributed particle filter for Markovian target tracking over an undirected sensor network \cite{gu2007distributed}. 
@@ -183,12 +184,15 @@ One promising remedy is to disseminate measurement instead of statistics among n
 % strategy has been developed for NB-based DBFs, by which raw or quantized measurements are exchanged among UGVs.
 %This study focuses on the strategy of exchanging measurements in the neighborhood of each UGV, called the \textit{measurement dissemination-based} strategy, for the purpose of achieving a consensus of the probability density function (PDF) of the tracked target.  
 One pioneering work was done by Coates et al. (2004), who used adaptive encoding of measurements to minimize communication overhead \cite{coates2004distributed}.
-Ribeiro et al. (2006) exchanged quantized measurements along with error-variance limits considering more pragmatic signal models \cite{ribeiro2006bandwidth}.
+%Ribeiro et al. (2006) exchanged quantized measurements along with error-variance limits considering more pragmatic signal models \cite{ribeiro2006bandwidth}.
 A recent work was conducted by Djuric et al. (2011), who proposed to broadcast raw measurements to other agents, and therefore each UGV has a complete set of measurements of other UGVs for executing particle filtering \cite{djuric2011non}. 
 %At each time instant, a subset of UGVs that are in proximity of the tracked targets share their measurements for target position estimation.
 % to all the remaining agents and apply local particle filter for target tracking 
 %Another example can be found in \cite{rosencrantz2002decentralized}, in which both measurements and statistics were exchanged among sensors for distributed surveillance of the environment.
 A shortcoming of aforementioned works is that their communication topologies are assumed to be a complete graph that every pair of distinct UGVs is directly connected by a unique edge, which is not always feasible in reality.
+Leung et al. (2010) proposed a decentralized state-estimation algorithm for dynamic robot networks \cite{leung2010decentralized}.
+The algorithm was shown to achieve centralized-equivalent filtering performance via simulations, no theoretical guarantee about the estimation consistency was provided. 
+
 
 This paper extends existing works by introducing a Latest-In-and-Full-Out (LIFO) protocol into distributed Bayesian filters (DBF) for networked UGVs. 
 Each UGV is only allowed to broadcast measurements to its neighbors by using single-hopping and then implements individual Bayesian filter locally after receiving transmitted measurements.
@@ -470,7 +474,8 @@ where $K_i$ is a normalization factor, given by:
 \small\begin{align*}
 K_i=\left[\int\limits_{\X^g_k\in S} P^i_{pdf}(\X^g_k|\mathbf{z}^i_{1:k-1})P(\mathbf{z}^i_k|\X^g_k)d\X^g_k\right]^{-1};
 \end{align*}\normalsize
-$P^i_{pdf}(\X^g_k|\mathbf{z}^i_{1:k})$ is the posterior individual PDF; $P(z^i_k|\X^g_k)$ is the likelihood function of measurement $z^i_k$, as described in \Cref{eqn:prob_sensor3,eqn:prob_sensor4}.
+%$P^i_{pdf}(\X^g_k|\mathbf{z}^i_{1:k})$ is the posterior individual PDF; 
+$P(z^i_k|\X^g_k)$ is the likelihood function of measurement $z^i_k$, as described in \Cref{eqn:prob_sensor3,eqn:prob_sensor4}.
 
 \begin{algorithm}
 	\caption{LIFO Protocol}
@@ -945,7 +950,7 @@ The consistency of LIFO-DBF for static UGVs and moving target is stated as follo
 \subsection{Moving UGVs}
 This subsection considers the case of using moving UGVs to localize a target, either static or moving.
 The difficulty of consistency proof for this case lies in the fact that each UGV makes measurements at multiple positions.
-Here, the main idea of proof is to classify UGV measurement positions into two disjoint sets: \textit{infinite-measurement spots} that contain positions where a UGV makes infinitely many measurements as time tends to infinity, and \textit{finite-measurement spots} that contain positions where the UGV makes finitely many measurements (i.e., the positions where the UGV does not visit again after a finite time period).
+Here, the main idea of proof is to classify UGV measurement positions into two disjoint sets: \textit{infinite-measurement spots} that contain positions where a UGV visits infinitely many times as time tends to infinity, and \textit{finite-measurement spots} that contain positions where the UGV visits finitely many times (i.e., the UGV does not visit again after a finite time period).
 %, as $k\rightarrow\infty$.
 Before stating the main theorem, the following lemma is introduced.
 \begin{lem}\label{lem1}
@@ -1227,9 +1232,10 @@ Considering the small difference in position estimation error and significantly 
 \subsection{Experiment}
 \begin{figure}
 	\centering
-	\includegraphics[width=0.41\textwidth]{figures/exp_scene2}
-	\caption{Experiment Setup}\label{fig:exp_scene}
+	\includegraphics[width=0.39\textwidth]{figures/exp_scene2}
+	\caption{Experiment Setup. A P3DX robot (red) is equipped with a sonar for localizing the target (black box). The room size is $9.09m\times 6.37m$.}\label{fig:exp_scene}
 \end{figure}
+
 \begin{figure}
 	\centering
 	\begin{subfigure}[b]{0.24\textwidth}
@@ -1240,20 +1246,19 @@ Considering the small difference in position estimation error and significantly 
 		\includegraphics[width=\textwidth]{figures/sonar_entropy}
 		\caption{Entropy of Individual PDF}\label{fig:sonar_entropy}
 	\end{subfigure}	
+	\caption{Estimation position error and entropy for three robots in the experiment.}
 \end{figure}
-We have conducted an experiment to validate the LIFO-DBF approach using sonar sensors mounted on a P3DX robot platform for localizing a static target(\Cref{fig:}).
+We have conducted an experiment to validate the LIFO-DBF approach using sonar sensors mounted on a P3DX robot platform for localizing a static target (\Cref{fig:exp_scene}).
 The sonar is tested to have a sensing field of view of $25\degree$ and a range of $5m$ and its measurement noise can be modeled as a zero-mean Gaussian random variable with standard deviation $2mm$.
 The experiment is conducted in a square room and the probability map is constructed on a grid that is evenly separated with $0.1m$ interval on each axis.
 To avoid the inaccuracy caused by sensor state estimation, we manually measure the sensing positions.
-Due to the limited robot platform, we collect the sensor measurement from different different positions and postprocess these data, treating them as the data from three different robots.
-The effect of the target size has been considered during the postprocessing.
-Experiment results show fast convergence between the MAP estimate of target position to the true position value.
-\Cref{fig:sonar_entropy} illustrates the entropy reduction over time.
-In the end, entropy reduces to zero and this corresponds to the case that all probability mass concentrates to the position of the target.
+Due to the limited robot platform, we collect the sensor measurement from different positions and postprocess these data, treating them as the data from three different robots.
+The effect of the target size has been compensated during the postprocessing.
+Experiment results show fast convergence between the MAP estimate of target position to the true position value (\Cref{fig:sonar_pos_err,fig:sonar_entropy}).
+%\Cref{} illustrates the entropy reduction over time.
+In the end, entropy reduces to zero and this corresponds to the case that all probability mass concentrates to the small cell that contains the target.
 The sudden drop of the entropy at step $48$ is because the sensor comes closer to the target and obtains a more accurate measurement of the target.
 Experiment results have shown the effectiveness of the LIFO-DBF for target localization.
-
-
 
 
 \section{CONCLUSION}\label{sec:conclu}
@@ -1263,10 +1268,11 @@ This paper presents a measurement dissemination-based distributed Bayesian filte
 %Under the condition of fixed and undirected topology, LIFO can guarantee non-intermittent dissemination of all measurements over the network within finite time via local communication among direct neighborhood.
 By exchanging full communication buffers among neighboring UGVs, LIFO significantly reduces the transmission burden between each pair of UGVs to scale linearly with the network size.
 %, with each UGV non-intermittently receiving measurements of all others.
-It should be noted that LIFO is a general measurement exchange protocol and thus applicable to various sorts of sensors.
-Two types of LIFO-based DBF algorithms are proposed to estimate individual PDFs for a static target and a moving target, respectively. 
+Two types of LIFO-DBF algorithms are proposed to estimate individual PDFs for a static target and a moving target, respectively. 
 %For the static target, each UGV locally fuses the newly received measurements while for the moving target, a record set of historical measurements is stored and updated. 
-The consistency of LIFO-based DBF is proved by utilizing the law of large numbers, which ensures that the estimated target position converges in probability to the true target position.
+The consistency of LIFO-DBF is proved by utilizing the law of large numbers, which ensures that the estimated target position converges in probability to the true target position.
+The LIFO-DBF is compared with the consensus filter and centralized filter in various simulations and results have shown that LIFO-DBF achieves very similar performance as the centralized filter and is advantageous over the consensus filter.
+An experiment is also conducted and has demonstrated the effectiveness of LIFO-DBF for distributed filtering.
 % when the number of measurements tends to infinity.
 %the agreement between UGVs' estimated target position and the actual position.
 %The effectiveness of this method is demonstrated by simulations.
@@ -1282,16 +1288,20 @@ The consistency of LIFO-based DBF is proved by utilizing the law of large number
 %Simulations demonstrate the effectiveness of LIFO-DBF for SAT of both static and moving targets.
 
 %Future work includes how to handle other types of sensors and the switching topology.
-Future work includes considering other types of sensors and imperfect communication between UGVs.
-Other types of sensors may have biased measurement
+This work has opened up several directions for future work.
+First, when the communication network between UGVs is time-varying, current LIFO-DBF needs to be revised to deal with package loss and transmission delay.
+Second, current LIFO-DBF requires the prior knowledge of the number of UGVs in the team. 
+Developing a distributed filtering algorithm that is robust to the change of UGVs number is desirable.
+Lastly, combining robot path planning with the distributed filtering will be an interesting topic for further investigation.
+%Other types of sensors may have biased measurement
 % and subject to non-Bernoulli distribution
-, which complicates the design and analysis of LIFO-DBF.
+%, which complicates the design and analysis of LIFO-DBF.
 %The switching topology, including package loss, can lead to unpredictable delay and intermittent transmission, which may affect the consistency and consensus of LIFO-DBF. 
-Imperfect communication, including package loss and transmission delay, requires extensions of current LIFO-DBF approach.
+%Imperfect communication, including package loss and transmission delay, requires extensions of current LIFO-DBF approach.
 % and may affect its consistency properties.
 % out-of-order measurement 
 %In addition, combining LIFO-DBF with UGV motion planning is promising for more effective SAT of target.
-\todohere{can list some benefits of concensus method as mentioned by CDC reviewer. also mention that sensor placement may help improve the result.}
+%\todohere{can list some benefits of concensus method as mentioned by CDC reviewer. also mention that sensor placement may help improve the result.}
 
 \addtolength{\textheight}{0cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens

@@ -117,16 +117,15 @@ M.~Coates, ``Distributed particle filters for sensor networks,'' in
   processing in sensor networks}.\hskip 1em plus 0.5em minus 0.4em\relax ACM,
   2004, pp. 99--107.
 
-\bibitem{ribeiro2006bandwidth}
-A.~Ribeiro and G.~B. Giannakis, ``Bandwidth-constrained distributed estimation
-  for wireless sensor networks-part ii: unknown probability density function,''
-  \emph{Signal Processing, IEEE Transactions on}, vol.~54, no.~7, pp.
-  2784--2796, 2006.
-
 \bibitem{djuric2011non}
 P.~M. Djuri{\'c}, J.~Beaudeau, and M.~F. Bugallo, ``Non-centralized target
   tracking with mobile agents,'' in \emph{Acoustics, Speech and Signal
   Processing (ICASSP), 2011 IEEE International Conference on}, pp. 5928--5931.
+
+\bibitem{leung2010decentralized}
+K.~Y. Leung, T.~D. Barfoot, and H.~H. Liu, ``Decentralized localization of
+  sparsely-communicating robot networks: A centralized-equivalent approach,''
+  \emph{IEEE Transactions on Robotics}, vol.~26, no.~1, pp. 62--77, 2010.
 
 \bibitem{bishop2010optimality}
 A.~N. Bishop, B.~Fidan, B.~D. Anderson, K.~Do{\u{g}}an{\c{c}}ay, and P.~N.
