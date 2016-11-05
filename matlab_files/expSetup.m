@@ -8,7 +8,7 @@ set(0,'defaultTextFontName', 'Times New Roman')
 save_data = false;
 save_data_exp = false; % save data or not
 show_plot = true; % draw plots or not
-save_plot = true; % save plots or not
+save_plot = false; % save plots or not
 exp_mode = true;
 
 sim_len = 70;%50; % max step
@@ -23,21 +23,6 @@ trial_num = 1; % 10 % number of trials to run
 selection = 3;
 r_move = 2; % use experiment positions
 tar_move = 0;
-
-% switch selection
-%     case 1,  r_move= 0; tar_move=0;
-%     case 2,  r_move= 0; tar_move=1;
-%     case 3,  r_move= 1; tar_move=0;
-%     case 4,  r_move= 1; tar_move=1;
-%     otherwise, error('No selection.');
-% end
-
-% the set of robots whose pdf will be drawn
-% if r_move == 0
-%     sim_r_idx = [1,3,5];
-% else
-%     sim_r_idx = [1,3,5];
-% end
 
 sim_r_idx = 1:3;
 

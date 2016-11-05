@@ -88,7 +88,7 @@ for trial_cnt = 1
         inPara_rbt.cov_ranbrg = 1*eye(2);%100
         % P3DX onboard sonar
         inPara_rbt.dist_sonar = 5*scale; % sensing range
-        inPara_rbt.cov_sonar = 0.1*scale; % covariance on measured distance
+        inPara_rbt.cov_sonar = 0.1*scale;%0.1*scale; % covariance on measured distance
         inPara_rbt.ang_sonar = 30/180*pi; % sensing FOV (angle)
         
         inPara_rbt.fld_size = fld_size;
@@ -110,7 +110,7 @@ for trial_cnt = 1
         %% robot moves
         for ii = 1:num_robot
             rbt{ii}.state = (samp_meas_data{ii}(count,1:3))';
-            rbt{ii}.traj = (samp_meas_data{ii}(count,1:2))';
+            rbt{ii}.traj = [rbt{ii}.traj,(samp_meas_data{ii}(count,1:2))'];
         end
         
         %% filtering
@@ -149,62 +149,7 @@ for trial_cnt = 1
             tmp_rbt{ii} = tmp_rbt{ii}.dataExch(inPara2);
         end
         rbt = tmp_rbt;
-        
-%          %% Concensus        
-%          % (1) exchange pdfs to achieve concensus
-%          % (2) observe and update the stored own observations at time k
-%          % (3) update probability map
-%          % (4) repeat step (1)
-%          % so consensus actually uses more information than DBF at each
-%          % step when doing metric comparison 
-%          
-%          % step (3) update own map using own measurement
-%          for ii = 1:num_robot  
-%              inPara4 = struct('selection',selection,'target_model',fld.target.model_idx);
-%              rbt{ii} = rbt{ii}.updMap(inPara4);
-%          end
-%          
-%          % step (1) exchange with neighbors to achieve consensus
-%          % consider comparing with the Indian guy's NL combination rule.         
-%          cons_cnt = 1;
-%          while (cons_cnt <= cons_step)
-%              tmp_rbt_cons = rbt; % use tmp_rbt_cons for consensus
-%              for ii = 1:num_robot
-%                  inPara5 = struct;
-%                  inPara5.selection = selection;
-%                  inPara5.cons_fig = cons_fig;
-%                  inPara5.rbt_nbhd_set = rbt(rbt{ii}.nbhd_idx);
-%                  tmp_rbt_cons{ii} = tmp_rbt_cons{ii}.cons(inPara5);
-%              end
-%              rbt = tmp_rbt_cons;
-%              cons_cnt = cons_cnt + 1;
-%          end         
-%          %}
-%         
-%          %% centeralized filter
-%          % (1) observe and update the stored observations of all sensor at time k
-%          % (2) update probability map
-%          % (2) repeat step (1)         
-%          
-%          % use the first robot as the centralized filter
-%          rbt{1}.buffer_cent.pos = rbt{1}.pos;
-%          rbt{1}.buffer_cent.z = {rbt{1}.z};
-%          rbt{1}.buffer_cent.k = rbt{1}.k;
-%          rbt{1}.buffer_cent.lkhd_map = {rbt{1}.lkhd_map};
-%          
-%          for ii = 2:num_robot
-%              rbt{1}.buffer_cent.pos = [rbt{1}.buffer_cent.pos,rbt{ii}.pos];
-%              rbt{1}.buffer_cent.z = [rbt{1}.buffer_cent.z,{rbt{ii}.z}];
-%              rbt{1}.buffer_cent.k = [rbt{1}.buffer_cent.k,rbt{ii}.k];
-%              rbt{1}.buffer_cent.lkhd_map = [rbt{1}.buffer_cent.lkhd_map,rbt{ii}.lkhd_map];
-%          end
-%          inPara6 = struct;
-%          inPara6.selection = selection;
-%          inPara6.target_model = fld.target.model_idx;
-%          
-%          rbt{1} = rbt{1}.CF(inPara6);
-%          %}
-%          
+                  
          %% draw current step
          % draw plot
          if show_plot
@@ -215,8 +160,6 @@ for trial_cnt = 1
          %% compute metrics
          for ii = 1:num_robot
              rbt{ii} = rbt{ii}.computeMetrics(fld,'dbf');
-%              rbt{ii} = rbt{ii}.computeMetrics(fld,'cons');
-%              rbt{ii} = rbt{ii}.computeMetrics(fld,'cent');
          end
          
          %% go to next iteration
@@ -239,14 +182,6 @@ sim = sim.compareMetricsExp();
 % save data 
 % note 'sim' contains all data about rbt, fld and simulation results.
 % However it is so huge that we cannot save all...
-if save_data
-    sim_for_save = sim;
-    sim_for_save.rbt_set = {};
-    sim_for_save.fld_set = {};
-    file_name = sim.saveSimData();
-    save(file_name,'sim_for_save','-v7')
-end
-
 if save_data_exp
     exp_for_save = sim;
     exp_for_save.rbt_set = {};
