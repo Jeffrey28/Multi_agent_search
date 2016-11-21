@@ -127,14 +127,14 @@ K.~Y. Leung, T.~D. Barfoot, and H.~H. Liu, ``Decentralized localization of
   sparsely-communicating robot networks: A centralized-equivalent approach,''
   \emph{IEEE Transactions on Robotics}, vol.~26, no.~1, pp. 62--77, 2010.
 
+\bibitem{thrun2005probabilistic}
+S.~Thrun, W.~Burgard, and D.~Fox, \emph{Probabilistic robotics}.\hskip 1em plus
+  0.5em minus 0.4em\relax MIT press, 2005.
+
 \bibitem{bishop2010optimality}
 A.~N. Bishop, B.~Fidan, B.~D. Anderson, K.~Do{\u{g}}an{\c{c}}ay, and P.~N.
   Pathirana, ``Optimality analysis of sensor-target localization geometries,''
   \emph{Automatica}, vol.~46, no.~3, pp. 479--492, 2010.
-
-\bibitem{thrun2005probabilistic}
-S.~Thrun, W.~Burgard, and D.~Fox, \emph{Probabilistic robotics}.\hskip 1em plus
-  0.5em minus 0.4em\relax MIT press, 2005.
 
 \bibitem{bourgault2003optimal}
 F.~Bourgault, T.~Furukawa, and H.~F. Durrant-Whyte, ``Optimal search for a lost
@@ -155,6 +155,11 @@ H.~Liu, X.~Chu, Y.-W. Leung, and R.~Du, ``Simple movement control algorithm for
 G.~Thatte and U.~Mitra, ``Sensor selection and power allocation for distributed
   estimation in sensor networks: Beyond the star topology,'' \emph{Signal
   Processing, IEEE Transactions on}, vol.~56, no.~7, pp. 2649--2661, 2008.
+
+\bibitem{deo2016graph}
+N.~Deo, \emph{Graph theory with applications to engineering and computer
+  science}.\hskip 1em plus 0.5em minus 0.4em\relax Courier Dover Publications,
+  2016.
 
 \bibitem{amemiya1985advanced}
 T.~Amemiya, \emph{Advanced econometrics}.\hskip 1em plus 0.5em minus

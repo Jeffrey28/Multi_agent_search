@@ -414,15 +414,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.1767767"
-     inkscape:cx="579.5217"
+     inkscape:cx="503.98042"
      inkscape:cy="573.6139"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g6916-4-6-9-2"
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:window-width="1600"
-     inkscape:window-height="837"
+     inkscape:window-width="1536"
+     inkscape:window-height="803"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -440,7 +440,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -471,14 +471,7 @@
            height="444"
            width="770"
            id="rect5612" /></flowRegion><flowPara
-         id="flowPara5614" /></flowRoot>    <rect
-       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:11.64823151;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect7241"
-       width="2647.3391"
-       height="1666.7217"
-       x="-3543.019"
-       y="12.481304" />
-    <g
+         id="flowPara5614" /></flowRoot>    <g
        id="g5905">
       <g
          transform="matrix(0.75609427,0,0,0.75609427,276.7478,114.85788)"
@@ -1983,7 +1976,7 @@
                height="131.42857"
                x="-582.85712"
                y="160.93364" /></flowRegion><flowPara
-             id="flowPara3358-1-0-2-7-2-2-6">Tar</flowPara></flowRoot>        <flowRoot
+             id="flowPara3358-1-0-2-7-2-2-6">pdf</flowPara></flowRoot>        <flowRoot
            xml:space="preserve"
            id="flowRoot3336-8-1-8-9-2-5-4-3"
            style="font-style:normal;font-weight:normal;font-size:78.92302704px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -1997,7 +1990,7 @@
                x="-1753.5676"
                y="-635.16119" /></flowRegion><flowPara
              style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-opacity:1"
-             id="flowPara3342-1-6-8-2-4-8-5-2">(k)</flowPara></flowRoot>      </g>
+             id="flowPara3342-1-6-8-2-4-8-5-2"> (k)</flowPara></flowRoot>      </g>
       <g
          transform="matrix(0.75609427,0,0,0.75609427,2074.9436,-680.59021)"
          id="g5258-1-2-6-3">
@@ -2027,7 +2020,7 @@
        transform="matrix(1.1539901,0,0,1.1539901,-226.14433,88.752602)"
        id="g5168">
       <flowRoot
-         transform="translate(449.70036,11.182039)"
+         transform="translate(449.70037,13.58808)"
          style="font-style:normal;font-weight:normal;font-size:72.45733643px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          id="flowRoot8547"
          xml:space="preserve"><flowRegion
@@ -2038,8 +2031,8 @@
              width="731.81909"
              id="rect8551" /></flowRegion><flowPara
            id="flowPara8553"
-           style="font-size:92.07184601px">Robot 1</flowPara></flowRoot>      <flowRoot
-         transform="translate(1004.5593,11.182039)"
+           style="font-size:92.07184601px">UGV 1</flowPara></flowRoot>      <flowRoot
+         transform="translate(1000.5151,13.677993)"
          style="font-style:normal;font-weight:normal;font-size:72.45733643px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          id="flowRoot8547-6"
          xml:space="preserve"><flowRegion
@@ -2050,18 +2043,18 @@
              width="731.81909"
              id="rect8551-9" /></flowRegion><flowPara
            id="flowPara8553-4"
-           style="font-size:92.07184601px">Robot 2</flowPara></flowRoot>      <path
+           style="font-size:92.07184601px">UGV 2</flowPara></flowRoot>      <path
          inkscape:connector-curvature="0"
          id="path8798"
-         d="m 622.92592,-95.111467 -138.59293,0"
+         d="m 590.10172,-91.806288 -138.59293,0"
          style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow1Lstart);marker-end:url(#marker8018)" />
       <path
          inkscape:connector-curvature="0"
          id="path8798-5"
-         d="m 1179.6956,-95.111467 -138.5929,0"
+         d="m 1144.7378,-91.806288 -138.5929,0"
          style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3.00000048;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker5285);marker-end:url(#marker8018-8)" />
       <flowRoot
-         transform="translate(2006.8911,11.182039)"
+         transform="translate(2006.8912,13.58808)"
          style="font-style:normal;font-weight:normal;font-size:72.45733643px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          id="flowRoot8547-6-1-1"
          xml:space="preserve"><flowRegion
@@ -2072,13 +2065,13 @@
              width="731.81909"
              id="rect8551-9-9-1" /></flowRegion><flowPara
            id="flowPara8553-4-0-7"
-           style="font-size:92.07184601px">Robot N</flowPara></flowRoot>      <path
+           style="font-size:92.07184601px">UGV N</flowPara></flowRoot>      <path
          inkscape:connector-curvature="0"
          id="path8798-5-2"
-         d="m 1615.1468,-95.111467 -138.5929,0"
+         d="m 1596.4777,-91.806288 -138.5929,0"
          style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3.00000048;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker5598);marker-end:url(#marker4717)" />
       <g
-         transform="matrix(0.75609427,0,0,0.75609427,1876.3748,-1512.0525)"
+         transform="matrix(0.75609427,0,0,0.75609427,1858.2269,-1508.7473)"
          id="g5258-1-2-6-3-9">
         <circle
            style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2.5;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"

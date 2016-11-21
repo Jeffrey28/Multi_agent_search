@@ -442,16 +442,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.088388348"
-     inkscape:cx="2552.8221"
-     inkscape:cy="-262.90285"
+     inkscape:zoom="0.25"
+     inkscape:cx="978.87492"
+     inkscape:cy="809.54764"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      showguides="false"
      inkscape:guide-bbox="true"
-     inkscape:window-width="1600"
-     inkscape:window-height="837"
+     inkscape:window-width="1536"
+     inkscape:window-height="803"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -469,7 +469,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -2319,36 +2319,36 @@
        xml:space="preserve"
        id="flowRoot8547"
        style="font-style:normal;font-weight:normal;font-size:72.45733643px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="translate(120.00001,56.764995)"><flowRegion
+       transform="translate(140.00001,60.729615)"><flowRegion
          id="flowRegion8549"><rect
            id="rect8551"
            width="731.81909"
            height="304.32083"
            x="-349.73776"
            y="-167.22061" /></flowRegion><flowPara
-         id="flowPara8553">Robot 1</flowPara></flowRoot>    <flowRoot
+         id="flowPara8553">UGV 1</flowPara></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot8547-6"
        style="font-style:normal;font-weight:normal;font-size:72.45733643px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="translate(623.13168,56.764995)"><flowRegion
+       transform="translate(654.19418,60.800375)"><flowRegion
          id="flowRegion8549-1"><rect
            id="rect8551-9"
            width="731.81909"
            height="304.32083"
            x="-349.73776"
            y="-167.22061" /></flowRegion><flowPara
-         id="flowPara8553-4">Robot 2</flowPara></flowRoot>    <flowRoot
+         id="flowPara8553-4">UGV 2</flowPara></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot8547-6-1"
        style="font-style:normal;font-weight:normal;font-size:72.45733643px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="translate(1126.2634,56.764995)"><flowRegion
+       transform="translate(1170.2633,60.800375)"><flowRegion
          id="flowRegion8549-1-4"><rect
            id="rect8551-9-9"
            width="731.81909"
            height="304.32083"
            x="-349.73776"
            y="-167.22061" /></flowRegion><flowPara
-         id="flowPara8553-4-0">Robot 3</flowPara></flowRoot>    <flowRoot
+         id="flowPara8553-4-0">UGV 3</flowPara></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot8611"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -3023,12 +3023,12 @@
            id="rect8002-7" /></flowRegion><flowPara
          id="flowPara8004-9">k=4</flowPara></flowRoot>    <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3.00000024;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker9268);marker-end:url(#marker8018)"
-       d="m 220.37894,-57.108389 -138.59293,0"
+       d="m 231.85996,-57.835915 -138.59293,0"
        id="path8798"
        inkscape:connector-curvature="0" />
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3.00000048;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker5108);marker-end:url(#marker8018-8)"
-       d="m 739.39546,-57.10838 -138.59294,0"
+       d="m 747.55769,-57.835915 -138.59294,0"
        id="path8798-5"
        inkscape:connector-curvature="0" />
     <path
