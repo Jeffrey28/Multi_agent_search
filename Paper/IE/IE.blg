@@ -8,7 +8,7 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: references.bib
-Repeated entry---line 463 of file references.bib
+Repeated entry---line 474 of file references.bib
  : @article{hlinka2012likelihood
  :                              ,
 I'm skipping whatever remains of this entry
@@ -24,45 +24,45 @@ Warning--empty year in beaudeau2012target
 Warning--empty year in djuric2011non
 
 Done.
-You've used 32 entries,
+You've used 33 entries,
             3975 wiz_defined-function locations,
-            983 strings with 13120 characters,
-and the built_in function-call counts, 26408 in all, are:
-= -- 2148
-> -- 587
-< -- 281
-+ -- 338
-- -- 86
-* -- 1265
-:= -- 3850
-add.period$ -- 67
-call.type$ -- 32
-change.case$ -- 28
-chr.to.int$ -- 654
-cite$ -- 39
-duplicate$ -- 1848
-empty$ -- 2080
-format.name$ -- 111
-if$ -- 6126
+            990 strings with 13307 characters,
+and the built_in function-call counts, 27117 in all, are:
+= -- 2213
+> -- 596
+< -- 289
++ -- 343
+- -- 87
+* -- 1299
+:= -- 3971
+add.period$ -- 69
+call.type$ -- 33
+change.case$ -- 29
+chr.to.int$ -- 669
+cite$ -- 40
+duplicate$ -- 1900
+empty$ -- 2132
+format.name$ -- 112
+if$ -- 6286
 int.to.chr$ -- 0
-int.to.str$ -- 32
-missing$ -- 282
-newline$ -- 116
-num.names$ -- 32
-pop$ -- 610
+int.to.str$ -- 33
+missing$ -- 290
+newline$ -- 119
+num.names$ -- 33
+pop$ -- 621
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 2072
+skip$ -- 2129
 stack$ -- 0
-substring$ -- 1554
-swap$ -- 1594
-text.length$ -- 63
+substring$ -- 1589
+swap$ -- 1639
+text.length$ -- 66
 text.prefix$ -- 0
 top$ -- 5
 type$ -- 0
 warning$ -- 7
-while$ -- 137
-width$ -- 34
-write$ -- 327
+while$ -- 142
+width$ -- 35
+write$ -- 338
 (There was 1 error message)

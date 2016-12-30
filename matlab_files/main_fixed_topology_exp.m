@@ -20,7 +20,7 @@
 % 10/3/16
 % continued debugging the code. will implement different sensor model
 % 10/14/16
-% this file is for analyzing experiment data
+% this file is for analyzing experiment data. use with expSetup
 
 % main function for running the simulation
 % clear all; 
@@ -88,8 +88,8 @@ for trial_cnt = 1
         inPara_rbt.cov_ranbrg = 1*eye(2);%100
         % P3DX onboard sonar
         inPara_rbt.dist_sonar = 5*scale; % sensing range
-        inPara_rbt.cov_sonar = 0.1*scale;%0.1*scale; % covariance on measured distance
-        inPara_rbt.ang_sonar = 30/180*pi; % sensing FOV (angle)
+        inPara_rbt.cov_sonar = 0.5*scale;%0.1*scale; % covariance on measured distance
+        inPara_rbt.ang_sonar = 25/180*pi; % sensing FOV (angle)
         
         inPara_rbt.fld_size = fld_size;
         inPara_rbt.max_step = sim_len;

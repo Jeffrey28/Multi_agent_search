@@ -131,6 +131,11 @@ K.~Y. Leung, T.~D. Barfoot, and H.~H. Liu, ``Decentralized localization of
 S.~Thrun, W.~Burgard, and D.~Fox, \emph{Probabilistic robotics}.\hskip 1em plus
   0.5em minus 0.4em\relax MIT press, 2005.
 
+\bibitem{kitagawa1996monte}
+G.~Kitagawa, ``Monte carlo filter and smoother for non-gaussian nonlinear state
+  space models,'' \emph{Journal of computational and graphical statistics},
+  vol.~5, no.~1, pp. 1--25, 1996.
+
 \bibitem{bishop2010optimality}
 A.~N. Bishop, B.~Fidan, B.~D. Anderson, K.~Do{\u{g}}an{\c{c}}ay, and P.~N.
   Pathirana, ``Optimality analysis of sensor-target localization geometries,''

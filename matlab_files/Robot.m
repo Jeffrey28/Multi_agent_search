@@ -113,9 +113,13 @@ classdef Robot
             this.offset_brg = inPara.offset_brg;
             this.cov_ranbrg = inPara.cov_ranbrg;
             this.dist_ranbrg = inPara.dist_ranbrg;
-            this.dist_sonar = inPara.dist_sonar;
-            this.cov_sonar = inPara.cov_sonar;
-            this.ang_sonar = inPara.ang_sonar;
+            
+            % if we use exp data
+            if isfield(inPara,'dist_sonar')                
+                this.dist_sonar = inPara.dist_sonar;
+                this.cov_sonar = inPara.cov_sonar;
+                this.ang_sonar = inPara.ang_sonar;
+            end
             
             this.dbf_map = ones(inPara.fld_size(1),inPara.fld_size(2));
             this.dbf_map = this.dbf_map/sum(sum(this.dbf_map));

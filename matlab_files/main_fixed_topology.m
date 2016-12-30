@@ -19,14 +19,15 @@
 % rejected in CDC 16
 % 10/3/16
 % continued debugging the code. will implement different sensor model
+% 10/14/16
+% this file is for generating and analyzing simulation data
 
-% main function for running the simulation
-clear all; clc; close all
+% main function for running the simulation. use with simSetup
+clearvars -except upd_matrix
+clc; close all
 
 %% %%%%%%% Simulation %%%%%%%%%%
-% simSetup();
-
-expSetup();
+simSetup();
 
 % define parameters, precompute certain quantities
 
@@ -237,6 +238,7 @@ for trial_cnt = 1%1:trial_num
          % draw plot
          if show_plot
              sim.plotSim(rbt,fld,count,save_plot);
+%              pause()
          end
                 
          %% go to next iteration

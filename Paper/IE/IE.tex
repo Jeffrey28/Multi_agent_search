@@ -79,16 +79,17 @@
 
 \title{\LARGE \bf
 	Measurement Dissemination-based Distributed Bayesian Filter using LIFO Exchange Protocol for Networked Unmanned Vehicles}
-%Distributed Bayesian Filters for Multi-Vehicle Network by Using Latest-In-and-Full-Out Exchange Protocol of Observations}
 
-\author{Chang Liu$^{1}$, Shengbo Eben Li$^{2}$ and J. Karl Hedrick$^{1}$% <-this % stops a space
-\thanks{*The first two authors, C. Liu and S. Li, have equally contributed to this research. All correspondence should be addressed to S. Li. The work is supported by the ONR MURI project and the China National Science Foundation.
-	}% <-this % stops a space
-%\thanks{*This work is supported by the Embedded Humans: Provably Correct Decision Making for Networks of Humans and Unmanned Systems project, a MURI project funded by the Office of Naval Research and by the China National Science Foundation.}
-\thanks{$^{1}$Chang Liu and J. Karl Hedrick are with the Vehicle Dynamics \& Control Lab, Department of Mechanical Engineering, University of California, Berkeley, Berkeley, CA 94709, USA. Email: {\tt\small changliu@berkeley.edu, khedrick@me.berkeley.edu}}%
-\thanks{$^{2}$Shengbo Eben Li is with the Department of Automotive Engineering, Tsinghua University, Beijing, 100084, China. He has worked at the Department of Mechanical Engineering, University of California, Berkeley as a visiting scholar. Email: {\tt\small lisb04@gmail.com}}%
-%\thanks{$^{3}$J. Karl Hedrick is with the Vehicle Dynamics \& Control Lab, Department of Mechanical Engineering, University of California, Berkeley, Berkeley, CA 94709, USA. Email: {\tt\small khedrick@me.berkeley.edu}}%
-}
+\author{Anonymous}
+
+%\author{Chang Liu$^{1}$, Shengbo Eben Li$^{2}$ and J. Karl Hedrick$^{1}$% <-this % stops a space
+%\thanks{*The first two authors, C. Liu and S. Li, have equally contributed to this research. All correspondence should be addressed to S. Li. The work is supported by the ONR MURI project and the NSF China with grant 51575293 and 51622504.
+%	}% <-this % stops a space
+%%\thanks{*This work is supported by the Embedded Humans: Provably Correct Decision Making for Networks of Humans and Unmanned Systems project, a MURI project funded by the Office of Naval Research and by the China National Science Foundation.}
+%\thanks{$^{1}$Chang Liu and J. Hedrick are with the Department of Mechanical Engineering, University of California, Berkeley, Berkeley, CA 94709, USA. Email: {\tt\small changliu@berkeley.edu, khedrick@me.berkeley.edu}}%
+%\thanks{$^{2}$S Li is now with the Department of Automotive Engineering, Tsinghua University, Beijing, 100084, China. He has worked at the Department of Mechanical Engineering, University of California, Berkeley. Email: {\tt\small lisb04@gmail.com}}%
+%%\thanks{$^{3}$J. Karl Hedrick is with the Vehicle Dynamics \& Control Lab, Department of Mechanical Engineering, University of California, Berkeley, Berkeley, CA 94709, USA. Email: {\tt\small khedrick@me.berkeley.edu}}%
+%}
 
 \begin{document}
 
@@ -105,21 +106,22 @@
 This paper presents a measurement dissemination-based distributed Bayesian filtering (DBF) method for a network of unmanned ground vehicles (UGVs).
 The DBF utilizes the Latest-In-and-Full-Out (LIFO) exchange protocol to disseminate the sensor measurements within local neighbors.
 % for target search and tracking.
-Different from existing statistics dissemination-based approaches that transmit posterior distributions or likelihood functions, each UGV under LIFO only exchanges 
+Different from existing statistics dissemination strategies that transmit posterior distributions or likelihood functions, each UGV under LIFO only exchanges 
 %a communication buffer consisting of 
 latest available measurements, 
 %each UGV under LIFO only exchanges with neighboring UGVs a full communication buffer consisting of latest available measurements,
 %receives the latest available measurements and then broadcasts full communication buffer to its neighborhood, 
 which significantly reduces the transmission burden between each pair of UGVs to scale linearly with the network size.
-Under the condition of fixed and undirected topology, LIFO can guarantee non-intermittent dissemination of all measurements over the network within finite time.
+Under the condition of fixed and undirected topology, LIFO can guarantee non-intermittent dissemination of all measurements over the network within a finite time.
 %, with each robot non-intermittently receiving measurements of all others.
-Two types of LIFO-based DBF algorithms are then derived to estimate individual probability density function (PDF) for static target and moving target, respectively. 
-For the former, each UGV locally fuses the newly received measurements while for the latter, a set of historical measurements is stored and sequentially fused. 
+Two types of LIFO-based DBF algorithms are then derived to estimate individual probability density function (PDF) for the static target and moving target, respectively. 
+For the former, each UGV locally fuses the newly received measurements while for the latter, a set of measurement history is stored and sequentially fused. 
 %Upon obtaining the latest available measurements of all robots, an iterative Bayesian filtering procedure is applied that alternates between prediction and updating steps. 
 The consistency of LIFO-based DBF is proved that the estimated target position converges in probability to the true target position.
 % when the number of measurements tends to infinity.
 %the agreement between robots' estimated target position and the actual position.
-The effectiveness of this method is demonstrated by simulation using heterogeneous sensors and by experiment using sonar sensors.
+The effectiveness of this method is experimentally demonstrated by the target localization via multiple mobile robots with sonar sensors in an indoor environment.
+%simulation using heterogeneous sensors and by experiment using sonar sensors.
 %by comparing with consensus-based distributed filters and a centralized filter in simulations of target localization.
 \end{abstract}
 
@@ -138,7 +140,7 @@ As a generic filtering scheme for general system dynamics and arbitrary noise di
 It is worth noting that Bayesian filters can be reduced to Kalman filters and particle filters under appropriate conditions \cite{chen2003bayesian}.
 %This study focuses on developing a distributed Bayesian filter (DBF) that is applicable for state estimation of general nonlinear systems and the proposed DBF is applied to search and tracking (SAT) of both static and moving targets.
 
-The design of distributed filtering algorithms depends on the communication topology of multi-UGV network, which can be classified into two types: fusion center (FC)-based and neighborhood (NB)-based.
+The design of distributed filtering algorithms depends on the communication topology of a multi-UGV network, which can be classified into two types: fusion center (FC)-based and neighborhood (NB)-based.
 In the FC-based approaches, each UGV uses a filter to estimate local statistics of environment status based on its own measurement.
 The local statistics is transmitted (possibly via multi-hopping) to a single FC, where a global posterior distribution (or statistical moments in DKF \cite{olfati2007consensus}) is calculated at each filtering cycle after receiving all local information \cite{zuo2006bandwidth,he2014networked}. %,vemula2006target
 %At each filtering cycle, fusion center calculates the global state estimate only after receiving latest local estimates of all robots \cite{zuo2006bandwidth,vemula2006target}.
@@ -201,25 +203,27 @@ A recent study was conducted by Djuric et al. (2011), which proposed to broadcas
 %Another example can be found in \cite{rosencrantz2002decentralized}, in which both measurements and statistics were exchanged among sensors for distributed surveillance of the environment.
 A shortcoming of aforementioned works is that their communication topologies are assumed to be a complete graph: 
 even far from each other, each pair of UGVs should be directly connected by a unique edge, which is not always feasible in reality.
-For incomplete graphs, Leung et al. (2010) explored a decentralized Extended Kalman filter for dynamic robot networks \cite{leung2010decentralized}.
-The algorithm was shown to achieve centralized-equivalent filtering performance in simulations, but still lacked rigorous proofs on the estimation consistency.
+For incomplete graphs, Leung et al. (2010) explored a decentralized filter for dynamic robot networks \cite{leung2010decentralized}.
+The algorithm was shown to achieve centralized-equivalent filtering performance in simulations. 
+However, it required the communication of both measurements and statistics, which incurred large communication overhead.
 % and consensus was provided. 
 
 
 This paper presents a measurement dissemination-based distributed Bayesian filtering approach for target localization using networked UGVs.
 % by introducing a Latest-In-and-Full-Out (LIFO) protocol.
 % extends existing works by introducing a Latest-In-and-Full-Out (LIFO) protocol into distributed Bayesian filters (DBF) for networked UGVs. 
-Each UGV only needs to broadcast the sensor measurements to its neighbors via single-hopping and then implements individual Bayesian filter locally after receiving transmitted measurements.
+Each UGV only needs to broadcast the sensor measurements to its neighbors via single hopping and then implements individual Bayesian filter locally using its own measurements and the ones transmitted from neighbors.
+%after receiving transmitted measurements.
 %The main benefit of using LIFO is on the reduction of communication burden, with the transmission data volume scaling linearly with the UGV number, 
 %The LIFO significantly reduces the communication burden, 
-The Latest-In-and-Full-Out (LIFO) protocol is introduced and can significantly reduces the communication burden, 
-which scales the transmission data linearly with the UGV number, while a statistics dissemination-based strategy can suffer from the order of the environment size.
+The Latest-In-and-Full-Out (LIFO) protocol is introduced to reduce the communication burden, 
+which scales the transmission data linearly with the UGV number, while a statistics dissemination strategy can suffer from the order of the environment size.
 %In addition, LIFO spreads all UGVs' measurements among the network via multi-hopping, ensuring each UGV's access to all others' historical measurements.
 %After receiving measurements from neighbors, each UGV runs Bayesian filter locally for environment state estimation. 
-The proposed LIFO-based DBF has following properties:
+The proposed LIFO-based DBF has the following properties:
 (1)	For a fixed and undirected network, LIFO guarantees the global dissemination of measurements over the network in a non-intermittent manner.
 %, with each UGV non-intermittently receiving (delayed) measurements of all other UGVs via local communication.
-(2)	The corresponding DBF ensures the consistency of the estimated target position, i.e., the estimate converges in probability to the true value when the number of measurements tends to infinity.
+(2)	The corresponding DBF ensures the consistency of estimated target position, i.e., the estimate converges in probability to the true value when the number of measurements tends to infinity.
 %the estimated position converges in probability to the true target position when the number of measurements tends to infinity.
 %, which also implies the consensus of target PDFs.
 %which refers to the agreement between UGVs' estimates of target position and the true position of the target. 
@@ -251,10 +255,10 @@ The target motion takes a deterministic discrete-time model: % that can be descr
 \begin{equation}
 \small
 \label{eqn:tar_motion_model}
-\xg_{k+1}=f(\xg_k), %,u^g_k),
+\xg_{k+1}=f(\xg_k,u^g_k),
 %x_{k+1}=A_kx_k+B_ku^g_k+\epsilon,
 \end{equation}\normalsize
-where the superscript $g$ represents the target; $\xg_k\in S$ is the target position at time $k$. % and $u^g_k$ is the control input of the target.
+where the superscript $g$ represents the target; $\xg_k\in S$ is the target position at time $k$ and $u^g_k$ is the target control input.
 %$A_k\in\mathbb{R}^{2\times 2},\;B_k\in\mathbb{R}^{2\times 2}$ and $\epsilon$ denotes the process noise.
 
 %Each UGV constantly measures the target position and the 
@@ -262,30 +266,34 @@ The sensor measurement is described by a stochastic model:
 \begin{equation}\label{eqn:meas_model}
 z^i_k = h_i(\xg_k,x^i_k)+w^i_k,
 \end{equation}
-where the superscript $i\in\left\lbrace 1,\dots,N\right\rbrace$ represents the index of each UGV. $x^i_k\in S$ is the sensor position and $w^i_k$ is the white measurement noise.
+where the superscript $i\in\left\lbrace 1,\dots,N\right\rbrace$ represents the index of each UGV; $x^i_k\in S$ is the sensor position and $w^i_k$ is the white measurement noise.
 % $x^i_k=[x^i_k;\theta^i_k]$ represents the sensor state, consisting of the sensor position $x^i_k$ and direction $\theta^i_k$.
 The measurement function $h_i$ depends on the type of the sensor. 
 %Let $\mathcal{F}(x^i_k)$ denote the sensor's sensing domain, 
 
-%Due to the existence of measurement noise,
-%A probabilistic sensor model, $P(z^i_k|x^g_k;x^i_k)$, that describes 
-We are interested in the conditional probability of a certain measurement $z^i_k$ given the sensor and target state, which can be represented by $P(z^i_k|x^g_k;x^i_k)$ and is dependent on the distribution of the measurement noise.
-This conditional probability is a key component for Bayesian filtering \cite{thrun2005probabilistic}.
+The information of the conditional probability of a certain measurement $z^i_k$ is critical to designing the updating procedure of a Bayesian filter \cite{thrun2005probabilistic}. 
+The conditional probability of $z^i_k$ given the sensor state $x^i_k$ and target state $\xg_k$ is denoted as $P(z^i_k|x^g_k;x^i_k)$, which depends on the distribution of the measurement noise.
+%%Due to the existence of measurement noise,
+%%A probabilistic sensor model, $P(z^i_k|x^g_k;x^i_k)$, that describes 
+%We are interested in the conditional probability of a certain measurement $z^i_k$ given the sensor and target state, which can be represented by $P(z^i_k|x^g_k;x^i_k)$ and is dependent on the distribution of the measurement noise.
+%This conditional probability is a key component for Bayesian filtering \cite{thrun2005probabilistic}.
 %$P(z^i_k|x^g_k;x^i_k)$ relies on the distribution of the measurement noise. 
 %For example, if 
 %Usually, $w^i_k\sim\mathcal{N}(0,\Sigma^i_k)$ is a zero-mean Gaussian white noise and $P(z^i_k|x^g_k;x^i_k)$ can therefore be described as
-For example, if $w^i_k\sim\mathcal{N}(0,\Sigma^i_k)$ is a zero-mean Gaussian white noise. Then, according to \Cref{eqn:meas_model}, $P(z^i_k|x^g_k;x^i_k)$ can be described as
+For example, if $w^i_k$ is a zero-mean Gaussian white noise with covariance $\Gamma_k^i$, then, according to \Cref{eqn:meas_model}, $P(z^i_k|x^g_k;x^i_k)$ can be described as
+%\sim\mathcal{N}(0,\Sigma^i_k)
 %the probabilistic sensor model can be explicitly described as 
-\footnote{For the purpose of simplicity, we will not explicitly write the parameter $x^{i}_k$ in $P(z^i_k|x^g_k;x^i_k)$ for the rest of the paper.}
 \small\begin{equation*}%\label{eqn:prob_sensor3}
-	P(z^i_k|x^g_k)=\mathcal{N}(h_i(\xg_k,x^i_k),\Sigma^i_k).
+	P(z^i_k|x^g_k;x^i_k)=\mathcal{N}(h_i(\xg_k,x^i_k),\Gamma_k^i)\footnote{For the purpose of simplicity, we will not explicitly write the parameter $x^{i}_k$ in $P(z^i_k|x^g_k;x^i_k)$ for the rest of the paper.}.
 \end{equation*}\normalsize
+For non-Gaussian noise distributions, such as the Poisson noise or Cauchy noise \cite{kitagawa1996monte}, $P(z^i_k|x^g_k)$ can also be defined.
+It should be noted that, the approaches presented in this work do not rely on specific distributions of noise.
 
 The $h_i$ for several typical sensor are defined as follows \cite{bishop2010optimality}:
 
 \textbf{Range-only sensors:} 
 %when the target is within the sensor's sensing domain, 
-the $h_i$ only depends on the relative Euclidean distance between the sensor and the target:
+$h_i$ only depends on the relative Euclidean distance between the sensor and the target:
 %\begin{subequations}
 %	\begin{align}
 \begin{equation*}%\label{eqn:ran_only}
@@ -305,7 +313,7 @@ where $\|\cdot\|_2$ is the Euclidean distance in $S$.
 
 \textbf{Bearing-only sensors:} 
 %when the target is within the sensor's sensing domain, 
-the $h_i$ only depends on the relative bearing between the sensor and the target:
+$h_i$ only depends on the relative bearing between the sensor and the target:
 \begin{equation*}
 	h_i(\xg_k,x^i_k)=\measuredangle (\xg_k-x^i_k),
 \end{equation*}
@@ -318,7 +326,7 @@ the $h_i$ only depends on the relative bearing between the sensor and the target
 %\end{equation}
 where $\measuredangle$ denotes the angle from the sensor to the target.
 
-\textbf{Range-bearing sensors:} the $h_i$ includes both the relative distance and bearing: % between the sensor and the target:
+\textbf{Range-bearing sensors:} $h_i$ includes both the relative distance and bearing: % between the sensor and the target:
 \begin{equation*}
 	h_i(x^g_k,x^i_k)=x^g_k-x^i_k.
 \end{equation*}
@@ -510,7 +518,7 @@ where $P(\X_k|\X_{k-1})$ represents the state transition probability of the targ
 For the deterministic motion model, the state transition probability is simplified to be
 \small\begin{equation}\label{eqn:markov_model}
 P(\X_k=c_k|\X_{k-1}=c_{k-1})=\begin{cases}
-1 & \text{if}\quad c_k=f(c_{k-1})\\ %,u^g_1
+1 & \text{if}\quad c_k=f(c_{k-1},u^g_{k-1})\\ %
 0 & \text{otherwise}
 \end{cases}.
 \end{equation}\normalsize
@@ -698,7 +706,7 @@ K_i=\left[\int\limits_{\X\in S} P^i_{pdf}(\X|\mathbf{z}^{i}_{1:k-1})\prod\limits
 
 \subsection{Algorithm of LIFO-DBF for Moving Target}\label{subsec:LIFO-dbf-mov-tar}
 This section derives the LIFO-DBF for localizing a moving target. 
-Instead of storing last-step PDF, at time $k$ each UGV maintains an individual PDF of time $(k-N)$ and a collection of historical measurements, called the \textit{record set}, from time $(k-N+1)$ to $k$. 
+Instead of storing last-step PDF, at time $k$ each UGV maintains an individual PDF of time $(k-N)$ and a collection of measurement history, called the \textit{record set}, from time $(k-N+1)$ to $k$. 
 The $i^\text{th}$ individual PDF is then alternatively predicted and updated by using the aforementioned Bayesian filter (\Cref{eqn:bayes_pred,eqn:bayes_upd}) from $(k-N)$ to $k$ to obtain $P^i_{pdf}(\X_k|\mathbf{z}^{i}_{1:k})$.
 
 \cref{fig:LIFO-DBF} illustrates the LIFO-DBF procedure for the $1^\text{st}$ UGV as an example \footnote{Due to the space limit, in this figure we use $P^i_{pdf}(k)$, $P^i_{pdf}(k-N)$ and $P^i_{pdf}(k-N+1)$ to represent $P^i_{pdf}(\X|\mathbf{z}^{i}_{1:k})$ $P^i_{pdf}(\X|\mathbf{z}^{i}_{1:k-N})$ and $P^i_{pdf}(\X|\mathbf{z}^{i}_{1:k-N+1})$, respectively.}.
@@ -725,7 +733,7 @@ The \textbf{LIFO-DBF algorithm} for moving target is stated in \cref{alg:lifo-db
 %\begin{rem}
 	It is worth noting that, for the static target, each UGV only needs current-step CB to update individual PDFs. 
 	Therefore, besides storing its own individual PDF of size $O(M^2)$, only current-step CB of size $O(N)$ is stored in an UGV's memory and all previous CBs can be discarded, which means that the size of needed memory is $O(N+M^2)$. 
-	On the contrary, for the moving target, each UGV needs to store a set of historical measurements 
+	On the contrary, for the moving target, each UGV needs to store a set of measurement history
 %	(except current step CB) triangular matrix
 	of size $O(N^2)$ and an individual PDF of size $O(M^2)$. Therefore the size of the needed memory for each UGV is $O(M^2+N^2)$.
 	This is generally larger than that of statistics dissemination-based methods, the memory of which is $O(M^2)$. 
@@ -1337,7 +1345,7 @@ It can also be noticed that, LIFO-DBF achieves similar performance as CF, while 
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.47\textwidth]{figures/exp_setup_rdsize}
+	\includegraphics[width=0.45\textwidth]{figures/exp_setup_rdsize}
 	\caption{Experiment Setup. Left: Three robots are used for localizing the target (black box). The room size is $9.09m\times 6.37m$. The orange sectors show the sonar sensing domain. Red dashed lines show the trajectory of each robot. Right: The mobile robot platform is equipped with different sensors. The sonar sensor is used for target localization.}\label{fig:exp_scene}
 \end{figure}
 
@@ -1403,7 +1411,7 @@ The experiment equipments and environment is illustrated in \Cref{fig:exp_scene}
 %In this experiment, we only utilize the sonar sensors for localization, since they has less measurement accuracy than other two types of sensors, which provides an effective testbed for evaluating the proposed method. 
 %using sonar sensors mounted on a P3DX robot platform for localizing a static target (\Cref{fig:exp_scene}).
 The sonar sensor on the mobile robot is used for target localization and the sonar has the sensing field of view of $25\degree$ and the range of $4.9m$.
-Its measurement noise is modeled as a zero-mean Gaussian random variable with standard deviation $0.5m$.
+Its measurement noise is modeled as a zero-mean Gaussian random variable with standard deviation $0.51m$, which is rather inaccurate to use single robot to localize the target.
 %The experiment is conducted in an indoor environment and 
 The probability map is constructed on a grid that is evenly separated with $0.1m$ interval on each axis.
 %To avoid the inaccuracy caused by sensor state measurement, 

@@ -5,12 +5,12 @@ set(0,'DefaultFigureWindowStyle','docked')
 set(0,'defaultAxesFontName', 'Times New Roman')
 set(0,'defaultTextFontName', 'Times New Roman')
 
-save_data = false; % save data or not
-show_plot = true; % draw plots or not
-save_plot = true; % save plots or not
+save_data = true; % save all sim data
+show_plot = true; % draw plots
+save_plot = true; % save plots and corresponding .mat file 
 sim_mode = true;
 
-sim_len = 50;%50; % max step
+sim_len = 30;%50; % max step
 % rounds of consensus at each time step
 cons_step = 10;
 cons_fig = false; % whether to show intermediate step of consensus
@@ -19,7 +19,7 @@ cons_fig = false; % whether to show intermediate step of consensus
 trial_num = 10; % 10 % number of trials to run
 
 % select the motion of agents and target
-selection = 1;
+selection = 4;
 switch selection
     case 1,  r_move= 0; tar_move=0;
     case 2,  r_move= 0; tar_move=1;
@@ -32,11 +32,12 @@ end
 if r_move == 0
     sim_r_idx = [1,3,5];
 else
-    sim_r_idx = [1,3,5];
+%     sim_r_idx = [1,3,5];
+    sim_r_idx = 4;
 end
 
 % the sensor type of each robot
-sensor_set_type = 'brg'; %'brg':bearing ,'ran':range, 'rb':range-bearing, 'htr':heterogeneous
+sensor_set_type = 'htr'; %'brg':bearing ,'ran':range, 'rb':range-bearing, 'htr':heterogeneous
 switch sensor_set_type
     case 'brg'
         sensor_set = {'brg','brg','brg','brg','brg','brg'};

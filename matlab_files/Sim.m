@@ -91,9 +91,9 @@ classdef Sim
                 
                 % save figure      
                 if save_plot
-                    if (count == 1) || (count == 15) || (count == 30) || (count == 60) % (count == 3) || (count == 7) ...
-%                             (count == 10) || (count == 20) || (count ==
-%                             30) || (count == 40) || (count == 5) || (count == 45)
+                    if (count == 1) || (count == 3) || (count == 7) || (count == 10) ...
+                            || (count == 20) || (count == 30) || (count == 40)...
+                            || (count == 5) || (count == 45) %|| (count == 10) || (count == 20) || (count == 30) 
                         switch this.selection
                             case 1,  tag = 'sta_sen_sta_tar';
                             case 2,  tag = 'sta_sen_mov_tar';
@@ -110,7 +110,7 @@ classdef Sim
                         end
                         
                         % save the plot
-                        file_name2 = sprintf('./figures/data_exchange/Journal/%s_%s_rbt%d_step%d_%s',...
+                        file_name2 = sprintf('./figures/data_exchange/Journal/process_plot/%s_%s_rbt%d_step%d_%s',...
                             tag2,tag,k,count,datestr(now,1));
                         saveas(dbf_hd,file_name2,'fig')
                         saveas(dbf_hd,file_name2,'jpg')
@@ -523,7 +523,7 @@ classdef Sim
                 case 'htr', tag2 = 'hetero';
             end
             
-            file_name = sprintf('./figures/data_exchange/Journal/metrics_%s_%s_%s.mat',tag2,tag,datestr(now,1));            
+            file_name = sprintf('./figures/data_exchange/Journal/metrics_plot/metrics_%s_%s_%s.mat',tag2,tag,datestr(now,1));            
         end
         
         function file_name = saveExpData(this)
@@ -537,8 +537,7 @@ classdef Sim
             
             tag2 = 'sonar';
             
-            file_name = sprintf('./figures/data_exchange/Journal/metrics_%s_%s_%s.mat',tag2,tag,datestr(now,1));            
-        end
-        
+            file_name = sprintf('./figures/data_exchange/Journal/metrics_plot/metrics_%s_%s_%s.mat',tag2,tag,datestr(now,1));            
+        end        
     end
 end
