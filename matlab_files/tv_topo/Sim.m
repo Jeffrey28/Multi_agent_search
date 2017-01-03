@@ -18,6 +18,7 @@ classdef Sim
         sim_res; % records the metrics of different filtering methods
         fig_cnt; % counter for figure
         sensor_set_type; % the type of robot team        
+        dir_name; % directory for saving plots
     end
     
     methods
@@ -37,6 +38,7 @@ classdef Sim
             this.fig_cnt = 1;
             this.sensor_set_type = inPara.sensor_set_type;
             this.selection = inPara.selection;
+            this.dir_name = './figures/JDSMC';
         end
        
         
@@ -110,14 +112,14 @@ classdef Sim
                         end
                         
                         % save the plot
-                        file_name2 = sprintf('./figures/data_exchange/Journal/process_plot/%s_%s_rbt%d_step%d_%s',...
-                            tag2,tag,k,count,datestr(now,1));
+                        file_name2 = fullfile(this.dir_name,sprintf('process_plot/%s_%s_rbt%d_step%d_%s',...
+                            tag2,tag,k,count,datestr(now,1)));
                         saveas(dbf_hd,file_name2,'fig')
                         saveas(dbf_hd,file_name2,'jpg')
                         
                         % save data of prob map
-                        file_name_map = sprintf('./figures/data_exchange/Journal/process_plot/%s_%s_map_rbt%d_step%d_%s',...
-                            tag2,tag,k,count,datestr(now,1));
+                        file_name_map = fullfile(this.dir_name,sprintf('process_plot/%s_%s_map_rbt%d_step%d_%s',...
+                            tag2,tag,k,count,datestr(now,1)));
                         
                         tmp_map = rbt{k}.dbf_map;
                         save(file_name_map,'tmp_map');
@@ -125,13 +127,13 @@ classdef Sim
                         % save all robot's trajectory when k is the last
                         % element of this.sim_r_idx
                         if k == this.sim_r_idx(end)
-                            file_name_tar_traj = sprintf('./figures/data_exchange/Journal/process_plot/%s_%s_tar_traj_%s',...
-                                    tag2,tag,datestr(now,1));
+                            file_name_tar_traj = fullfile(this.dir_name,sprintf('process_plot/%s_%s_tar_traj_%s',...
+                                    tag2,tag,datestr(now,1)));
                             tmp_tar_traj = fld.target.traj;
                             save(file_name_tar_traj,'tmp_tar_traj');
                             for j = 1:this.num_robot
-                                file_name_rbt_traj = sprintf('./figures/data_exchange/Journal/process_plot/%s_%s_rbt%d_traj_%s',...
-                                    tag2,tag,j,datestr(now,1));
+                                file_name_rbt_traj = fullfile(this.dir_name,sprintf('process_plot/%s_%s_rbt%d_traj_%s',...
+                                    tag2,tag,j,datestr(now,1)));
                                 tmp_rbt_traj = rbt{j}.traj;
                                 save(file_name_rbt_traj,'tmp_rbt_traj');
                             end
@@ -523,7 +525,7 @@ classdef Sim
                 case 'htr', tag2 = 'hetero';
             end
             
-            file_name = sprintf('./figures/data_exchange/Journal/metrics_plot/metrics_%s_%s_%s.mat',tag2,tag,datestr(now,1));            
+            file_name = fullfile(this.dir_name,sprintf('metrics_plot/metrics_%s_%s_%s.mat',tag2,tag,datestr(now,1)));            
         end
         
         function file_name = saveExpData(this)
@@ -537,7 +539,7 @@ classdef Sim
             
             tag2 = 'sonar';
             
-            file_name = sprintf('./figures/data_exchange/Journal/metrics_plot/metrics_%s_%s_%s.mat',tag2,tag,datestr(now,1));            
+            file_name = fullfile(this.dir_name,sprintf('metrics_plot/metrics_%s_%s_%s.mat',tag2,tag,datestr(now,1)));
         end        
     end
 end

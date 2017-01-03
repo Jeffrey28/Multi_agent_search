@@ -5,9 +5,9 @@ set(0,'DefaultFigureWindowStyle','docked')
 set(0,'defaultAxesFontName', 'Times New Roman')
 set(0,'defaultTextFontName', 'Times New Roman')
 
-save_data = true; % save all sim data
+save_data = false; % save all sim data
 show_plot = true; % draw plots
-save_plot = true; % save plots and corresponding .mat file 
+save_plot = false; % save plots and corresponding .mat file 
 sim_mode = true;
 
 sim_len = 30;%50; % max step
@@ -110,8 +110,41 @@ T_set = [20,15,30,25,15,20];
 dir_set = [1 -1 1 -1 -1 -1];
 
 % communication neighbor
-rbt_nbhd = {[2,6],[1,3],[2,4],[3,5],[4,6],[1,5]}; %{[],[],[],[],[],[]};
+% rbt_nbhd = {[2,6],[1,3],[2,4],[3,5],[4,6],[1,5]}; %{[],[],[],[],[],[]};
             
+topo_select = 1;
+
+switch topo_select
+    case 1
+        rbt_nbhd = {{[2,6],[]};
+            {1,3};
+            {4,2};
+            {[3,5],[]};
+            {4,6};
+            {1,5}};
+    case 2
+        rbt(1).top(1).neighbour=6;
+        rbt(2).top(1).neighbour=0;
+        rbt(3).top(1).neighbour=5;
+        rbt(4).top(1).neighbour=0;
+        rbt(5).top(1).neighbour=3;
+        rbt(6).top(1).neighbour=1;
+        
+        rbt(1).top(2).neighbour=2;
+        rbt(2).top(2).neighbour=1;
+        rbt(3).top(2).neighbour=0;
+        rbt(4).top(2).neighbour=5;
+        rbt(5).top(2).neighbour=4;
+        rbt(6).top(2).neighbour=0;
+        
+        rbt(1).top(3).neighbour=0;
+        rbt(2).top(3).neighbour=3;
+        rbt(3).top(3).neighbour=2;
+        rbt(4).top(3).neighbour=0;
+        rbt(5).top(3).neighbour=6;
+        rbt(6).top(3).neighbour=5;
+end
+
 mode_num = 4;
 
 u_set = [[1;1],[-1;-1],[1;-1],[-1;1]]; %inPara.u_set; 

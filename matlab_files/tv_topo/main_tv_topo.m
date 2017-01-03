@@ -1,26 +1,8 @@
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Multi Sensor-based Distributed Bayesian Estimator
-% This code is for distributed bayesian estimator for target positioning and tracking
-% (1) Target: Static or moving target with unknown position
-% (2) Sensors: Binary sensor with only 0 or 1 measurement
-% (3) Strategy: (3.1) Observation Exchange strategy (Neighbourhood or Global-Exchange)
-%               (3.2) Probability Map Consensus strategy (single step or multi-step)
-%% 2015 June; All Copyright Reserved
-% Fixed topology case
-% 3/14/2016
-% original paper got rejected from ICRA 16 and T-ASE. program is modified
-% for CDC 16
-% compare the LIFO-DBF with consensus method and centralized method
-% 5/4/16
-% re-write the fixed-topology case in OOP. Hopefully this will make my
-% coding cleaner, more readable and easier to adapt
-% 7/23/16
-% continued re-writing the code in OOP. the paper based on this code got
-% rejected in CDC 16
-% 10/3/16
-% continued debugging the code. will implement different sensor model
-% 10/14/16
-% this file is for generating and analyzing simulation data
+% 2017 January; All Copyright Reserved
+% 1/1/17
+% get the code from the fixed-topology case
 
 % main function for running the simulation. use with simSetup
 clearvars -except upd_matrix
@@ -165,21 +147,41 @@ for trial_cnt = 1%1:trial_num
         % step (3) dbf
         for ii = 1:num_robot                        
             inPara3 = struct('selection',selection,'target_model',fld.target.model_idx);
-            rbt{ii} = rbt{ii}.DBF(inPara3);                        
+            rbt{ii} = rbt{ii}.DBF(inPara3);
         end    
 
         % step (1) exchange
         tmp_rbt = rbt; % use tmp_rbt in data exchange
         
-        for ii = 1:num_robot
+        % decide current topology
+        switch topo_select
+            case 1
+                if rem(count,2) == 1
+                    top_idx = 1; % use topology 1
+                else
+                    top_idx = 2; % use topology 2
+                end
+            case 2
+                if rem(count,3) == 1 %
+                    top_idx = 1; % use topology 1
+                elseif rem(count,3) == 2
+                    top_idx = 2; % use topology 2
+                else
+                    top_idx = 3; % use topology 2
+                end
+        end
+        
+        % exchange happens here
+        for ii = 1:num_robot            
             inPara2 = struct;
             inPara2.selection = selection;
-            inPara2.rbt_nbhd_set = rbt(rbt{ii}.nbhd_idx);
+            inPara2.rbt_nbhd_set = rbt(rbt{ii}.nbhd_idx{top_idx});
             tmp_rbt{ii} = tmp_rbt{ii}.dataExch(inPara2);
         end
         rbt = tmp_rbt;
         
          %% Concensus        
+         %{
          % (1) exchange pdfs to achieve concensus
          % (2) observe and update the stored own observations at time k
          % (3) update probability map
@@ -211,6 +213,7 @@ for trial_cnt = 1%1:trial_num
          %}
         
          %% centeralized filter
+         %{
          % (1) observe and update the stored observations of all sensor at time k
          % (2) update probability map
          % (2) repeat step (1)         
@@ -249,11 +252,13 @@ for trial_cnt = 1%1:trial_num
          count = count + 1;
          
          %% compute metrics
+         %{
          for ii = 1:num_robot
              rbt{ii} = rbt{ii}.computeMetrics(fld,'dbf');
              rbt{ii} = rbt{ii}.computeMetrics(fld,'cons');
              rbt{ii} = rbt{ii}.computeMetrics(fld,'cent');
          end
+         %}
     end
         
     sim.rbt_set{trial_cnt}.rbt = rbt;
