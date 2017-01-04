@@ -429,8 +429,6 @@ classdef Robot
                        end
                     end
                     
-                   
-                    
                     % exchange measurement list                    
 %                     this.meas_list(this.idx).meas_hist = ;
                     
@@ -442,18 +440,16 @@ classdef Robot
             for ll = 1:this.num_robot
                 % the tracked time tag for ego robot's track list
                 tmp_track_time = this.track_list(this.idx,end);
-                if ismember(tmp_track_time,this.buffer(jj).k)
+                if ismember(tmp_track_time,this.buffer(ll).k)
                     this.track_list(this.idx,ll) = 1;
                 end
             end
-            
         end
         
         %% filters
-        
         function this = DBF(this,inPara)
             % filtering
-            %% update by bayes rule
+            %% update pdf by bayes rule
             % note: main computation resource are used in calling sensorProbBin function.
             % when using grid map, can consider precomputing
             % results and save as a lookup table
@@ -466,16 +462,17 @@ classdef Robot
             % tmp_meas_hist: each cell contains binary array indicating
             % whether a certain measurement is obtained
 %             tmp_meas_hist = cell(this.num_robot,1);
-            tmp_meas_hist = zeros(this.num_robot,this.k);
+            tmp_meas_hist = -ones(this.num_robot,this.k);
             for jj=1:this.num_robot
 %                  tmp_hist = zeros(1,this.k);
 %                  tmp_hist(this.buffer(jj).k) = 1;
 %                  tmp_meas_hist{jj} = tmp_hist;
-                   tmp_meas_hist(jj,this.buffer(jj).k) = 1;
+                   tmp_meas_hist(jj,this.buffer(jj).k~=-1) = 1;
             end
             
             for t = (this.talign_t+1):this.step_cnt
-                display(t)
+                sprintf('Robot.m, line 474, t=%d',t)
+                
                 upd_matrix = this.upd_matrix{this.tar_mod(t)};
                 %% one-step prediction step
                 % p(x_k+1) = sum_{x_k} p(x_k+1|x_k)p(x_k)
@@ -491,70 +488,106 @@ classdef Robot
                 %% updating step
                 for jj=1:this.num_robot
 %                     display(jj)
-                    if (~isempty(this.buffer(jj).k)) && (this.buffer(jj).k(end) >= t)
+                    if (~isempty(this.buffer(jj).k)) && (ismember(t,this.buffer(jj).k))
                         % note: this update is not valid in real
                         % experiment since we don't communicate
                         % probability. This line of code is for
                         % computation reduction in simulation
                         tmp_map = tmp_map.*this.buffer(jj).lkhd_map{t};
-%                     else
-%                         talign_flag = 0;
+                    else
+                        talign_flag = 0;
                     end
-                end
+                end               
                 
-                % check if track_list items corresponding to earliest time 
-                % tag are all 1. Don't increase talign_t if not all 1.        
-                [min_t,~] = min(this.track_list(:,end));
-                min_idx = (this.track_list(:,end) == min_t);
-                
-                if nnz(this.track_list(min_idx,1:end-1)) == numel(this.track_list(min_idx,1:end-1))
-                    talign_flag = 1;
-                else
-                    talign_flag = 0;
-                end
-                
-                % update robot's talign_map if the track_list for a certain time is full
-                if (talign_flag == 1) && (t <= min_t)
+                % update robot's talign_map if the all robots' measurements 
+                % in CB for contiguous times are full, i.e. tmp_at,
+                % tmp_at+1, ..., tmp_at+m are all full
+                if (t == tmp_at+1) && (talign_flag == 1)
                     this.talign_map = tmp_map;
-                    this.talign_map = this.talign_map/sum(sum(this.talign_map));
-                    
-                    % when we increase the aligned time, we can remove
-                    % the previous data
-                    if tmp_at > 0
-                        for jj=1:this.num_robot
-                            this.buffer(jj).pos(:,tmp_at) = -ones(2,1);
-                            this.buffer(jj).z(:,tmp_at) = -1;
-                            this.buffer(jj).k(tmp_at) = -1;
-                            % note: lkhd_map is a cell, therefore we
-                            % keep all the old cell (empty cell) but
-                            % the length of lkhd_map will not decrease.
-                            % For pos, z, k, they are arrays, so their
-                            % length is constant (except the first few
-                            % steps). This should be noticed when
-                            % deciding the index of the element to
-                            % be removed
-                            this.buffer(jj).lkhd_map{tmp_at} = [];
-                        end
-                                                
-                        for jj=1:this.num_robot
-%                             tmp_meas_hist{jj}(tmp_t) = 0;
-%                             this.track_list(min_idx,jj) = tmp_meas_hist{jj}(tmp_t+1);
-                            tmp_meas_hist(jj,tmp_at) = 0;                            
-                        end
-                    end
-                    
-                    this.track_list(this.idx,end) = tmp_at+1;
-                    for jj=1:this.num_robot                        
-                        this.track_list(ll,jj) = tmp_meas_hist(jj,tmp_at+1);
-                    end     
-                    
+                    this.talign_map = this.talign_map/sum(sum(this.talign_map));                    
                     tmp_at = tmp_at+1;
                 end
-                
-                this.talign_t = tmp_at;
-                this.dbf_map = tmp_map;
-                this.dbf_map = this.dbf_map/sum(sum(this.dbf_map));
             end
+            
+            this.talign_t = tmp_at;
+            this.dbf_map = tmp_map;
+            this.dbf_map = this.dbf_map/sum(sum(this.dbf_map));
+            
+            %% update CB using the track_list
+            % check if track_list items corresponding to earliest time
+            % tag are all 1. Don't increase talign_t if not all 1.
+            [min_t,~] = min(this.track_list(:,end));
+            
+            % remove all records in CB whose time tages are less than min_t
+            if min_t > 1
+                for jj=1:this.num_robot
+                    this.buffer(jj).pos(:,1:min_t-1) = -ones(2,min_t-1);
+                    this.buffer(jj).z(:,1:min_t-1) = -ones(size(this.buffer(jj).z,1),min_t-1);
+                    this.buffer(jj).k(1:min_t-1) = -ones(1,min_t-1);
+                    % note: lkhd_map is a cell, therefore we
+                    % keep all the old cell (empty cell) but
+                    % the length of lkhd_map will not decrease.
+                    % For pos, z, k, they are arrays, so their
+                    % length is constant (except the first few
+                    % steps). This should be noticed when
+                    % deciding the index of the element to
+                    % be removed
+                    this.buffer(jj).lkhd_map{1:min_t-1} = [];
+                    
+                    tmp_meas_hist(jj,1:tmp_at) = -1;                    
+                end
+            end
+            
+            % for records with time tags greater or equal to min_t, 
+            % continue removing them in CB when track_list indicates so
+            t2 = min_t;
+            min_idx = (this.track_list(:,end) == t2);
+%             pre_min_idx = []; % this one is used to store the min_idx that contains full rows in track list. will be used to update track_list later.
+%             while (1)                 
+%                 if nnz(this.track_list(min_idx,1:end-1)) == numel(this.track_list(min_idx,1:end-1))
+%                     if t2 > 0
+%                         for jj = 1:this.num_robot
+%                             this.buffer(jj).pos(:,t2) = -ones(2,1);
+%                             this.buffer(jj).z(:,t2) = -ones(size(this.buffer(jj).z,1),1);
+%                             this.buffer(jj).k(t2) = -ones(1,1);
+%                             this.buffer(jj).lkhd_map{t2} = [];
+%                             tmp_meas_hist(jj,t2) = -1;
+%                         end
+%                     end
+%                     pre_min_idx = min_idx;
+%                     t2 = t2+1;
+%                 else
+%                     break
+%                 end
+%                 min_idx = (this.track_list(:,end) == t2);
+%             end
+%                        
+%             this.track_list(this.idx,end) = t2;
+%             this.track_list(pre_min_idx,1:this.num_robot) = zeros(length(min_idx),this.num_robot);
+%             this.track_list(this.idx,1:this.num_robot) = tmp_meas_hist(1:this.num_robot,t2);
+%              while (1)                 
+                if nnz(this.track_list(min_idx,1:end-1)) == numel(this.track_list(min_idx,1:end-1))
+                    if t2 > 0
+                        for jj = 1:this.num_robot
+                            this.buffer(jj).pos(:,t2) = -ones(2,1);
+                            this.buffer(jj).z(:,t2) = -ones(size(this.buffer(jj).z,1),1);
+                            this.buffer(jj).k(t2) = -ones(1,1);
+                            this.buffer(jj).lkhd_map{t2} = [];
+                            tmp_meas_hist(jj,t2) = -1;
+                        end                                                
+                    end
+                    this.track_list(this.idx,end) = t2+1;
+                    this.track_list(min_idx,1:this.num_robot) = zeros(length(min_idx),this.num_robot);
+                    this.track_list(this.idx,1:this.num_robot) = tmp_meas_hist(1:this.num_robot,t2+1);                   
+%                     min_idx = (this.track_list(:,end) == t2+1);
+                    
+%                     t2 = t2+1;
+%                 else
+%                     break
+                end
+%             end
+                       
+            
         end
         
         function this = updMap(this,inPara)
