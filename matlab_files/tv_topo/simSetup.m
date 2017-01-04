@@ -112,7 +112,7 @@ dir_set = [1 -1 1 -1 -1 -1];
 % communication neighbor
 % rbt_nbhd = {[2,6],[1,3],[2,4],[3,5],[4,6],[1,5]}; %{[],[],[],[],[],[]};
             
-topo_select = 1;
+topo_select = 3;
 
 switch topo_select
     case 1
@@ -143,6 +143,13 @@ switch topo_select
         rbt(4).top(3).neighbour=0;
         rbt(5).top(3).neighbour=6;
         rbt(6).top(3).neighbour=5;
+    case 3
+        rbt_nbhd = {{[2,6]};
+            {[1,3]};
+            {[4,2]};
+            {[3,5]};
+            {[4,6]};
+            {[1,5]}};
 end
 
 mode_num = 4;

@@ -169,6 +169,8 @@ for trial_cnt = 1%1:trial_num
                 else
                     top_idx = 3; % use topology 2
                 end
+            case 3
+                top_idx = 1;
         end
         
         % exchange happens here
