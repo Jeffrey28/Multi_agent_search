@@ -1,6 +1,6 @@
 This is BibTeX, Version 0.99d (TeX Live 2015)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
-The top-level auxiliary file: JDSMC.aux
+The top-level auxiliary file: IE_simp.aux
 The style file: IEEEtran.bst
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
@@ -8,64 +8,61 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: references.bib
-Repeated entry---line 351 of file references.bib
+Repeated entry---line 474 of file references.bib
  : @article{hlinka2012likelihood
  :                              ,
 I'm skipping whatever remains of this entry
-Warning--I didn't find a database entry for "amemiya1985advanced"
-Warning--I didn't find a database entry for "chen2003bayesian"
--- IEEEtran.bst version 1.13 (2008/09/30) by Michael Shell.
--- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- IEEEtran.bst version 1.11 (2003/04/02) by Michael Shell.
+-- http://www.ctan.org/tex-archive/macros/latex/contrib/supported/IEEEtran/
 -- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
 Warning--empty year in 2005distributed
 Warning--empty year in gu2007distributed
 Warning--empty year in bandyopadhyay2014distributed
 Warning--empty year in zuo2006bandwidth
-Warning--empty year in vemula2006target
-Warning--empty year in beaudeau2012target
 Warning--empty year in sheng2005distributed
+Warning--empty year in beaudeau2012target
 Warning--empty year in djuric2011non
 
 Done.
-You've used 24 entries,
-            4039 wiz_defined-function locations,
-            953 strings with 12053 characters,
-and the built_in function-call counts, 21623 in all, are:
-= -- 1782
-> -- 474
-< -- 243
-+ -- 273
-- -- 66
-* -- 1049
-:= -- 3086
-add.period$ -- 51
-call.type$ -- 24
-change.case$ -- 24
-chr.to.int$ -- 573
-cite$ -- 32
-duplicate$ -- 1493
-empty$ -- 1661
-format.name$ -- 87
-if$ -- 5034
+You've used 33 entries,
+            3975 wiz_defined-function locations,
+            990 strings with 13317 characters,
+and the built_in function-call counts, 27117 in all, are:
+= -- 2213
+> -- 596
+< -- 289
++ -- 343
+- -- 87
+* -- 1299
+:= -- 3971
+add.period$ -- 69
+call.type$ -- 33
+change.case$ -- 29
+chr.to.int$ -- 669
+cite$ -- 40
+duplicate$ -- 1900
+empty$ -- 2132
+format.name$ -- 112
+if$ -- 6286
 int.to.chr$ -- 0
-int.to.str$ -- 24
-missing$ -- 220
-newline$ -- 95
-num.names$ -- 24
-pop$ -- 468
+int.to.str$ -- 33
+missing$ -- 290
+newline$ -- 119
+num.names$ -- 33
+pop$ -- 621
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 1672
+skip$ -- 2129
 stack$ -- 0
-substring$ -- 1362
-swap$ -- 1313
-text.length$ -- 52
+substring$ -- 1589
+swap$ -- 1639
+text.length$ -- 66
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 24
-warning$ -- 8
-while$ -- 117
-width$ -- 26
-write$ -- 258
+type$ -- 0
+warning$ -- 7
+while$ -- 142
+width$ -- 35
+write$ -- 338
 (There was 1 error message)

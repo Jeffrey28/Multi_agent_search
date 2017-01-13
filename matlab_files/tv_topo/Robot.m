@@ -412,7 +412,7 @@ classdef Robot
                     this.buffer(jj).lkhd_map = [this.buffer(jj).lkhd_map,tmp_rbt.buffer(jj).lkhd_map];
                     
                     % second pick the unique items in terms of the
-                    % measurement time
+                    % measurement time                    
                     [tmp_k,idx,~] = unique(this.buffer(jj).k);
                     this.buffer(jj).k = tmp_k;
                     this.buffer(jj).pos = this.buffer(jj).pos(:,idx);
@@ -467,7 +467,9 @@ classdef Robot
 %                  tmp_hist = zeros(1,this.k);
 %                  tmp_hist(this.buffer(jj).k) = 1;
 %                  tmp_meas_hist{jj} = tmp_hist;
-                   tmp_meas_hist(jj,this.buffer(jj).k~=-1) = 1;
+                if ~isempty(this.buffer(jj).pos)
+                    tmp_meas_hist(jj,this.buffer(jj).pos(1,:)~=-1) = 1;
+                end
             end
             
             for t = (this.talign_t+1):this.step_cnt
@@ -523,7 +525,8 @@ classdef Robot
                 for jj=1:this.num_robot
                     this.buffer(jj).pos(:,1:min_t-1) = -ones(2,min_t-1);
                     this.buffer(jj).z(:,1:min_t-1) = -ones(size(this.buffer(jj).z,1),min_t-1);
-                    this.buffer(jj).k(1:min_t-1) = -ones(1,min_t-1);
+%                     this.buffer(jj).k(1:min_t-1) = -ones(1,min_t-1);
+
                     % note: lkhd_map is a cell, therefore we
                     % keep all the old cell (empty cell) but
                     % the length of lkhd_map will not decrease.
@@ -532,9 +535,9 @@ classdef Robot
                     % steps). This should be noticed when
                     % deciding the index of the element to
                     % be removed
-                    this.buffer(jj).lkhd_map{1:min_t-1} = [];
+                    this.buffer(jj).lkhd_map(1:min_t-1) = cell(min_t-1,1);
                     
-                    tmp_meas_hist(jj,1:tmp_at) = -1;                    
+                    tmp_meas_hist(jj,1:min_t-1) = -1;
                 end
             end
             
@@ -571,12 +574,12 @@ classdef Robot
                         for jj = 1:this.num_robot
                             this.buffer(jj).pos(:,t2) = -ones(2,1);
                             this.buffer(jj).z(:,t2) = -ones(size(this.buffer(jj).z,1),1);
-                            this.buffer(jj).k(t2) = -ones(1,1);
+%                             this.buffer(jj).k(t2) = -ones(1,1);
                             this.buffer(jj).lkhd_map{t2} = [];
                             tmp_meas_hist(jj,t2) = -1;
                         end                                                
                     end
-                    this.track_list(this.idx,end) = t2+1;
+                    this.track_list(min_idx,end) = t2+1;
                     this.track_list(min_idx,1:this.num_robot) = zeros(length(min_idx),this.num_robot);
                     this.track_list(this.idx,1:this.num_robot) = tmp_meas_hist(1:this.num_robot,t2+1);                   
 %                     min_idx = (this.track_list(:,end) == t2+1);

@@ -5,9 +5,9 @@ set(0,'DefaultFigureWindowStyle','docked')
 set(0,'defaultAxesFontName', 'Times New Roman')
 set(0,'defaultTextFontName', 'Times New Roman')
 
-save_data = true; % save all sim data
+save_data = false; % save all sim data
 show_plot = true; % draw plots
-save_plot = true; % save plots and corresponding .mat file 
+save_plot = false; % save plots and corresponding .mat file 
 sim_mode = true;
 
 sim_len = 30;%50; % max step

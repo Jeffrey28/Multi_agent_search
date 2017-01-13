@@ -6,7 +6,7 @@ set(0,'defaultAxesFontName', 'Times New Roman')
 set(0,'defaultTextFontName', 'Times New Roman')
 
 save_data = false; % save all sim data
-show_plot = true; % draw plots
+show_plot = false; % draw plots
 save_plot = false; % save plots and corresponding .mat file 
 sim_mode = true;
 
@@ -16,7 +16,7 @@ cons_step = 10;
 cons_fig = false; % whether to show intermediate step of consensus
 
 % Setup for multiple trials
-trial_num = 10; % 10 % number of trials to run
+trial_num = 2; % 10 % number of trials to run % note: when trial_num =1, error occurs when computing the performance metrics
 
 % select the motion of agents and target
 selection = 4;
@@ -33,7 +33,7 @@ if r_move == 0
     sim_r_idx = [1,3,5];
 else
 %     sim_r_idx = [1,3,5];
-    sim_r_idx = 4;
+    sim_r_idx = 3;
 end
 
 % the sensor type of each robot
@@ -56,7 +56,7 @@ dt = 1; % discretization time interval
 
 fld_size = [100;100];  % Field size
 
-filter_type = [1 0 0]; % 1: turn on the corresponding filters. [dbf,cons,cent]
+filter_type = [1 1 1]; % 1: turn on the corresponding filters. [dbf,cons,cent]
 
 %% define target and robot positions
 % used for initialization, don't need to call again unless necessary
@@ -112,7 +112,7 @@ dir_set = [1 -1 1 -1 -1 -1];
 % communication neighbor
 % rbt_nbhd = {[2,6],[1,3],[2,4],[3,5],[4,6],[1,5]}; %{[],[],[],[],[],[]};
             
-topo_select = 3;
+topo_select = 1;
 
 switch topo_select
     case 1
@@ -143,13 +143,27 @@ switch topo_select
         rbt(4).top(3).neighbour=0;
         rbt(5).top(3).neighbour=6;
         rbt(6).top(3).neighbour=5;
-    case 3
+    case 3 % fixed topology
         rbt_nbhd = {{[2,6]};
             {[1,3]};
             {[4,2]};
             {[3,5]};
             {[4,6]};
             {[1,5]}};
+    case 4 % directed graph
+        rbt_nbhd = {{2,[]};
+            {3,[]};
+            {4,[]};
+            {[],5};
+            {[],6};
+            {[],1}};
+    case 5 
+        rbt_nbhd = {{6};
+            {1};
+            {2};
+            {3};
+            {4};
+            {5}};
 end
 
 mode_num = 4;

@@ -31,7 +31,7 @@ inPara_sim.cons_fig = cons_fig;
 inPara_sim.sensor_set_type = sensor_set_type; % 'bin': binary,'ran': range-only,'brg': bearing-only,'rb': range-bearing
 sim = Sim(inPara_sim);
 
-for trial_cnt = 1%1:trial_num
+for trial_cnt = 1:trial_num
     % initialize field class    
     target.pos = [tx_set(trial_cnt);ty_set(trial_cnt)];
     target.u_set = u_set;
@@ -171,6 +171,14 @@ for trial_cnt = 1%1:trial_num
                 end
             case 3
                 top_idx = 1;
+            case 4
+                if rem(count,2) == 1
+                    top_idx = 1; % use topology 1
+                else
+                    top_idx = 2; % use topology 2
+                end
+            case 5
+                top_idx = 1;
         end
         
         % exchange happens here
@@ -183,7 +191,7 @@ for trial_cnt = 1%1:trial_num
         rbt = tmp_rbt;
         
          %% Concensus        
-         %{
+         %
          % (1) exchange pdfs to achieve concensus
          % (2) observe and update the stored own observations at time k
          % (3) update probability map
@@ -206,7 +214,7 @@ for trial_cnt = 1%1:trial_num
                  inPara5 = struct;
                  inPara5.selection = selection;
                  inPara5.cons_fig = cons_fig;
-                 inPara5.rbt_nbhd_set = rbt(rbt{ii}.nbhd_idx);
+                 inPara5.rbt_nbhd_set = rbt(rbt{ii}.nbhd_idx{top_idx});
                  tmp_rbt_cons{ii} = tmp_rbt_cons{ii}.cons(inPara5);
              end
              rbt = tmp_rbt_cons;
@@ -215,7 +223,7 @@ for trial_cnt = 1%1:trial_num
          %}
         
          %% centeralized filter
-         %{
+         %
          % (1) observe and update the stored observations of all sensor at time k
          % (2) update probability map
          % (2) repeat step (1)         
@@ -254,7 +262,7 @@ for trial_cnt = 1%1:trial_num
          count = count + 1;
          
          %% compute metrics
-         %{
+         %
          for ii = 1:num_robot
              rbt{ii} = rbt{ii}.computeMetrics(fld,'dbf');
              rbt{ii} = rbt{ii}.computeMetrics(fld,'cons');

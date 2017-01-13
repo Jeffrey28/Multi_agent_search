@@ -217,12 +217,12 @@ classdef Sim
         end
         
         function this = compareMetrics(this)
-            tmp_sim_res = this.sim_res;
+            tmp_sim_res = []; %this.sim_res;
             for jj = 1:this.trial_num
                 for ii = 1:this.num_robot
 %                     display(ii)
                     % ml error
-                    tmp_sim_res.ml_err_dbf(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.ml_err_dbf;
+                    tmp_sim_res.ml_err_dbf(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.ml_err_dbf;                    
                     tmp_sim_res.ml_err_cons(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.ml_err_cons;
                     
                     % norm of cov of pdf

@@ -1,0 +1,37 @@
+\begin{thebibliography}{1}
+\providecommand{\url}[1]{#1}
+\csname url@rmstyle\endcsname
+\providecommand{\newblock}{\relax}
+\providecommand{\bibinfo}[2]{#2}
+\providecommand\BIBentrySTDinterwordspacing{\spaceskip=0pt\relax}
+\providecommand\BIBentryALTinterwordstretchfactor{4}
+\providecommand\BIBentryALTinterwordspacing{\spaceskip=\fontdimen2\font plus
+\BIBentryALTinterwordstretchfactor\fontdimen3\font minus
+  \fontdimen4\font\relax}
+\providecommand\BIBforeignlanguage[2]{{%
+\expandafter\ifx\csname l@#1\endcsname\relax
+\typeout{** WARNING: IEEEtran.bst: No hyphenation pattern has been}%
+\typeout{** loaded for the language `#1'. Using the pattern for}%
+\typeout{** the default language instead.}%
+\else
+\language=\csname l@#1\endcsname
+\fi
+#2}}
+
+\bibitem{thrun2005probabilistic}
+S.~Thrun, W.~Burgard, and D.~Fox, \emph{Probabilistic robotics}.\hskip 1em plus
+  0.5em minus 0.4em\relax MIT press, 2005.
+
+\bibitem{olfati2006belief}
+R.~Olfati-Saber, E.~Franco, E.~Frazzoli, and J.~S. Shamma, ``Belief consensus
+  and distributed hypothesis testing in sensor networks,'' in \emph{Networked
+  Embedded Sensing and Control}.\hskip 1em plus 0.5em minus 0.4em\relax
+  Springer, 2006, pp. 169--182.
+
+\bibitem{veeravalli2012distributed}
+V.~V. Veeravalli and P.~K. Varshney, ``Distributed inference in wireless sensor
+  networks,'' \emph{Philosophical Transactions of the Royal Society of London
+  A: Mathematical, Physical and Engineering Sciences}, vol. 370, no. 1958, pp.
+  100--117, 2012.
+
+\end{thebibliography}
