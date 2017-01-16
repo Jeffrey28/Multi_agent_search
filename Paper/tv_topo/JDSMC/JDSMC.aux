@@ -43,6 +43,7 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Distributed Bayesian Filter for Multiple UGVs}{3}}
 \newlabel{subsec:dbf}{{2.3}{3}}
 \newlabel{subsec:dbf@cref}{{[subsection][3][2]2.3}{3}}
+\citation{}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.1}Prediction}{4}}
 \newlabel{eqn:bayes_pred}{{9}{4}}
 \newlabel{eqn:bayes_pred@cref}{{[equation][9][]9}{4}}
@@ -54,42 +55,42 @@
 \@writefile{toc}{\contentsline {section}{\numberline {3}Full-In-and-Full-Out (FIFO) Protocol}{4}}
 \newlabel{sec:FIFO}{{3}{4}}
 \newlabel{sec:FIFO@cref}{{[section][3][]3}{4}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces {FIFO} Protocol\relax }}{4}}
-\newlabel{alg:lifo}{{1}{4}}
-\newlabel{alg:lifo@cref}{{[algorithm][1][]1}{4}}
-\newlabel{prop1}{{1}{5}}
-\newlabel{prop1@cref}{{[prop][1][]1}{5}}
-\newlabel{cor1}{{1}{5}}
-\newlabel{cor1@cref}{{[cor][1][]1}{5}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Distributed Bayesian Filter via Full-In-and-Full-Out Protocol}{5}}
-\newlabel{sec:FIFO-dbf}{{4}{5}}
-\newlabel{sec:FIFO-dbf@cref}{{[section][4][]4}{5}}
+\newlabel{prop1}{{1}{4}}
+\newlabel{prop1@cref}{{[prop][1][]1}{4}}
+\newlabel{cor1}{{1}{4}}
+\newlabel{cor1@cref}{{[cor][1][]1}{4}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces {FIFO} Protocol\relax }}{5}}
+\newlabel{alg:lifo}{{1}{5}}
+\newlabel{alg:lifo@cref}{{[algorithm][1][]1}{5}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Example of FIFOwith three UGVs using switching line interaction topologies. The double-headed arrow represents a communication link between two UGVs.\relax }}{5}}
 \newlabel{fig:FIFO}{{2}{5}}
 \newlabel{fig:FIFO@cref}{{[figure][2][]2}{5}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Track List for Reducing Communication Overhead}{5}}
-\newlabel{sec:tracklist}{{5}{5}}
-\newlabel{sec:tracklist@cref}{{[section][5][]5}{5}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces LIFO-DBF Algorithm for Moving Target\relax }}{6}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Distributed Bayesian Filter via FIFO Protocol}{5}}
+\newlabel{sec:FIFO-dbf}{{4}{5}}
+\newlabel{sec:FIFO-dbf@cref}{{[section][4][]4}{5}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces FIFO-DBF Algorithm\relax }}{6}}
 \newlabel{alg:lifo-dbf}{{2}{6}}
 \newlabel{alg:lifo-dbf@cref}{{[algorithm][2][]2}{6}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Example of LIFO-DBF for $1^\text  {st}$ UGV at time $k$. Networked UGVs take a line topology. The stored individual PDF is represented by $ P^1_{pdf}(k-N)$. The UGV first calculates $ P^1_{virt}(k-N+1)$, defined in \Cref  {alg:lifo-dbf}, and then stores it as $ P^1_{pdf}(k-N+1)$. Repeating DBF until obtaining $ P^1_{pdf}(k)$. In this example, $\Omega ^1_{\xi }=\left \delimiter "4266308 1,2,\dots  ,N+1-\xi \right \delimiter "5267309 $, $\xi =1,\dots  ,N$.\relax }}{6}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Track Lists for Trimming Communication Buffers}{6}}
+\newlabel{sec:tracklist}{{5}{6}}
+\newlabel{sec:tracklist@cref}{{[section][5][]5}{6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Example of FIFO-DBF for $1^\text  {st}$ UGV at time $k$. Networked UGVs take a line topology. The stored individual PDF is represented by $ P^1_{pdf}(k-N)$. The UGV first calculates $ P^1_{tmp}(k-N+1)$, defined in \Cref  {alg:lifo-dbf}, and then stores it as $ P^1_{pdf}(k-N+1)$. Repeating DBF until obtaining $ P^1_{pdf}(k)$. In this example, $\Omega ^1_{\xi }=\left \delimiter "4266308 1,2,\dots  ,N+1-\xi \right \delimiter "5267309 $, $\xi =1,\dots  ,N$.\relax }}{6}}
 \newlabel{fig:LIFO-DBF}{{3}{6}}
 \newlabel{fig:LIFO-DBF@cref}{{[figure][3][]3}{6}}
-\newlabel{thm:trim_no_loss}{{1}{6}}
-\newlabel{thm:trim_no_loss@cref}{{[thm][1][]1}{6}}
-\newlabel{thm:upd_tl_freq}{{2}{6}}
-\newlabel{thm:upd_tl_freq@cref}{{[thm][2][]2}{6}}
-\citation{amemiya1985advanced}
-\citation{chen2003bayesian}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Exchanging and Updating the Track List\relax }}{7}}
+\newlabel{thm:trim_no_loss}{{1}{7}}
+\newlabel{thm:trim_no_loss@cref}{{[thm][1][]1}{7}}
+\newlabel{thm:upd_tl_freq}{{2}{7}}
+\newlabel{thm:upd_tl_freq@cref}{{[thm][2][]2}{7}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Trimming CBs using TLs\relax }}{7}}
 \newlabel{alg:tracklist}{{3}{7}}
 \newlabel{alg:tracklist@cref}{{[algorithm][3][]3}{7}}
 \newlabel{thm:fifo_dbf-property}{{3}{7}}
 \newlabel{thm:fifo_dbf-property@cref}{{[thm][3][]3}{7}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Proof of Consistency}{7}}
-\newlabel{sec:consist_proof}{{6}{7}}
-\newlabel{sec:consist_proof@cref}{{[section][6][]6}{7}}
+\citation{amemiya1985advanced}
+\citation{chen2003bayesian}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Proof of Consistency}{8}}
+\newlabel{sec:consist_proof}{{6}{8}}
+\newlabel{sec:consist_proof@cref}{{[section][6][]6}{8}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Static UGVs}{8}}
 \newlabel{thm:FIFO-dbf-sta-ugv}{{4}{8}}
 \newlabel{thm:FIFO-dbf-sta-ugv@cref}{{[thm][4][]4}{8}}
@@ -101,13 +102,13 @@
 \newlabel{eqn:cmp_lim1@cref}{{[equation][15][]15}{8}}
 \newlabel{eqn:cmp_lim2}{{16}{8}}
 \newlabel{eqn:cmp_lim2@cref}{{[subequation][16][]16}{8}}
-\newlabel{subeqn:limit1}{{19a}{8}}
-\newlabel{subeqn:limit1@cref}{{[subequation][1][19]19a}{8}}
-\newlabel{subeqn:limit2}{{19b}{8}}
-\newlabel{subeqn:limit2@cref}{{[subequation][2][19]19b}{8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Moving UGVs}{8}}
-\newlabel{lem1}{{1}{8}}
-\newlabel{lem1@cref}{{[lem][1][]1}{8}}
+\newlabel{subeqn:limit1}{{19a}{9}}
+\newlabel{subeqn:limit1@cref}{{[subequation][1][19]19a}{9}}
+\newlabel{subeqn:limit2}{{19b}{9}}
+\newlabel{subeqn:limit2@cref}{{[subequation][2][19]19b}{9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Moving UGVs}{9}}
+\newlabel{lem1}{{1}{9}}
+\newlabel{lem1@cref}{{[lem][1][]1}{9}}
 \newlabel{thm:FIFO-dbf-mov-ugv}{{5}{9}}
 \newlabel{thm:FIFO-dbf-mov-ugv@cref}{{[thm][5][]5}{9}}
 \newlabel{eqn:cmp2}{{21}{9}}
@@ -119,40 +120,6 @@
 \newlabel{sec:sim}{{8}{9}}
 \newlabel{sec:sim@cref}{{[section][8][]8}{9}}
 \@writefile{toc}{\contentsline {section}{\numberline {9}Experiment}{9}}
-\newlabel{fig:com_topo1}{{4a}{9}}
-\newlabel{fig:com_topo1@cref}{{[subfigure][1][4]4a}{9}}
-\newlabel{sub@fig:com_topo1}{{a}{9}}
-\newlabel{sub@fig:com_topo1@cref}{{[subfigure][1][4]4a}{9}}
-\newlabel{fig:sta_sen_sta_tar_top1_init_dbf}{{4b}{9}}
-\newlabel{fig:sta_sen_sta_tar_top1_init_dbf@cref}{{[subfigure][2][4]4b}{9}}
-\newlabel{sub@fig:sta_sen_sta_tar_top1_init_dbf}{{b}{9}}
-\newlabel{sub@fig:sta_sen_sta_tar_top1_init_dbf@cref}{{[subfigure][2][4]4b}{9}}
-\newlabel{fig:sta_sen_sta_tar_top1_dbf}{{4c}{9}}
-\newlabel{fig:sta_sen_sta_tar_top1_dbf@cref}{{[subfigure][3][4]4c}{9}}
-\newlabel{sub@fig:sta_sen_sta_tar_top1_dbf}{{c}{9}}
-\newlabel{sub@fig:sta_sen_sta_tar_top1_dbf@cref}{{[subfigure][3][4]4c}{9}}
-\newlabel{fig:sta_sen_sta_tar_top1_cons}{{4d}{9}}
-\newlabel{fig:sta_sen_sta_tar_top1_cons@cref}{{[subfigure][4][4]4d}{9}}
-\newlabel{sub@fig:sta_sen_sta_tar_top1_cons}{{d}{9}}
-\newlabel{sub@fig:sta_sen_sta_tar_top1_cons@cref}{{[subfigure][4][4]4d}{9}}
-\newlabel{fig:sta_sen_sta_tar_top1_cent}{{4e}{9}}
-\newlabel{fig:sta_sen_sta_tar_top1_cent@cref}{{[subfigure][5][4]4e}{9}}
-\newlabel{sub@fig:sta_sen_sta_tar_top1_cent}{{e}{9}}
-\newlabel{sub@fig:sta_sen_sta_tar_top1_cent@cref}{{[subfigure][5][4]4e}{9}}
-\newlabel{fig:sta_sen_sta_tar_top1_pos_err}{{4f}{9}}
-\newlabel{fig:sta_sen_sta_tar_top1_pos_err@cref}{{[subfigure][6][4]4f}{9}}
-\newlabel{sub@fig:sta_sen_sta_tar_top1_pos_err}{{f}{9}}
-\newlabel{sub@fig:sta_sen_sta_tar_top1_pos_err@cref}{{[subfigure][6][4]4f}{9}}
-\newlabel{fig:sta_sen_sta_tar_top1_entropy}{{4g}{9}}
-\newlabel{fig:sta_sen_sta_tar_top1_entropy@cref}{{[subfigure][7][4]4g}{9}}
-\newlabel{sub@fig:sta_sen_sta_tar_top1_entropy}{{g}{9}}
-\newlabel{sub@fig:sta_sen_sta_tar_top1_entropy@cref}{{[subfigure][7][4]4g}{9}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces First scenario: (a) two types of topologies; (b) individual PDF of the $3^\text  {rd}$ UGV after initial observation; (c)-(e) PDFs at the end of simulation using different filters; (f) average position estimation errors; (g) average entropy of PDF. In last two figures, metrics are based on the PDFs of the $1^\text  {st}$, $3^\text  {rd}$ and $5^\text  {th}$ UGV using FIFO-DBF, the common PDF using CbDF and using CF.\relax }}{9}}
-\newlabel{fig:mov_sen_mov_tar1}{{4}{9}}
-\newlabel{fig:mov_sen_mov_tar1@cref}{{[figure][4][]4}{9}}
-\@writefile{toc}{\contentsline {section}{\numberline {10}Conclusion}{9}}
-\newlabel{sec:conclu}{{10}{9}}
-\newlabel{sec:conclu@cref}{{[section][10][]10}{9}}
 \bibstyle{IEEEtran}
 \bibdata{references}
 \bibcite{chamberland2007wireless}{1}
@@ -168,6 +135,40 @@
 \bibcite{ren2005consensus}{11}
 \bibcite{olfati2007consensus}{12}
 \bibcite{hlinka2013distributed}{13}
+\newlabel{fig:com_topo1}{{4a}{10}}
+\newlabel{fig:com_topo1@cref}{{[subfigure][1][4]4a}{10}}
+\newlabel{sub@fig:com_topo1}{{a}{10}}
+\newlabel{sub@fig:com_topo1@cref}{{[subfigure][1][4]4a}{10}}
+\newlabel{fig:sta_sen_sta_tar_top1_init_dbf}{{4b}{10}}
+\newlabel{fig:sta_sen_sta_tar_top1_init_dbf@cref}{{[subfigure][2][4]4b}{10}}
+\newlabel{sub@fig:sta_sen_sta_tar_top1_init_dbf}{{b}{10}}
+\newlabel{sub@fig:sta_sen_sta_tar_top1_init_dbf@cref}{{[subfigure][2][4]4b}{10}}
+\newlabel{fig:sta_sen_sta_tar_top1_dbf}{{4c}{10}}
+\newlabel{fig:sta_sen_sta_tar_top1_dbf@cref}{{[subfigure][3][4]4c}{10}}
+\newlabel{sub@fig:sta_sen_sta_tar_top1_dbf}{{c}{10}}
+\newlabel{sub@fig:sta_sen_sta_tar_top1_dbf@cref}{{[subfigure][3][4]4c}{10}}
+\newlabel{fig:sta_sen_sta_tar_top1_cons}{{4d}{10}}
+\newlabel{fig:sta_sen_sta_tar_top1_cons@cref}{{[subfigure][4][4]4d}{10}}
+\newlabel{sub@fig:sta_sen_sta_tar_top1_cons}{{d}{10}}
+\newlabel{sub@fig:sta_sen_sta_tar_top1_cons@cref}{{[subfigure][4][4]4d}{10}}
+\newlabel{fig:sta_sen_sta_tar_top1_cent}{{4e}{10}}
+\newlabel{fig:sta_sen_sta_tar_top1_cent@cref}{{[subfigure][5][4]4e}{10}}
+\newlabel{sub@fig:sta_sen_sta_tar_top1_cent}{{e}{10}}
+\newlabel{sub@fig:sta_sen_sta_tar_top1_cent@cref}{{[subfigure][5][4]4e}{10}}
+\newlabel{fig:sta_sen_sta_tar_top1_pos_err}{{4f}{10}}
+\newlabel{fig:sta_sen_sta_tar_top1_pos_err@cref}{{[subfigure][6][4]4f}{10}}
+\newlabel{sub@fig:sta_sen_sta_tar_top1_pos_err}{{f}{10}}
+\newlabel{sub@fig:sta_sen_sta_tar_top1_pos_err@cref}{{[subfigure][6][4]4f}{10}}
+\newlabel{fig:sta_sen_sta_tar_top1_entropy}{{4g}{10}}
+\newlabel{fig:sta_sen_sta_tar_top1_entropy@cref}{{[subfigure][7][4]4g}{10}}
+\newlabel{sub@fig:sta_sen_sta_tar_top1_entropy}{{g}{10}}
+\newlabel{sub@fig:sta_sen_sta_tar_top1_entropy@cref}{{[subfigure][7][4]4g}{10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces First scenario: (a) two types of topologies; (b) individual PDF of the $3^\text  {rd}$ UGV after initial observation; (c)-(e) PDFs at the end of simulation using different filters; (f) average position estimation errors; (g) average entropy of PDF. In last two figures, metrics are based on the PDFs of the $1^\text  {st}$, $3^\text  {rd}$ and $5^\text  {th}$ UGV using FIFO-DBF, the common PDF using CbDF and using CF.\relax }}{10}}
+\newlabel{fig:mov_sen_mov_tar1}{{4}{10}}
+\newlabel{fig:mov_sen_mov_tar1@cref}{{[figure][4][]4}{10}}
+\@writefile{toc}{\contentsline {section}{\numberline {10}Conclusion}{10}}
+\newlabel{sec:conclu}{{10}{10}}
+\newlabel{sec:conclu@cref}{{[section][10][]10}{10}}
 \bibcite{hlinka2012likelihood}{14}
 \bibcite{beaudeau2012target}{15}
 \bibcite{sheng2005distributed}{16}
