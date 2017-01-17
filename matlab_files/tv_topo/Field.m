@@ -16,28 +16,81 @@ classdef Field
             obj.dt = inPara.dt;
         end
             
-        function this = targetMove(this)
-            
-            tmp_u_set = this.target.u_set;
-            tmp_v = this.target.V_set;
+        function this = targetMove(this)                        
             tmp_idx = this.target.model_idx;
             if this.tar_move == 1
                 % Target Moves
-                % if current model makes target out of field, choose the next
-                % motion model in fld.target.dx_set and fld.target.dy_set
-                tmp_pos = this.target.pos + tmp_u_set(:,tmp_idx)*this.dt;  
-%                 tmp_pos = this.target.pos + tmp_u_set(:,tmp_idx)*this.dt+(mvnrnd([0,0],tmp_v))';
-                while (tmp_pos(1) <= 0 || tmp_pos(2) <= 0 || tmp_pos(1) >= this.fld_size(1) || tmp_pos(2) >= this.fld_size(2))
-                    tmp_idx = rem(tmp_idx+1,length(this.target.u_set));
-                    if tmp_idx == 0
-                        tmp_idx = length(this.target.u_set);
-                    end
-                    tmp_pos = this.target.pos + tmp_u_set(:,tmp_idx)*this.dt;
-                end
-                this.target.pos = tmp_pos;
-                this.target.traj = [this.target.traj,tmp_pos];
-                this.target.model_idx = tmp_idx;
                 
+                % linear target model
+                % x_k+1 = x_k+vx
+                % y_k+1 = y_k+vy
+                if strcmp(this.target.mode,'linear')
+                    tmp_u_set = this.target.u_set;
+                    %                 tmp_v = this.target.V_set;
+                    % if current model makes target out of field, choose the next
+                    % motion model in fld.target.dx_set and fld.target.dy_set
+                    tmp_pos = this.target.pos + tmp_u_set(:,tmp_idx)*this.dt;
+                    %                 tmp_pos = this.target.pos + tmp_u_set(:,tmp_idx)*this.dt+(mvnrnd([0,0],tmp_v))';
+                    while (tmp_pos(1) <= 0 || tmp_pos(2) <= 0 || tmp_pos(1) >= this.fld_size(1) || tmp_pos(2) >= this.fld_size(2))
+                        tmp_idx = rem(tmp_idx+1,length(this.target.u_set));
+                        if tmp_idx == 0
+                            tmp_idx = length(this.target.u_set);
+                        end
+                        tmp_pos = this.target.pos + tmp_u_set(:,tmp_idx)*this.dt;
+                    end
+                    this.target.pos = tmp_pos;
+                    this.target.traj = [this.target.traj,tmp_pos];
+                    this.target.model_idx = tmp_idx;
+                
+                % sinusoidal model
+                % x_k+1 = x_k+vx
+                % y_k+1 = y_k+vy*cos(w*x_k)
+                % this model is derived from : y=vy/vx*sin(x). Let
+                % \dot{x}=v_x, then \dot(y)=vy*cos(x). note, vx and vy are
+                % constants.
+                elseif strcmp(this.target.mode,'sin')
+                    tmp_u_set = this.target.u_set;
+                    %                 tmp_v = this.target.V_set;
+                    tmp_x = this.target.pos(1) + tmp_u_set(1,tmp_idx)*this.dt;
+                    tmp_y = this.target.pos(2) + tmp_u_set(2,tmp_idx)*cos(0.2*this.target.pos(1))*this.dt;
+                    tmp_pos = [tmp_x;tmp_y];
+                    
+                    while (tmp_pos(1) <= 0 || tmp_pos(2) <= 0 || tmp_pos(1) >= this.fld_size(1) || tmp_pos(2) >= this.fld_size(2))
+                        tmp_idx = rem(tmp_idx+1,length(this.target.u_set));
+                        if tmp_idx == 0
+                            tmp_idx = length(this.target.u_set);
+                        end
+                        tmp_x = this.target.pos(1) + tmp_u_set(1,tmp_idx)*this.dt;
+                        tmp_y = this.target.pos(2) + tmp_u_set(2,tmp_idx)*cos(0.2*this.target.pos(1))*this.dt;
+                        tmp_pos = [tmp_x;tmp_y];
+                    end
+                    
+                    this.target.pos = tmp_pos;
+                    this.target.traj = [this.target.traj,tmp_pos];
+                    this.target.model_idx = tmp_idx;                
+                
+                elseif strcmp(this.target.mode,'circle')
+                    tmp_u_set = this.target.u_set;
+                    %                 tmp_v = this.target.V_set;
+                    tmp_x = this.target.pos(1) + tmp_u_set(1,tmp_idx)*cos(this.target.theta)*this.dt;
+                    tmp_y = this.target.pos(2) + tmp_u_set(1,tmp_idx)*sin(this.target.theta)*this.dt;
+                    tmp_pos = [tmp_x;tmp_y];
+                    
+                    while (tmp_pos(1) <= 0 || tmp_pos(2) <= 0 || tmp_pos(1) >= this.fld_size(1) || tmp_pos(2) >= this.fld_size(2))
+                        tmp_idx = rem(tmp_idx+1,length(this.target.u_set));
+                        if tmp_idx == 0
+                            tmp_idx = length(this.target.u_set);
+                        end
+                        tmp_x = this.target.pos(1) + tmp_u_set(1,tmp_idx)*cos(this.target.theta)*this.dt;
+                        tmp_y = this.target.pos(2) + tmp_u_set(1,tmp_idx)*sin(this.target.theta)*this.dt;
+                        tmp_pos = [tmp_x;tmp_y];
+                    end
+                    
+                    this.target.theta = this.target.theta+tmp_u_set(2,tmp_idx)*this.dt;
+                    this.target.pos = tmp_pos;
+                    this.target.traj = [this.target.traj,tmp_pos];
+                    this.target.model_idx = tmp_idx;
+                end
             end
         end
     end   

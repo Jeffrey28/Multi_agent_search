@@ -6,11 +6,11 @@ set(0,'defaultAxesFontName', 'Times New Roman')
 set(0,'defaultTextFontName', 'Times New Roman')
 
 save_data = false; % save all sim data
-show_plot = false; % draw plots
+show_plot = true; % draw plots
 save_plot = false; % save plots and corresponding .mat file 
 sim_mode = true;
 
-sim_len = 30;%50; % max step
+sim_len = 50; % max step
 % rounds of consensus at each time step
 cons_step = 10;
 cons_fig = false; % whether to show intermediate step of consensus
@@ -109,10 +109,8 @@ r_set = [5 10 7 10 15 7];
 T_set = [20,15,30,25,15,20];
 dir_set = [1 -1 1 -1 -1 -1];
 
-% communication neighbor
-% rbt_nbhd = {[2,6],[1,3],[2,4],[3,5],[4,6],[1,5]}; %{[],[],[],[],[],[]};
-            
-topo_select = 1;
+% communication neighbor            
+topo_select = 6;
 
 switch topo_select
     case 1
@@ -164,18 +162,41 @@ switch topo_select
             {3};
             {4};
             {5}};
+    case 6
+        % topology that contains both unidirectional and bidirecational
+        % communication
+        rbt_nbhd = {{[2],[6],[],[]};
+            {[1,3],[],[],[]};
+            {[2],[4],[],[]};
+            {[],[],[5],[]};
+            {[],[],[],[3]};
+            {[],[],[],[3]}};
+        top_idx_set = [1 2 2 2 4 1 3 1 3 4];
 end
 
-mode_num = 4;
+target_mode = 'sin';
 
-u_set = [[1;1],[-1;-1],[1;-1],[-1;1]]; %inPara.u_set; 
-V_set = 0.01*eye(2);%
-
-% load update matrices
-if exist('upd_matrix','var') == 0
-    load('upd_matrix_v001.mat','upd_matrix');
+if strcmp(target_mode, 'linear')    
+    % linear target model
+    mode_num = 4;
+    u_set = [[1;1],[-1;-1],[1;-1],[-1;1]]; %inPara.u_set;
+    V_set = 0.01*eye(2);%
+    % load update matrices
+    if exist('upd_matrix','var') == 0
+        load('upd_matrix_v001.mat','upd_matrix');
+    end
+elseif strcmp(target_mode, 'sin')
+    % sinusoidal target model
+    mode_num = 2;
+    u_set = [[-1;1],[1;1],[-1;-1],[1;-1]];
+    V_set = 0.01*eye(2);
+    % load update matrices
+    if exist('upd_matrix','var') == 0
+        load('upd_matrix_sin_v001.mat','upd_matrix');
+    end
+    
+% elseif strcmp(target_mode, 'circle') 
+%     mode_num = 4;
+%     u_set = [[1;0.1],[-1;-0.1],[1;-0.1],[-1;0.1]]; %inPara.u_set;
+%     V_set = 0.01*eye(2);%
 end
-
-%% Compute the sensor probility matrix
-% just a placeholder now, will see how fast the program will run without
-% this precomputation

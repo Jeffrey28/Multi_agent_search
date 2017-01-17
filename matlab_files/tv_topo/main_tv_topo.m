@@ -38,7 +38,11 @@ for trial_cnt = 1:trial_num
     target.V_set = V_set; % Covariance of process noise model for the target
     target.model_idx = 1;
     target.traj = target.pos;
+    target.mode = target_mode;
     target.mode_num = mode_num;
+    if strcmp(target_mode,'circle')
+       target.theta = 0;       
+    end
     
     inPara_fld = struct('fld_size',fld_size,'target',target,'tar_move',tar_move,'dt',dt);
     fld = Field(inPara_fld);
@@ -179,6 +183,13 @@ for trial_cnt = 1:trial_num
                 end
             case 5
                 top_idx = 1;
+            case 6
+                len = length(top_idx_set);
+                tmp_idx = rem(count,len);
+                if tmp_idx == 0
+                    tmp_idx = 10;
+                end
+                top_idx = top_idx_set(tmp_idx);
         end
         
         % exchange happens here
