@@ -187,8 +187,13 @@
 	In such cases, dynamically changing topologies can cause random packet loss and variable transmission delay, thus decreasing the performance of distributed estimation, and even leading to inconsistency and non-consensus. 
 
 	\todohere{cite Leung's paper, emphasize that it transmits pdfs.} 
-	\todohere{mention in my main contribution that my work on transmits measurements, no pdf.}	
-	The main contribution of the paper is that we present a measurement dissemination-based distributed Bayesian filtering (DBF) method for a group of networked UGVs with dynamically changing interaction topologies. The measurement dissemination scheme uses the so-called Latest-In-and-Full-Out (\proto) protocol, under which each UGV is only allowed to broadcast observations to its neighbors by using single-hopping.
+	\todohere{mention in my main contribution that my work on transmits measurements, no pdf.}
+		
+	The main contribution of the paper is that we present a measurement dissemination-based distributed Bayesian filtering (DBF) method for a group of networked UGVs with dynamically changing interaction topologies. 
+	In our previous work, we have proposed a Latest-In-and-Full-Out (LIFO) protocol for data exchange and developed a LIFO-based DBF. 
+	However, it only applies to static target.
+	In this work, we introduce the concept of the track list and extend our methods to time-varying topologies.
+	The measurement dissemination scheme uses the so-called Full-In-and-Full-Out (\proto) protocol, under which each UGV is only allowed to broadcast observations to its neighbors by using single-hopping.
 	Individual Bayesian filter is implemented locally by each UGV after exchanging observations using \proto.
 	Under the condition that the union of undirected switching topologies is connected frequently enough, two properties are achieved: (1) \proto can disseminate observations over the network within finite time; (2) \proto-based DBF guarantees the consistency of estimation that each individual estimate of target position converges in probability to the true target position as the number of observations tends to infinity. 
 	The main benefit of using \proto is on the reduction of communication burden, with the transmission data volume scaling linearly with the size of the UGV network. 
@@ -212,7 +217,7 @@
 	\begin{equation}
 		\small
 		\label{eqn:tar_motion_model}
-		x^g_{k+1}=f(x^g_k,u^g_k),
+		x^g_{k+1}=f(x^g_k),
 	\end{equation}\normalsize
 	where $x^g_k\in \mathbb{R}^{2}$ denotes the target position at time $k$; $u^g_k$ represents the control input of the target.
 	
@@ -336,76 +341,7 @@
 	
 	%\section{Distributed Bayesian Filter via Latest-In-and-Full-Out Protocol}\label{sec:\proto-dbf}
 	
-	\subsection{Distributed Bayesian Filter for Multiple UGVs}\label{subsec:dbf}
-	The generic distributed Bayesian filter (DBF) is introduced in this section.
-	%, which is also stated in \cite{bandyopadhyay2014distributed} and \cite{julian2012distributed}. 
-	%Each UGV has its individual estimation of the probability density function (PDF) of target position, called \textit{individual PDF}. 
-	Let $\X_k\in S$ be the random variable that represents the position of the target at time $k$.
-	The probability density function (PDF) of $\X_k$, called \textit{individual PDF}, of $i\thi$ UGV is then represented by
-	%=\left\lbrace z^i_1,\dots,z^i_k\right\rbrace
-	$P^i_{pdf}(\X_{k}|\mathbf{z}^i_{1:k})$, where $\mathbf{z}^i_{1:k}$ denotes the set of measurements by $i\thi$ UGV and by UGVs in $\mathcal{Q}_i$, that have been received by $i\thi$ UGV until time $k$.
-	%by UGVs in $\mathcal{Q}_i$ that have been transmitted to $i\thi$ UGV by time $k$.
-	%from time $1$ through $k$ and $z^{\mathcal{Q}_i}_{1:k}$ means the set of measurements by UGVs in $\mathcal{Q}_i$ that are transmitted to $i\thi$ UGV.
-	%Note that if the measurement by $j\thi(j\in \mathcal{Q}_i)$ UGV at time $k'(k'\leq k)$ is not received by $i\thi$ UGV, the corresponding element $z^j_{k'}$ in $z^{\mathcal{Q}_i}_{1:k}$ is empty and thus not utilized for computing $i\thi$ individual PDF.
-	The initial individual PDF, $P^i_{pdf}(\X_0)$, is constructed %=P(\X_0) $P^i_{pdf}(\X_0|\mathbf{z}^i_0)$
-	%$P^i_{pdf}(x_0|z^i_0,z^{\mathcal{Q}_i}_0)=P(x_0)$, 
-	given all available prior information including past experience and environment knowledge. 
-	It is necessary to initialize the individual PDF such that the probability density of true target position is nonzero, i.e., $P^i_{pdf}(\X_0=x^g_0)\neq 0$. %$P^i_{pdf}(\X_0=x^g_0|\mathbf{z}^i_0)\neq 0$.
-	
-	Under the framework of DBF, the individual PDF is recursively estimated by two steps: the prediction step and the updating step. 
-	%, based on measurements of $i\thi$ UGV and UGVs in $\mathcal{Q}_i$.
-	
-	\subsubsection{Prediction}
-	%The $i\thi$ individual PDF at time $k-1$ is known, denoted as $P^i_{pdf}(x_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})$. 
-	%At time $k$, the prior individual PDF $P^i_{pdf}(x_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})$ is first predicted forward by using the Chapman-Kolmogorov equation:
-	At time $k$, the prior individual PDF $P^i_{pdf}(\X_{k-1}|\mathbf{z}^i_{1:k-1})$ is first predicted forward by using the Chapman-Kolmogorov equation:
-	%\small\begin{align}\label{eqn:bayes_pred}
-	%&P^i_{pdf}(x_k|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})\notag\\
-	%&=\int P(x_k|x_{k-1})P^i_{pdf}(x_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})dx_{k-1}
-	%\end{align}\normalsize
-	\small
-	\begin{equation}\label{eqn:bayes_pred}
-	P^i_{pdf}(\X_k|\mathbf{z}^i_{1:k-1})
-	=\int\limits_{\X_{k-1}\in S} P(\X_k|\X_{k-1})P^i_{pdf}(\X_{k-1}|\mathbf{z}^i_{1:k-1})d\X_{k-1},
-	\end{equation}\normalsize
-	where $P(\X_k|\X_{k-1})$ represents the state transition probability of the target, based on the Markovian motion model (\Cref{eqn:tar_motion_model}). % from the prior position $\X_{k-1}$ to the posterior position $\X_k$, 
-	% independent of UGV states. 
-	%This model describes 
-	%Note that the target is static in many search applications, such as the indoor search for stationary objects \cite{kulich2014single}. 
-	%, as defined in \Cref{eqn:tar_motion_model},
-	For the deterministic motion model, the state transition probability is simplified to be
-	\small\begin{equation}\label{eqn:markov_model}
-	P(\X_k=c_k|\X_{k-1}=c_{k-1})=\begin{cases}
-	1 & \text{if}\quad c_k=f(c_{k-1},u^g_{k-1})\\ %
-	0 & \text{otherwise}
-	\end{cases}.
-	\end{equation}\normalsize
-	%and \Cref{eqn:bayes_pred} can be reduced to $P^i_{pdf}(x_{k}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})=P^i_{pdf}(x_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})$.
-	
-	\subsubsection{Updating}
-	The $i\thi$ individual PDF is then updated by Bayes' theorem using the set of newly received measurements at time $k$, i.e., $\mathbf{z}^i_k$:
-	%\small\begin{align}\label{eqn:bayes_upd}
-	%&P^i_{pdf}(x_k|z^i_{1:k},z^{\mathcal{Q}_i}_{1:k})\notag\\
-	%&=K_iP^i_{pdf}(x_k|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})P(z^i_k|x_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x_k)
-	%\end{align}\normalsize
-	%\small\begin{equation}\label{eqn:bayes_upd}
-	%P^i_{pdf}(x_k|\mathbf{z}^i_{1:k})
-	%=K_iP^i_{pdf}(x_k|\mathbf{z}^i_{1:k-1})P(z^i_k|x_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x_k)
-	%\end{equation}\normalsize
-	\small\begin{equation}\label{eqn:bayes_upd}
-	P^i_{pdf}(\X_k|\mathbf{z}^i_{1:k})
-	=K_iP^i_{pdf}(\X_k|\mathbf{z}^i_{1:k-1})P(\mathbf{z}^i_k|\X_k),
-	\end{equation}\normalsize
-	where $P(\mathbf{z}^i_k|\X_k)$ comes from the sensor model and $K_i$ is a normalization factor, given by:
-	%\sma and l\begin{align*}
-	%K_i= and /\int P^i_{pdf}(x_k|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})P(z^i_k|x_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x_k)dx_k
-	%\end{align*}\normalsize
-	%\small\begin{align*}
-	%K_i=1/\int P^i_{pdf}(x_k|\mathbf{z}^i_{1:k-1})P(z^i_k|x_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x_k)dx_k
-	%\end{align*}\normalsize
-	\small\begin{align*}
-	K_i=\left[\int\limits_{\X_k\in S} P^i_{pdf}(\X_k|\mathbf{z}^i_{1:k-1})P(\mathbf{z}^i_k|\X_k)d\X_k\right]^{-1}.
-	\end{align*}\normalsize
+%	\subsection{Distributed Bayesian Filter for Multiple UGVs}\label{subsec:dbf}	
 	
 	\section{Full-In-and-Full-Out (\proto) Protocol}\label{sec:\proto}
 	%This study proposes a Latest-In-and-Full-Out (\proto) protocol for observation exchange and derives two corresponding distributed Bayesian filtering (DBF) algorithms, shorted as \proto-DBF. 
@@ -647,6 +583,79 @@
 			\end{algorithmic}
 		\end{algorithm}
 
+	The generic distributed Bayesian filter (DBF) is introduced in this section.
+	%, which is also stated in \cite{bandyopadhyay2014distributed} and \cite{julian2012distributed}. 
+	%Each UGV has its individual estimation of the probability density function (PDF) of target position, called \textit{individual PDF}. 
+	Let $\X_k\in S$ be the random variable that represents the position of the target at time $k$.
+	The probability density function (PDF) of $\X_k$, called \textit{individual PDF}, of $i\thi$ UGV is then represented by
+	%=\left\lbrace z^i_1,\dots,z^i_k\right\rbrace
+	$P^i_{pdf}(\X_{k}|\mathbf{z}^i_{1:k})$, where $\mathbf{z}^i_{1:k}$ denotes the set of measurements by $i\thi$ UGV and by UGVs in $\mathcal{Q}_i$, that have been received by $i\thi$ UGV until time $k$.
+	%by UGVs in $\mathcal{Q}_i$ that have been transmitted to $i\thi$ UGV by time $k$.
+	%from time $1$ through $k$ and $z^{\mathcal{Q}_i}_{1:k}$ means the set of measurements by UGVs in $\mathcal{Q}_i$ that are transmitted to $i\thi$ UGV.
+	%Note that if the measurement by $j\thi(j\in \mathcal{Q}_i)$ UGV at time $k'(k'\leq k)$ is not received by $i\thi$ UGV, the corresponding element $z^j_{k'}$ in $z^{\mathcal{Q}_i}_{1:k}$ is empty and thus not utilized for computing $i\thi$ individual PDF.
+	The initial individual PDF, $P^i_{pdf}(\X_0)$, is constructed %=P(\X_0) $P^i_{pdf}(\X_0|\mathbf{z}^i_0)$
+	%$P^i_{pdf}(x_0|z^i_0,z^{\mathcal{Q}_i}_0)=P(x_0)$, 
+	given all available prior information including past experience and environment knowledge. 
+	It is necessary to initialize the individual PDF such that the probability density of true target position is nonzero, i.e., $P^i_{pdf}(\X_0=x^g_0)\neq 0$. %$P^i_{pdf}(\X_0=x^g_0|\mathbf{z}^i_0)\neq 0$.
+	
+	Under the framework of DBF, the individual PDF is recursively estimated by two steps: the prediction step and the updating step. 
+	%, based on measurements of $i\thi$ UGV and UGVs in $\mathcal{Q}_i$.
+	
+%	\subsubsection{Prediction}
+	%The $i\thi$ individual PDF at time $k-1$ is known, denoted as $P^i_{pdf}(x_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})$. 
+	%At time $k$, the prior individual PDF $P^i_{pdf}(x_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})$ is first predicted forward by using the Chapman-Kolmogorov equation:
+	\textbf{Prediction.}
+	At time $k$, the prior individual PDF $P^i_{pdf}(\X_{k-1}|\mathbf{z}^i_{1:k-1})$ is first predicted forward by using the Chapman-Kolmogorov equation:
+	%\small\begin{align}\label{eqn:bayes_pred}
+	%&P^i_{pdf}(x_k|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})\notag\\
+	%&=\int P(x_k|x_{k-1})P^i_{pdf}(x_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})dx_{k-1}
+	%\end{align}\normalsize
+	\small
+	\begin{equation}\label{eqn:bayes_pred}
+	P^i_{pdf}(\X_k|\mathbf{z}^i_{1:k-1})
+	=\int\limits_{\X_{k-1}\in S} P(\X_k|\X_{k-1})P^i_{pdf}(\X_{k-1}|\mathbf{z}^i_{1:k-1})d\X_{k-1},
+	\end{equation}\normalsize
+	where $P(\X_k|\X_{k-1})$ represents the state transition probability of the target, based on the Markovian motion model (\Cref{eqn:tar_motion_model}). % from the prior position $\X_{k-1}$ to the posterior position $\X_k$, 
+	% independent of UGV states. 
+	%This model describes 
+	%Note that the target is static in many search applications, such as the indoor search for stationary objects \cite{kulich2014single}. 
+	%, as defined in \Cref{eqn:tar_motion_model},
+	For the deterministic motion model, the state transition probability is simplified to be
+	\small\begin{equation}\label{eqn:markov_model}
+	P(\X_k=c_k|\X_{k-1}=c_{k-1})=\begin{cases}
+	1 & \text{if}\quad c_k=f(c_{k-1},u^g_{k-1})\\ %
+	0 & \text{otherwise}
+	\end{cases}.
+	\end{equation}\normalsize
+	%and \Cref{eqn:bayes_pred} can be reduced to $P^i_{pdf}(x_{k}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})=P^i_{pdf}(x_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})$.
+	
+%	\subsubsection{Updating}
+	\textbf{Updating.}
+	The $i\thi$ individual PDF is then updated by Bayes' theorem using the set of newly received measurements at time $k$, i.e., $\mathbf{z}^i_k$:
+	%\small\begin{align}\label{eqn:bayes_upd}
+	%&P^i_{pdf}(x_k|z^i_{1:k},z^{\mathcal{Q}_i}_{1:k})\notag\\
+	%&=K_iP^i_{pdf}(x_k|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})P(z^i_k|x_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x_k)
+	%\end{align}\normalsize
+	%\small\begin{equation}\label{eqn:bayes_upd}
+	%P^i_{pdf}(x_k|\mathbf{z}^i_{1:k})
+	%=K_iP^i_{pdf}(x_k|\mathbf{z}^i_{1:k-1})P(z^i_k|x_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x_k)
+	%\end{equation}\normalsize
+	\small\begin{equation}\label{eqn:bayes_upd}
+	P^i_{pdf}(\X_k|\mathbf{z}^i_{1:k})
+	=K_iP^i_{pdf}(\X_k|\mathbf{z}^i_{1:k-1})P(\mathbf{z}^i_k|\X_k),
+	\end{equation}\normalsize
+	where $P(\mathbf{z}^i_k|\X_k)$ comes from the sensor model and $K_i$ is a normalization factor, given by:
+	%\sma and l\begin{align*}
+	%K_i= and /\int P^i_{pdf}(x_k|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})P(z^i_k|x_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x_k)dx_k
+	%\end{align*}\normalsize
+	%\small\begin{align*}
+	%K_i=1/\int P^i_{pdf}(x_k|\mathbf{z}^i_{1:k-1})P(z^i_k|x_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x_k)dx_k
+	%\end{align*}\normalsize
+	\small\begin{align*}
+	K_i=\left[\int\limits_{\X_k\in S} P^i_{pdf}(\X_k|\mathbf{z}^i_{1:k-1})P(\mathbf{z}^i_k|\X_k)d\X_k\right]^{-1}.
+	\end{align*}\normalsize
+
+	\subsection{FIFO-DBF}
 	This section derives the \proto-DBF for localizing a target. 
 	At time $k$, each UGV maintains two PDFs, the \textit{stored PDF} and the \textit{individual PDF}.
 	\todohere{think about how to explain what $t$ is.}
@@ -686,9 +695,7 @@
 	
 	%\end{rem}
 	
-
-	
-	\section{Track Lists for Trimming Communication Buffers}\label{sec:tracklist}
+	\subsection{Track Lists for Trimming Communication Buffers}\label{sec:tracklist}
 	The size of CBs can keep increasing as measurements cumulate over time. 
 	The use of the stored PDF has made it feasible to trim excessive measurements from the CBs, while ensuring no information is lost in the sense that all UGVs' measurements have been used for update hte individual PDF.
 	To trim the unnecessary measurements, each robot keeps a \textit{track list} (TL), $P^i_k=\left[\mathbf{p}^1_{k^{i,1}},\dots, \mathbf{p}^N_{k^{i,N}}\right]^T \,(i\in V)$, where $\mathbf{p}^j_{k^{i,j}}=\left[p^{j,l}_{k^{i,j}}, l\in V\right]$ is a binary vector with size $N$.
@@ -843,7 +850,7 @@
 		The proof is straightforward by considering \Cref{prop1}, \Cref{thm:upd_tl_freq,thm:trim_no_loss}.
 	\end{proof}
 	
-	\subsection*{Complexity of FIFO-DBF}
+	\subsection{Complexity of FIFO-DBF}
 	Compared to statistics dissemination, {\proto} is generally more communication-efficient for distributed filtering. 
 	To be specific, consider a $D\times D$ grid environment with a network of $N$ UGVs, the transmitted data of \proto between each pair of UGVs are only the CB of each UGV and the corresponding UGV positions where observations were made, the length of which is $O(N)$. 
 	On the contrary, the length of transmitted data for a statistics dissemination approach that transmits unparameterized posterior distributions or likelihood functions is $O(D^2)$, which is in the order of environmental size. 
@@ -863,10 +870,18 @@
 		We can change TLs to track measurements of multiple time steps so that CBs might be trimmed by multiple time steps.
 		This, however, requires larger communication resource.
 		\todohere{analyze the complexity.}
-		\todohere{temporary context:}
+		\todohere{following is temporary context, needs to revise later.}
 		The maximum size of CBs transmitted by UGVs is $O(NT_m)$, where $T_m=\max\limits_{l,j,i}\lb d_{lj}+d_{ji}\rb$. 
 		Besides, $T_m\le NT_u$, where $\small T_u=\sup\limits_{m=1,2,\dots}\left( k_{m+1}-k_m\right) T. \normalsize$
 	\end{rem}	
+	
+	\begin{rem}
+		According to \Cref{thm:upd_tl_freq}, CBs can grow to undesirable sizes that causes excessive communication burden. 
+		An approximate algorithm is to use a time window for the measurements that are saved in CBs.
+		This will cause information loss to the measurements.
+		However, with a decently long time window, FIFO-DBF can still effectively estimate the target position.
+	\end{rem}
+	
 	\section{Proof of Consistency}\label{sec:consist_proof}
 	%This section proves consistency and consensus of \proto-DBF. 
 	%Only proofs for localizing static target are presented, including static UGVs and moving UGVs.
@@ -1219,13 +1234,7 @@
 		This assumption also makes intuitive sense.
 		In the extreme case, if each sensor has a very large unknown measurement offset, then the estimated target position of each sensor (without communicating with other sensors) will be very different from each other's.
 		Therefore, no common target position can be correctly obtained when they fuse measurements.
-	\end{rem}
-	
-	\section{Discussion}
-	\subsection{Approximate algorithm}
-	to be filled.
-	\subsection{Changing number of robots}
-	to be filled.
+	\end{rem}	
 	
 \section{Simulation}\label{sec:sim}
 	An example result is shown in \Cref{fig:mov_sen_mov_tar1}. Will generate better simulation later.
@@ -1383,8 +1392,6 @@
 %		\vspace{-1.3em}
 %	\end{figure}
 		
-	\section{Experiment}
-	to be filled.
 	
 	\section{Conclusion}\label{sec:conclu}	
 	This paper presents a measurement dissemination-based distributed Bayesian filtering (DBF) method for a network of multiple unmanned ground vehicles (UGVs) under dynamically changing interaction topologies.

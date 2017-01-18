@@ -34,56 +34,53 @@
 \newlabel{eqn:prob_sensor0}{{6}{3}}
 \newlabel{eqn:prob_sensor0@cref}{{[equation][6][]6}{3}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Graphical Model of Interaction Topology}{3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Distributed Bayesian Filter for Multiple UGVs}{3}}
-\newlabel{subsec:dbf}{{2.3}{3}}
-\newlabel{subsec:dbf@cref}{{[subsection][3][2]2.3}{3}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.1}Prediction}{4}}
-\newlabel{eqn:bayes_pred}{{9}{4}}
-\newlabel{eqn:bayes_pred@cref}{{[equation][9][]9}{4}}
-\newlabel{eqn:markov_model}{{10}{4}}
-\newlabel{eqn:markov_model@cref}{{[equation][10][]10}{4}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.2}Updating}{4}}
-\newlabel{eqn:bayes_upd}{{11}{4}}
-\newlabel{eqn:bayes_upd@cref}{{[equation][11][]11}{4}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Full-In-and-Full-Out (FIFO) Protocol}{4}}
-\newlabel{sec:FIFO}{{3}{4}}
-\newlabel{sec:FIFO@cref}{{[section][3][]3}{4}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Full-In-and-Full-Out (FIFO) Protocol}{3}}
+\newlabel{sec:FIFO}{{3}{3}}
+\newlabel{sec:FIFO@cref}{{[section][3][]3}{3}}
+\newlabel{prop1}{{1}{4}}
+\newlabel{prop1@cref}{{[prop][1][]1}{4}}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces {FIFO} Protocol\relax }}{4}}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{alg:lifo}{{1}{4}}
 \newlabel{alg:lifo@cref}{{[algorithm][1][]1}{4}}
-\newlabel{prop1}{{1}{5}}
-\newlabel{prop1@cref}{{[prop][1][]1}{5}}
-\newlabel{cor1}{{1}{5}}
-\newlabel{cor1@cref}{{[cor][1][]1}{5}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Example of FIFOwith three UGVs using switching line interaction topologies. The double-headed arrow represents a communication link between two UGVs.\relax }}{5}}
 \newlabel{fig:FIFO}{{1}{5}}
 \newlabel{fig:FIFO@cref}{{[figure][1][]1}{5}}
+\newlabel{cor1}{{1}{5}}
+\newlabel{cor1@cref}{{[cor][1][]1}{5}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Distributed Bayesian Filter via FIFO Protocol}{5}}
 \newlabel{sec:FIFO-dbf}{{4}{5}}
 \newlabel{sec:FIFO-dbf@cref}{{[section][4][]4}{5}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces FIFO-DBF Algorithm\relax }}{6}}
-\newlabel{alg:lifo-dbf}{{2}{6}}
-\newlabel{alg:lifo-dbf@cref}{{[algorithm][2][]2}{6}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Track Lists for Trimming Communication Buffers}{6}}
-\newlabel{sec:tracklist}{{5}{6}}
-\newlabel{sec:tracklist@cref}{{[section][5][]5}{6}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces FIFO-DBF Algorithm\relax }}{5}}
+\newlabel{alg:lifo-dbf}{{2}{5}}
+\newlabel{alg:lifo-dbf@cref}{{[algorithm][2][]2}{5}}
+\newlabel{eqn:bayes_pred}{{9}{5}}
+\newlabel{eqn:bayes_pred@cref}{{[equation][9][]9}{5}}
+\newlabel{eqn:markov_model}{{10}{5}}
+\newlabel{eqn:markov_model@cref}{{[equation][10][]10}{5}}
+\newlabel{eqn:bayes_upd}{{11}{6}}
+\newlabel{eqn:bayes_upd@cref}{{[equation][11][]11}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}FIFO-DBF}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Track Lists for Trimming Communication Buffers}{6}}
+\newlabel{sec:tracklist}{{4.2}{6}}
+\newlabel{sec:tracklist@cref}{{[subsection][2][4]4.2}{6}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Example of FIFO-DBF for $1^\text  {st}$ UGV at time $k$. Networked UGVs take a line topology. The stored individual PDF is represented by $ P^1_{pdf}(k-N)$. The UGV first calculates $ P^1_{tmp}(k-N+1)$, defined in \Cref  {alg:lifo-dbf}, and then stores it as $ P^1_{pdf}(k-N+1)$. Repeating DBF until obtaining $ P^1_{pdf}(k)$. In this example, $\Omega ^1_{\xi }=\left \delimiter "4266308 1,2,\dots  ,N+1-\xi \right \delimiter "5267309 $, $\xi =1,\dots  ,N$.\relax }}{6}}
 \newlabel{fig:LIFO-DBF}{{2}{6}}
 \newlabel{fig:LIFO-DBF@cref}{{[figure][2][]2}{6}}
-\newlabel{thm:trim_no_loss}{{1}{6}}
-\newlabel{thm:trim_no_loss@cref}{{[thm][1][]1}{6}}
+\newlabel{thm:trim_no_loss}{{1}{7}}
+\newlabel{thm:trim_no_loss@cref}{{[thm][1][]1}{7}}
 \newlabel{thm:upd_tl_freq}{{2}{7}}
 \newlabel{thm:upd_tl_freq@cref}{{[thm][2][]2}{7}}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Trimming CBs using TLs\relax }}{7}}
 \newlabel{alg:tracklist}{{3}{7}}
 \newlabel{alg:tracklist@cref}{{[algorithm][3][]3}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Complexity of FIFO-DBF}{7}}
 \citation{amemiya1985advanced}
 \citation{chen2003bayesian}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Proof of Consistency}{8}}
-\newlabel{sec:consist_proof}{{6}{8}}
-\newlabel{sec:consist_proof@cref}{{[section][6][]6}{8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Static UGVs}{8}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Proof of Consistency}{8}}
+\newlabel{sec:consist_proof}{{5}{8}}
+\newlabel{sec:consist_proof@cref}{{[section][5][]5}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Static UGVs}{8}}
 \newlabel{thm:FIFO-dbf-sta-ugv}{{3}{8}}
 \newlabel{thm:FIFO-dbf-sta-ugv@cref}{{[thm][3][]3}{8}}
 \newlabel{eqn:cmp}{{13}{8}}
@@ -98,23 +95,19 @@
 \newlabel{subeqn:limit1@cref}{{[subequation][1][19]19a}{9}}
 \newlabel{subeqn:limit2}{{19b}{9}}
 \newlabel{subeqn:limit2@cref}{{[subequation][2][19]19b}{9}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Moving UGVs}{9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Moving UGVs}{9}}
 \newlabel{lem1}{{1}{9}}
 \newlabel{lem1@cref}{{[lem][1][]1}{9}}
 \newlabel{thm:FIFO-dbf-mov-ugv}{{4}{9}}
 \newlabel{thm:FIFO-dbf-mov-ugv@cref}{{[thm][4][]4}{9}}
 \newlabel{eqn:cmp2}{{21}{9}}
 \newlabel{eqn:cmp2@cref}{{[equation][21][]21}{9}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Discussion}{9}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Approximate algorithm}{9}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Changing number of robots}{9}}
-\@writefile{toc}{\contentsline {section}{\numberline {8}Simulation}{9}}
-\newlabel{sec:sim}{{8}{9}}
-\newlabel{sec:sim@cref}{{[section][8][]8}{9}}
-\@writefile{toc}{\contentsline {section}{\numberline {9}Experiment}{9}}
-\@writefile{toc}{\contentsline {section}{\numberline {10}Conclusion}{9}}
-\newlabel{sec:conclu}{{10}{9}}
-\newlabel{sec:conclu@cref}{{[section][10][]10}{9}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Simulation}{9}}
+\newlabel{sec:sim}{{6}{9}}
+\newlabel{sec:sim@cref}{{[section][6][]6}{9}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{9}}
+\newlabel{sec:conclu}{{7}{9}}
+\newlabel{sec:conclu@cref}{{[section][7][]7}{9}}
 \bibstyle{IEEEtran}
 \bibdata{references}
 \bibcite{chamberland2007wireless}{1}
