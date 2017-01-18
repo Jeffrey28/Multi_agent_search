@@ -919,16 +919,16 @@
 	An estimator of a state is said to be consistent if it converges in probability to the true value of the state \cite{amemiya1985advanced}.
 	Consistency is an important metric for stochastic filtering approaches \cite{chen2003bayesian} and it differs from the concept of consensus; consensus implies that the estimation results of all sensors converge to a same value, while consistency not only implies achieving consensus asymptotically, but also requires the estimated value converge to the true value.
 	
-	We first prove the consistency for static UGVs. The consistency for moving UGVs is subsequently proved. 
+	We first prove the consistency for static UGVs and then for moving UGVs. 
 	For simplicity and clarity, we assume S is a finite set (e.g. a finely discretized field).
 	
 	\subsection{Static UGVs}	
-	The consistency of LIFO-DBF for static UGVs is stated as follows: 
+	The consistency of \proto-DBF for static UGVs is stated as follows: 
 %	This section proves that \proto-DBF achieves consistent estimation of target position provided that the interaction topologies are jointly connected frequently enough as the system evolves.
 %	To be specific, assume that $S$ is finite, the target moves in a deterministic way, and $x^{T^*}$ is the true position of target, then the consistency of \proto-DBF is stated as follows:
 	
 	\begin{thm}\label{thm:\proto-dbf-sta-ugv}
-		Assume the UGVs are static and the sensors are unbiased. If the network of $N$ UGVs satisfies the condition of interaction topology in \cref{prop1}, then the MAP estimator of target position converges in probability to the true position of the target using LIFO-DBF, i.e.,
+		Assume the UGVs are static and the sensors are unbiased. If the network of $N$ UGVs is \fc, then the MAP estimator of target position converges in probability to the true position of the target using LIFO-DBF, i.e.,
 		
 		\small\begin{equation*}
 		\lim\limits_{k\rightarrow \infty}
@@ -988,10 +988,10 @@
 			\frac{1}{k}\ln\frac{P^i_{pdf}(X_k=x_k|B^i_k)}{P^i_{pdf}(X_k=x^g_k|B^i_k)}=\frac{1}{k}\ln\frac{P^i_{pdf}(x_0)}{P^i_{pdf}(x^g_0)}+\sum\limits_{j=1}^{N}\frac{1}{k}\sum\limits_{l\in\mathscr{K}^{i}_{j,k}}\ln\frac{P(z^j_l|x_k)}{P(z^j_l|x^g_k)}.
 		\end{equation}\normalsize
 		
-		Since $P^i_{pdf}(x_0)$ and $P^i_{pdf}(x^g_0)$ are bounded, then
-		\small\begin{equation}\label{eqn:cmp_lim1}
-			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_0)}{P^i_{pdf}(x^g_0)}= 0.
-		\end{equation}\normalsize
+		Since $P^i_{pdf}(x_0)$ and $P^i_{pdf}(x^g_0)$ are bounded, then $\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_0)}{P^i_{pdf}(x^g_0)}= 0.$
+%		\small\begin{equation}\label{eqn:cmp_lim1}
+%			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_0)}{P^i_{pdf}(x^g_0)}= 0.
+%		\end{equation}\normalsize
 		
 		Utilizing the facts: (1) $z^j_l$ are conditionally independent samples from $P(z^j_l|x^g_l)$ and (2) $k-(N-1)T_u<|\mathscr{K}^i_{j,k}|\leq k$, the law of large numbers yields
 		
@@ -1003,13 +1003,13 @@
 			\end{align}
 		\end{subequations}\normalsize
 		where ``$\overset{P}{\longrightarrow}$" represents ``convergence in probability'' and $D_{KL}(P_1\|P_2)$ denotes the Kullback-Leibler (KL) divergence between two probability distribution $P_1$ and $P_2$.
-		KL divergence has the property that
-		\begin{subequations}
-			\begin{gather*}
-			\forall P_1,\,P_2, \; D_{KL}(P_1\|P_2)\leq 0\\
-			\text{equality holds iff } \; P_1=P_2.
-			\end{gather*}
-		\end{subequations}
+		KL divergence has the property that $\forall P_1,\,P_2, \; D_{KL}(P_1\|P_2)\leq 0,\, \text{equality holds iff } \; P_1=P_2.$
+%		\begin{subequations}
+%			\begin{gather*}
+%			\forall P_1,\,P_2, \; D_{KL}(P_1\|P_2)\leq 0\\
+%			\text{equality holds iff } \; P_1=P_2.
+%			\end{gather*}
+%		\end{subequations}
 		This leads to the following conclusion:
 		\begin{subequations}
 			\begin{align}
@@ -1191,19 +1191,20 @@
 %	\end{rem}
 	
 	\subsection{Moving UGVs}
-	This subsection considers the case of using moving UGVs to localize a target, either static or moving.
-	The difficulty of consistency proof for this case lies in the fact that each UGV makes measurements at multiple positions.
-	Here, the main idea of the proof is to classify UGV measurement positions into two disjoint sets: \textit{infinite-measurement spots} that contain positions where a UGV visits infinitely many times as time tends to infinity, and \textit{finite-measurement spots} that contain positions where the UGV visits finitely many times (i.e., the UGV does not visit again after a finite time period).
+%	This subsection considers the case of using moving UGVs to localize a target, either static or moving.
+	The consistency proof for the case when UGVs are moving is different from the static UGVs case in that each moving UGV makes measurements at multiple positions.
+	We classify UGV measurement positions into two disjoint sets: \textit{infinite-measurement spots} that contain positions where a UGV visits infinitely many times as time tends to infinity, and \textit{finite-measurement spots} that contain positions where the UGV visits finitely many times (i.e., the UGV does not visit again after a finite time period).
+	It is easy to know that each UGV has at least one position where it visits infinitely many times as $k$ tends to infinity.
 	%, as $k\rightarrow\infty$.
-	Before stating the main theorem, the following lemma is introduced.
-	\begin{lem}\label{lem1}
-		For a set of UGVs moving within a collection of finite positions, each UGV has at least one position where infinite measurements are made as $k$ tends to infinity.
-	\end{lem}
-		
-	\begin{proof}
-		Let $n^{i,k}_s$ denote the times that $i\thi$ UGV visits $s\thi$ position up to time $k$. Then, $\sum\limits_{s\in S} n^{i,k}_s=k$. It is straightforward to see that $\exists n^{i,k}_s,$ such that $n^{i,k}_s\rightarrow \infty,$ as $k\rightarrow \infty$.
-	\end{proof}
-	\medskip
+%	Before stating the main theorem, the following lemma is introduced.
+%	\begin{lem}\label{lem1}
+%		For a set of UGVs moving within a collection of finite positions, each UGV has at least one position where infinite measurements are made as $k$ tends to infinity.
+%	\end{lem}
+%		
+%	\begin{proof}
+%		Let $n^{i,k}_s$ denote the times that $i\thi$ UGV visits $s\thi$ position up to time $k$. Then, $\sum\limits_{s\in S} n^{i,k}_s=k$. It is straightforward to see that $\exists n^{i,k}_s,$ such that $n^{i,k}_s\rightarrow \infty,$ as $k\rightarrow \infty$.
+%	\end{proof}
+%	\medskip
 			
 	\begin{thm}\label{thm:\proto-dbf-mov-ugv}
 		Assume UGVs move within a collection of finite positions and sensors are unbiased, then the MAP estimator of target position converges in probability to the true position of the target using LIFO-DBF, i.e.,
@@ -1223,7 +1224,7 @@
 			
 		The only difference from \Cref{eqn:cmp} is that $P(z^j_l|x;x^j_l)$ in \Cref{eqn:cmp2} varies as the UGV moves.
 		%, needs to be grouped according to the UGV position. 
-		For each UGV, there exists at least one position where infinite measurements are made as $k\rightarrow \infty$, according to \Cref{lem1}. 
+%		For each UGV there exists at least one position where infinite measurements are made as $k\rightarrow \infty$, according to \Cref{lem1}. 
 		%All positions can be classified into finite-measurement spots and infinite-measurement spots. 
 		For the finite-measurement spots, by referring to \Cref{eqn:cmp_lim2}, it is easy to know that their contribution to \Cref{eqn:cmp_log} diminishes when $k\rightarrow \infty$.
 		Therefore, proof using \Cref{eqn:cmp2} can be reduced to only considering infinite-measurement spots and the rest of proof is similar to that of \Cref{thm:\proto-dbf-sta-ugv}.
