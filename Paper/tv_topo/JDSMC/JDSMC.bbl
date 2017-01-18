@@ -68,9 +68,9 @@ M.~Vemula, M.~F. Bugallo, and P.~M. Djuri{\'c}, ``Target tracking in a
   vol.~4, pp. IV--IV.
 
 \bibitem{jadbabaie2003coordination}
-A.~Jadbabaie, J.~Lin \emph{et~al.}, ``Coordination of groups of mobile
-  autonomous agents using nearest neighbor rules,'' \emph{Automatic Control,
-  IEEE Transactions on}, vol.~48, no.~6, pp. 988--1001, 2003.
+A.~Jadbabaie, J.~Lin, and A.~S. Morse, ``Coordination of groups of mobile
+  autonomous agents using nearest neighbor rules,'' \emph{IEEE Transactions on
+  automatic control}, vol.~48, no.~6, pp. 988--1001, 2003.
 
 \bibitem{ren2005consensus}
 W.~Ren, R.~W. Beard \emph{et~al.}, ``Consensus seeking in multiagent systems

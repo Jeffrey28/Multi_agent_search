@@ -60,7 +60,7 @@
 \newcommand{\X}{X}
 \newcommand{\Z}{Z}
 \newcommand{\xg}{x^g}
-\newcommand{\fc}{frequently jointly connected}
+\newcommand{\fc}{frequently jointly strongly connected}
 \newcommand{\thi}{^\text{th}}
 
 %=====todonotes===== %
@@ -92,7 +92,7 @@
 
 
 %%% first author
-\author{Chang Liu\thanks{The first two authors have equally contributed to this research.}
+\author{Chang Liu
 	\affiliation{		
 		Department of Mechanical Engineering\\
 		University of California, Berkeley\\
@@ -100,6 +100,7 @@
 		Email: changliu@berkeley.edu
 	}	
 }
+%\thanks{The first two authors have equally contributed to this research.}
 
 %%% second author
 %%% remove the following entry for single author papers
@@ -212,7 +213,6 @@
 		\small
 		\label{eqn:tar_motion_model}
 		x^g_{k+1}=f(x^g_k,u^g_k),
-		%x^g_{k+1}=A_kx^g_k+B_ku^g_k+\epsilon,
 	\end{equation}\normalsize
 	where $x^g_k\in \mathbb{R}^{2}$ denotes the target position at time $k$; $u^g_k$ represents the control input of the target.
 	
@@ -293,43 +293,46 @@
 	\end{rem}
 	
 	\subsection{Graphical Model of Interaction Topology}
+	\todohere{add a sentence mentioning that in this part we use directed graph as an example. The approach also applied to undirected graphs, which can be treated as bidirectional graphs.}
 	%The UGV network is always assumed to be connected, i.e., there exists a path, either direct or indirect, between every pair of UGVs.
 	%Under this assumption, consider an undirected and fixed graph 
-	Consider a simple\footnote{An undirected graph $G=(V,E)$ is \textit{simple} if it has no self-loops or repeated edges, i.e., $\left( i,j\right)\in E,\,\text{only if } i\neq j$ and $E$ only contains distinct elements. A graph is \textit{connected} when there is a path between every pair of vertices in $V$.}, undirected graph $G=(V,E)$ to represent the interaction topology of N networked UGVs, where $V=\left\lbrace 1,\dots,N\right\rbrace $ represents the index set of UGVs and $E=V\times V$ denotes the edge set. 
-	The \textit{adjacency matrix} $M=\left[ m_{ij}\right] $ of graph $G$ describes the interaction topology:
+	Consider a simple\footnote{A (directed/undirected) graph $G=(V,E)$ is \textit{simple} if it has no self-loops (i.e., $\left( i,j\right)\in E\,\text{only if } i\neq j$) or multiple edges with the same source and target nodes (i.e., $E$ only contains distinct elements).} graph $G=(V,E)$ to represent the interaction topology of N networked UGVs, where the vertex set $V=\left\lbrace 1,\dots,N\right\rbrace $ represents the index collection of UGVs and $E=V\times V$ denotes the edge set. 
+	The \textit{adjacency matrix} $A=\left[ a_{ij}\right] $ of the graph $G$ describes the interaction topology:
 	\small\begin{equation*}
-		m_{ij}=\begin{cases}
+		a_{ij}=\begin{cases}
 			1& \text{if}\;\left(i,j\right)\in E\\
 			0& \text{if}\;\left(i,j\right)\notin E
 		\end{cases},
 	\end{equation*} \normalsize
-	where $m_{ij}$ denotes the entity of adjacency matrix. 
-	The notation $m_{ij}=1$ indicates that a communication link exists between $i\thi$ and $j\thi$ UGV and $m_{ij}=0$ indicates no communication between them.
-	\cref{fig:com_topo} illustrates three types of typical topologies: ring \cite{lawton2003decentralized}, line \cite{liu2010simple}, and star \cite{thatte2008sensor}. 
-	All of them are represented by simple and undirected graphs.
+	where $a_{ij}$ is the entry on the $i\thi$ row and $j\thi$ column of the adjacency matrix. 
+	The notation $a_{ij}=1$ indicates that a communication link exists from the $i\thi$ to $j\thi$ UGV and $m_{ij}=0$ indicates no communication from $i$ to $j$.
+	 A directed graph is \textit{strongly connected} if there is a directed path connecting any two arbitrary vertices in $V$\footnote{An undirected graph with this property is called a \textit{connected} graph.}.
+%	\cref{fig:com_topo} illustrates three types of typical simple directed topologies: ring \cite{lawton2003decentralized}, line \cite{liu2010simple}, and star \cite{thatte2008sensor}. 
+%	All of them are represented by simple and undirected graphs.
 	
 %	The interaction topology can be dynamically changing due to limited communication range, varying team formation or link failure.
 %	Let $\bar{G}=\left\lbrace G_1,G_2,\dots,G_L\right\rbrace $ denote the set of all possible simple and undirected graphs defined for the network of UGVs.
-	Let $\bar{G}$ denote the set of all possible simple and undirected graphs defined for the network of UGVs.
+%	Let $\bar{G}$ denote the set of all possible simple and undirected graphs defined for the network of UGVs.
+	Let $\bar{G}$ denote the set of all possible simple directed graphs\footnote{For undirected graphs, we consider the set of simple undirected graphs.} defined over the network of UGVs.
 	It is easy to know that $\bar{G}$ has finite elements.
-	The adjacency matrix associated with a graph $G_l\in\bar{G}$ is denoted as $M^l=[m^l_{ij}]$.	
-	Define the \textit{union} of a collection of graphs $\left\lbrace G_{i_1},G_{i_2},\dots,G_{i_l} \right\rbrace \subset \bar{G}$ as the undirected graph with nodes in $V$ and edge set given by the union of edge sets of $G_{i_j},\,j=1\dots,l$.
-	Such collection is defined to be \textit{jointly connected} if the union of its members forms a connected graph.
+	The adjacency matrix associated with a graph $G_l\in\bar{G}$ is denoted as $A_l=[a^l_{ij}]$.	
+	Define the \textit{union} of a collection of graphs $\left\lbrace G_{i_1},G_{i_2},\dots,G_{i_l} \right\rbrace \subset \bar{G}$ as the graph with the nodes in $V$ and the edge set given by the union of edge sets of $G_{i_j},\,j=1\dots,l$.
+	Such collection is defined to be \textit{jointly strongly connected} if the union of its members forms a strongly connected graph \footnote{For undirected graphs, such collection is {jointly connected} \cite{jadbabaie2003coordination}}.
 	
 	We define two concepts of neighborhood in a UGV network.
 	\todohere{note that the definition for neighbor here means neighbors who can receive robot $i$'s CB, so it's outbound neighbors for directed graph.}
 	The \textit{direct neighborhood} of $i\thi$ UGV under topology $G_{l}$ is defined as $\mathcal{N}_i(G_{l})=\left\lbrace j|m^l_{ij}=1,\,j\in V\right\rbrace $. %\left\lbrace1,\dots,N \right\rbrace 
-	All UGVs in $\mathcal{N}_i(G_{l})$ can directly exchange information with $i\thi$ UGV via single-hopping.
-	In addition to direct neighborhood, another set called \textit{available neighborhood} is defined as $\mathcal{Q}_i(G_{l})$, which contains indices of UGVs whose observations can be received by the $i\thi$ UGV given a specific observation exchange protocol and the interaction topology $G_{l}$. 
-	Note that in general $\mathcal{N}_i(G_{l})\subseteq\mathcal{Q}_i(G_{l})$.
+	All UGVs in $\mathcal{N}_i(G_{l})$ can directly receive information from the $i\thi$ UGV via single-hopping.
+	In addition to direct neighborhood, another set called the \textit{accessible neighborhood} is defined as $\mathcal{Q}_i(G_{l})$, which contains indices of UGVs whose information can be received by the $i\thi$ UGV, possibly via multi-hopping, given a specific data exchange protocol and the interaction topology $G_{l}$. 
+%	Note that in general $\mathcal{N}_i(G_{l})\subseteq\mathcal{Q}_i(G_{l})$.
 	%but when only single-hopping is allowed, $\mathcal{N}_i=\mathcal{Q}_i$. 
 		
-	\begin{figure}%[thpb]
-		\centering
-		\includegraphics[width=0.42\textwidth]{figures/com_topo}
-		\caption{Three types of topologies: (a) ring topology; (b) line topology; (c) star topology}
-		\label{fig:com_topo}
-	\end{figure}
+%	\begin{figure}%[thpb]
+%		\centering
+%		\includegraphics[width=0.42\textwidth]{figures/com_topo}
+%		\caption{Three types of topologies: (a) ring topology; (b) line topology; (c) star topology}
+%		\label{fig:com_topo}
+%	\end{figure}
 	
 	%\section{Distributed Bayesian Filter via Latest-In-and-Full-Out Protocol}\label{sec:\proto-dbf}
 	
@@ -554,7 +557,7 @@
 		Therefore, the transmission delay between an arbitrary pair of UGVs is no greater than \small$(N-1)T_u$\normalsize.
 	\end{proof}
 	
-	Note that an interaction topology that satisfy the two conditions in \Cref{prop1} is called a {\fc} network \cite{}.
+	We defined the interaction topology that satisfies the two conditions in \Cref{prop1} as a {\fc} (FJSC) network.
 	%\vspace{\baselineskip}
 	\medskip
 	\begin{cor}\label{cor1}
@@ -703,76 +706,83 @@
 	When all elements of $P^i_k$ are $1$'s, it means that the robot $i$ is sure that the $j\thi$ UGV ($\forall j\in V$) has received the state-measurement pairs of time $k^{i,j}$ from all UGVs.
 	Choose the minimum time $k^i_m=\min\limits_j k^{i,j}$.
 	Then the $i\thi$ robot fuse all the measurements of time no greater than $k^i_m$ in its own CB to update the stored PDF.
-	\todohere{think if the stored PDF can fast forward for several steps?}.
 	TLs are exchanged when UGVs communicate and are used to trim the CBs. 
-	The exchange and updating of TLs are described in the TL part in \Cref{alg:lifo}.
-	And \Cref{alg:tracklist} describes the approach to trim CBs using TLs.
+	The exchange and updating of TLs are described in the TL part in \Cref{alg:lifo}	and \Cref{alg:tracklist} describes the approach to trim CBs using TLs.
+	Since a TL only keeps track of each robot's oldest measurement, CBs are only trimmed by one time step.	
 	
 	The use of TLs can avoid the excessive size of CBs and guarantee that fusing the measurements and trimming the CBs will not lose any information; the trimmed measurements have been encoded into the stored PDF.
 	The following theorem formalizes this property.
 	
 	\begin{thm}\label{thm:trim_no_loss}
-		For a {\fc} network, by using FIFO-DBF, each UGV's individual PDF is updated by using measurements from all UGVs. The trimming of CBs using the TL leads to the same estimation results as no trimming of CBs.
+		For a {\fc} network using FIFO-DBF, each UGV's individual PDF is updated with measurements from all UGVs. Each UGV's estimation result with the trimmed CB by using the TL is the same as with the non-trimmed CB.
 	\end{thm}
 	
 	\begin{proof}
-		According to \Cref{cor1}, each UGV receive the state-measurement pairs from all other UGVs within finite time steps. Therefore, a UGV's CB contains measurements from all UGVs and is used for updating the individual PDF.
+		According to \Cref{cor1}, each UGV receives the state-measurement pairs from all other UGVs within finite time steps, which are used for updating the individual PDF.
 		
-		\todohere{ this no loss part, i.e., how to make sure that by exchanging the TL, a UGV can know all other UGV's belief, needs mathematical proof.}
-		The design of track lists ensure that, measurements of certain time steps are trimmed only when all robots have received them. Therefore, it causes no loss to trim theses measurements.
+		Let $k_m=\min\limits_j k^{i,j}$. 
+		Trimming $P^i_k$ happens when all entries are $1$. 
+		This indicates that each UGV has received the state-measurement pairs of time $k_m$ from all UGVs, i.e., $\left[x^l_{k_m},z^l_{k_m}\right],\,l\in V$. 
+		A UGV has either saved the pairs in its CB or fused them to update its individual PDF.
+		In either case, such pairs are no longer needed to be transmitted since it will not add any unused information to the team. 
+		Therefore, it causes no loss to trim theses measurements.
 	\end{proof}
 	
-	\todohere{needs to explain that TL only trim on time step each time, this is because TL only tracks each robot's oldest measurement.}
-	
-	Since TLs are used to reduce the size of CBs, it is necessary to understand how often the CBs will be trimmed.
-	Consider the trimming the measurements of time $t$.
-	Let $d_{lj}$ be the shortest path from $l\thi$ UGV to $j\thi$ UGV in the time interval $[t,t+d_{lj}]$, i.e., $A^{d_{lj}}_{(l,j)}>0$.
+%	Since TLs are used to reduce the size of CBs, it is necessary to understand how often the CBs will be trimmed.
+	The following theorem describes how often CBs get trimmed.
+	Consider trimming the state-measurement pairs of time $t$ in $i\thi$ UGV's CB.
+	Let $t_{lj} (>t)$ be the first time that a path from the $l\thi$ UGV to the $j\thi$ UGV exists
+%	$d_{lj}$ be the shortest distance from the 
+	in the time interval $(t,\infty)$.
+%	, i.e., $A^{d_{lj}}_{(l,j)}>0$.
 %	$t^k_{l,j}=t+d_{lj}$.
-	Let $d_{ji}$ is the shortest path distance from UGV $j$ to $i$ in the time interval $[t+d_{lj},t+d_{lj}+d_{ji}]$. 
-	Then the following theorem gives the time when the $i\thi$ UGV trims the all state-measurement pairs of time $t$ in its own CB.
+	Similarly, define $t_{ji} (>t_{lj})$ as the first time that a path from the $j\thi$ UGV to the $i\thi$ UGV exists in the time interval $(t_{lj},\infty)$.
+%	Let $d_{ji}$ is the shortest path distance from UGV $j$ to $i$ in the time interval $[t+d_{lj},t+d_{lj}+d_{ji}]$. 
+	Then the following theorem gives the lower bound on when the $i\thi$ UGV trims all state-measurement pairs of time $t$ in its own CB.
 	\begin{thm}\label{thm:upd_tl_freq}		
-		The robot $i$ trims all the state-measurement pairs of $t$ at time $k^i$ and $k^i\ge t+\max\limits_{l,j}\lb d_{lj}+d_{ji}\rb$.		
-%		In other words, after $j$ gets message from $l$ at time $t^k_{l,j}$, it takes $d_{ji}$ steps for $j$ to let $i$ know that $j$ has got the $i$'s information of time $k$.		
+		The $i\thi$ UGV trims $\lb\left[x^l_t,z^l_t\right] \,(l\in V)\rb$ from its CB at time $k^i$ and $ \max\limits_{l,j,i} t_{ji} \le k^i \le t+2(N-1)T_u $, where $T_u=\sup\limits_{m=1,2,\dots}\left( k_{m+1}-k_m\right) T$.	
 	\end{thm}
 	
 	\begin{proof}
-		The first time for the $j\thi$ UGV's to receive $B^l_t$ from $l\thi$ UGV is time $t+d_{lj}$ and the $j\thi$ UGV's TL is updated so that $p^{j,l}_{t'}=1$, where $t'\le t$.
-		Consider the case $t'=t$, which means all measurements before $t$ from the $l\thi$ UGV has been fused into $P^j_{stored,t-1}$ and is thus the shortest possible time to trim all the state-measurement pairs of $t$ in $i\thi$ UGV's CB.
-		The first time the $i\thi$ UGV knows $p^{j,l}_{t'}=1$ is at time $t+d_{lj}+d_{j,i}$, when the $j\thi$ UGV's TL is transmitted to $i\thi$ UGV.
-		Therefore, $\max\limits_{l,j}\lb d_{lj}+d_{ji}\rb$ is the time when all UGVs has sent a track list that contains information about the reception of each other UGV's measurement at time $t$ or before.
-		If $i\thi$ UGV's stored PDF corresponds to the time step $t-1$, then trimming happens at $k^i= t+\max\limits_{l,j}\lb d_{lj}+d_{ji}\rb$.
-		If the stored PDF corresponds to a time step less that $t-1$, then trimming happens at $k^i> t+\max\limits_{l,j}\lb d_{lj}+d_{ji}\rb$.
+		The first time for the $j\thi$ UGV to receive $B^l_t$ from $l\thi$ UGV is time $t_{lj}$ and the $j\thi$ UGV's TL is updated so that $p^{j,l}_{t'}=1$ for some $t'\le t$.
+		If $t'=t$, then all measurements before $t$ from the $l\thi$ UGV has already been fused into $P^j_{stored,t-1}$. 
+%		This is the case thus the shortest possible time to trim all the state-measurement pairs of $t$ in $i\thi$ UGV's CB.
+		The first time the $i\thi$ UGV knows $p^{j,l}_{t'}=1$ is at time $t_{ji}$, when the $j\thi$ UGV's TL is transmitted to $i\thi$ UGV.
+		Therefore, $\max\limits_{l,j,i} t_{ji}$ is the earliest time when all UGVs has got guaranteed about each other UGV's reception of all measurements of time $t$.
+				
+		If $i\thi$ UGV's stored PDF corresponds to the time step $t-1$, then the trim happens at $k^i= \max\limits_{l,j,i} t_{ji}$.
+		If the stored PDF corresponds to a time step less than $t-1$, then the trim happens at $k^i> \max\limits_{l,j,i} t_{ji}$.
+		Therefore $k^i\ge \max\limits_{l,j,i} t_{ji}$.
+		The upper bound can be obtained using \Cref{prop1}.
 	\end{proof}
 	
 %	From \Cref{thm:upd_tl_freq}, we can get the following corollaries about how often the CB gets trimmed.
 	
 	\begin{cor}
-		The first time to trim $i\thi$ CB occurs at $k^i=1+\max\limits_{l,j}\lb d_{lj}+d_{ji} \rb.$
+		The first time to trim $i\thi$ CB occurs at $k^i=\max\limits_{l,j,i} t_{ji}.$
 	\end{cor}
 	
 	\begin{proof}
-		The proof is straightforward by setting $t=1$ in the proof of \Cref{thm:upd_tl_freq} and noticing that the time of stored PDF of each UGV is $0$.
-		Therefore, the first time the TL is all $1$'s, the trimming occurs.
-	\end{proof}
-	
-	\todohere{I feel that the following values are correct, but may be able to get more detailed condition for each case. In fact, once the TL has accumulated for a while, it seems to be very likely that the following update will increment by $1$ each time.}
+%		The proof is straightforward by setting $t=1$ in the proof of \Cref{thm:upd_tl_freq} and 
+		Notice that stored PDF of each UGV is corresponds to $0$ and records in TLs all correspond to time $0$.
+		Therefore, the first time a TL is all $1$'s, the trim occurs.
+	\end{proof}	
 	
 	\begin{cor}
-		The time between two consecutive trimming of $i\thi$ CB is 
+		The time between two consecutive trims of the $i\thi$ UGV's CB is 
 		\begin{equation*}
 			\Delta k_i=\begin{cases}
-			1+n'_i-n_i& \text{if}\;n'_i \ge n_i\\
-			1& \text{if}\;n'_i < n_i
+			1+n'_{i,t+1}-n_{i,t}& \text{if}\;n'_{i,t+1} \ge n_{i,t}\\
+			1& \text{if}\;n'_{i,t+1} < n_{i,t}
 			\end{cases},
 		\end{equation*}
-		where $n_i=\max\limits_{l,j}\lb d_{lj}+d_{ji}\rb$ starting from $t$ and $n'_i=\max\limits_{l,j}\lb d_{lj}+d_{ji}\rb$ starting from $t+1$.
+		where $n_{i,t}=\max\limits_{l,j}t_{ji}$ starting from $t$ and $n'_{i,t+1}=\max\limits_{l,j}t_{ji}$ starting from $t+1$.
 	\end{cor}
 	
 	\begin{proof}
-		Let $k_i = t+1+n_i$ and $k'_i = t+n'_i$ be the two consecutive trimming times, where $t$ is the time of measurement that will be trimmed from the CB.
-		Due to the rule of trimming, earlier measurements are always trimmed before that of later measurements. 
-		This guarantees that $\Delta k \ge 1$. 
-		If $n'_i \ge n_i$, then it takes longer time for later measurements to be trimmed and thus $\Delta k = 1+n_i'-n_i$.
+		Let $k_i = t+1+n_i$ and $k'_i = t+n'_i$ be the two consecutive trimming times.
+		Since earlier measurements are always trimmed before the later measurements, this guarantees $\Delta k \ge 1$. 
+		If $n'_i \ge n_i$, then it takes longer time for the later measurements to be trimmed and thus $\Delta k = 1+n_i'-n_i$.
 	\end{proof}
 	
 	\begin{algorithm}
@@ -820,14 +830,14 @@
 		\end{algorithmic}
 	\end{algorithm}
 	
-	Using the track list to trim CBs, we can guarantee no information loss under than network condition in \Cref{prop1}, which is stated in the following theorem:
+%	Using the track list to trim CBs, we can guarantee no information loss under than network condition in \Cref{prop1}, which is stated in the following theorem:
 	
-	\begin{thm}\label{thm:fifo_dbf-property}
-		Consider a frequently connected network of $N$ UGVs, arbitrary pairs of UGVs can exchange observations under \proto. 
-		By using track lists to trim CBs, no loss of information happens.
-		The maximum size of CBs transmitted by UGVs is $O(NT_m)$, where $T_m=\max\limits_{l,j,i}\lb d_{lj}+d_{ji}\rb$. 
-		Besides, $T_m\le NT_u$, where $\small T_u=\sup\limits_{m=1,2,\dots}\left( k_{m+1}-k_m\right) T. \normalsize$
-	\end{thm}
+%	\begin{thm}\label{thm:fifo_dbf-property}
+%		Consider a frequently connected network of $N$ UGVs, arbitrary pairs of UGVs can exchange observations under \proto. 
+%		By using track lists to trim CBs, no loss of information happens.
+%		The maximum size of CBs transmitted by UGVs is $O(NT_m)$, where $T_m=\max\limits_{l,j,i}\lb d_{lj}+d_{ji}\rb$. 
+%		Besides, $T_m\le NT_u$, where $\small T_u=\sup\limits_{m=1,2,\dots}\left( k_{m+1}-k_m\right) T. \normalsize$
+%	\end{thm}
 	
 	\begin{proof}
 		The proof is straightforward by considering \Cref{prop1}, \Cref{thm:upd_tl_freq,thm:trim_no_loss}.
@@ -848,7 +858,15 @@
 	Besides, additional computation power is needed for LIFO-DBF compared to statistics dissemination-based methods.
 	Therefore, LIFO-DBF sacrifices storage space and computation resource for reducing communication burden. 
 	This is actually desirable for real applications as local memory of vehicles is usually abundant compared to the limited bandwidth for communication.
-	
+
+	\begin{rem}
+		We can change TLs to track measurements of multiple time steps so that CBs might be trimmed by multiple time steps.
+		This, however, requires larger communication resource.
+		\todohere{analyze the complexity.}
+		\todohere{temporary context:}
+		The maximum size of CBs transmitted by UGVs is $O(NT_m)$, where $T_m=\max\limits_{l,j,i}\lb d_{lj}+d_{ji}\rb$. 
+		Besides, $T_m\le NT_u$, where $\small T_u=\sup\limits_{m=1,2,\dots}\left( k_{m+1}-k_m\right) T. \normalsize$
+	\end{rem}	
 	\section{Proof of Consistency}\label{sec:consist_proof}
 	%This section proves consistency and consensus of \proto-DBF. 
 	%Only proofs for localizing static target are presented, including static UGVs and moving UGVs.
