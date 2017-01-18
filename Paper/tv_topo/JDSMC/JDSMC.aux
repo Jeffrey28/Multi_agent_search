@@ -21,6 +21,7 @@
 \citation{ribeiro2006bandwidth}
 \citation{djuric2011non}
 \citation{xiao2008asynchronous}
+\citation{leung2010decentralized}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Problem Formulation}{2}}
 \newlabel{sec:prob}{{2}{2}}
 \newlabel{sec:prob@cref}{{[section][2][]2}{2}}
@@ -43,11 +44,11 @@
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{alg:lifo}{{1}{4}}
 \newlabel{alg:lifo@cref}{{[algorithm][1][]1}{4}}
+\newlabel{cor1}{{1}{4}}
+\newlabel{cor1@cref}{{[cor][1][]1}{4}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Example of FIFOwith three UGVs using switching line interaction topologies. The double-headed arrow represents a communication link between two UGVs.\relax }}{5}}
 \newlabel{fig:FIFO}{{1}{5}}
 \newlabel{fig:FIFO@cref}{{[figure][1][]1}{5}}
-\newlabel{cor1}{{1}{5}}
-\newlabel{cor1@cref}{{[cor][1][]1}{5}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Distributed Bayesian Filter via FIFO Protocol}{5}}
 \newlabel{sec:FIFO-dbf}{{4}{5}}
 \newlabel{sec:FIFO-dbf@cref}{{[section][4][]4}{5}}
@@ -58,8 +59,8 @@
 \newlabel{eqn:bayes_pred@cref}{{[equation][9][]9}{5}}
 \newlabel{eqn:markov_model}{{10}{5}}
 \newlabel{eqn:markov_model@cref}{{[equation][10][]10}{5}}
-\newlabel{eqn:bayes_upd}{{11}{6}}
-\newlabel{eqn:bayes_upd@cref}{{[equation][11][]11}{6}}
+\newlabel{eqn:bayes_upd}{{11}{5}}
+\newlabel{eqn:bayes_upd@cref}{{[equation][11][]11}{5}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1}FIFO-DBF}{6}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Track Lists for Trimming Communication Buffers}{6}}
 \newlabel{sec:tracklist}{{4.2}{6}}
@@ -67,8 +68,8 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Example of FIFO-DBF for $1^\text  {st}$ UGV at time $k$. Networked UGVs take a line topology. The stored individual PDF is represented by $ P^1_{pdf}(k-N)$. The UGV first calculates $ P^1_{tmp}(k-N+1)$, defined in \Cref  {alg:lifo-dbf}, and then stores it as $ P^1_{pdf}(k-N+1)$. Repeating DBF until obtaining $ P^1_{pdf}(k)$. In this example, $\Omega ^1_{\xi }=\left \delimiter "4266308 1,2,\dots  ,N+1-\xi \right \delimiter "5267309 $, $\xi =1,\dots  ,N$.\relax }}{6}}
 \newlabel{fig:LIFO-DBF}{{2}{6}}
 \newlabel{fig:LIFO-DBF@cref}{{[figure][2][]2}{6}}
-\newlabel{thm:trim_no_loss}{{1}{7}}
-\newlabel{thm:trim_no_loss@cref}{{[thm][1][]1}{7}}
+\newlabel{thm:trim_no_loss}{{1}{6}}
+\newlabel{thm:trim_no_loss@cref}{{[thm][1][]1}{6}}
 \newlabel{thm:upd_tl_freq}{{2}{7}}
 \newlabel{thm:upd_tl_freq@cref}{{[thm][2][]2}{7}}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Trimming CBs using TLs\relax }}{7}}
@@ -89,10 +90,10 @@
 \newlabel{eqn:cmp_log@cref}{{[equation][14][]14}{8}}
 \newlabel{eqn:cmp_lim2}{{15}{8}}
 \newlabel{eqn:cmp_lim2@cref}{{[subequation][15][]15}{8}}
-\newlabel{subeqn:limit1}{{17a}{9}}
-\newlabel{subeqn:limit1@cref}{{[subequation][1][17]17a}{9}}
-\newlabel{subeqn:limit2}{{17b}{9}}
-\newlabel{subeqn:limit2@cref}{{[subequation][2][17]17b}{9}}
+\newlabel{subeqn:limit1}{{17a}{8}}
+\newlabel{subeqn:limit1@cref}{{[subequation][1][17]17a}{8}}
+\newlabel{subeqn:limit2}{{17b}{8}}
+\newlabel{subeqn:limit2@cref}{{[subequation][2][17]17b}{8}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Moving UGVs}{9}}
 \newlabel{thm:FIFO-dbf-mov-ugv}{{4}{9}}
 \newlabel{thm:FIFO-dbf-mov-ugv@cref}{{[thm][4][]4}{9}}
@@ -132,6 +133,9 @@
 \@writefile{toc}{\contentsline {section}{\numberline {6}Simulation}{9}}
 \newlabel{sec:sim}{{6}{9}}
 \newlabel{sec:sim@cref}{{[section][6][]6}{9}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{9}}
+\newlabel{sec:conclu}{{7}{9}}
+\newlabel{sec:conclu@cref}{{[section][7][]7}{9}}
 \bibstyle{IEEEtran}
 \bibdata{references}
 \bibcite{chamberland2007wireless}{1}
@@ -154,10 +158,7 @@
 \bibcite{ribeiro2006bandwidth}{18}
 \bibcite{djuric2011non}{19}
 \bibcite{xiao2008asynchronous}{20}
-\bibcite{bourgault2003optimal}{21}
-\bibcite{lawton2003decentralized}{22}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{10}}
-\newlabel{sec:conclu}{{7}{10}}
-\newlabel{sec:conclu@cref}{{[section][7][]7}{10}}
-\bibcite{liu2010simple}{23}
-\bibcite{thatte2008sensor}{24}
+\bibcite{leung2010decentralized}{21}
+\bibcite{bourgault2003optimal}{22}
+\bibcite{amemiya1985advanced}{23}
+\bibcite{chen2003bayesian}{24}

@@ -62,6 +62,8 @@
 \newcommand{\xg}{x^g}
 \newcommand{\fc}{frequently jointly strongly connected}
 \newcommand{\thi}{^\text{th}}
+\newcommand{\dnbhd}{direct neighbors}
+\newcommand{\anbhd}{accessible neighbors}
 
 %=====todonotes===== %
 \usepackage{todonotes}
@@ -88,7 +90,8 @@
 }
 
 \title{\LARGE \bf
-	Distributed Bayesian Filter Under Dynamically Changing Interaction Topologies}
+Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically Changing Networks}
+	%Distributed Bayesian Filter Under Dynamically Changing Interaction Topologies}
 
 
 %%% first author
@@ -181,13 +184,15 @@
 	However, such manipulation increases the computation burden of each agent and sacrifices filtering  accuracy due to approximation.
 	The measurement dissemination scheme is an alternative solution to address the issue of exchanging statistics. 
 	An early work on measurement dissemination was done by Coates et al. (2004), who used adaptive encoding of observations to minimize communication overhead \cite{coates2004distributed}. Ribeiro et al. (2006) exchanged quantized observations along with error-variance limits considering more pragmatic signal models \cite{ribeiro2006bandwidth}.
-	A recent work was conducted by Djuric et al. (2011), who proposed to broadcast raw measurements to other agents, and therefore each agent has a complete set of observations of other agents for executing particle filtering \cite{djuric2011non}.  A shortcoming of aforementioned works is that their communication topologies are assumed to be a fixed and complete graph that every pair of distinct agents is constantly connected by a unique edge. In many real applications,the  interaction topology may change dynamically due to unreliable links, external disturbances and/or range limits \cite{xiao2008asynchronous}.
+	A recent work was conducted by Djuric et al. (2011), who proposed to broadcast raw measurements to other agents, and therefore each agent has a complete set of observations of other agents for executing particle filtering \cite{djuric2011non}.  
+	A shortcoming of aforementioned works is that their communication topologies are assumed to be a fixed and complete graph that every pair of distinct agents is constantly connected by a unique edge. 
+	In many real applications,the  interaction topology may change dynamically due to unreliable links, external disturbances and/or range limits \cite{xiao2008asynchronous}.
 %	The communication links between UGVs may be unreliable due to disturbances or communication range limitations. 
 %	If the information is being exchanged by direct sensing, the locally visible neighbors of a vehicle will likely change over time. 
 	In such cases, dynamically changing topologies can cause random packet loss and variable transmission delay, thus decreasing the performance of distributed estimation, and even leading to inconsistency and non-consensus. 
-
-	\todohere{cite Leung's paper, emphasize that it transmits pdfs.} 
-	\todohere{mention in my main contribution that my work on transmits measurements, no pdf.}
+	Leung et al. (2010) explored a decentralized filter for dynamic robot networks \cite{leung2010decentralized}.
+	The algorithm was shown to achieve centralized-equivalent filtering performance in simulations. 
+	However, it required the communication of both measurements and statistics, which could incur large communication overhead.
 		
 	The main contribution of the paper is that we present a measurement dissemination-based distributed Bayesian filtering (DBF) method for a group of networked UGVs with dynamically changing interaction topologies. 
 	In our previous work, we have proposed a Latest-In-and-Full-Out (LIFO) protocol for data exchange and developed a LIFO-based DBF. 
@@ -195,11 +200,11 @@
 	In this work, we introduce the concept of the track list and extend our methods to time-varying topologies.
 	The measurement dissemination scheme uses the so-called Full-In-and-Full-Out (\proto) protocol, under which each UGV is only allowed to broadcast observations to its neighbors by using single-hopping.
 	Individual Bayesian filter is implemented locally by each UGV after exchanging observations using \proto.
-	Under the condition that the union of undirected switching topologies is connected frequently enough, two properties are achieved: (1) \proto can disseminate observations over the network within finite time; (2) \proto-based DBF guarantees the consistency of estimation that each individual estimate of target position converges in probability to the true target position as the number of observations tends to infinity. 
+	Under the condition that the union of undirected switching topologies is connected frequently enough, two properties are achieved: (1) {\proto} can disseminate observations over the network within finite time; (2) \proto-based DBF guarantees the consistency of estimation that each individual estimate of target position converges in probability to the true target position as the number of observations tends to infinity. 
 	The main benefit of using \proto is on the reduction of communication burden, with the transmission data volume scaling linearly with the size of the UGV network. 
 	
 	The rest of this paper is organized as follows: 
-	the \proto protocol for dynamically changing interaction topologies is formulated in \cref{sec:lifo};
+	the {\proto} protocol for dynamically changing interaction topologies is formulated in \cref{sec:lifo};
 	the \proto-based DBF algorithm is described in \cref{sec:\proto-dbf}, where the consistency of estimation is proved;
 	simulation results are presented in \cref{sec:sim} and \cref{sec:conclu} concludes the paper.
 	
@@ -298,10 +303,12 @@
 	\end{rem}
 	
 	\subsection{Graphical Model of Interaction Topology}
-	\todohere{add a sentence mentioning that in this part we use directed graph as an example. The approach also applied to undirected graphs, which can be treated as bidirectional graphs.}
 	%The UGV network is always assumed to be connected, i.e., there exists a path, either direct or indirect, between every pair of UGVs.
 	%Under this assumption, consider an undirected and fixed graph 
-	Consider a simple\footnote{A (directed/undirected) graph $G=(V,E)$ is \textit{simple} if it has no self-loops (i.e., $\left( i,j\right)\in E\,\text{only if } i\neq j$) or multiple edges with the same source and target nodes (i.e., $E$ only contains distinct elements).} graph $G=(V,E)$ to represent the interaction topology of N networked UGVs, where the vertex set $V=\left\lbrace 1,\dots,N\right\rbrace $ represents the index collection of UGVs and $E=V\times V$ denotes the edge set. 
+	We consider a simple\footnote{A (directed/undirected) graph $G=(V,E)$ is \textit{simple} if it has no self-loops (i.e., $\left( i,j\right)\in E\,\text{only if } i\neq j$) or multiple edges with the same source and target nodes (i.e., $E$ only contains distinct elements).} graph $G=(V,E)$ to represent the interaction topology of N networked UGVs, where the vertex set $V=\left\lbrace 1,\dots,N\right\rbrace $ represents the index collection of UGVs and $E=V\times V$ denotes the edge set. 
+	For the purpose of clarity and generalizability, we use directed graphs to describe our approach.
+	However, the approach can conveniently apply to undirected graphs, which can be treated as bidirectional directed graphs.
+	
 	The \textit{adjacency matrix} $A=\left[ a_{ij}\right] $ of the graph $G$ describes the interaction topology:
 	\small\begin{equation*}
 		a_{ij}=\begin{cases}
@@ -324,11 +331,11 @@
 	Define the \textit{union} of a collection of graphs $\left\lbrace G_{i_1},G_{i_2},\dots,G_{i_l} \right\rbrace \subset \bar{G}$ as the graph with the nodes in $V$ and the edge set given by the union of edge sets of $G_{i_j},\,j=1\dots,l$.
 	Such collection is defined to be \textit{jointly strongly connected} if the union of its members forms a strongly connected graph \footnote{For undirected graphs, such collection is {jointly connected} \cite{jadbabaie2003coordination}}.
 	
-	We define two concepts of neighborhood in a UGV network.
-	\todohere{note that the definition for neighbor here means neighbors who can receive robot $i$'s CB, so it's outbound neighbors for directed graph.}
-	The \textit{direct neighborhood} of $i\thi$ UGV under topology $G_{l}$ is defined as $\mathcal{N}_i(G_{l})=\left\lbrace j|m^l_{ij}=1,\,j\in V\right\rbrace $. %\left\lbrace1,\dots,N \right\rbrace 
+	We define two concepts of neighbors in a UGV network.
+%	\todohere{note that the definition for neighbor here means neighbors who can receive robot $i$'s CB, so it's outbound neighbors for directed graph.}
+	The \textit{\dnbhd} of $i\thi$ UGV under topology $G_{l}$ is defined as $\mathcal{N}_i(G_{l})=\left\lbrace j|a^l_{ij}=1,\,j\in V\right\rbrace $. %\left\lbrace1,\dots,N \right\rbrace 
 	All UGVs in $\mathcal{N}_i(G_{l})$ can directly receive information from the $i\thi$ UGV via single-hopping.
-	In addition to direct neighborhood, another set called the \textit{accessible neighborhood} is defined as $\mathcal{Q}_i(G_{l})$, which contains indices of UGVs whose information can be received by the $i\thi$ UGV, possibly via multi-hopping, given a specific data exchange protocol and the interaction topology $G_{l}$. 
+	The \textit{\anbhd} is defined as $\mathcal{Q}_i(G_{l})$ that contains indices of UGVs whose information can be received by the $i\thi$ UGV, possibly via multi-hopping, given a specific data exchange protocol and the interaction topology $G_{l}$. 
 %	Note that in general $\mathcal{N}_i(G_{l})\subseteq\mathcal{Q}_i(G_{l})$.
 	%but when only single-hopping is allowed, $\mathcal{N}_i=\mathcal{Q}_i$. 
 		
@@ -658,9 +665,11 @@
 	\subsection{FIFO-DBF}
 	This section derives the \proto-DBF for localizing a target. 
 	At time $k$, each UGV maintains two PDFs, the \textit{stored PDF} and the \textit{individual PDF}.
-	\todohere{think about how to explain what $t$ is.}
-	The stored PDF, $P^{i}_{stored,t}$, is updated from the initial PDF by fusing all UGVs' state-measurements up to a certain time $t\le k$ that are in the $i\thi$ UGV's CB.	
-	The corresponding individual PDF, $P^i_{pdf}(\X_k|\mathbf{z}^i_{1:k})$, is then computed from $P^i_{stored,t}$ by using the measurements in the CB, running the Bayesian filter (\Cref{eqn:bayes_pred,eqn:bayes_upd}).
+%	\todohere{think about how to explain what $t$ is.}
+	The stored PDF, $P^{i}_{sto,t}(\X_t)$, is updated from the $i\thi$ UGV's initial PDF by fusing the state-measurement pairs of all UGVs up to a certain time $t\le k$.
+%	 that are in the $i\thi$ UGV's CB.	
+	Therefore, the choice of $t$ needs to ensure that the $i\thi$ UGV has received the state-measurement pairs of times no greater than $t$ from all UGVs, which is described in \Cref{sec:tracklist} by using the track lists.
+	The individual PDF, $P^i_{pdf}(\X_k|B^i_k)$, is then computed from $P^i_{sto,t}(X_t)$ by fusing the measurements of times from $t+1$ to $k$ in the CB, running the Bayesian filter (\Cref{eqn:bayes_pred,eqn:bayes_upd}).
 	Note that initially, $P^{i}_{stored,0}$ = $P^i_{pdf}(\X_0)$.
 	
 	The \textbf{\proto-DBF algorithm} is stated in \cref{alg:lifo-dbf}.
@@ -867,12 +876,9 @@
 	This is actually desirable for real applications as local memory of vehicles is usually abundant compared to the limited bandwidth for communication.
 
 	\begin{rem}
-		We can change TLs to track measurements of multiple time steps so that CBs might be trimmed by multiple time steps.
+		We can change TLs to track measurements of multiple time steps so that CBs might be trimmed off multiple time steps at each trim.
 		This, however, requires larger communication resource.
-		\todohere{analyze the complexity.}
-		\todohere{following is temporary context, needs to revise later.}
-		The maximum size of CBs transmitted by UGVs is $O(NT_m)$, where $T_m=\max\limits_{l,j,i}\lb d_{lj}+d_{ji}\rb$. 
-		Besides, $T_m\le NT_u$, where $\small T_u=\sup\limits_{m=1,2,\dots}\left( k_{m+1}-k_m\right) T. \normalsize$
+		The maximum size of CBs transmitted by UGVs is $O(NT_m)$, where $T_m=\max\limits_{l,j,i}\lb d_{lj}+d_{ji}\rb$ and $T_m\le NT_u$.
 	\end{rem}	
 	
 	\begin{rem}
@@ -1397,8 +1403,9 @@
 	\section{Conclusion}\label{sec:conclu}	
 	This paper presents a measurement dissemination-based distributed Bayesian filtering (DBF) method for a network of multiple unmanned ground vehicles (UGVs) under dynamically changing interaction topologies.
 	The information exchange among UGVs relies on the Full-In-and-Full-Out (\proto) protocol, under which UGVs exchange full communication buffers with neighbors and can significantly reduce the transmission burden between each pair of UGVs to scale linearly with the network size.
-	Under the condition that the union of the switching topologies is connected frequently enough,
-	\proto can disseminate observations over the network within finite time. The \proto-based DBF algorithm is then derived to estimate individual probability density function (PDF) for target localization. 
+	Under the condition that the union of the switching topologies is connected frequently enough,	\proto can disseminate observations over the network within finite time. 
+	By using the track list, the CBs can be trimmed without sacrificing any unused information.
+	The \proto-based DBF algorithm is then derived to estimate individual probability density function (PDF) for target localization. 	
 	The consistency of this algorithm is proved by utilizing the law of large numbers, ensuring that each individual estimate of target position converges in probability to the true value.
 	Simulations comparing \proto-DBF with consensus-based distributed filters (CbDF) and the centralized filter (CF) show that \proto-DBF achieves similar performance as CF and superior performance over CbDF while requiring less communication resource.
 	
