@@ -7,6 +7,7 @@
 % save('test_mat','sim_for_save2')
 
 %% write data to cvs, which will be then copied for matplotlib plotting
+%{
 filepath = './figures/data_exchange/Journal/metrics_plot/';
 filename = [filepath,'metrics_sonar_mov_sen_sta_tar_17-Oct-2016'];
 load(filename);
@@ -15,4 +16,46 @@ var_name_set = {'ml_err_dbf','ent_dbf'};
 
 for ii = 1:length(var_name_set)
     csvwrite([filepath,var_name_set{ii}],exp_for_save.sim_res.(var_name_set{ii}))
+end
+%}
+
+%% test if the analysis of trim time is correct or not
+% define four topologies used in simulation
+% so the way I use the adjacency matrix to analyze seems incorrect.
+% revisit later.
+A = {[0 1 0 0 0 0; 1 0 1 0 0 0; 0 1 0 0 0 0; 0 0 0 0 0 0; 0 0 0 0 0 0; 0 0 0 0 0 0]+eye(6),...
+    [0 0 0 0 0 1; 0 0 0 0 0 0; 0 0 0 1 0 0; 0 0 0 0 0 0; 0 0 0 0 0 0; 0 0 0 0 0 0]+eye(6),...
+    [0 0 0 0 0 0; 0 0 0 0 0 0; 0 0 0 0 0 0; 0 0 0 0 1 0; 0 0 0 0 0 0; 0 0 0 0 0 0]+eye(6),...
+    [0 0 0 0 0 0; 0 0 0 0 0 0; 0 0 0 0 0 0; 0 0 0 0 0 0; 0 0 1 0 0 0; 0 0 1 0 0 0]+eye(6)};
+topo_set = repmat([1 2 2 2 4 1 3 1 3 4],1,5);
+
+l_set = [];
+j_set = [];
+t_set = [];
+
+n = 20;
+for t = 1:n-1
+    B1 = eye(6);
+    for t2 = 1:t
+        B1 = B1*A{topo_set(t2)};
+    end
+    for ll = 1:6
+        for jj = 2:6
+            if ll == jj
+                continue
+            end
+            if B1(ll,jj) > 0
+                B2 = eye(6);
+                for t3 = t+1:n
+                    B2 = B2*A{topo_set(t3)};
+                end
+                if B2(jj,1) > 0
+%                     display('connected paths found');
+                    l_set = [l_set,ll];
+                    j_set = [j_set,jj];
+                    t_set = [t_set,t];
+                end
+            end
+        end
+    end
 end

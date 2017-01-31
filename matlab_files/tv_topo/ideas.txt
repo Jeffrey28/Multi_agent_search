@@ -1,0 +1,6 @@
+1/29/17
+
+can run the simulation now. need to analyze if the bounds on trimming are correct.
+
+use sinusoidal target for plotting purpose.
+add analysis of all three targets in the paper.

@@ -26,6 +26,7 @@
 \usepackage{algorithm,algpseudocode}
 %\usepackage{booktabs}
 \usepackage{balance}
+\usepackage{tcolorbox}
 
 % format for theorems etc.
 \newtheorem{thm}{\bfseries Theorem}
@@ -54,11 +55,14 @@
 
 % =====Macros for this manuscript===== %
 \newcommand{\proto}{FIFO}
-\newcommand{\K}{\mathcal{K}}
 \newcommand{\lb}{\left\lbrace}
 \newcommand{\rb}{\right\rbrace}
 \newcommand{\X}{X}
 \newcommand{\Z}{Z}
+\newcommand{\zb}{\mathbf{z}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\Q}{\mathcal{Q}}
+\newcommand{\K}{\mathcal{K}}
 \newcommand{\xg}{x^g}
 \newcommand{\fc}{frequently jointly strongly connected}
 \newcommand{\thi}{^\text{th}}
@@ -160,6 +164,8 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 %	\end{keywords}
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\section{INTRODUCTION}
+	\todohere{mention the relation between BF and KF.}
+	\todohere{mention the OOSM issue.}
 	%Section II: Topology + \proto + Proof
 	%Section III: Binary sensor + DBF + Proof.
 	%Section IV: Simulation
@@ -213,101 +219,187 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 	Consider a network of $N$ UGVs in a bounded two-dimensional space $S$. 
 	The interaction topology can be dynamically changing due to limited communication range, varying team formation or link failure.
 	Each UGV is equipped with a sensor for environmental perception. 
-	Due to the limit of communication range, each UGV can only exchange sensor observations with its neighbors. 
-	The Bayesian filter is run locally on each UGV based on its own and received observations via single-hopping to estimate the position of a static target in $S$.
+	Due to the limit of communication range, each UGV can only exchange sensor measurements with its local neighbors. 
+%	The Bayesian filter is run locally on each UGV based on its own measurements and the received measurements from other UGVs to estimate the target position in $S$.
+	Every UGV locally runs a Bayesian filter to estimate the target position in $S$ utilizing its own measurements and the received measurements from other UGVs. 
+	Since this work is focused on the distributed Bayesian filter for target localization, we assume that UGVs' states are accurately known.
 	
 	\subsection{Target and Sensor Model}
-	The target motion takes a deterministic discrete-time model that can be described by
+	%Probabilistic Model of Binary Sensor}
+	%In this paper, distributed Bayesian filter is used to estimate the true target position by a network of binary sensors.
+	The target motion takes a deterministic discrete-time model: % that can be described by
 	
 	\begin{equation}
 		\small
 		\label{eqn:tar_motion_model}
-		x^g_{k+1}=f(x^g_k),
+		\xg_{k+1}=f(\xg_k), %,u^g_k
+		%x_{k+1}=A_kx_k+B_ku^g_k+\epsilon,
 	\end{equation}\normalsize
-	where $x^g_k\in \mathbb{R}^{2}$ denotes the target position at time $k$; $u^g_k$ represents the control input of the target.
+	where the superscript $g$ represents the target and $\xg_k\in S$ is the target position at time $k$. % and $u^g_k$ is the target control input.
+	%$A_k\in\mathbb{R}^{2\times 2},\;B_k\in\mathbb{R}^{2\times 2}$ and $\epsilon$ denotes the process noise.
 	
-	Each UGV constantly measures the target position and the sensor measurement of $i\thi$ UGV can be described by a stochastic model:
-	\begin{equation}
-		z^i_k = g_i(x^g_k,w^i_k;y^i_k),
+	%Each UGV constantly measures the target position and the 
+	The sensor measurement is described by a stochastic model:
+	\begin{equation}\label{eqn:meas_model}
+		z^i_k = h_i(\xg_k,x^i_k)+w^i_k,
 	\end{equation}
-	where $w^i_k$ is the white measurement noise and $y^i_k=[x^i_k;\theta^i_k]$ represents the sensor state, consisting of the sensor position $x^i_k$ and direction $\theta^i_k$.
-	$g_i$ depends on the type of the sensor. Let $\mathcal{F}(y^i_k)$ denote the sensor field of view (FOV), $g_i$ for several typical sensor types can be defined as follows:
+	where the superscript $i\in\left\lbrace 1,\dots,N\right\rbrace$ represents the index of the UGV; $x^i_k\in S$ is the sensor position and $w^i_k$ is the white measurement noise.
+	% $x^i_k=[x^i_k;\theta^i_k]$ represents the sensor state, consisting of the sensor position $x^i_k$ and direction $\theta^i_k$.
+	The measurement function $h_i$ depends on the type of the sensor. 
+	%Let $\mathcal{F}(x^i_k)$ denote the sensor's sensing domain, 
 	
-	\textbf{Range-only sensors:} when the target is within the sensor's FOV, the measurement only depends on the relative distance between the sensor and the target.
-	\begin{equation}
-		g_i(x^g_k,w^i_k;x^i_k)=
-		\begin{cases}
-			\|x^g_k-x^i_k\|_2+w^i_k\; &\text{if}\, x^g_k\in\mathcal{F}(y^i_k),\\
-			\emptyset\; &\text{if}\, x^g_k\notin\mathcal{F}(y^i_k).
-		\end{cases}
-	\end{equation}
+	The conditional probability, $P(z^i_k|x^g_k;x^i_k)$, of obtaining a certain measurement $z^i_k$ conditioning on the target and sensor states is critical to designing the Bayesian filter \cite{thrun2005probabilistic}. 
+%	We define $P(z^i_k|x^g_k;x^i_k)$ as this conditional probability.
+%	 of $z^i_k$ given the sensor state $x^i_k$ and the target state $\xg_k$. 
+	It also depends on the distribution of the measurement noise.
+	For example, if $w^i_k$ is a zero-mean Gaussian white noise with covariance $\Gamma_k^i$, then, according to \Cref{eqn:meas_model}, $P(z^i_k|x^g_k;x^i_k)$ can be described as
+	\small\begin{equation*}%\label{eqn:prob_sensor3}
+		P(z^i_k|x^g_k;x^i_k)=\mathcal{N}(h_i(\xg_k,x^i_k),\Gamma_k^i).
+	\end{equation*}\normalsize
+	For non-Gaussian noise distributions, such as the Poisson noise or Cauchy noise \cite{kitagawa1996monte}, $P(z^i_k|x^g_k;x^i_k)$\footnote{For the purpose of simplicity, we will not explicitly write the parameter $x^{i}_k$ in $P(z^i_k|x^g_k;x^i_k)$ for the rest of the paper.} can also be similarly defined.
+	It should be noted that, the approach presented in this work does not rely on the specific distribution of the noise.
 	
-	\textbf{Bearing-only sensors:} when the target is within the sensor's FOV, the measurement only depends on the relative bearing between the sensor and the target.
-	\begin{equation}
-		g_i(x^g_k,w^i_k;x^i_k)=
-		\begin{cases}
-			\measuredangle (x^g_k-x^i_k)+w^i_k\; &\text{if}\, x^g_k\in\mathcal{F}(y^i_k),\\
-			\emptyset\; &\text{if}\, x^g_k\notin\mathcal{F}(y^i_k).
-		\end{cases}
-	\end{equation}
+	The $h_i$ for several typical sensor are defined as follows \cite{bishop2010optimality}:
 	
-%	\textbf{Range-bearing sensors:} when the target is within the sensor's FOV, the measurement is the relative distance and bearing between the sensor and the target.
+	\textbf{Range-only sensors:} 
+	%when the target is within the sensor's sensing domain, 
+	$h_i$ only depends on the relative Euclidean distance between the sensor and the target:
+	%\begin{subequations}
+	%	\begin{align}
+	\begin{equation*}%\label{eqn:ran_only}
+		h_i(\xg_k,x^i_k)=\|\xg_k-x^i_k\|_2,
+	\end{equation*}	
+	%\begin{equation}\label{eqn:ran_only}
+	%h_i(\xg_k,w^i_k;x^i_k)=
+	%\begin{cases}
+	%\|\xg_k-x^i_k\|_2+w^i_k\; &\text{if}\, \xg_k\in\mathcal{F}(x^i_k)\\
+	%\emptyset\; &\text{if}\, \xg_k\notin\mathcal{F}(x^i_k)
+	%\end{cases},
+	%\end{equation}		
+	where $\|\cdot\|_2$ is the Euclidean distance in $S$.
+	%		w^i_k&\sim\mathcal{N}(0,\sigma^i),
+	%	\end{align}
+	%\end{subequations}
+	
+	\textbf{Bearing-only sensors:} 
+	%when the target is within the sensor's sensing domain, 
+	$h_i$ only depends on the relative bearing between the sensor and the target:
+	\begin{equation*}
+		h_i(\xg_k,x^i_k)=\measuredangle (\xg_k-x^i_k),
+	\end{equation*}
+	%\begin{equation}
+	%h_i(\xg_k,w^i_k;x^i_k)=
+	%\begin{cases}
+	%\measuredangle (\xg_k-x^i_k)+w^i_k\; &\text{if}\, \xg_k\in\mathcal{F}(x^i_k)\\
+	%\emptyset\; &\text{if}\, \xg_k\notin\mathcal{F}(x^i_k)
+	%\end{cases},
+	%\end{equation}
+	where $\measuredangle$ denotes the angle from the sensor to the target.
+	
+	\textbf{Range-bearing sensors:} $h_i$ includes both the relative distance and bearing: % between the sensor and the target:
+	\begin{equation*}
+		h_i(x^g_k,x^i_k)=x^g_k-x^i_k.
+	\end{equation*}
+	
+%	\subsection{Target and Sensor Model}
+%	The target motion takes a deterministic discrete-time model:	
+%	\begin{equation}
+%		\small
+%		\label{eqn:tar_motion_model}
+%		x^g_{k+1}=f(x^g_k),
+%	\end{equation}\normalsize
+%	where $x^g_k\in \mathbb{R}^{2}$ denotes the target position at time $k$; $u^g_k$ represents the control input of the target.
+%	
+%	Each UGV constantly measures the target position and the sensor measurement of $i\thi$ UGV can be described by a stochastic model:
+%	\begin{equation}
+%		z^i_k = g_i(x^g_k,w^i_k;y^i_k),
+%	\end{equation}
+%	where $w^i_k$ is the white measurement noise and $y^i_k=[x^i_k;\theta^i_k]$ represents the sensor state, consisting of the sensor position $x^i_k$ and direction $\theta^i_k$.
+%	$g_i$ depends on the type of the sensor. Let $\mathcal{F}(y^i_k)$ denote the sensor field of view (FOV), $g_i$ for several typical sensor types can be defined as follows:
+%	
+%	\textbf{Range-only sensors:} when the target is within the sensor's FOV, the measurement only depends on the relative distance between the sensor and the target.
+%	\begin{equation*}%\label{eqn:ran_only}
+%		h_i(\xg_k,x^i_k)=\|\xg_k-x^i_k\|_2,
+%	\end{equation*}	
+%%	\begin{equation}
+%%		g_i(x^g_k,w^i_k;x^i_k)=
+%%		\begin{cases}
+%%			\|x^g_k-x^i_k\|_2+w^i_k\; &\text{if}\, x^g_k\in\mathcal{F}(y^i_k),\\
+%%			\emptyset\; &\text{if}\, x^g_k\notin\mathcal{F}(y^i_k).
+%%		\end{cases}
+%%	\end{equation}
+%	
+%	\textbf{Bearing-only sensors:} when the target is within the sensor's FOV, the measurement only depends on the relative bearing between the sensor and the target.
 %	\begin{equation}
 %		g_i(x^g_k,w^i_k;x^i_k)=
 %		\begin{cases}
-%			x^g_k-x^i_k+w^i_k\; &\text{if}\, x^g_k\in\mathcal{F}(y^i_k),\\
+%			\measuredangle (x^g_k-x^i_k)+w^i_k\; &\text{if}\, x^g_k\in\mathcal{F}(y^i_k),\\
 %			\emptyset\; &\text{if}\, x^g_k\notin\mathcal{F}(y^i_k).
 %		\end{cases}
 %	\end{equation}
-		
-	A probabilistic sensor model that describes the conditional probability of a certain measurement given sensor and target state is a key component for Bayesian filtering.
-	We define a likelihood function to represent the probability of the target being detected by a sensor:
-	\small\begin{equation}\label{eqn:prob_sensor1}
-		p^i_{1,k}=P(z^i_k\neq\emptyset|x^g_k;x^i_k)\in \left[0,1\right],\; x^g_k\in S,
-	\end{equation}\normalsize
-	where $x^i_k$ is the $i\thi$ sensor's position.
-	%; $X^g$ represents the set of all possible target positions.
-	Correspondingly, the likelihood function for no target being detected is:
-	\small\begin{equation}\label{eqn:prob_sensor0}
-		p^i_{0,k}=P(z^i_k=\emptyset|x^g_k;x^{i}_k)=1-p^i_{1,k}.
-	\end{equation}\normalsize
-	%\Cref{eqn:bin_sensor} actually defines a binary sensor model parameterized by $x^g_k$ and $x^R_k$.
+%	
+%	\textbf{Range-bearing sensors:} $h_i$ includes both the relative distance and bearing: % between the sensor and the target:
+%	\begin{equation*}
+%		h_i(x^g_k,x^i_k)=x^g_k-x^i_k.
+%	\end{equation*}
+%	
+%%	\textbf{Range-bearing sensors:} when the target is within the sensor's FOV, the measurement is the relative distance and bearing between the sensor and the target.
+%%	\begin{equation}
+%%		g_i(x^g_k,w^i_k;x^i_k)=
+%%		\begin{cases}
+%%			x^g_k-x^i_k+w^i_k\; &\text{if}\, x^g_k\in\mathcal{F}(y^i_k),\\
+%%			\emptyset\; &\text{if}\, x^g_k\notin\mathcal{F}(y^i_k).
+%%		\end{cases}
+%%	\end{equation}
+%		
+%	A probabilistic sensor model that describes the conditional probability of a certain measurement given sensor and target state is a key component for Bayesian filtering.
+%	We define a likelihood function to represent the probability of the target being detected by a sensor:
+%	\small\begin{equation}\label{eqn:prob_sensor1}
+%		p^i_{1,k}=P(z^i_k\neq\emptyset|x^g_k;x^i_k)\in \left[0,1\right],\; x^g_k\in S,
+%	\end{equation}\normalsize
+%	where $x^i_k$ is the $i\thi$ sensor's position.
+%	%; $X^g$ represents the set of all possible target positions.
+%	Correspondingly, the likelihood function for no target being detected is:
+%	\small\begin{equation}\label{eqn:prob_sensor0}
+%		p^i_{0,k}=P(z^i_k=\emptyset|x^g_k;x^{i}_k)=1-p^i_{1,k}.
+%	\end{equation}\normalsize
+%	%\Cref{eqn:bin_sensor} actually defines a binary sensor model parameterized by $x^g_k$ and $x^R_k$.
+%	
+%	The combination of \Cref{eqn:prob_sensor1} and \Cref{eqn:prob_sensor0} forms the probabilistic model for a sensor.
+%	If $w^i_k$ is a zero-mean Gaussian white noise, then the probabilistic sensor model can be described as
+%	\begin{equation}		
+%		\begin{cases}
+%			p^i_{1,k}\sim\mathcal{N}(\bar{z}^i_k,\Sigma^i_k) & \text{if}\,x^g_k\in\mathcal{F}(y^i_k)\\
+%			p^i_{1,k}=0 & \text{if}\,x^g_k\in\mathcal{F}(y^i_k),
+%		\end{cases}
+%	\end{equation}
+%	where $\bar{z}^i_k$ is the nominal value of the measurement and equals $\|x^g_k-x^i_k\|$ and $\measuredangle(x^g_k-x^i_k)$ for range-only and bearing-only sensors, correspondingly.
+%	
+%	Consequently,
+%	\begin{equation}
+%		p^i_{0,k}=
+%		\begin{cases}
+%			0 & \text{if}\,x^g_k\in\mathcal{F}(y^i_k)\\
+%			1 & \text{if}\,x^g_k\in\mathcal{F}(y^i_k).
+%		\end{cases}
+%	\end{equation}
 	
-	The combination of \Cref{eqn:prob_sensor1} and \Cref{eqn:prob_sensor0} forms the probabilistic model for a sensor.
-	If $w^i_k$ is a zero-mean Gaussian white noise, then the probabilistic sensor model can be described as
-	\begin{equation}		
-		\begin{cases}
-			p^i_{1,k}\sim\mathcal{N}(\bar{z}^i_k,\Sigma^i_k) & \text{if}\,x^g_k\in\mathcal{F}(y^i_k)\\
-			p^i_{1,k}=0 & \text{if}\,x^g_k\in\mathcal{F}(y^i_k),
-		\end{cases}
-	\end{equation}
-	where $\bar{z}^i_k$ is the nominal value of the measurement and equals $\|x^g_k-x^i_k\|$ and $\measuredangle(x^g_k-x^i_k)$ for range-only and bearing-only sensors, correspondingly.
-	
-	Consequently,
-	\begin{equation}
-		p^i_{0,k}=
-		\begin{cases}
-			0 & \text{if}\,x^g_k\in\mathcal{F}(y^i_k)\\
-			1 & \text{if}\,x^g_k\in\mathcal{F}(y^i_k).
-		\end{cases}
-	\end{equation}
-	
-	For the purpose of simplicity, we will not explicitly write $x^{i}_k$ in the sensor model (\Cref{eqn:prob_sensor1,eqn:prob_sensor0}) for the rest of the paper.
+%	For the purpose of simplicity, we will not explicitly write $x^{i}_k$ in the sensor model (\Cref{eqn:prob_sensor1,eqn:prob_sensor0}) for the rest of the paper.
 	
 	\begin{rem}
-		Given the knowledge of current target and UGV positions, current observation by each UGV can be considered conditionally independent from its own past observations and those by other UGVs \cite{bourgault2003optimal}.
+		Given the knowledge of current target and UGV positions, the current measurement by each UGV can be considered conditionally independent from its own past measurements and those by other UGVs \cite{bourgault2003optimal}.
 	\end{rem}
 	
-	\begin{rem} 
-		The proposed {\proto} protocol and the consistency property to be described in \cref{sec:\proto-dbf} are applicable for general sensors, not limited to the ones described in this section. In addition, they do not rely on the Gaussian noise assumption.
-	\end{rem}
+%	\begin{rem} 
+%		The proposed {\proto} protocol and the consistency property to be described in \cref{sec:\proto-dbf} are applicable for general sensors, not limited to the ones described in this section. In addition, they do not rely on the Gaussian noise assumption.
+%	\end{rem}
 	
 	\subsection{Graphical Model of Interaction Topology}
 	%The UGV network is always assumed to be connected, i.e., there exists a path, either direct or indirect, between every pair of UGVs.
 	%Under this assumption, consider an undirected and fixed graph 
-	We consider a simple\footnote{A (directed/undirected) graph $G=(V,E)$ is \textit{simple} if it has no self-loops (i.e., $\left( i,j\right)\in E\,\text{only if } i\neq j$) or multiple edges with the same source and target nodes (i.e., $E$ only contains distinct elements).} graph $G=(V,E)$ to represent the interaction topology of N networked UGVs, where the vertex set $V=\left\lbrace 1,\dots,N\right\rbrace $ represents the index collection of UGVs and $E=V\times V$ denotes the edge set. 
-	For the purpose of clarity and generalizability, we use directed graphs to describe our approach.
-	However, the approach can conveniently apply to undirected graphs, which can be treated as bidirectional directed graphs.
+	We consider a simple\footnote{A (directed/undirected) graph $G=(V,E)$ is \textit{simple} if it has no self-loops (i.e., $\left( i,j\right)\in E\,\text{only if } i\neq j$) or multiple edges with the same source and target nodes (i.e., $E$ only contains distinct elements).} graph $G=(V,E)$ to represent the interaction topology of N networked UGVs, where the vertex set $V=\left\lbrace 1,\dots,N\right\rbrace $ represents the index set of UGVs and $E=V\times V$ denotes the edge set. 
+	For the purpose of clarity and generalizability, we use directed graphs to describe our approach in this work.
+	However, the approach can conveniently apply to undirected graphs, which can actually be treated as bidirectional directed graphs.
 	
 	The \textit{adjacency matrix} $A=\left[ a_{ij}\right] $ of the graph $G$ describes the interaction topology:
 	\small\begin{equation*}
@@ -317,7 +409,8 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 		\end{cases},
 	\end{equation*} \normalsize
 	where $a_{ij}$ is the entry on the $i\thi$ row and $j\thi$ column of the adjacency matrix. 
-	The notation $a_{ij}=1$ indicates that a communication link exists from the $i\thi$ to $j\thi$ UGV and $m_{ij}=0$ indicates no communication from $i$ to $j$.
+	The notation $a_{ij}=1$ indicates that the $i\thi$ UGV can directly communicate to the $j\thi$ UGV and $a_{ij}=0$ indicates no direct communication from $i$ to $j$.
+%	 a communication link exists from the $i\thi$ to $j\thi$ UGV and $m_{ij}=0$ indicates no communication from $i$ to $j$.
 	 A directed graph is \textit{strongly connected} if there is a directed path connecting any two arbitrary vertices in $V$\footnote{An undirected graph with this property is called a \textit{connected} graph.}.
 %	\cref{fig:com_topo} illustrates three types of typical simple directed topologies: ring \cite{lawton2003decentralized}, line \cite{liu2010simple}, and star \cite{thatte2008sensor}. 
 %	All of them are represented by simple and undirected graphs.
@@ -328,14 +421,14 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 	Let $\bar{G}$ denote the set of all possible simple directed graphs\footnote{For undirected graphs, we consider the set of simple undirected graphs.} defined over the network of UGVs.
 	It is easy to know that $\bar{G}$ has finite elements.
 	The adjacency matrix associated with a graph $G_l\in\bar{G}$ is denoted as $A_l=[a^l_{ij}]$.	
-	Define the \textit{union} of a collection of graphs $\left\lbrace G_{i_1},G_{i_2},\dots,G_{i_l} \right\rbrace \subset \bar{G}$ as the graph with the nodes in $V$ and the edge set given by the union of edge sets of $G_{i_j},\,j=1\dots,l$.
-	Such collection is defined to be \textit{jointly strongly connected} if the union of its members forms a strongly connected graph \footnote{For undirected graphs, such collection is {jointly connected} \cite{jadbabaie2003coordination}}.
+	Define the \textit{union} of a collection of graphs $\left\lbrace G_{i_1},G_{i_2},\dots,G_{i_l} \right\rbrace \subset \bar{G}$ as the graph with the vertices in $V$ and the edge set given by the union of edge sets of $G_{i_j},\,j=1\dots,l$.
+	Such collection is \textit{jointly strongly connected} if the union of its members forms a strongly connected graph \footnote{For undirected graphs, such collection is {jointly connected} \cite{jadbabaie2003coordination}}.
 	
 	We define two concepts of neighbors in a UGV network.
 %	\todohere{note that the definition for neighbor here means neighbors who can receive robot $i$'s CB, so it's outbound neighbors for directed graph.}
 	The \textit{\dnbhd} of $i\thi$ UGV under topology $G_{l}$ is defined as $\mathcal{N}_i(G_{l})=\left\lbrace j|a^l_{ij}=1,\,j\in V\right\rbrace $. %\left\lbrace1,\dots,N \right\rbrace 
-	All UGVs in $\mathcal{N}_i(G_{l})$ can directly receive information from the $i\thi$ UGV via single-hopping.
-	The \textit{\anbhd} is defined as $\mathcal{Q}_i(G_{l})$ that contains indices of UGVs whose information can be received by the $i\thi$ UGV, possibly via multi-hopping, given a specific data exchange protocol and the interaction topology $G_{l}$. 
+	All UGVs in $\mathcal{N}_i(G_{l})$ can directly receive information from the $i\thi$ UGV via the single hopping.
+%	The \textit{\anbhd} is defined as $\mathcal{Q}_i(G_{l})$ that contains indices of UGVs whose information can be received by the $i\thi$ UGV, possibly via multi-hopping, given a specific data exchange protocol and the interaction topology $G_{l}$. 
 %	Note that in general $\mathcal{N}_i(G_{l})\subseteq\mathcal{Q}_i(G_{l})$.
 	%but when only single-hopping is allowed, $\mathcal{N}_i=\mathcal{Q}_i$. 
 		
@@ -356,27 +449,30 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 	%In each step, \proto only allows single-hopping communication within the direct neighborhood, but is able to broadcast observations of each UGV to any other agents after a finite number of steps.
 	%The individual PDF is forward predicted and updated in DBF after each \proto cycle.
 	%The theoretical analysis show that \proto-DBF can ensure the consistency and consensus of distributed estimation while requiring much less communication burden than statistics dissemination-based methods. 
-	This study proposes a Full-In-and-Full-Out (\proto) protocol for observation exchange.
-	In our previous work, we proposed a Latest-In-and-Full-Out (LIFO) protocol and can be used for time-invariant topologies.
-	{\proto} is suitable for time-varying topologies.
+	This study proposes a Full-In-and-Full-Out (\proto) protocol for measurement exchange in time-varying topologies.
+%	In our previous work, we proposed a Latest-In-and-Full-Out (LIFO) protocol and can be used for time-invariant topologies.
+%	{\proto} is suitable for time-varying topologies.
 %	Let $y_k^i=\left\lbrace x^i_k,z^i_k\right\rbrace$ and $Y^i_{\K}=\left\lbrace y_{k}^i|k\in \K\right\rbrace$, where $\K$ is an index set of time steps.
 	Let $Y^i_{\K}=\lb \left[x^i_k,z^i_k\right]|k\in \K\rb$ 
 	% $Y^i_{\K^{i,j}_k}=\lb \left[x^{i,j}_t,z^{i,j}_t\right]|t\in \K^{i,j}_k\rb$
 	be the set of state-measurement pairs of robot $i$, where $\K$ is an index set of time steps.
-	Under \proto, each UGV contains a communication buffer (CB) to store a subset of measurements and the corresponding states of all UGVs:
+	Each UGV contains a communication buffer (CB) that stores state-measurement pairs consisting of measurements and the corresponding states of all UGVs:
 	\begin{equation*}		
-		B^i_k=\left[ Y^1_{\K^{i,1}_k},\dots,Y^N_{\K^{i,N}_k}\right],
+		\B^i_k=\left[ Y^1_{\K^{i,1}_k},\dots,Y^N_{\K^{i,N}_k}\right],
 %		\mathbf{z}^{CB,i}_k=\left[ z^1_{k^i_1},\dots,z^N_{k^i_N}\right]
 	\end{equation*}
 %	where $z^j_{k^i_j}$ represents the observation made by ${j\thi}$ UGV at time $k^i_j$. 
-	where $B^i_k$ is the CB of $i\thi$ robot at time $k$ and $Y^j_{\K^{i,j}_k}$ represents the set of robot $j$'s measurements at time steps in $\K^{i,j}_k$ that are stored in robot $i$'s CB.
-	Note that under {\proto} and certain conditions (\Cref{prop1}) of interaction topologies, $\mathcal{Q}_i=\left\lbrace 1,\dots,N\right\rbrace \setminus \left\lbrace i\right\rbrace$, i.e. each robot can know the measurements from all other robots. 
-	This will be proved in \Cref{cor1}.
-%	$z^j_{k^i_j}$ is stored in the CB of ${i\thi}$ UGV, where $k^i_j$ is the latest observation time of ${j\thi}$ UGV that is available to ${i\thi}$ UGV by time $k$. Due to the communication delay, $k^i_j<k, \forall j\neq i$ and $k^i_i=k$ always holds.
-	Let $G_k\in\bar{G} $ represent the interaction topology at time $k$. 
+	where $\B^i_k$ is the CB of $i\thi$ UGV at time $k$ and $\K^{i,j}_k (j\in V)$ is the time index set.
+	$Y^j_{\K^{i,j}_k}$ represents the set of $j\thi$ UGV's measurements of time steps in $\K^{i,j}_k$ that are stored in $i\thi$ UGV's CB.
+%	Note that under {\proto} and certain conditions (\Cref{prop1}) of interaction topologies, $\mathcal{Q}_i=\left\lbrace 1,\dots,N\right\rbrace \setminus \left\lbrace i\right\rbrace$, i.e. each robot can know the measurements from all other robots. 
+%	This will be proved in \Cref{cor1}.
+%%	$z^j_{k^i_j}$ is stored in the CB of ${i\thi}$ UGV, where $k^i_j$ is the latest observation time of ${j\thi}$ UGV that is available to ${i\thi}$ UGV by time $k$. Due to the communication delay, $k^i_j<k, \forall j\neq i$ and $k^i_i=k$ always holds.
+%	Let $G_k\in\bar{G} $ represent the interaction topology at time $k$. 
 	The \textbf{{\proto} protocol} is stated in \Cref{alg:lifo}.
-	Note that in the Updating Step, the algorithm uses \Cref{alg:tracklist}, which we will introduce in \Cref{sec:tracklist}. 
-	For the purpose of clarity, we ignore this operation and do not trim CB at this stage.
+	Note that each section in the algorithm contains the CB and TL parts.
+%	Note that in the Updating Step, the algorithm uses \Cref{alg:tracklist}, which we will introduce in \Cref{sec:tracklist}. 
+	For the purpose of clarity, we ignore the TL parts at this stage and will describe them in \Cref{subsec:tracklist}.
+%	this operation and do not trim CB at this stage.
 %	For the clarity of explanation of DBF in \cref{sec:\proto-dbf}, we define a \textit{new observation set} $\mathbf{z}^{new,i}_k$ for $i\thi$ UGV to denote the set of observations that the $i\thi$ UGV receives and stores in its CB at $k$.
 		
 	
@@ -386,15 +482,15 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 		\begin{algorithmic}
 			\State \textbf{(1)} Initialization.
 			
+			
 			CB: 
 			The CB of $i\thi$ UGV is initialized at $k=0$:
 			\small\begin{equation*}
-				B^i_0=\left[ Y^1_{\K^{i,1}_{0}},\dots,Y^N_{\K^{i,N}_{0}}\right],
-				\text{ where } Y^j_{\K^{i,j}_0} = \lb \left[ x^j_0,\varnothing\right]\rb.
+				{B^i_0=\left[ Y^1_{\K^{i,1}_{0}},\dots,Y^N_{\K^{i,N}_{0}}\right], \text{ where } Y^j_{\K^{i,j}_0} = \lb \left[ \varnothing,\varnothing\right]\rb.}
 			\end{equation*}\normalsize
 			
 			TL:
-			The TL of $i\thi$ UGV is initialized when $k=0$:
+			The TL of $i\thi$ UGV is initialized at $k=0$:
 			\small\begin{equation*}
 				P^i_0 = \mathbf{0},\;\text{i.e. } p^{j,l}_0=0, \forall j,l\in \lb 1\dots,N\rb.
 			\end{equation*}\normalsize
@@ -404,11 +500,11 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 %			\State The interaction topology is represented by $G[k]\in\bar{G}$.
 			\State (2.1) Receiving Step.
 			
-			CB:	The $i\thi$ UGV receives all CBs of its direct neighborhood $\mathcal{N}_i(G_{k-1})$.
+			CB:	The $i\thi$ UGV receives all CBs of its {\dnbhd} $\mathcal{N}_i(G_{k-1})$.
 			The received CBs are totally $|\mathcal{N}_i(G_{k-1})|$ groups, each of which corresponds to the $(k-1)\thi$ step CB of a UGV in $\mathcal{N}_i(G_ {k-1})$. 
 			The received CB from $l\thi$ UGV is
 			\small\begin{equation*}
-				B^l_{k-1}=\left[Y^1_{\K^{l,1}_{k-1}},\dots,Y^N_{\K^{l,N}_{k-1}}\right],\; l\in\mathcal{N}_i(G_{k-1})
+				\mathcal{B}^l_{k-1}=\left[Y^1_{\K^{l,1}_{k-1}},\dots,Y^N_{\K^{l,N}_{k-1}}\right],\; l\in\mathcal{N}_i(G_{k-1})
 			\end{equation*}\normalsize
 			
 			TL: The $i\thi$ UGV receives all TLs of its direct neighborhood $\mathcal{N}_i(G_{k-1})$.
@@ -419,7 +515,7 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 			
 			CB: The $i\thi$ UGV updates $Y^i_{\K^{i,i}_{k}}$ by its own state-measurement pair at current step:
 			\small\begin{equation*}
-			Y^i_{\K^{i,i}_{k}} = Y^i_{\K^{i,i}_{k-1}} \cup \lb{x^i_k,z^i_k}\rb.
+			Y^i_{\K^{i,i}_{k}} = Y^i_{\K^{i,i}_{k-1}} \cup \lb{\left[x^i_k,z^i_k\right]}\rb.
 			\end{equation*}\normalsize
 						
 			\State (2.3) Updating Step.
@@ -427,7 +523,7 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 			CB: The $i\thi$ UGV updates other elements of its own CB, i.e., $Y^j_{\K^{i,j}_{k}}\,(j\neq i)$, by merging with all received CBs:						
 			\small\begin{equation*}
 				Y^j_{\K^{i,j}_{k}} = Y^j_{\K^{i,i}_{k-1}} \cup Y^j_{\K^{l,j}_{k-1}},
-				\forall\; \forall j\neq i l\in \mathcal{N}_i(G_{k-1}).
+				\; \forall j\neq i,\;\forall l\in \mathcal{N}_i(G_{k-1}).
 			\end{equation*}\normalsize
 			
 			TL: The $i\thi$ UGV updates its own TL using all the received TLs:
@@ -441,7 +537,7 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 			
 			\State (2.4) Sending Step:
 			
-			CB: The $i\thi$ UGV broadcasts its updated CB to all of its neighbors defined in $\mathcal{N}_i(G_k)$.
+			CB: The $i\thi$ UGV broadcasts its updated CB, \small$\B^i_k=\left[Y^1_{\K^{l,1}_{k}},\dots,Y^N_{\K^{l,N}_{k}}\right]$\normalsize, to all of its neighbors defined in $\mathcal{N}_i(G_k)$.
 			
 			TL: The $i\thi$ UGV broadcasts its updated track list to all of its neighbors defined in $\mathcal{N}_i(G_k)$.
 			
@@ -459,6 +555,7 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 	
 	\medskip
 %	\todohere{change the figure to be a switching topology. change the contents here accordingly}
+	\todohere{modify the whole paragraph when new plot is made.}
 	\cref{fig:\proto} illustrates the {\proto} cycles of a network of 3 UGVs with switching line topologies.
 	There are two types of topologies: under the first one only UGV $1$ and UGV $2$ can directly communicate and under second one only UGV $2$ and UGV $3$ can directly communicate.
 	Several facts can be noticed in \cref{fig:\proto}: 
@@ -469,7 +566,7 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 	Extending these facts to a network of $N$ UGVs, we have the following proposition:
 	%\medskip
 	
-	\todohere{it seems to me that a tighter lower bound can be achieved by using FIFO, but not sure how to compute it.}
+%	\todohere{it seems to me that a tighter lower bound can be achieved by using FIFO, but not sure how to compute it.}
 	\begin{prop}\label{prop1}
 		%For a fixed and undirected network of $N$ UGVs, \proto uses the shortest path(s) between $i\thi$ and $j\thi$ UGV to exchange observation, the length of which is the delay $\tau_{i,j}$ between these two UGVs.
 		Consider a network of $N$ UGVs with switching interaction topologies.
@@ -477,14 +574,14 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 		If the following two conditions are satisfied:
 		\begin{enumerate}
 			\item there exists an infinite sequence of time intervals $\left[k_m,k_{m+1} \right),\,m=1,2,\dots$, starting at $k_1=0$ and are contiguous, nonempty and uniformly bounded;
-			\item the union of graphs across each such interval is jointly connected,
+			\item the union of graphs across each such interval is jointly strongly connected,
 		\end{enumerate}
-		then arbitrary pair of UGVs can exchange measurements under \proto. And the communication delay between each pair of UGVs is no greater than \small$(N-1)T_u$\normalsize, where \small$T_u=\sup\limits_{m=1,2,\dots}\left( k_{m+1}-k_m\right) T$ \normalsize is the upper bound of interval lengths.
+		then any pair of UGVs can exchange measurements under \proto. And the communication delay between each pair of UGVs is no greater than \small$(N-1)T_u$\normalsize, where \small$T_u=\sup\limits_{m=1,2,\dots}\left( k_{m+1}-k_m\right) T$ \normalsize is the upper bound of interval lengths.
 	\end{prop}
 	
 	\begin{proof}				
-		Without loss of generality, we consider the transmission of $B^i_1$ from $i\thi$ UGV to an arbitrary one $j$.
-		Since each robot will receive neighbors' CBs and send the merged one to its neighbors, $i\thi$ UGV can transmit $B^i_1$ to $j$ if and only if there is a path from node $i$ to $j$ in the interaction topology.
+		Without loss of generality, we consider the transmission of $B^i_1$ from the $i\thi$ UGV to an arbitrary $j\thi$ UGV ($j\in V\setminus \lb i\rb$).
+		Since each UGV will receive \dnbhd' CBs and send the merged one to its neighbors at the next time step, the $i\thi$ UGV can transmit $B^i_1$ to $j$ if and only if there is a path from vertex $i$ to $j$.
 %		, i.e.,
 %		\begin{equation*}
 %			\exists n\in\mathbb{N}_+, \text{ s.t. } A^n_{i,j} >0.
@@ -496,15 +593,16 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 		If $l_1=j$, then $B^i_1$ has been sent to $j$.
 		If $l_1\neq j$, $B^i_1$ has been merged into $B^{l_1}_{t_1}$ and will be sent out in the next time step. 
 		
-		By using the similar derivation for time intervals $\left[k_m,k_{m+1} \right),\;,m=2,3,\dots$, it can be shown that all $N-1$ UGVs, besides the $i\thi$ UGV, will have the information in $B^i_1$ no later by $k_{N}$.
+		By using the similar derivation for time intervals $\left[k_m,k_{m+1} \right),\;,m=2,3,\dots$, it can be shown that all UGVs can receive the state-measurement pairs in $B^i_1$ no later by $k_{N}$.
 		Therefore, the transmission delay between an arbitrary pair of UGVs is no greater than \small$(N-1)T_u$\normalsize.
 	\end{proof}
 	
-	We defined the interaction topology that satisfies the two conditions in \Cref{prop1} as a {\fc} (FJSC) network.
-	%\vspace{\baselineskip}
+	Similar to the definition in \cite{jadbabaie2003coordination}, we define an interaction topology that satisfies the two conditions in \Cref{prop1} as a \textit{{\fc}} network.
+
 	\medskip
 	\begin{cor}\label{cor1}
-		For a {\fc} network, each UGV receive the CBs of all other UGVs under {\proto} within finite time. This implies $\mathcal{Q}_i = \left\lbrace1,\dots,N \right\rbrace \setminus \left\lbrace i\right\rbrace $.	
+		For a {\fc} network, each UGV receive the CBs of all other UGVs under {\proto} within finite time. 
+%		This implies $\mathcal{Q}_i = \left\lbrace1,\dots,N \right\rbrace \setminus \left\lbrace i\right\rbrace $.	
 %		Additionally, the state-measurement pairs of all UGVs are updated every finite period of time.
 	\end{cor}
 	\begin{proof}
@@ -516,7 +614,7 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 	
 	\begin{rem} 
 		The frequency that each UGV receive other UGVs' CBs depends on the property of the network.
-		\Cref{cor1} gives an upper bound on the transmission delay time for all {\proto} networks.
+		\Cref{cor1} gives an upper bound on the transmission time for all {\fc} networks under {\proto}.
 	\end{rem}
 	
 %	\medskip
@@ -569,11 +667,14 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 				\end{equation*} \normalsize
 				
 				\State(2.2) Updating
+%				\small\begin{gather*}
+%				P^i_{tmp}(\X_{\xi})=K_{\xi} P_{tmp}^{pre}(\X_{\xi})\prod\limits_{j\in\Omega^i_{\xi}}P(z^j_{\xi}|\X_{\xi}),\\
+%				K_{\xi}=\left[\int_S P_{tmp}^{pre}(\X_{\xi})\prod\limits_{j\in\Omega^i_{\xi}}P(z^j_{\xi}|\X_{\xi})d\X_{\xi}\right]^{-1}.
+%				\end{gather*} \normalsize
 				\small\begin{gather*}
-				P^i_{tmp}(\X_{\xi})=K_{\xi} P_{tmp}^{pre}(\X_{\xi})\prod\limits_{j\in\Omega^i_{\xi}}P(z^j_{\xi}|\X_{\xi}),\\
-				K_{\xi}=\left[\int_S P_{tmp}^{pre}(\X_{\xi})\prod\limits_{j\in\Omega^i_{\xi}}P(z^j_{\xi}|\X_{\xi})d\X_{\xi}\right]^{-1}.
+				P^i_{tmp}(\X_{\xi})=K_{\xi} P_{tmp}^{pre}(\X_{\xi})P(\zb^j_{\xi}|\X_{\xi}),\\
+				K_{\xi}=\left[\int_S P_{tmp}^{pre}(\X_{\xi})P(\zb^j_{\xi}|\X_{\xi})d\X_{\xi}\right]^{-1}.
 				\end{gather*} \normalsize
-				%	\end{enumerate}
 				
 				\State(2.3) When $\xi=t+1$, if $z^j_{t+1}\neq\emptyset$ for $\forall j\in V$, then the stored PDF will be updated to be the temporary PDF of time $t+1$:
 				\small\begin{equation*}
@@ -590,20 +691,22 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 			\end{algorithmic}
 		\end{algorithm}
 
-	The generic distributed Bayesian filter (DBF) is introduced in this section.
+	We first introduce the generic distributed Bayesian filter (DBF).
 	%, which is also stated in \cite{bandyopadhyay2014distributed} and \cite{julian2012distributed}. 
 	%Each UGV has its individual estimation of the probability density function (PDF) of target position, called \textit{individual PDF}. 
-	Let $\X_k\in S$ be the random variable that represents the position of the target at time $k$.
-	The probability density function (PDF) of $\X_k$, called \textit{individual PDF}, of $i\thi$ UGV is then represented by
+	Let $\X_k\in S$ be the random variable representing the position of the target at time $k$.
+	Define $\zb^i_k$ to be the set of all measurements of time $k$ in the $i\thi$ UGV's CB, i.e., \small$\zb^i_k=\lb z^j_k| \left[x^i_k,z^j_k\right]\in \B^i_k,\; \forall j\in V\rb$\normalsize and let $\zb^i_{1:k} = \bigcup\limits_{t=1}^k \zb^i_t$.
+	The probability density function (PDF) of $\X_k$, called \textit{individual PDF}, of the $i\thi$ UGV is represented by
 	%=\left\lbrace z^i_1,\dots,z^i_k\right\rbrace
-	$P^i_{pdf}(\X_{k}|\mathbf{z}^i_{1:k})$, where $\mathbf{z}^i_{1:k}$ denotes the set of measurements by $i\thi$ UGV and by UGVs in $\mathcal{Q}_i$, that have been received by $i\thi$ UGV until time $k$.
+	$P^i_{pdf}(\X_{k}|\mathbf{z}^i_{1:k})$ and is the estimation of the target position given all the measurements that the $i\thi$ UGV has received.	
+%	where $\mathbf{z}^i_{1:k}$ denotes the set of measurements by $i\thi$ UGV and by UGVs in $\mathcal{Q}_i$, that have been received by $i\thi$ UGV until time $k$.
 	%by UGVs in $\mathcal{Q}_i$ that have been transmitted to $i\thi$ UGV by time $k$.
 	%from time $1$ through $k$ and $z^{\mathcal{Q}_i}_{1:k}$ means the set of measurements by UGVs in $\mathcal{Q}_i$ that are transmitted to $i\thi$ UGV.
 	%Note that if the measurement by $j\thi(j\in \mathcal{Q}_i)$ UGV at time $k'(k'\leq k)$ is not received by $i\thi$ UGV, the corresponding element $z^j_{k'}$ in $z^{\mathcal{Q}_i}_{1:k}$ is empty and thus not utilized for computing $i\thi$ individual PDF.
 	The initial individual PDF, $P^i_{pdf}(\X_0)$, is constructed %=P(\X_0) $P^i_{pdf}(\X_0|\mathbf{z}^i_0)$
 	%$P^i_{pdf}(x_0|z^i_0,z^{\mathcal{Q}_i}_0)=P(x_0)$, 
 	given all available prior information including past experience and environment knowledge. 
-	It is necessary to initialize the individual PDF such that the probability density of true target position is nonzero, i.e., $P^i_{pdf}(\X_0=x^g_0)\neq 0$. %$P^i_{pdf}(\X_0=x^g_0|\mathbf{z}^i_0)\neq 0$.
+	It is necessary to initialize $P^i_{pdf}(\X_0)$ such that the probability density of the true target position is nonzero, i.e., $P^i_{pdf}(\X_0=x^g_0)> 0$.
 	
 	Under the framework of DBF, the individual PDF is recursively estimated by two steps: the prediction step and the updating step. 
 	%, based on measurements of $i\thi$ UGV and UGVs in $\mathcal{Q}_i$.
@@ -638,7 +741,7 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 	
 %	\subsubsection{Updating}
 	\textbf{Updating.}
-	The $i\thi$ individual PDF is then updated by Bayes' theorem using the set of newly received measurements at time $k$, i.e., $\mathbf{z}^i_k$:
+	The $i\thi$ individual PDF is then updated by the Bayes' theorem using the set of newly received measurements at time $k$, i.e., $\mathbf{z}^i_k$:
 	%\small\begin{align}\label{eqn:bayes_upd}
 	%&P^i_{pdf}(x_k|z^i_{1:k},z^{\mathcal{Q}_i}_{1:k})\notag\\
 	%&=K_iP^i_{pdf}(x_k|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})P(z^i_k|x_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x_k)
@@ -647,11 +750,18 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 	%P^i_{pdf}(x_k|\mathbf{z}^i_{1:k})
 	%=K_iP^i_{pdf}(x_k|\mathbf{z}^i_{1:k-1})P(z^i_k|x_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x_k)
 	%\end{equation}\normalsize
-	\small\begin{equation}\label{eqn:bayes_upd}
-	P^i_{pdf}(\X_k|\mathbf{z}^i_{1:k})
-	=K_iP^i_{pdf}(\X_k|\mathbf{z}^i_{1:k-1})P(\mathbf{z}^i_k|\X_k),
-	\end{equation}\normalsize
-	where $P(\mathbf{z}^i_k|\X_k)$ comes from the sensor model and $K_i$ is a normalization factor, given by:
+%	\small\begin{equation}\label{eqn:bayes_upd}
+%	P^i_{pdf}(\X_k|\mathbf{z}^i_{1:k})
+%	=K_iP^i_{pdf}(\X_k|\mathbf{z}^i_{1:k-1})P(\mathbf{z}^i_k|\X_k),
+%	\end{equation}\normalsize
+%	\small\begin{subequation*}
+		\small\begin{align*}\label{eqn:bayes_upd}
+			P^i_{pdf}(\X_k|\mathbf{z}^i_{1:k})
+			&= K_iP^i_{pdf}(\X_k|\mathbf{z}^i_{1:k-1})P(\mathbf{z}^i_k|\X_k)\\
+			&=K_iP^i_{pdf}(\X_k|\mathbf{z}^i_{1:k-1})\prod\limits_{j\in\Omega^i_k}P(z^j_k|\X_{k})
+		\end{align*}\normalsize
+%	\end{subequations*}
+	where $P(\zb^i_k|\X_k)$ is the sensor model and $K_i$ is a normalization factor, given by:
 	%\sma and l\begin{align*}
 	%K_i= and /\int P^i_{pdf}(x_k|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})P(z^i_k|x_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x_k)dx_k
 	%\end{align*}\normalsize
@@ -661,29 +771,37 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 	\small\begin{align*}
 	K_i=\left[\int\limits_{\X_k\in S} P^i_{pdf}(\X_k|\mathbf{z}^i_{1:k-1})P(\mathbf{z}^i_k|\X_k)d\X_k\right]^{-1}.
 	\end{align*}\normalsize
+	$\Omega^i_k$ denotes the index set of UGVs whose state-measurement pair of time $k$ is stored in the $i\thi$ UGV's CB, i.e. $\Omega^i_k=\lb j\in V | \left[x^j_k,z^j_k\right]\in \B^i_k\rb$.
+	The factorization of $P(\zb^i_k|\X_k)$ comes from the conditional independence of measurements between each UGV given the target position and the corresponding UGV's position.	
 
 	\subsection{FIFO-DBF}
-	This section derives the \proto-DBF for localizing a target. 
-	At time $k$, each UGV maintains two PDFs, the \textit{stored PDF} and the \textit{individual PDF}.
+	The generic DBF is not directly applicable to time-varying interaction topologies. 
+	This is because changing topologies can cause intermittent and out-of-sequence reception of measurements from different UGVs, which can give rise to OOSM problem.
+	One solution is to ignore all OOSM, which is undesirable since this will cause information loss.
+	Another solution is to start from the initial individual PDF and incorporate all measurements at every time step, which can cause excessive computational burden.
+	To avoid the OOSM problem while reducing unnecessary computational complexity, we add a new PDF, call the \textit{stored PDF}.
+%	This section derives the \proto-DBF for localizing a target. 
+%	At time $k$, each UGV maintains two PDFs, the \textit{stored PDF} and the \textit{individual PDF}.
 %	\todohere{think about how to explain what $t$ is.}
-	The stored PDF, $P^{i}_{sto,t}(\X_t)$, is updated from the $i\thi$ UGV's initial PDF by fusing the state-measurement pairs of all UGVs up to a certain time $t\le k$.
+	The stored PDF, $P^{i}_{sto}(\X_t)$, is updated from the $i\thi$ UGV's initial PDF by fusing the state-measurement pairs of \textit{all} UGVs up to a certain time $t\le k$.
+	The choice of $t$ is described in \Cref{subsec:tracklist}.
 %	 that are in the $i\thi$ UGV's CB.	
-	Therefore, the choice of $t$ needs to ensure that the $i\thi$ UGV has received the state-measurement pairs of times no greater than $t$ from all UGVs, which is described in \Cref{sec:tracklist} by using the track lists.
-	The individual PDF, $P^i_{pdf}(\X_k|B^i_k)$, is then computed from $P^i_{sto,t}(X_t)$ by fusing the measurements of times from $t+1$ to $k$ in the CB, running the Bayesian filter (\Cref{eqn:bayes_pred,eqn:bayes_upd}).
-	Note that initially, $P^{i}_{stored,0}$ = $P^i_{pdf}(\X_0)$.
+%	Therefore, the choice of $t$ needs to ensure that the $i\thi$ UGV has received the state-measurement pairs of times no greater than $t$ from all UGVs, which is described in \Cref{sec:tracklist} by using the track lists.
+	The individual PDF, $P^i_{pdf}(\X_k|\zb^i_{1:k})$, is then computed from $P^i_{sto}(X_t)$ by fusing the measurements of times from $t+1$ to $k$ in the CB, running the Bayesian filter (\Cref{eqn:bayes_pred,eqn:bayes_upd}).
+	Note that initially, $P^{i}_{sto}(\X_0)$ = $P^i_{pdf}(\X_0)$.
 	
 	The \textbf{\proto-DBF algorithm} is stated in \cref{alg:lifo-dbf}.
-	At the beginning, we assign the stored PDF to a temporary PDF, which will then be updated based on measurements in the CB to obtain the individual PDF.
-	We use $\Omega^i_{\xi}\,\left(\xi=t+1,\dots,k\right)$ to denote the index set of UGVs whose state-measurement pair of time $(\xi)$ is stored in $i\thi$ UGV's CB, i.e. $\Omega^i_{\xi}=\left\lbrace j\in \mathcal{Q}_i \bigcup \left\lbrace i \right\rbrace | \left[x^j_\xi,z^j_{\xi}\right]\in B^i_k\rb$.
-	The measurements will be sequentially used to update the temporary PDF until the latest measurements are used.
+	At the beginning, we assign the stored PDF to a temporary PDF, which will then be updated by sequentially fusing measurements in the CB to obtain the individual PDF.
+%	We use $\Omega^i_{\xi}\,\left(\xi=t+1,\dots,k\right)$ to denote the index set of UGVs whose state-measurement pair of time $(\xi)$ is stored in $i\thi$ UGV's CB, i.e. $\Omega^i_{\xi}=\left\lbrace j\in \mathcal{Q}_i \bigcup \left\lbrace i \right\rbrace | \left[x^j_\xi,z^j_{\xi}\right]\in B^i_k\rb$.
+%	The measurements will be sequentially used to update the temporary PDF until the latest measurements are used.
 	The temporary PDF is then assigned as the individual PDF of time $k$.
-	It should be noted that, when the UGV's CB contains all UGVs' state-measurement pairs of time $t+1$, the stored PDF will be replaced by the temporary PDF of $t+1$.
+	It should be noted that, when the UGV's CB contains all UGVs' state-measurement pairs of time $t+1$, the stored PDF will be updated to be the temporary PDF of $t+1$.
 	\cref{fig:LIFO-DBF} illustrates the \proto-DBF procedure for the $1^\text{st}$ UGV as an example.
 	It can be noticed that, the purpose of using the stored PDF is to avoid running the Bayesian filtering from the initial PDF at every time step. 
-	Since the stored PDF has incorporated all UGVs' measurements up to some time step $t$, each UGV only needs to start from the stored PDF each time it computes the individual PDF.
-	We point out that the times of the stored PDF of all UGVs can be different from each other.
-	The stored PDF is saved locally by each UGV, not transmitted to others to save communication resource.
-	\footnote{\todohere{change notations here} Due to the space limit, in this figure we use $P^i_{pdf}(k)$, $P^i_{pdf}(k-N)$ and $P^i_{pdf}(k-N+1)$ to represent $P^i_{pdf}(\X|\mathbf{z}^{i}_{1:k})$ $P^i_{pdf}(\X|\mathbf{z}^{i}_{1:k-N})$ and $P^i_{pdf}(\X|\mathbf{z}^{i}_{1:k-N+1})$, respectively.}.
+	Since the stored PDF has incorporated all UGVs' measurements up to some time step $t$, the information loss problem no longer exists when computing the individual PDF.
+%	each UGV only needs to start from the stored PDF each time it computes the individual PDF.
+	We point out that the time $t$ of each UGV's stored PDF can be different from others.
+	The stored PDF is saved locally by each UGV and not transmitted to others\footnote{\todohere{change notations here} Due to the space limit, in this figure we use $P^i_{pdf}(k)$, $P^i_{pdf}(k-N)$ and $P^i_{pdf}(k-N+1)$ to represent $P^i_{pdf}(\X|\mathbf{z}^{i}_{1:k})$ $P^i_{pdf}(\X|\mathbf{z}^{i}_{1:k-N})$ and $P^i_{pdf}(\X|\mathbf{z}^{i}_{1:k-N+1})$, respectively.}.
 	
 	\begin{figure}%[thpb]
 		\centering
@@ -704,145 +822,132 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 	
 	%\end{rem}
 	
-	\subsection{Track Lists for Trimming Communication Buffers}\label{sec:tracklist}
+	\subsection{Track Lists for Trimming Communication Buffers}\label{subsec:tracklist}
 	The size of CBs can keep increasing as measurements cumulate over time. 
-	The use of the stored PDF has made it feasible to trim excessive measurements from the CBs, while ensuring no information is lost in the sense that all UGVs' measurements have been used for update hte individual PDF.
-	To trim the unnecessary measurements, each robot keeps a \textit{track list} (TL), $P^i_k=\left[\mathbf{p}^1_{k^{i,1}},\dots, \mathbf{p}^N_{k^{i,N}}\right]^T \,(i\in V)$, where $\mathbf{p}^j_{k^{i,j}}=\left[p^{j,l}_{k^{i,j}}, l\in V\right]$ is a binary vector with size $N$.
-	For the $i\thi$ UGV, the TL $P^i_k$ represents its knowledge of the oldest measurements, in terms of the measurement time, by all UGVs.	
-	Each element $p^{j,l}_{k^{i,j}}$ equals $1$ if the $i\thi$ robot knows that $\left[x^l_{k^{i,j}},z^l_{k^{i,j}}\right]$ has been received by the $j\thi$ robot, and equals $0$ if the $i\thi$ robot cannot determine whether $\left[x^l_t,z^l_t\right]$ has been received by the $j\thi$ robot.
-	Mathematically speaking, 
+	The use of the stored PDF has made it feasible to trim excessive measurements from the CBs.
+%	while ensuring no information is lost in the sense that all UGVs' measurements have been used for update hte individual PDF.
+	A state-measurement pair can be trimmed from a UGV's CB only when \textit{all} UGVs have received it.
+	To track each UGV's reception of other UGVs' measurements, every UGV maintains a \textit{track list} (TL), $\Q^i_k=\left[\mathbf{q}^{i,1}_{k^1},\dots, \mathbf{q}^{i,N}_{k^N}\right]^T \,(\forall i\in V)$, where $\mathbf{q}^{i,j}_{k^j}=\left[q^{j,l}_{k^{j}}, l\in V\right]$ is a binary vector with size $N$.
+	For the $i\thi$ UGV, the TL $\Q^i_k$ represents its knowledge of the oldest measurements, in terms of the measurement time, by all UGVs.	
+	Each element $q^{j,l}_{k^{j}}$ equals $1$ if the $i\thi$ robot knows that $\left[x^l_{k^{j}},z^l_{k^{j}}\right]$ has been received by the $j\thi$ robot, and equals $0$ if the $i\thi$ robot cannot determine whether $\left[x^l_{k^{j}},z^l_{k^{j}}\right]$ has been received by the $j\thi$ robot, i.e.,
+%	\begin{equation*}
+%	q^{j,l}_{k^{j}}=
+%	\begin{cases}
+%	1 & \text{if}\quad \exists t\in\mathbb{N}, \text{ s.t. }k^{i,j}\le t\le k \text{ and } \left[x^l_{k^{i,j}},z^l_{k^{i,j}}\right]\in B^j_t,\\
+%	0 & \text{if}\quad \nexists t\in\mathbb{N}, \text{ s.t. }k^{i,j}\le t\le k \text{ and } \left[x^l_{k^{i,j}},z^l_{k^{i,j}}\right]\in B^j_t.
+%	\end{cases}
+%	\end{equation*}
 	\begin{equation*}
-	p^{j,l}_{k^{i,j}}=
+	q^{j,l}_{k^{j}}=
 	\begin{cases}
-	1 & \text{if}\quad \exists t\in\mathbb{N}, \text{ s.t. }k^{i,j}\le t\le k \text{ and } \left[x^l_{k^{i,j}},z^l_{k^{i,j}}\right]\in B^j_t,\\
-	0 & \text{if}\quad \nexists t\in\mathbb{N}, \text{ s.t. }k^{i,j}\le t\le k \text{ and } \left[x^l_{k^{i,j}},z^l_{k^{i,j}}\right]\in B^j_t.
+	1 & \text{if}\quad \exists t\in\left[k^{i,j}, k\right] \text{ s.t. } \left[x^l_{k^{i,j}},z^l_{k^{i,j}}\right]\in B^j_t,\\
+	0 & \text{if}\quad \nexists t\in\left[k^{i,j}, k\right] \text{ s.t. } \left[x^l_{k^{i,j}},z^l_{k^{i,j}}\right]\in B^j_t.
 	\end{cases}
 	\end{equation*}
-	It can happen that $\left[x^l_{k^{i,j}},z^l_{k^{i,j}}\right]$ has received by $j\thi$ UGV but $i\thi$ UGV does not know this and thus $p^{j,l}_{k^{i,j}}=0$.
-	When all elements of $P^i_k$ are $1$'s, it means that the robot $i$ is sure that the $j\thi$ UGV ($\forall j\in V$) has received the state-measurement pairs of time $k^{i,j}$ from all UGVs.
-	Choose the minimum time $k^i_m=\min\limits_j k^{i,j}$.
-	Then the $i\thi$ robot fuse all the measurements of time no greater than $k^i_m$ in its own CB to update the stored PDF.
-	TLs are exchanged when UGVs communicate and are used to trim the CBs. 
-	The exchange and updating of TLs are described in the TL part in \Cref{alg:lifo}	and \Cref{alg:tracklist} describes the approach to trim CBs using TLs.
-	Since a TL only keeps track of each robot's oldest measurement, CBs are only trimmed by one time step.	
+	It can happen that $\left[x^l_{k^{i,j}},z^l_{k^{i,j}}\right]$ has been received by the $j\thi$ UGV but the $i\thi$ UGV does not know this and thus $q^{j,l}_{k^{j}}=0$.
+	When all elements of $\Q^i_k$ are $1$'s, the $i\thi$ UGV can be sure that the $j\thi$ UGV ($\forall j\in V$) has received the state-measurement pairs of time $k^{i,j}$ from all UGVs.
+%	Choose the minimum time $k^i_m=\min\limits_j k^{i,j}$.
+%	Then the $i\thi$ robot fuse all the measurements of time no greater than $k^i_m$ in its own CB to update the stored PDF.
+%	TLs are exchanged when UGVs communicate and are used to trim the CBs. 
+	
+	The exchange and updating of TLs are described in the TL part in \Cref{alg:lifo}.
+	The \Cref{alg:tracklist} describes the approach to trim CBs using TLs.
+	Since a TL only keeps track of the earliest measurements in CBs, the CBs are only trimmed by one time step each time the trim happens.	
 	
 	The use of TLs can avoid the excessive size of CBs and guarantee that fusing the measurements and trimming the CBs will not lose any information; the trimmed measurements have been encoded into the stored PDF.
 	The following theorem formalizes this property.
 	
 	\begin{thm}\label{thm:trim_no_loss}
-		For a {\fc} network using FIFO-DBF, each UGV's individual PDF is updated with measurements from all UGVs. Each UGV's estimation result with the trimmed CB by using the TL is the same as with the non-trimmed CB.
+		For a {\fc} network using FIFO-DBF, each UGV's individual PDF is updated with measurements from all UGVs. 
+		Each UGV's estimation result using the trimmed CB by the TL is the same as that using the non-trimmed CB.
 	\end{thm}
 	
 	\begin{proof}
-		According to \Cref{cor1}, each UGV receives the state-measurement pairs from all other UGVs within finite time steps, which are used for updating the individual PDF.
+		According to \Cref{cor1}, each UGV receives the state-measurement pairs from all other UGVs within finite time steps that are used for updating the individual PDF.
 		
 		Let $k_m=\min\limits_j k^{i,j}$. 
 		Trimming $P^i_k$ happens when all entries are $1$. 
 		This indicates that each UGV has received the state-measurement pairs of time $k_m$ from all UGVs, i.e., $\left[x^l_{k_m},z^l_{k_m}\right],\,l\in V$. 
-		A UGV has either saved the pairs in its CB or fused them to update its individual PDF.
-		In either case, such pairs are no longer needed to be transmitted since it will not add any unused information to the team. 
+		A UGV has either saved the pairs in its CB or already fused them to update its individual PDF.
+		In both cases, such pairs are no longer needed to be transmitted since it will not add any unused information to the team. 
 		Therefore, it causes no loss to trim theses measurements.
 	\end{proof}
 	
 %	Since TLs are used to reduce the size of CBs, it is necessary to understand how often the CBs will be trimmed.
-	The following theorem describes how often CBs get trimmed.
-	Consider trimming the state-measurement pairs of time $t$ in $i\thi$ UGV's CB.
-	Let $t_{lj} (>t)$ be the first time that a path from the $l\thi$ UGV to the $j\thi$ UGV exists
+	The following theorem describes when CBs get trimmed.
+	Consider trimming all the state-measurement pairs of time $t$ in the $i\thi$ UGV's CB.
+	Let $k^{lj}_t (>t)$ be the first time that the $l\thi$ UGV communicates to the $j\thi$ UGV
 %	$d_{lj}$ be the shortest distance from the 
 	in the time interval $(t,\infty)$.
 %	, i.e., $A^{d_{lj}}_{(l,j)}>0$.
 %	$t^k_{l,j}=t+d_{lj}$.
-	Similarly, define $t_{ji} (>t_{lj})$ as the first time that a path from the $j\thi$ UGV to the $i\thi$ UGV exists in the time interval $(t_{lj},\infty)$.
+	Similarly, define $k^{lji}_t (>k^{lj}_t)$ as the first time that the $j\thi$ UGV communicates to the $i\thi$ UGV in the time interval $(k^{lj}_t,\infty)$.
 %	Let $d_{ji}$ is the shortest path distance from UGV $j$ to $i$ in the time interval $[t+d_{lj},t+d_{lj}+d_{ji}]$. 
-	Then the following theorem gives the lower bound on when the $i\thi$ UGV trims all state-measurement pairs of time $t$ in its own CB.
+	The following theorem gives the lower bound on when the $i\thi$ UGV ($\forall i\in V$) trims all state-measurement pairs of time $t$ in its own CB.
 	\begin{thm}\label{thm:upd_tl_freq}		
-		The $i\thi$ UGV trims $\lb\left[x^l_t,z^l_t\right] \,(l\in V)\rb$ from its CB at time $k^i$ and $ \max\limits_{l,j,i} t_{ji} \le k^i \le t+2(N-1)T_u $, where $T_u=\sup\limits_{m=1,2,\dots}\left( k_{m+1}-k_m\right) T$.	
+		The $i\thi$ UGV trims $\lb\left[x^l_t,z^l_t\right] \,(\forall l\in V)\rb$ from its CB at time $k^i_t$, where $ \max\limits_{l,j\in V} k^{lji}_t \le k^i_t \le t+2(N-1)T_u $ and $T_u=\sup\limits_{m=1,2,\dots}\left( k_{m+1}-k_m\right) T$.	
 	\end{thm}
 	
 	\begin{proof}
-		The first time for the $j\thi$ UGV to receive $B^l_t$ from $l\thi$ UGV is time $t_{lj}$ and the $j\thi$ UGV's TL is updated so that $p^{j,l}_{t'}=1$ for some $t'\le t$.
-		If $t'=t$, then all measurements before $t$ from the $l\thi$ UGV has already been fused into $P^j_{stored,t-1}$. 
+		The first time for the $j\thi$ UGV to receive $B^l_t$ from $l\thi$ UGV is time $t_{lj}$ and the $j\thi$ UGV's TL is updated so that $q^{j,l}_{t'}=1$ for some $t'\le t$.
+		If $t'=t$, then all measurements before $t$ from the $l\thi$ UGV has already been fused to generate $P^j_{sto}(\X_{t-1})$. 
 %		This is the case thus the shortest possible time to trim all the state-measurement pairs of $t$ in $i\thi$ UGV's CB.
-		The first time the $i\thi$ UGV knows $p^{j,l}_{t'}=1$ is at time $t_{ji}$, when the $j\thi$ UGV's TL is transmitted to $i\thi$ UGV.
-		Therefore, $\max\limits_{l,j,i} t_{ji}$ is the earliest time when all UGVs has got guaranteed about each other UGV's reception of all measurements of time $t$.
+		The first time the $i\thi$ UGV knows $g^{j,l}_{t'}=1$ is at time $k^{lji}_t$, when the $j\thi$ UGV's TL is transmitted to $i\thi$ UGV.
+		Therefore, $\max\limits_{l,j\in V} k^{lji}_t$ is the earliest time when the $i\thi$ UGVs know about each UGV's reception of all measurements of time $t$.
 				
-		If $i\thi$ UGV's stored PDF corresponds to the time step $t-1$, then the trim happens at $k^i= \max\limits_{l,j,i} t_{ji}$.
-		If the stored PDF corresponds to a time step less than $t-1$, then the trim happens at $k^i> \max\limits_{l,j,i} t_{ji}$.
-		Therefore $k^i\ge \max\limits_{l,j,i} t_{ji}$.
+		If $i\thi$ UGV's stored PDF corresponds to the time step $t-1$, then the trim happens at $k^i_t= \max\limits_{l,j\in V} k_t^{lji}$.
+		If the stored PDF corresponds to a time step less than $t-1$, then the trim happens at $k^i_t> \max\limits_{l,j\in V} k_t^{lji}$.
+		Therefore $k^i_t\ge \max\limits_{l,j\in V} k_t^{lji}$.
 		The upper bound can be obtained using \Cref{prop1}.
 	\end{proof}
 	
 %	From \Cref{thm:upd_tl_freq}, we can get the following corollaries about how often the CB gets trimmed.
 	
 	\begin{cor}
-		The first time to trim $i\thi$ CB occurs at $k^i=\max\limits_{l,j,i} t_{ji}.$
+		The first time to trim the $i\thi$ UGV's CB occurs at $k^i_1=\max\limits_{l,j\in V} k_1^{lji}.$
 	\end{cor}
 	
 	\begin{proof}
 %		The proof is straightforward by setting $t=1$ in the proof of \Cref{thm:upd_tl_freq} and 
-		Notice that stored PDF of each UGV is corresponds to $0$ and records in TLs all correspond to time $0$.
-		Therefore, the first time a TL is all $1$'s, the trim occurs.
+		Notice that the initial stored PDF of each UGV corresponds to the time $0$.
+		Therefore, the first time a TL is all $1$'s the trim occurs.
 	\end{proof}	
 	
 	\begin{cor}
-		The time between two consecutive trims of the $i\thi$ UGV's CB is 
-		\begin{equation*}
-			\Delta k_i=\begin{cases}
-			1+n'_{i,t+1}-n_{i,t}& \text{if}\;n'_{i,t+1} \ge n_{i,t}\\
-			1& \text{if}\;n'_{i,t+1} < n_{i,t}
-			\end{cases},
-		\end{equation*}
-		where $n_{i,t}=\max\limits_{l,j}t_{ji}$ starting from $t$ and $n'_{i,t+1}=\max\limits_{l,j}t_{ji}$ starting from $t+1$.
+		The length of the $i\thi$ UGV's CB, $L^i$, is $\left[1,t+2(N-1)T_u\right]$
+		\todohere{double check whether the conclusion is correct.}
 	\end{cor}
 	
-	\begin{proof}
-		Let $k_i = t+1+n_i$ and $k'_i = t+n'_i$ be the two consecutive trimming times.
-		Since earlier measurements are always trimmed before the later measurements, this guarantees $\Delta k \ge 1$. 
-		If $n'_i \ge n_i$, then it takes longer time for the later measurements to be trimmed and thus $\Delta k = 1+n_i'-n_i$.
-	\end{proof}
+%	\begin{cor}
+%		The time between two consecutive trims of the $i\thi$ UGV's CB is 
+%		\begin{equation*}
+%			\Delta k_i=\begin{cases}
+%			1+n'_{i,t+1}-n_{i,t}& \text{if}\;n'_{i,t+1} \ge n_{i,t}\\
+%			1& \text{if}\;n'_{i,t+1} < n_{i,t}
+%			\end{cases},
+%		\end{equation*}
+%		where $n_{i,t}=\max\limits_{l,j}t_{ji}$ starting from $t$ and $n'_{i,t+1}=\max\limits_{l,j}t_{ji}$ starting from $t+1$.
+%	\end{cor}
+%	
+%	\begin{proof}
+%		Let $k_i = t+1+n_i$ and $k'_i = t+n'_i$ be the two consecutive trimming times.
+%		Since earlier measurements are always trimmed before the later measurements, this guarantees $\Delta k \ge 1$. 
+%		If $n'_i \ge n_i$, then it takes longer time for the later measurements to be trimmed and thus $\Delta k = 1+n_i'-n_i$.
+%	\end{proof}
 	
 	\begin{algorithm}
 		\caption{Trimming CBs using TLs}
 		\label{alg:tracklist}
 		\begin{algorithmic}
-%			\State \textbf{(1)} Initialization.
-%			The CB of $i\thi$ UGV is initialized when $k=0$:
-%			\begin{equation*}
-%			P^i_0 = \mathbf{0},\;\text{i.e. } p^{j,l}_0=0, \forall j,l\in \lb 1\dots,N\rb.
-%			\end{equation*}
-%			
-%			\State \textbf{(2)} At $k\thi\,(k\geq 1)$ step for $i\thi$ UGV:	
-%			\State (2.1) Receiving Step.
-%						
-%			The $i\thi$ UGV receives all track lists of its direct neighborhood $\mathcal{N}_i(G_{k-1})$.
-%			The received track lists from $l\thi$  $\left(l\in \mathcal{N}_i(G[k-1])\right)$ UGV is $P^l_{t_l}$.
-%%			\newline
-%			\State (2.2) Updating Track List.
-%			
-%			The $i\thi$ UGV updates its own track list using all the received track lists:			
-%			
-%			For each $j\in \lb 1\dots,N\rb$,
-%			\begin{itemize}
-%				\item if $k^{i,j}>k^{i,l}$, keep current $\mathbf{p}^j_{k^{i,j}}$;
-%				\item if $k^{i,j}=k^{i,l}$, $\mathbf{p}^j_{k^{i,j}}=\mathbf{p}^j_{k^{i,j}} \lor \mathbf{p}^j_{k^{l,j}}$;
-%				\item if $k^{i,j}<k^{i,l}$, $\mathbf{p}^j_{k^{i,j}}=\mathbf{p}^j_{k^{l,j}}$ and $k^{i,j}=k^{i,l}$.
-%			\end{itemize}
-%			
-%			\State (2.3) Trim CB.
 			\State 
-			Find the smallest time in the track list: $k_m=\min\lb k^{i,1},\dots,k^{i,N} \rb$. 			
-			If all elements with the same time tag in $P^i_k$ are $1$'s, then 
+			For the $i\thi$ UGV:			
+			find the smallest time in the track list: $k^i_m=\min\lb k^{1},\dots,k^{N} \rb$. 			
+			If all elements associated with time $k^i_m$ in $\Q^i_k$ are $1$'s, then 
 			\begin{enumerate}
-			\item set all these items in the track list to be $0$;
-			\item remove all corresponding measurements in $i\thi$ CB; 
-			\item increase all time tags equivalent to $k_m$ by $1$.
-			\item update the track list with items in current CB.
-			\end{enumerate}
-				
-%			\State (2.4) Sending Step.	
-%			The $i\thi$ UGV broadcasts its updated track list to all of its neighbors defined in $\mathcal{N}_i(G_k)$.
-%			
-%			\State \textbf{(3)} $k\leftarrow k+1$ until stop
+			\item set all these items in the track list to be $0$, increase $k_m$ by $1$.
+			\item update the track list with the measurements in the current CB;
+			\item remove all corresponding measurements in the $i\thi$ UGV's CB.
+			\end{enumerate}				
 		\end{algorithmic}
 	\end{algorithm}
 	
@@ -855,35 +960,43 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 %		Besides, $T_m\le NT_u$, where $\small T_u=\sup\limits_{m=1,2,\dots}\left( k_{m+1}-k_m\right) T. \normalsize$
 %	\end{thm}
 	
-	\begin{proof}
-		The proof is straightforward by considering \Cref{prop1}, \Cref{thm:upd_tl_freq,thm:trim_no_loss}.
-	\end{proof}
+%	\begin{proof}
+%		The proof is straightforward by considering \Cref{prop1}, \Cref{thm:upd_tl_freq,thm:trim_no_loss}.
+%	\end{proof}
 	
 	\subsection{Complexity of FIFO-DBF}
 	Compared to statistics dissemination, {\proto} is generally more communication-efficient for distributed filtering. 
-	To be specific, consider a $D\times D$ grid environment with a network of $N$ UGVs, the transmitted data of \proto between each pair of UGVs are only the CB of each UGV and the corresponding UGV positions where observations were made, the length of which is $O(N)$. 
-	On the contrary, the length of transmitted data for a statistics dissemination approach that transmits unparameterized posterior distributions or likelihood functions is $O(D^2)$, which is in the order of environmental size. 
-	Since $D$ is generally much larger than $N$ in applications such as target localization, \proto requires much less communication resources.
+	To be specific, consider a grid representation of the environment of the size $D\times D$. %with a network of $N$ UGVs, 
+	The transmitted data between each pair of UGVs are the CB and TL of each UGV.
+%	 and the corresponding UGV positions where observations were made, the length of which is $O(N)$. 
+	The size of the CB is $O(NL)$ and the size of the TL is $O(N^2)$.
+	According to \Cref{thm:upd_tl_freq}, the worst-case size of the CB is $O(N^2T_u)$.
+	Therefore, the overall communication complexity is $O(N^2T_u)$.	
+	On the contrary, the communicated data of a statistics dissemination approach that transmits unparameterized posterior distributions or likelihood functions is $O(D^2)$.
+%	, which is in the order of environmental size. 
+	Since $D$ is generally much larger than $N$ in applications such as target localization, the {\proto} protocol requires much less communication burden.
 	
-	It is worth noting that, for the static target, each UGV only needs current-step CB to update individual PDFs. 
-	Therefore, besides storing its own individual PDF of size $O(M^2)$, only current-step CB of size $O(N)$ is stored in an UGV's memory and all previous CBs can be discarded, which means that the size of needed memory is $O(N+M^2)$. 
-	On the contrary, for the moving target, each UGV needs to store a set of measurement history
-	%	(except current step CB) triangular matrix
-	of size $O(N^2)$ and an individual PDF of size $O(M^2)$. Therefore the size of the needed memory for each UGV is $O(M^2+N^2)$.
-	This is generally larger than that of statistics dissemination-based methods, the memory of which is $O(M^2)$. 
-	Besides, additional computation power is needed for LIFO-DBF compared to statistics dissemination-based methods.
-	Therefore, LIFO-DBF sacrifices storage space and computation resource for reducing communication burden. 
+	
+%	It is worth noting that, for the static target, each UGV only needs current-step CB to update individual PDFs. 
+%	Therefore, besides storing its own individual PDF of size $O(M^2)$, only current-step CB of size $O(N)$ is stored in an UGV's memory and all previous CBs can be discarded, which means that the size of needed memory is $O(N+M^2)$. 
+%	On the contrary, for the moving target, 
+	It is worth noting that each UGV needs to store an individual PDF and a sotred PDF, each of which has size $O(D^2)$. 
+	In addition, each UGV needs to keep the CB and TL.
+%	Therefore the size of the needed memory for each UGV is $O(M^2+N^2)$.
+	This is generally larger than that of statistics dissemination-based methods, which only stores the individual PDF.
+%	Besides, additional computation power is needed for LIFO-DBF compared to statistics dissemination-based methods.
+	Therefore, the \proto-DBF sacrifices the local memory for reducing the communication burden. 
 	This is actually desirable for real applications as local memory of vehicles is usually abundant compared to the limited bandwidth for communication.
 
-	\begin{rem}
-		We can change TLs to track measurements of multiple time steps so that CBs might be trimmed off multiple time steps at each trim.
-		This, however, requires larger communication resource.
-		The maximum size of CBs transmitted by UGVs is $O(NT_m)$, where $T_m=\max\limits_{l,j,i}\lb d_{lj}+d_{ji}\rb$ and $T_m\le NT_u$.
-	\end{rem}	
+%	\begin{rem}
+%		We can change TLs to track measurements of multiple time steps so that CBs might be trimmed off multiple time steps at each trim.
+%		This, however, requires larger communication resource.
+%		The maximum size of CBs transmitted by UGVs is $O(NT_m)$, where $T_m=\max\limits_{l,j,i}\lb d_{lj}+d_{ji}\rb$ and $T_m\le NT_u$.
+%	\end{rem}	
 	
 	\begin{rem}
-		According to \Cref{thm:upd_tl_freq}, CBs can grow to undesirable sizes that causes excessive communication burden. 
-		An approximate algorithm is to use a time window for the measurements that are saved in CBs.
+		Under certain interaction topologies, CBs can grow to undesirable sizes and causes excessive communication burden if the trim cannot happen frequently.
+		In this case, we can use a time window to constrain the measurements that are saved in CBs.
 		This will cause information loss to the measurements.
 		However, with a decently long time window, FIFO-DBF can still effectively estimate the target position.
 	\end{rem}
@@ -922,9 +1035,8 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 	%\end{rem}
 	
 	This section proves the consistency of the maximum a posteriori (MAP) estimator of LIFO-DBF under unbiased sensors (sensors without offset).
-	An estimator of a state is said to be consistent if it converges in probability to the true value of the state \cite{amemiya1985advanced}.
-	Consistency is an important metric for stochastic filtering approaches \cite{chen2003bayesian} and it differs from the concept of consensus; consensus implies that the estimation results of all sensors converge to a same value, while consistency not only implies achieving consensus asymptotically, but also requires the estimated value converge to the true value.
-	
+	A state estimator is \textit{consistent} if it converges in probability to the true value of the state \cite{amemiya1985advanced}.
+	Consistency is an important metric for stochastic filtering approaches \cite{chen2003bayesian} and it differs from the concept of consensus; the consensus implies that all UGVs' estimation results converge to a same value, while the consistency not only implies achieving consensus asymptotically, but also requires the estimated value converge to the true value.	
 	We first prove the consistency for static UGVs and then for moving UGVs. 
 	For simplicity and clarity, we assume S is a finite set (e.g. a finely discretized field).
 	
@@ -934,12 +1046,12 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 %	To be specific, assume that $S$ is finite, the target moves in a deterministic way, and $x^{T^*}$ is the true position of target, then the consistency of \proto-DBF is stated as follows:
 	
 	\begin{thm}\label{thm:\proto-dbf-sta-ugv}
-		Assume the UGVs are static and the sensors are unbiased. If the network of $N$ UGVs is \fc, then the MAP estimator of target position converges in probability to the true position of the target using LIFO-DBF, i.e.,
+		Assume the UGVs are static and the sensors are unbiased. If the network of $N$ UGVs is \fc, then the MAP estimator of target position converges in probability to the true position of the target using \proto-DBF, i.e.,
 		
 		\small\begin{equation*}
 		\lim\limits_{k\rightarrow \infty}
-		P(\X_k^{MAP}=\xg_k|\mathbf{z}^{i}_{1:k})=
-		1,\;i=1,\dots,N,
+		P(\X_k^{MAP}=\xg_k)=
+		1,\;i\in V,
 		\end{equation*}\normalsize
 		where 
 		\small\begin{equation*}
@@ -963,15 +1075,23 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 	\medskip
 	
 	\begin{proof}	
-		For the purpose of clarity, define the time set of $i\thi$ UGV, $\mathscr{K}^{i}_{j,k},\,j\in\left\lbrace 1,\dots,N\right\rbrace $, that contains the time steps of measurement by $j\thi$ UGV that are contained in $B^i_k$.
-		According to \Cref{thm:fifo_dbf-property}, it is known that the cardinality of $\mathscr{K}^i_{j,k}$ has following property: \small$k-(N-1)T_u<|\mathscr{K}^i_{j,k}|\leq k$\normalsize.
-		Considering the conditional independence of measurements given $x^g_k\in S$, the batch form of DBF at $k\thi$ step is
-		\small\begin{subequations}
-			\begin{align*}
-			P^i_{pdf}(\X_k|B^i_k)&=P^i_{pdf}(\X_k|z^1_{1:k^i_1},\dots,z^N_{1:k^i_N})\\
-			&=\frac{P^i_{pdf}(\X_0)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|\X_l)P(\X_l|\X_{l-1})}{\sum\limits_{\X_0,\dots,\X_k\in S}P^i_{pdf}(\X_0)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|\X_l)P(\X_l|\X_{l-1})}.
-			\end{align*}
-		\end{subequations}\normalsize
+		Define the time set of $i\thi$ UGV, $\K^{i,j}_{k}(\,j\in V)$, that contains the time steps of measurements by the $j\thi$ UGV that are contained in $B^i_k$.
+%		According to \Cref{thm:fifo_dbf-property}, it is known that the cardinality of $\mathscr{K}^i_{j,k}$ has following property: \small$k-(N-1)T_u<|\mathscr{K}^i_{j,k}|\leq k$\normalsize.
+%		Considering the conditional independence of measurements given $x^g_k\in S$, 
+		The batch form of DBF at $k\thi$ step is
+%		\small\begin{subequations}
+%			\begin{align*}
+%			P^i_{pdf}(\X_k|\zb^i_k)&=P^i_{pdf}(\X_k|z^1_{1:k^i_1},\dots,z^N_{1:k^i_N})\\
+%			&=\frac{P^i_{pdf}(\X_0)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|\X_l)P(\X_l|\X_{l-1})}{\sum\limits_{\X_0,\dots,\X_k\in S}P^i_{pdf}(\X_0)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|\X_l)P(\X_l|\X_{l-1})}.
+%			\end{align*}
+%		\end{subequations}\normalsize
+		\small\begin{equation*}
+			P^i_{pdf}(\X_k|\zb^i_{1:k})=\frac{P^i_{pdf}(\X_0)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\X_t)P(\X_t|\X_{t-1})}{\sum\limits_{\X_0,\dots,\X_k\in S}P^i_{pdf}(\X_0)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\X_t)P(\X_t|\X_{t-1})}.
+		\end{equation*}\normalsize
+
+%		\small\begin{equation*}			
+%			P^i_{pdf}(\X_k|\zb^i_{1:k})=\frac{P^i_{pdf}(\X_0)\prod\limits_{t=1}^{k}\prod\limits_{j\in\Omega^i_t}P(z^j_t|\X_t)P(\X_t|\X_{t-1})}{\sum\limits_{\X_0,\dots,\X_k\in S}P^i_{pdf}(\X_0)\prod\limits_{t=1}^{k}\prod\limits_{j\in\Omega^i_t}P(z^j_t|\X_t)P(\X_t|\X_{t-1})}.
+%		\end{equation*}\normalsize
 		
 %		\small\begin{equation}
 %			P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})=\frac{P^i_{pdf}(x^T)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x^T)}{\sum\limits_{x^T\in S}P^i_{pdf}(x^T)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x^T)},
@@ -979,10 +1099,18 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 %		where $P^i_{pdf}$ is the initial individual PDF of $i\thi$ UGV. 
 		%\addtocounter{equation}{-1}\\
 		
-		Comparing $P^i_{pdf}(x^T|B^i_k)$ with $P^i_{pdf}(x^{T^*}|B^i_k)$ yields
+		Comparing $P^i_{pdf}(X_k=x_k|\zb^i_{1:k})$ with $P^i_{pdf}(X_k=x^g_k|\zb^i_{1:k})$\footnote{For the purpose of simplicity, we use $P^i_{pdf}(x_k|\zb^i_{1:k})$ to represent $P^i_{pdf}(X_k=x_k|\zb^i_{1:k})$ in this proof.} yields
+%		\small\begin{equation}\label{eqn:cmp}
+%		\frac{P^i_{pdf}(X_k=x_k|B^i_k)}{P^i_{pdf}(X_k=x^g_k|B^i_k)}=\frac{P^i_{pdf}(x_0)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x_l)}{P^i_{pdf}(x^g_0)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x^g_l)}.
+%		\end{equation}\normalsize
+
 		\small\begin{equation}\label{eqn:cmp}
-		\frac{P^i_{pdf}(X_k=x_k|B^i_k)}{P^i_{pdf}(X_k=x^g_k|B^i_k)}=\frac{P^i_{pdf}(x_0)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x_l)}{P^i_{pdf}(x^g_0)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x^g_l)}.
+			\frac{P^i_{pdf}(x_k|\zb^i_{1:k})}{P^i_{pdf}(x^g_k|\zb^i_{1:k})}=\frac{P^i_{pdf}(x_0)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|x_t)}{P^i_{pdf}(x^g_0)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|x^g_t)}.
 		\end{equation}\normalsize
+		
+%		\small\begin{equation}\label{eqn:cmp}
+%		\frac{P^i_{pdf}(x_k|\zb^i_{1:k})}{P^i_{pdf}(x^g_k|\zb^i_{1:k})}=\frac{P^i_{pdf}(x_0)\prod\limits_{t=1}^{k}\prod\limits_{j\in\Omega^i_t}P(z^j_t|x_t)}{P^i_{pdf}(x^g_0)\prod\limits_{t=1}^{k}\prod\limits_{j\in\Omega^i_t}P(z^j_t|x^g_t)}.
+%		\end{equation}\normalsize
 		
 %		Comparing $P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})$ with $P^i_{pdf}(x^{T^*}|\mathbf{z}^{new,i}_{1:k})$ yields
 %		\small\begin{equation}\label{eqn:cmp}
@@ -990,8 +1118,8 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 %		\end{equation}\normalsize
 		
 		Take the logarithm of \Cref{eqn:cmp} and average it over $k$ steps:
-		\scriptsize\begin{equation}\label{eqn:cmp_log}
-			\frac{1}{k}\ln\frac{P^i_{pdf}(X_k=x_k|B^i_k)}{P^i_{pdf}(X_k=x^g_k|B^i_k)}=\frac{1}{k}\ln\frac{P^i_{pdf}(x_0)}{P^i_{pdf}(x^g_0)}+\sum\limits_{j=1}^{N}\frac{1}{k}\sum\limits_{l\in\mathscr{K}^{i}_{j,k}}\ln\frac{P(z^j_l|x_k)}{P(z^j_l|x^g_k)}.
+		\small\begin{equation}\label{eqn:cmp_log}
+			\frac{1}{k}\ln\frac{P^i_{pdf}(x_k|\zb^i_{1:k})}{P^i_{pdf}(x^g_k|\zb^i_{1:k})}=\frac{1}{k}\ln\frac{P^i_{pdf}(x_0)}{P^i_{pdf}(x^g_0)}+\sum\limits_{j=1}^{N}\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x_t)}{P(z^j_t|x^g_t)}.
 		\end{equation}\normalsize
 		
 		Since $P^i_{pdf}(x_0)$ and $P^i_{pdf}(x^g_0)$ are bounded, then $\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_0)}{P^i_{pdf}(x^g_0)}= 0.$
@@ -999,17 +1127,26 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 %			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_0)}{P^i_{pdf}(x^g_0)}= 0.
 %		\end{equation}\normalsize
 		
-		Utilizing the facts: (1) $z^j_l$ are conditionally independent samples from $P(z^j_l|x^g_l)$ and (2) $k-(N-1)T_u<|\mathscr{K}^i_{j,k}|\leq k$, the law of large numbers yields
+%		Utilizing the facts: (1) $z^j_l$ are conditionally independent samples from $P(z^j_l|x^g_l)$ and (2) $k-(N-1)T_u<|\mathscr{K}^i_{j,k}|\leq k$, 
+		The law of large numbers yields		
+%		\small\begin{subequations}\label{eqn:cmp_lim2}
+%			\begin{align}
+%			\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x_l)}{P(z^j_l|x^g_l)}&\overset{P}{\longrightarrow}\mathbb{E}_{z^j_l} \left[\frac{P(z^j_l|x_l)}{P(z^j_l|x^g_l)}\right]\\
+%			&=\int_{z^j_l} P(z^j_l|x^g_l)\frac{P(z^j_l|x_l)}{P(z^j_l|x^g_l)} dz^j_l\\
+%			&=-D_{KL}\left(P(z^j_l|x_l)\|P(z^j_l|x^g_l)\right),
+%			\end{align}
+%		\end{subequations}\normalsize
 		
+		\todohere{big mistake: I need to differentiate the moving target and static target. For moving target, the LLN does not apply directly. Gosh, this part seems to be a huge problem. Not sure if it's worth to prove anything in this case...}
 		\small\begin{subequations}\label{eqn:cmp_lim2}
 			\begin{align}
-			\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x_l)}{P(z^j_l|x^g_l)}&\overset{P}{\longrightarrow}\mathbb{E}_{z^j_l} \left[\frac{P(z^j_l|x_l)}{P(z^j_l|x^g_l)}\right]\\
-			&=\int_{z^j_l} P(z^j_l|x^g_l)\frac{P(z^j_l|x_l)}{P(z^j_l|x^g_l)} dz^j_l\\
-			&=-D_{KL}\left(P(z^j_l|x_l)\|P(z^j_l|x^g_l)\right),
+			\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x_t)}{P(z^j_t|x^g_t)}&\overset{P}{\longrightarrow}\mathbb{E}_{z^j_t} \left[\frac{P(z^j_t|x_t)}{P(z^j_t|x^g_t)}\right]\\
+			&=\int_{z^j_t} P(z^j_t|x^g_t)\frac{P(z^j_t|x_t)}{P(z^j_t|x^g_t)} dz^j_t\\
+			&=-D_{KL}\left(P(z^j_t|x_t)\|P(z^j_t|x^g_t)\right),
 			\end{align}
-		\end{subequations}\normalsize
+		\end{subequations}\normalsize		
 		where ``$\overset{P}{\longrightarrow}$" represents ``convergence in probability'' and $D_{KL}(P_1\|P_2)$ denotes the Kullback-Leibler (KL) divergence between two probability distribution $P_1$ and $P_2$.
-		KL divergence has the property that $\forall P_1,\,P_2, \; D_{KL}(P_1\|P_2)\leq 0,\, \text{equality holds iff } \; P_1=P_2.$
+		KL divergence has the property that $\forall P_1,\,P_2, \; D_{KL}(P_1\|P_2)\leq 0\, \text{and equality holds if and only if } \; P_1=P_2.$
 %		\begin{subequations}
 %			\begin{gather*}
 %			\forall P_1,\,P_2, \; D_{KL}(P_1\|P_2)\leq 0\\
@@ -1017,31 +1154,40 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 %			\end{gather*}
 %		\end{subequations}
 		This leads to the following conclusion:
-		\begin{subequations}
-			\begin{align}
-			\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x_l)}{P(z^j_l|x^g_l)}<0,&\quad x_l\neq x^g_l\\
-			\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x_l)}{P(z^j_l|x^g_l)}=0,&\quad x_l= x^g_l.
-			\end{align}
-		\end{subequations}
+%		\begin{subequations}
+			\small\begin{align*}
+			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x_t)}{P(z^j_t|x^g_t)}<0,&\quad x_t\neq x^g_t\\
+			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x_t)}{P(z^j_t|x^g_t)}=0,&\quad x_t= x^g_t.
+			\end{align*}\normalsize
+%		\end{subequations}
 		
 		Then by considering the limiting case of \Cref{eqn:cmp_log}, we can get:
-		\begin{subequations}
-			\begin{align}
-			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_l|B^i_k)}{P^i_{pdf}(x^g_l|B^i_k)}<0,&\quad x_l\neq x^g_l\label{subeqn:limit1}\\
-			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_l|B^i_k)}{P^i_{pdf}(x^g_l|B^i_k)}=0,&\quad x_l= x^g_l\label{subeqn:limit2}.
-			\end{align}
-		\end{subequations}
+%		\begin{subequations}
+			\small\begin{align}
+			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_l|\zb^i_{1:k})}{P^i_{pdf}(x^g_l|\zb^i_{1:k})}<0,&\quad x_l\neq x^g_l\label{subeqn:limit1}\\
+			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_l|\zb^i_{1:k})}{P^i_{pdf}(x^g_l|\zb^i_{1:k})}=0,&\quad x_l= x^g_l\label{subeqn:limit2}.
+			\end{align}\normalsize
+%		\end{subequations}
 		\Cref{subeqn:limit1,subeqn:limit2} imply that
-		\begin{subequations}
-			\begin{align}
-			\frac{P^i_{pdf}(x_l|B^i_k)}{P^i_{pdf}(x^g_l|B^i_k)}\overset{P}{\longrightarrow}0,&\quad x_l\neq x^g_l\\
-			\frac{P^i_{pdf}(x_l|B^i_k)}{P^i_{pdf}(x^g_l|B^i_k)}\overset{P}{\longrightarrow}1,&\quad x_l= x^g_l.
-			\end{align}
-		\end{subequations}
+%		\begin{subequations}
+%			\small\begin{align}
+%			\frac{P^i_{pdf}(x_l|\zb^i_{1:k})}{P^i_{pdf}(x^g_l|\zb^i_{1:k})}\overset{P}{\longrightarrow}0,&\quad x_l\neq x^g_l\\
+%			\frac{P^i_{pdf}(x_l|\zb^i_{1:k})}{P^i_{pdf}(x^g_l|\zb^i_{1:k})}\overset{P}{\longrightarrow}1,&\quad x_l= x^g_l.
+%			\end{align}\normalsize
+%		\end{subequations}
+
+		\small\begin{equation*}
+		\frac{P^i_{pdf}(x_l|\zb^i_{1:k})}{P^i_{pdf}(x^g_l|\zb^i_{1:k})}\overset{P}{\longrightarrow}
+		\begin{cases}
+		0\quad x_l\neq x^g_l,\\
+		1\quad x_l= x^g_l.
+		\end{cases}		
+		\end{equation*}\normalsize
+
 		Therefore,
 		\small\begin{equation*}
 		\lim\limits_{k\rightarrow \infty}
-		P(X_k^{MAP}=x^g_k|B^i_k)=1.
+		P(X_k^{MAP}=x^g_k)=1.
 		\end{equation*}\normalsize		
 		
 %		The binary observations subject to Bernoulli distribution $B(1,p_j)$, yielding
@@ -1198,9 +1344,9 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 	
 	\subsection{Moving UGVs}
 %	This subsection considers the case of using moving UGVs to localize a target, either static or moving.
-	The consistency proof for the case when UGVs are moving is different from the static UGVs case in that each moving UGV makes measurements at multiple positions.
-	We classify UGV measurement positions into two disjoint sets: \textit{infinite-measurement spots} that contain positions where a UGV visits infinitely many times as time tends to infinity, and \textit{finite-measurement spots} that contain positions where the UGV visits finitely many times (i.e., the UGV does not visit again after a finite time period).
-	It is easy to know that each UGV has at least one position where it visits infinitely many times as $k$ tends to infinity.
+	The consistency proof for the moving UGVs case is different from the static UGVs case in that each moving UGV makes measurements at multiple different positions.
+	We classify UGV measurement positions into two disjoint sets: \textit{infinite-measurement spots} that contain positions where a UGV keeps revisiting as time tends to infinity, and \textit{finite-measurement spots} that contain positions where the UGV visits finitely many times (i.e., the UGV does not visit again after a finite time period).
+	It is easy to know that each UGV has at least one position where it revisits infinitely many times as $k$ tends to infinity.
 	%, as $k\rightarrow\infty$.
 %	Before stating the main theorem, the following lemma is introduced.
 %	\begin{lem}\label{lem1}
@@ -1213,19 +1359,19 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 %	\medskip
 			
 	\begin{thm}\label{thm:\proto-dbf-mov-ugv}
-		Assume UGVs move within a collection of finite positions and sensors are unbiased, then the MAP estimator of target position converges in probability to the true position of the target using LIFO-DBF, i.e.,
+		Assume UGVs move within a collection of finite positions and sensors are unbiased, then the MAP estimator of target position converges in probability to the true position of the target using \proto-DBF, i.e.,
 		\small\begin{equation*}
 		\lim\limits_{k\rightarrow \infty}
-		P(\X^{MAP}_k=\xg_k|B^i_k)=1,\;i=1,\dots,N.
+		P(\X^{MAP}_k=\xg_k)=1,\;i\in V.
 		%		P(x=\xg|\mathbf{z}^i_{1:k})=1,\;i=1,\dots,N.
 		\end{equation*}\normalsize
 	\end{thm}
 		
 	\begin{proof}		
-		The batch form of DBF at $k\thi$ step is
-		
+%		The batch form of DBF at $k\thi$ step is
+		Similar to \Cref{eqn:cmp}, comparing $P^i_{pdf}(x^g_k|\zb^i_k)$ and $P^i_{pdf}(x^g_k|\zb^i_k)$ yields		
 		\small\begin{equation}\label{eqn:cmp2}
-		\frac{P^i_{pdf}(X_k=x_k|B^i_k)}{P^i_{pdf}(X_k=x^g_k|B^i_k)}=\frac{P^i_{pdf}(x_0)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x;x^j_l)}{P^i_{pdf}(x^g_0)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|\xg;x^j_l)}.
+		\frac{P^i_{pdf}(x_k|\zb^i_k)}{P^i_{pdf}(x^g_k|\zb^i_k)}=\frac{P^i_{pdf}(x_0)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x;x^j_l)}{P^i_{pdf}(x^g_0)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|\xg;x^j_l)}.
 		\end{equation}\normalsize
 			
 		The only difference from \Cref{eqn:cmp} is that $P(z^j_l|x;x^j_l)$ in \Cref{eqn:cmp2} varies as the UGV moves.
@@ -1233,15 +1379,15 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 %		For each UGV there exists at least one position where infinite measurements are made as $k\rightarrow \infty$, according to \Cref{lem1}. 
 		%All positions can be classified into finite-measurement spots and infinite-measurement spots. 
 		For the finite-measurement spots, by referring to \Cref{eqn:cmp_lim2}, it is easy to know that their contribution to \Cref{eqn:cmp_log} diminishes when $k\rightarrow \infty$.
-		Therefore, proof using \Cref{eqn:cmp2} can be reduced to only considering infinite-measurement spots and the rest of proof is similar to that of \Cref{thm:\proto-dbf-sta-ugv}.
+		Therefore, proof using \Cref{eqn:cmp2} can be reduced to only considering the infinite-measurement spots and the rest of the proof is similar to that of \Cref{thm:\proto-dbf-sta-ugv}.
 	\end{proof}
 			
-	\begin{rem}
-		The assumption of unbiased sensors are important for the consistency of the estimator. In fact, with unknown non-zero bias, the distribution of $z^j_l$ differs from $P(z^j_l|\xg)$, which invalidates the derivation in \Cref{eqn:cmp_lim2} and the consistency proof. 
-		This assumption also makes intuitive sense.
-		In the extreme case, if each sensor has a very large unknown measurement offset, then the estimated target position of each sensor (without communicating with other sensors) will be very different from each other's.
-		Therefore, no common target position can be correctly obtained when they fuse measurements.
-	\end{rem}	
+%	\begin{rem}
+%		The assumption of unbiased sensors are important for the consistency of the estimator. In fact, with unknown non-zero bias, the distribution of $z^j_l$ differs from $P(z^j_l|\xg)$, which invalidates the derivation in \Cref{eqn:cmp_lim2} and the consistency proof. 
+%		This assumption also makes intuitive sense.
+%		In the extreme case, if each sensor has a very large unknown measurement offset, then the estimated target position of each sensor (without communicating with other sensors) will be very different from each other's.
+%		Therefore, no common target position can be correctly obtained when they fuse measurements.
+%	\end{rem}	
 	
 \section{Simulation}\label{sec:sim}
 	An example result is shown in \Cref{fig:mov_sen_mov_tar1}. Will generate better simulation later.
@@ -1402,12 +1548,13 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 	
 	\section{Conclusion}\label{sec:conclu}	
 	This paper presents a measurement dissemination-based distributed Bayesian filtering (DBF) method for a network of multiple unmanned ground vehicles (UGVs) under dynamically changing interaction topologies.
-	The information exchange among UGVs relies on the Full-In-and-Full-Out (\proto) protocol, under which UGVs exchange full communication buffers with neighbors and can significantly reduce the transmission burden between each pair of UGVs to scale linearly with the network size.
-	Under the condition that the union of the switching topologies is connected frequently enough,	\proto can disseminate observations over the network within finite time. 
-	By using the track list, the CBs can be trimmed without sacrificing any unused information.
-	The \proto-based DBF algorithm is then derived to estimate individual probability density function (PDF) for target localization. 	
+	The information exchange among UGVs relies on the Full-In-and-Full-Out (\proto) protocol, under which UGVs exchange the communication buffers and track lists with neighbors.
+	The {\proto} can significantly reduce the transmission burden between each pair of UGVs compared to the statistics dissemination methods. % to scale linearly with the network size.
+	Under the condition that the union of the switching topologies is \fc, {\proto} can disseminate measurements over the network within finite time. 
+	By using the track list, the CBs can be trimmed without causing information loss.
+	The \proto-based DBF algorithm is then derived to estimate individual probability density function for target localization. 	
 	The consistency of this algorithm is proved by utilizing the law of large numbers, ensuring that each individual estimate of target position converges in probability to the true value.
-	Simulations comparing \proto-DBF with consensus-based distributed filters (CbDF) and the centralized filter (CF) show that \proto-DBF achieves similar performance as CF and superior performance over CbDF while requiring less communication resource.
+	Simulations comparing \proto-DBF with consensus-based distributed filters (CbDF) and the centralized filter (CF) show that \proto-DBF achieves similar performance as the CF and superior performance over the CbDF while requiring less communication resource.
 	
 %	Future work includes handling other types of sensors and directed interaction topologies.
 %	Other types of sensors may have biased observations and subject to non-Bernoulli distribution, which complicates the design and analysis of \proto-based Bayesian filters.

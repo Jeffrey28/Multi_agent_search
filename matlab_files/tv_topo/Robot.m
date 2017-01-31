@@ -49,6 +49,7 @@ classdef Robot
         nbhd_record; % record some useful info about neighbors, e.g. the time steps that have been used for updating the prob map
         track_list; % track all robot's oldest observations in CB
         meas_list; % track all robot's all observations in CB
+        trim_list; % track the trim actions. a 2*sim_len array: [obs_t;step]. 1st row is the time of the observation that is trimmed. 2nd row is the step to do the trim
         lkhd_map; % prob matrix for a certain observation. a way to reduce computation time, sacrificing the space complexity
         upd_matrix; % cell used for updating probability map
         talign_map; % store the prob_map for observations with same tiem index, i.e. P(x|z^1_1:k,...,z^N_1:k)
@@ -146,6 +147,7 @@ classdef Robot
             this.step_cnt = 0;
             this.track_list = zeros(inPara.num_robot,inPara.num_robot+1); % last column corresponds to the time tag of the measurements of the corresponding row
             this.track_list(:,end) = ones(inPara.num_robot,1);
+            this.trim_list = [1:inPara.max_step;zeros(1,inPara.max_step)];
         end
         
         %% sensor modeling
@@ -516,6 +518,10 @@ classdef Robot
             this.dbf_map = this.dbf_map/sum(sum(this.dbf_map));
             
             %% update CB using the track_list
+            % okay, this part actually belongs to dataExch part, but I
+            % wrote it here. I don't want to change this, but I should
+            % remember where the following code should have been placed.
+            
             % check if track_list items corresponding to earliest time
             % tag are all 1. Don't increase talign_t if not all 1.
             [min_t,~] = min(this.track_list(:,end));
@@ -539,58 +545,37 @@ classdef Robot
                     
                     tmp_meas_hist(jj,1:min_t-1) = -1;
                 end
+                
+                % record when observations of a certain time get trimmed
+                if this.trim_list(2,min_t-1) == 0
+                    % if this is the 1st time this measurement is trimmed
+                    % in current robot's CB 
+                    this.trim_list(2,min_t-1) = this.step_cnt;
+                end
             end
             
-            % for records with time tags greater or equal to min_t, 
-            % continue removing them in CB when track_list indicates so
+            % for records with time tags equal to min_t, 
+            % if track_list indicates that all observations of min_t have 
+            % been received by all robots, then continue removing them in CB
             t2 = min_t;
             min_idx = (this.track_list(:,end) == t2);
-%             pre_min_idx = []; % this one is used to store the min_idx that contains full rows in track list. will be used to update track_list later.
-%             while (1)                 
-%                 if nnz(this.track_list(min_idx,1:end-1)) == numel(this.track_list(min_idx,1:end-1))
-%                     if t2 > 0
-%                         for jj = 1:this.num_robot
-%                             this.buffer(jj).pos(:,t2) = -ones(2,1);
-%                             this.buffer(jj).z(:,t2) = -ones(size(this.buffer(jj).z,1),1);
-%                             this.buffer(jj).k(t2) = -ones(1,1);
-%                             this.buffer(jj).lkhd_map{t2} = [];
-%                             tmp_meas_hist(jj,t2) = -1;
-%                         end
-%                     end
-%                     pre_min_idx = min_idx;
-%                     t2 = t2+1;
-%                 else
-%                     break
-%                 end
-%                 min_idx = (this.track_list(:,end) == t2);
-%             end
-%                        
-%             this.track_list(this.idx,end) = t2;
-%             this.track_list(pre_min_idx,1:this.num_robot) = zeros(length(min_idx),this.num_robot);
-%             this.track_list(this.idx,1:this.num_robot) = tmp_meas_hist(1:this.num_robot,t2);
-%              while (1)                 
-                if nnz(this.track_list(min_idx,1:end-1)) == numel(this.track_list(min_idx,1:end-1))
-                    if t2 > 0
-                        for jj = 1:this.num_robot
-                            this.buffer(jj).pos(:,t2) = -ones(2,1);
-                            this.buffer(jj).z(:,t2) = -ones(size(this.buffer(jj).z,1),1);
-%                             this.buffer(jj).k(t2) = -ones(1,1);
-                            this.buffer(jj).lkhd_map{t2} = [];
-                            tmp_meas_hist(jj,t2) = -1;
-                        end                                                
+            if nnz(this.track_list(min_idx,1:end-1)) == numel(this.track_list(min_idx,1:end-1))
+                if t2 > 0
+                    for jj = 1:this.num_robot
+                        this.buffer(jj).pos(:,t2) = -ones(2,1);
+                        this.buffer(jj).z(:,t2) = -ones(size(this.buffer(jj).z,1),1);
+                        this.buffer(jj).lkhd_map{t2} = [];
+                        tmp_meas_hist(jj,t2) = -1;
                     end
-                    this.track_list(min_idx,end) = t2+1;
-                    this.track_list(min_idx,1:this.num_robot) = zeros(length(min_idx),this.num_robot);
-                    this.track_list(this.idx,1:this.num_robot) = tmp_meas_hist(1:this.num_robot,t2+1);                   
-%                     min_idx = (this.track_list(:,end) == t2+1);
-                    
-%                     t2 = t2+1;
-%                 else
-%                     break
+                    % record when observations of a certain time get trimmed
+                    this.trim_list(2,t2) = this.step_cnt;
                 end
-%             end
-                       
-            
+                this.track_list(min_idx,end) = t2+1;
+                this.track_list(min_idx,1:this.num_robot) = zeros(length(min_idx),this.num_robot);
+                this.track_list(this.idx,1:this.num_robot) = tmp_meas_hist(1:this.num_robot,t2+1);                
+                
+                
+            end
         end
         
         function this = updMap(this,inPara)
@@ -657,9 +642,9 @@ classdef Robot
             elseif (selection == 2) || (selection == 4)
                 % prediction step
                 upd_matrix = this.upd_matrix{target_model};
-                tmp_map = this.cent_map;
+                tmp_map = (this.cent_map)';
                 tmp_map2 = upd_matrix*tmp_map(:);
-                tmp_map = reshape(tmp_map2,size(tmp_map));
+                tmp_map = (reshape(tmp_map2,size(tmp_map)))';
                 
                 % update step
                 for ii = 1:this.num_robot

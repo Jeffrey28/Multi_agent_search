@@ -5,10 +5,12 @@ set(0,'DefaultFigureWindowStyle','docked')
 set(0,'defaultAxesFontName', 'Times New Roman')
 set(0,'defaultTextFontName', 'Times New Roman')
 
-save_data = false; % save all sim data
-show_plot = true; % draw plots
-save_plot = false; % save plots and corresponding .mat file 
-sim_mode = true;
+sim_mode = true; % used in main_tv_topo.m, use simulated data instead of experiment data (no experiment in tv_topo though)
+save_data = true; % save all sim data. used in main_tv_topo.m and Sim.m
+show_plot = true; % draw pdf at each step. used in main_tv_topo.m
+save_plot = false; % save pdf of selected steps and corresponding .mat file. used in main_tv_topo.m and Sim.m (plotSim)
+DBF_only = true; % only run DBF or run DBF, CF and ConF
+comp_metric = false; % decide if needs to compute metrics and compare them. used in main_tv_topo.m
 
 sim_len = 50; % max step
 % rounds of consensus at each time step
@@ -16,7 +18,7 @@ cons_step = 10;
 cons_fig = false; % whether to show intermediate step of consensus
 
 % Setup for multiple trials
-trial_num = 2; % 10 % number of trials to run % note: when trial_num =1, error occurs when computing the performance metrics
+trial_num = 1; % 10 % number of trials to run % note: when trial_num =1, error occurs when computing the performance metrics
 
 % select the motion of agents and target
 selection = 4;
@@ -33,7 +35,7 @@ if r_move == 0
     sim_r_idx = [1,3,5];
 else
 %     sim_r_idx = [1,3,5];
-    sim_r_idx = 3;
+    sim_r_idx = 1;
 end
 
 % the sensor type of each robot
@@ -58,7 +60,7 @@ fld_size = [100;100];  % Field size
 
 filter_type = [1 1 1]; % 1: turn on the corresponding filters. [dbf,cons,cent]
 
-%% define target and robot positions
+%% define robot
 % used for initialization, don't need to call again unless necessary
 %{
 % robot initialization
@@ -95,11 +97,6 @@ save('sensor_spec.mat','rbt');
 % load the variable using the name that I want
 rbt_spec = load('rbt_spec.mat');
 rbt_spec = rbt_spec.rbt;
-
-% these are randomly generated target positions from [20,80] at each
-% direction
-tx_set = [68 36 24 80 48 29 42 44 54 68];
-ty_set = [33 42 43 64 69 65 32 23 79 20];
 
 % tx_set = [68, 55, 41, 10, 75, 35, 60, 72, 14, 16];
 % ty_set = [55, 49, 86, 77, 71, 9, 11, 13, 77, 90];
@@ -164,16 +161,17 @@ switch topo_select
             {5}};
     case 6
         % topology that contains both unidirectional and bidirecational
-        % communication
+        % communication, used for simulation in the paper
         rbt_nbhd = {{[2],[6],[],[]};
             {[1,3],[],[],[]};
             {[2],[4],[],[]};
             {[],[],[5],[]};
             {[],[],[],[3]};
             {[],[],[],[3]}};
-        top_idx_set = [1 2 2 2 4 1 3 1 3 4];
+        top_idx_set = [1 2 2 2 4 1 3 1 3 4];    
 end
 
+%% define target 
 target_mode = 'sin';
 
 if strcmp(target_mode, 'linear')    
@@ -185,18 +183,34 @@ if strcmp(target_mode, 'linear')
     if exist('upd_matrix','var') == 0
         load('upd_matrix_v001.mat','upd_matrix');
     end
+    % these are randomly generated target positions from [20,80] at each
+    % direction
+    tx_set = [68 36 24 80 48 29 42 44 54 68];
+    ty_set = [33 42 43 64 69 65 32 23 79 20];
+    
 elseif strcmp(target_mode, 'sin')
     % sinusoidal target model
-    mode_num = 2;
+    mode_num = 4;
     u_set = [[-1;1],[1;1],[-1;-1],[1;-1]];
     V_set = 0.01*eye(2);
     % load update matrices
     if exist('upd_matrix','var') == 0
         load('upd_matrix_sin_v001.mat','upd_matrix');
-    end
+    end    
+    % these are randomly generated target positions from [20,80] at each
+    % direction
+    tx_set = [69,27,58,36,78,29,78,68,45,68];
+    ty_set = [75,75,25,53,78,79,49,28,75,78];
     
-% elseif strcmp(target_mode, 'circle') 
-%     mode_num = 4;
-%     u_set = [[1;0.1],[-1;-0.1],[1;-0.1],[-1;0.1]]; %inPara.u_set;
-%     V_set = 0.01*eye(2);%
+elseif strcmp(target_mode, 'circle') 
+    mode_num = 5;
+    center_set = [[50.5;50.5],[50.5;150.5],[50.5;-150.5],[-50.5;50.5],[150.5;50.5]]; %swtich the center of the circle
+    V_set = 0.01*eye(2);%
+    if exist('upd_matrix','var') == 0
+        load('upd_matrix_cir_v001.mat','upd_matrix');
+    end
+    % these are randomly generated target positions from [20,80] at each
+    % direction
+    tx_set = [60,71,61,65,59,63,36,25,62,77];
+    ty_set = [22,76,66,43,30,21,22,70,39,22];
 end

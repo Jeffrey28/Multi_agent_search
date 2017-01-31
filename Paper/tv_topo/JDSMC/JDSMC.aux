@@ -22,83 +22,96 @@
 \citation{djuric2011non}
 \citation{xiao2008asynchronous}
 \citation{leung2010decentralized}
+\citation{thrun2005probabilistic}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Problem Formulation}{2}}
 \newlabel{sec:prob}{{2}{2}}
 \newlabel{sec:prob@cref}{{[section][2][]2}{2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Target and Sensor Model}{2}}
 \newlabel{eqn:tar_motion_model}{{1}{2}}
 \newlabel{eqn:tar_motion_model@cref}{{[equation][1][]1}{2}}
+\newlabel{eqn:meas_model}{{2}{2}}
+\newlabel{eqn:meas_model@cref}{{[equation][2][]2}{2}}
+\citation{kitagawa1996monte}
+\citation{bishop2010optimality}
 \citation{bourgault2003optimal}
 \citation{jadbabaie2003coordination}
-\newlabel{eqn:prob_sensor1}{{5}{3}}
-\newlabel{eqn:prob_sensor1@cref}{{[equation][5][]5}{3}}
-\newlabel{eqn:prob_sensor0}{{6}{3}}
-\newlabel{eqn:prob_sensor0@cref}{{[equation][6][]6}{3}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Graphical Model of Interaction Topology}{3}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Full-In-and-Full-Out (FIFO) Protocol}{3}}
 \newlabel{sec:FIFO}{{3}{3}}
 \newlabel{sec:FIFO@cref}{{[section][3][]3}{3}}
-\newlabel{prop1}{{1}{4}}
-\newlabel{prop1@cref}{{[prop][1][]1}{4}}
+\citation{jadbabaie2003coordination}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces {FIFO} Protocol\relax }}{4}}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{alg:lifo}{{1}{4}}
 \newlabel{alg:lifo@cref}{{[algorithm][1][]1}{4}}
+\newlabel{prop1}{{1}{4}}
+\newlabel{prop1@cref}{{[prop][1][]1}{4}}
 \newlabel{cor1}{{1}{4}}
 \newlabel{cor1@cref}{{[cor][1][]1}{4}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Distributed Bayesian Filter via FIFO Protocol}{4}}
+\newlabel{sec:FIFO-dbf}{{4}{4}}
+\newlabel{sec:FIFO-dbf@cref}{{[section][4][]4}{4}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Example of FIFOwith three UGVs using switching line interaction topologies. The double-headed arrow represents a communication link between two UGVs.\relax }}{5}}
 \newlabel{fig:FIFO}{{1}{5}}
 \newlabel{fig:FIFO@cref}{{[figure][1][]1}{5}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Distributed Bayesian Filter via FIFO Protocol}{5}}
-\newlabel{sec:FIFO-dbf}{{4}{5}}
-\newlabel{sec:FIFO-dbf@cref}{{[section][4][]4}{5}}
+\newlabel{eqn:bayes_pred}{{3}{5}}
+\newlabel{eqn:bayes_pred@cref}{{[equation][3][]3}{5}}
+\newlabel{eqn:markov_model}{{4}{5}}
+\newlabel{eqn:markov_model@cref}{{[equation][4][]4}{5}}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces FIFO-DBF Algorithm\relax }}{5}}
 \newlabel{alg:lifo-dbf}{{2}{5}}
 \newlabel{alg:lifo-dbf@cref}{{[algorithm][2][]2}{5}}
-\newlabel{eqn:bayes_pred}{{9}{5}}
-\newlabel{eqn:bayes_pred@cref}{{[equation][9][]9}{5}}
-\newlabel{eqn:markov_model}{{10}{5}}
-\newlabel{eqn:markov_model@cref}{{[equation][10][]10}{5}}
-\newlabel{eqn:bayes_upd}{{11}{5}}
-\newlabel{eqn:bayes_upd@cref}{{[equation][11][]11}{5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}FIFO-DBF}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}FIFO-DBF}{5}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Track Lists for Trimming Communication Buffers}{6}}
-\newlabel{sec:tracklist}{{4.2}{6}}
-\newlabel{sec:tracklist@cref}{{[subsection][2][4]4.2}{6}}
+\newlabel{subsec:tracklist}{{4.2}{6}}
+\newlabel{subsec:tracklist@cref}{{[subsection][2][4]4.2}{6}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Example of FIFO-DBF for $1^\text  {st}$ UGV at time $k$. Networked UGVs take a line topology. The stored individual PDF is represented by $ P^1_{pdf}(k-N)$. The UGV first calculates $ P^1_{tmp}(k-N+1)$, defined in \Cref  {alg:lifo-dbf}, and then stores it as $ P^1_{pdf}(k-N+1)$. Repeating DBF until obtaining $ P^1_{pdf}(k)$. In this example, $\Omega ^1_{\xi }=\left \delimiter "4266308 1,2,\dots  ,N+1-\xi \right \delimiter "5267309 $, $\xi =1,\dots  ,N$.\relax }}{6}}
 \newlabel{fig:LIFO-DBF}{{2}{6}}
 \newlabel{fig:LIFO-DBF@cref}{{[figure][2][]2}{6}}
 \newlabel{thm:trim_no_loss}{{1}{6}}
 \newlabel{thm:trim_no_loss@cref}{{[thm][1][]1}{6}}
+\citation{amemiya1985advanced}
+\citation{chen2003bayesian}
 \newlabel{thm:upd_tl_freq}{{2}{7}}
 \newlabel{thm:upd_tl_freq@cref}{{[thm][2][]2}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Complexity of FIFO-DBF}{7}}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Trimming CBs using TLs\relax }}{7}}
 \newlabel{alg:tracklist}{{3}{7}}
 \newlabel{alg:tracklist@cref}{{[algorithm][3][]3}{7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Complexity of FIFO-DBF}{7}}
-\citation{amemiya1985advanced}
-\citation{chen2003bayesian}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Proof of Consistency}{8}}
-\newlabel{sec:consist_proof}{{5}{8}}
-\newlabel{sec:consist_proof@cref}{{[section][5][]5}{8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Static UGVs}{8}}
-\newlabel{thm:FIFO-dbf-sta-ugv}{{3}{8}}
-\newlabel{thm:FIFO-dbf-sta-ugv@cref}{{[thm][3][]3}{8}}
-\newlabel{eqn:cmp}{{13}{8}}
-\newlabel{eqn:cmp@cref}{{[equation][13][]13}{8}}
-\newlabel{eqn:cmp_log}{{14}{8}}
-\newlabel{eqn:cmp_log@cref}{{[equation][14][]14}{8}}
-\newlabel{eqn:cmp_lim2}{{15}{8}}
-\newlabel{eqn:cmp_lim2@cref}{{[subequation][15][]15}{8}}
-\newlabel{subeqn:limit1}{{17a}{8}}
-\newlabel{subeqn:limit1@cref}{{[subequation][1][17]17a}{8}}
-\newlabel{subeqn:limit2}{{17b}{8}}
-\newlabel{subeqn:limit2@cref}{{[subequation][2][17]17b}{8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Moving UGVs}{9}}
-\newlabel{thm:FIFO-dbf-mov-ugv}{{4}{9}}
-\newlabel{thm:FIFO-dbf-mov-ugv@cref}{{[thm][4][]4}{9}}
-\newlabel{eqn:cmp2}{{19}{9}}
-\newlabel{eqn:cmp2@cref}{{[equation][19][]19}{9}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Proof of Consistency}{7}}
+\newlabel{sec:consist_proof}{{5}{7}}
+\newlabel{sec:consist_proof@cref}{{[section][5][]5}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Static UGVs}{7}}
+\newlabel{thm:FIFO-dbf-sta-ugv}{{3}{7}}
+\newlabel{thm:FIFO-dbf-sta-ugv@cref}{{[thm][3][]3}{7}}
+\newlabel{eqn:cmp}{{5}{8}}
+\newlabel{eqn:cmp@cref}{{[equation][5][]5}{8}}
+\newlabel{eqn:cmp_log}{{6}{8}}
+\newlabel{eqn:cmp_log@cref}{{[equation][6][]6}{8}}
+\newlabel{eqn:cmp_lim2}{{7}{8}}
+\newlabel{eqn:cmp_lim2@cref}{{[subequation][7][]7}{8}}
+\newlabel{subeqn:limit1}{{8}{8}}
+\newlabel{subeqn:limit1@cref}{{[equation][8][]8}{8}}
+\newlabel{subeqn:limit2}{{9}{8}}
+\newlabel{subeqn:limit2@cref}{{[equation][9][]9}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Moving UGVs}{8}}
+\newlabel{thm:FIFO-dbf-mov-ugv}{{4}{8}}
+\newlabel{thm:FIFO-dbf-mov-ugv@cref}{{[thm][4][]4}{8}}
+\newlabel{eqn:cmp2}{{10}{8}}
+\newlabel{eqn:cmp2@cref}{{[equation][10][]10}{8}}
+\bibstyle{IEEEtran}
+\bibdata{references}
+\bibcite{chamberland2007wireless}{1}
+\bibcite{wang2003online}{2}
+\bibcite{2005distributed}{3}
+\bibcite{madhavan2004distributed}{4}
+\bibcite{gu2007distributed}{5}
+\bibcite{bandyopadhyay2014distributed}{6}
+\bibcite{julian2012distributed}{7}
+\bibcite{zuo2006bandwidth}{8}
+\bibcite{vemula2006target}{9}
+\bibcite{jadbabaie2003coordination}{10}
+\bibcite{ren2005consensus}{11}
 \newlabel{fig:com_topo1}{{3a}{9}}
 \newlabel{fig:com_topo1@cref}{{[subfigure][1][3]3a}{9}}
 \newlabel{sub@fig:com_topo1}{{a}{9}}
@@ -136,19 +149,6 @@
 \@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{9}}
 \newlabel{sec:conclu}{{7}{9}}
 \newlabel{sec:conclu@cref}{{[section][7][]7}{9}}
-\bibstyle{IEEEtran}
-\bibdata{references}
-\bibcite{chamberland2007wireless}{1}
-\bibcite{wang2003online}{2}
-\bibcite{2005distributed}{3}
-\bibcite{madhavan2004distributed}{4}
-\bibcite{gu2007distributed}{5}
-\bibcite{bandyopadhyay2014distributed}{6}
-\bibcite{julian2012distributed}{7}
-\bibcite{zuo2006bandwidth}{8}
-\bibcite{vemula2006target}{9}
-\bibcite{jadbabaie2003coordination}{10}
-\bibcite{ren2005consensus}{11}
 \bibcite{olfati2007consensus}{12}
 \bibcite{hlinka2013distributed}{13}
 \bibcite{hlinka2012likelihood}{14}
@@ -159,6 +159,9 @@
 \bibcite{djuric2011non}{19}
 \bibcite{xiao2008asynchronous}{20}
 \bibcite{leung2010decentralized}{21}
-\bibcite{bourgault2003optimal}{22}
-\bibcite{amemiya1985advanced}{23}
-\bibcite{chen2003bayesian}{24}
+\bibcite{thrun2005probabilistic}{22}
+\bibcite{kitagawa1996monte}{23}
+\bibcite{bishop2010optimality}{24}
+\bibcite{bourgault2003optimal}{25}
+\bibcite{amemiya1985advanced}{26}
+\bibcite{chen2003bayesian}{27}

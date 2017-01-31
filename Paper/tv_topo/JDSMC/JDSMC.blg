@@ -8,11 +8,11 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: references.bib
-Repeated entry---line 195 of file references.bib
+Repeated entry---line 224 of file references.bib
  : @article{jadbabaie2003coordination
  :                                   ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 390 of file references.bib
+Repeated entry---line 419 of file references.bib
  : @article{hlinka2012likelihood
  :                              ,
 I'm skipping whatever remains of this entry
@@ -29,45 +29,45 @@ Warning--empty year in sheng2005distributed
 Warning--empty year in djuric2011non
 
 Done.
-You've used 24 entries,
+You've used 27 entries,
             4039 wiz_defined-function locations,
-            951 strings with 11879 characters,
-and the built_in function-call counts, 20588 in all, are:
-= -- 1690
-> -- 441
-< -- 224
-+ -- 251
-- -- 62
-* -- 990
-:= -- 2971
-add.period$ -- 51
-call.type$ -- 24
-change.case$ -- 23
-chr.to.int$ -- 525
-cite$ -- 32
-duplicate$ -- 1434
-empty$ -- 1619
-format.name$ -- 81
-if$ -- 4789
+            969 strings with 12407 characters,
+and the built_in function-call counts, 22714 in all, are:
+= -- 1866
+> -- 492
+< -- 243
++ -- 278
+- -- 71
+* -- 1091
+:= -- 3300
+add.period$ -- 57
+call.type$ -- 27
+change.case$ -- 25
+chr.to.int$ -- 564
+cite$ -- 35
+duplicate$ -- 1586
+empty$ -- 1789
+format.name$ -- 92
+if$ -- 5278
 int.to.chr$ -- 0
-int.to.str$ -- 24
-missing$ -- 213
-newline$ -- 95
-num.names$ -- 24
-pop$ -- 460
+int.to.str$ -- 27
+missing$ -- 240
+newline$ -- 104
+num.names$ -- 27
+pop$ -- 518
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 1597
+skip$ -- 1765
 stack$ -- 0
-substring$ -- 1249
-swap$ -- 1237
-text.length$ -- 49
+substring$ -- 1341
+swap$ -- 1364
+text.length$ -- 55
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 24
+type$ -- 27
 warning$ -- 8
-while$ -- 113
-width$ -- 26
-write$ -- 254
+while$ -- 124
+width$ -- 29
+write$ -- 283
 (There were 2 error messages)

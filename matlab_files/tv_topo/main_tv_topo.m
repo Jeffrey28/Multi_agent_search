@@ -34,14 +34,16 @@ sim = Sim(inPara_sim);
 for trial_cnt = 1:trial_num
     % initialize field class    
     target.pos = [tx_set(trial_cnt);ty_set(trial_cnt)];
-    target.u_set = u_set;
+    
     target.V_set = V_set; % Covariance of process noise model for the target
     target.model_idx = 1;
     target.traj = target.pos;
     target.mode = target_mode;
     target.mode_num = mode_num;
-    if strcmp(target_mode,'circle')
-       target.theta = 0;       
+    if strcmp(target_mode,'linear') || strcmp(target_mode,'sin')        
+        target.u_set = u_set;
+    elseif strcmp(target_mode,'circle')        
+        target.center_set = center_set;
     end
     
     inPara_fld = struct('fld_size',fld_size,'target',target,'tar_move',tar_move,'dt',dt);
@@ -71,7 +73,7 @@ for trial_cnt = 1:trial_num
 %         inPara_rbt.sen_offset = 0;
         % range-only sensor
         inPara_rbt.cov_ran = 5;%5
-        inPara_rbt.dist_ran = 50;
+        inPara_rbt.dist_ran = 200;
         inPara_rbt.offset_ran = 0;
         % bearing-only sensor
         inPara_rbt.cov_brg = 0.5;%0.5
@@ -90,18 +92,19 @@ for trial_cnt = 1:trial_num
         inPara_rbt.sensor_type = sensor_set{rbt_cnt};
         rbt{rbt_cnt} = Robot(inPara_rbt);
     end    
+    
     %% %%%%%%%%%%%%%% main code of simulation %%%%%%%%%%%%%%%%%%
     count = 1;
     
     while(1)                        
         % following code should appear at the end of the code. Putting them
         % here is only for debugging purpose
-        %% target moves
+        %% %%%%% target moves %%%%%
         if tar_move == 1
             fld = fld.targetMove();
         end
         
-        %% robot moves
+        %% %%%%% robot moves %%%%%
         if r_move == 1
             for ii = 1:num_robot
                 rbt{ii}.tar_mod = [rbt{ii}.tar_mod,fld.target.model_idx];
@@ -113,8 +116,8 @@ for trial_cnt = 1:trial_num
             end
         end
         
-        %% filtering
-        % generate sensor measurement
+        %% %%%%% filtering %%%%%
+        %% generate sensor measurement
         for ii = 1:num_robot
             rbt{ii}.step_cnt = count;
             % observe
@@ -187,13 +190,15 @@ for trial_cnt = 1:trial_num
                 len = length(top_idx_set);
                 tmp_idx = rem(count,len);
                 if tmp_idx == 0
-                    tmp_idx = 10;
+                    tmp_idx = len;
                 end
                 top_idx = top_idx_set(tmp_idx);
         end
         
         % exchange happens here
-        for ii = 1:num_robot            
+        % strictly speaking, this one belongs to next time step, not
+        % current step.
+        for ii = 1:num_robot
             inPara2 = struct;
             inPara2.selection = selection;
             inPara2.rbt_nbhd_set = rbt(rbt{ii}.nbhd_idx{top_idx});
@@ -202,67 +207,74 @@ for trial_cnt = 1:trial_num
         rbt = tmp_rbt;
         
          %% Concensus        
-         %
-         % (1) exchange pdfs to achieve concensus
-         % (2) observe and update the stored own observations at time k
-         % (3) update probability map
-         % (4) repeat step (1)
-         % so consensus actually uses more information than DBF at each
-         % step when doing metric comparison 
-         
-         % step (3) update own map using own measurement
-         for ii = 1:num_robot  
-             inPara4 = struct('selection',selection,'target_model',fld.target.model_idx);
-             rbt{ii} = rbt{ii}.updMap(inPara4);
-         end
-         
-         % step (1) exchange with neighbors to achieve consensus
-         % consider comparing with the Indian guy's NL combination rule.         
-         cons_cnt = 1;
-         while (cons_cnt <= cons_step)
-             tmp_rbt_cons = rbt; % use tmp_rbt_cons for consensus
+         if ~DBF_only
+             %
+             % (1) exchange pdfs to achieve concensus
+             % (2) observe and update the stored own observations at time k
+             % (3) update probability map
+             % (4) repeat step (1)
+             % so consensus actually uses more information than DBF at each
+             % step when doing metric comparison
+             
+             % step (3) update own map using own measurement
              for ii = 1:num_robot
-                 inPara5 = struct;
-                 inPara5.selection = selection;
-                 inPara5.cons_fig = cons_fig;
-                 inPara5.rbt_nbhd_set = rbt(rbt{ii}.nbhd_idx{top_idx});
-                 tmp_rbt_cons{ii} = tmp_rbt_cons{ii}.cons(inPara5);
+                 inPara4 = struct('selection',selection,'target_model',fld.target.model_idx);
+                 rbt{ii} = rbt{ii}.updMap(inPara4);
              end
-             rbt = tmp_rbt_cons;
-             cons_cnt = cons_cnt + 1;
-         end         
+             
+             % step (1) exchange with neighbors to achieve consensus
+             % consider comparing with the Indian guy's NL combination rule.
+             cons_cnt = 1;
+             while (cons_cnt <= cons_step)
+                 tmp_rbt_cons = rbt; % use tmp_rbt_cons for consensus
+                 for ii = 1:num_robot
+                     inPara5 = struct;
+                     inPara5.selection = selection;
+                     inPara5.cons_fig = cons_fig;
+                     inPara5.rbt_nbhd_set = rbt(rbt{ii}.nbhd_idx{top_idx});
+                     %                  inPara5.rbt_nbhd_set = [];
+                     tmp_rbt_cons{ii} = tmp_rbt_cons{ii}.cons(inPara5);
+                 end
+                 rbt = tmp_rbt_cons;
+                 cons_cnt = cons_cnt + 1;
+             end
+         end
          %}
         
          %% centeralized filter
-         %
-         % (1) observe and update the stored observations of all sensor at time k
-         % (2) update probability map
-         % (2) repeat step (1)         
-         
-         % use the first robot as the centralized filter
-         rbt{1}.buffer_cent.pos = rbt{1}.pos;
-         rbt{1}.buffer_cent.z = {rbt{1}.z};
-         rbt{1}.buffer_cent.k = rbt{1}.k;
-         rbt{1}.buffer_cent.lkhd_map = {rbt{1}.lkhd_map};
-         
-         for ii = 2:num_robot
-             rbt{1}.buffer_cent.pos = [rbt{1}.buffer_cent.pos,rbt{ii}.pos];
-             rbt{1}.buffer_cent.z = [rbt{1}.buffer_cent.z,{rbt{ii}.z}];
-             rbt{1}.buffer_cent.k = [rbt{1}.buffer_cent.k,rbt{ii}.k];
-             rbt{1}.buffer_cent.lkhd_map = [rbt{1}.buffer_cent.lkhd_map,rbt{ii}.lkhd_map];
+         if ~DBF_only
+             %
+             % (1) observe and update the stored observations of all sensor at time k
+             % (2) update probability map
+             % (2) repeat step (1)
+             
+             % use the first robot as the centralized filter
+             rbt{1}.buffer_cent.pos = rbt{1}.pos;
+             rbt{1}.buffer_cent.z = {rbt{1}.z};
+             rbt{1}.buffer_cent.k = rbt{1}.k;
+             %          rbt{1}.buffer_cent.lkhd_map = {ones(size(rbt{1}.lkhd_map))};
+             rbt{1}.buffer_cent.lkhd_map = {rbt{1}.lkhd_map};
+             
+             for ii = 2:num_robot
+                 rbt{1}.buffer_cent.pos = [rbt{1}.buffer_cent.pos,rbt{ii}.pos];
+                 rbt{1}.buffer_cent.z = [rbt{1}.buffer_cent.z,{rbt{ii}.z}];
+                 rbt{1}.buffer_cent.k = [rbt{1}.buffer_cent.k,rbt{ii}.k];
+                 rbt{1}.buffer_cent.lkhd_map = [rbt{1}.buffer_cent.lkhd_map,rbt{ii}.lkhd_map];
+                 %              rbt{1}.buffer_cent.lkhd_map = [rbt{1}.buffer_cent.lkhd_map,ones(size(rbt{ii}.lkhd_map))];
+             end
+             inPara6 = struct;
+             inPara6.selection = selection;
+             inPara6.target_model = fld.target.model_idx;
+             
+             rbt{1} = rbt{1}.CF(inPara6);
          end
-         inPara6 = struct;
-         inPara6.selection = selection;
-         inPara6.target_model = fld.target.model_idx;
-         
-         rbt{1} = rbt{1}.CF(inPara6);
          %}
          
          %% draw current step
          % draw plot
          if show_plot
-             sim.plotSim(rbt,fld,count,save_plot);
-%              pause()
+             sim.plotSim(rbt,fld,count,save_plot,DBF_only);
+             pause(0.5)
          end
                 
          %% go to next iteration
@@ -274,10 +286,12 @@ for trial_cnt = 1:trial_num
          
          %% compute metrics
          %
-         for ii = 1:num_robot
-             rbt{ii} = rbt{ii}.computeMetrics(fld,'dbf');
-             rbt{ii} = rbt{ii}.computeMetrics(fld,'cons');
-             rbt{ii} = rbt{ii}.computeMetrics(fld,'cent');
+         if comp_metric
+             for ii = 1:num_robot
+                 rbt{ii} = rbt{ii}.computeMetrics(fld,'dbf');
+                 rbt{ii} = rbt{ii}.computeMetrics(fld,'cons');
+                 rbt{ii} = rbt{ii}.computeMetrics(fld,'cent');
+             end
          end
          %}
     end
@@ -288,7 +302,9 @@ end
 
 %% %%%%%%%%%%%%%%%%%%%%%% Simulation Results %%%%%%%%%%%%%%%%%%%%%%
 % % compare the performance of different methods
-sim = sim.compareMetrics();
+if comp_metric
+    sim = sim.compareMetrics();
+end
 
 % save data 
 % note 'sim' contains all data about rbt, fld and simulation results.
@@ -297,6 +313,6 @@ if save_data
     sim_for_save = sim;
     sim_for_save.rbt_set = {};
     sim_for_save.fld_set = {};
-    file_name = sim.saveSimData();
+    file_name = sim.saveSimFileName();
     save(file_name,'sim_for_save','-v7')
 end
