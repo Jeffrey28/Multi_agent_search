@@ -31,7 +31,7 @@ inPara_sim.cons_fig = cons_fig;
 inPara_sim.sensor_set_type = sensor_set_type; % 'bin': binary,'ran': range-only,'brg': bearing-only,'rb': range-bearing
 sim = Sim(inPara_sim);
 
-for trial_cnt = trial_num
+for trial_cnt = 8%1:trial_num
     % initialize field class    
     target.pos = [tx_set(trial_cnt);ty_set(trial_cnt)];
     

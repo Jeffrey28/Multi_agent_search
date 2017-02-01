@@ -9,19 +9,19 @@ set(0,'defaultAxesFontName', 'Times New Roman')
 set(0,'defaultTextFontName', 'Times New Roman')
 
 sim_mode = true; % used in main_tv_topo.m, use simulated data instead of experiment data (no experiment in tv_topo though)
-save_data = true; % save all sim data. used in main_tv_topo.m and Sim.m
+save_data = false; % save all sim data. used in main_tv_topo.m and Sim.m
 show_plot = true; % draw pdf at each step. used in main_tv_topo.m
 save_plot = true; % save pdf of selected steps and corresponding .mat file. used in main_tv_topo.m and Sim.m (plotSim)
 DBF_only = true; % only run DBF or run DBF, CF and ConF
 comp_metric = false; % decide if needs to compute metrics and compare them. used in main_tv_topo.m
 
-sim_len = 25; % max step
+sim_len = 50; % max step
 % rounds of consensus at each time step
 cons_step = 10;
 cons_fig = false; % whether to show intermediate step of consensus
 
 % Setup for multiple trials
-trial_num = 5; % 10 % number of trials to run % note: when trial_num =1, error occurs when computing the performance metrics
+trial_num = 10; % 10 % number of trials to run % note: when trial_num =1, error occurs when computing the performance metrics
 
 % select the motion of agents and target
 selection = 4;
@@ -175,7 +175,7 @@ switch topo_select
 end
 
 %% define target 
-target_mode = 'linear';
+target_mode = 'sin'; %%!!! warning: whenever change the target_mode, remember to delete the previous upd_matrix first
 
 if strcmp(target_mode, 'linear')    
     % linear target model
@@ -188,8 +188,8 @@ if strcmp(target_mode, 'linear')
     end
     % these are randomly generated target positions from [20,80] at each
     % direction
-    tx_set = [68 36 24 80 48 29 42 44 54 68];
-    ty_set = [33 42 43 64 69 65 32 23 79 20];
+    tx_set = [68 36 24 80 48 29 44 42 54 68];
+    ty_set = [33 42 43 64 69 65 23 32 79 20];
     
 elseif strcmp(target_mode, 'sin')
     % sinusoidal target model

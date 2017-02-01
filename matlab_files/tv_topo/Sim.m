@@ -94,7 +94,9 @@ classdef Sim
                 % save figure      
                 if save_plot
                     if (count == 1) || (count == 5) || (count == 10)...
-                            || (count == 20) || (count == 25)
+                            || (count == 20) || (count == 25) || (count == 30)...
+                            || (count == 35) || (count == 40) || (count == 45)...
+                            || (count == 50)
                         switch this.selection
                             case 1,  tag = 'sta_sen_sta_tar';
                             case 2,  tag = 'sta_sen_mov_tar';

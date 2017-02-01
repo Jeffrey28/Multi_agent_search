@@ -9,12 +9,12 @@
 %% write data to cvs, which will be then copied for matplotlib plotting
 %
 filepath = './figures/JDSMC/metrics_plot/';
-filename = [filepath,'metrics_circle_hetero_mov_sen_mov_tar_30-Jan-2017'];
+filename = [filepath,'metrics_sin_hetero_mov_sen_mov_tar_01-Feb-2017'];
 load(filename);
 
 % remember: use the mean values of ml error and entropy, i.e.,
 % ml_err_xxx_mean, ent_xxx_mean
-var_name_set = {'ml_err_dbf_mean','ent_dbf_mean'};
+var_name_set = {'ml_err_cent_mean','ent_cent_mean'};
 
 for ii = 1:length(var_name_set)
     csvwrite([filepath,var_name_set{ii}],sim_for_save.sim_res.(var_name_set{ii}))
