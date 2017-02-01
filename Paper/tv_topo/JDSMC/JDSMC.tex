@@ -1428,6 +1428,37 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 %		\vspace{-1.3em}
 	\end{figure}
 	
+	\begin{figure}%[thpb]
+		\centering
+		\begin{subfigure}[b]{0.21\textwidth}
+			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_pos_err_noise_linear}
+			\caption{Individual PDF}\label{fig:lin_pos_err}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.21\textwidth}
+			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_pos_err_noise_circle}
+			\caption{\proto-DBF}\label{fig:cir_pos_err}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.21\textwidth}
+			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_pos_err_noise_sin}
+			\caption{Consensus method}\label{fig:sin_pos_err}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.21\textwidth}
+			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_entropy_noise_linear}
+			\caption{Centralized filter}\label{fig:lin_ent}
+		\end{subfigure}	
+		\begin{subfigure}[b]{0.23\textwidth}
+			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_entropy_noise_circle}
+			\caption{Position error}\label{fig:cir_ent}
+		\end{subfigure}	
+		\begin{subfigure}[b]{0.23\textwidth}
+			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_entropy_noise_sin}
+			\caption{Entropy reduction}\label{fig:sin_ent}
+		\end{subfigure}		
+		\caption{First scenario: (a) two types of topologies; (b) individual PDF of the $3^\text{rd}$ UGV after initial observation; (c)-(e) PDFs at the end of simulation using different filters; (f) average position estimation errors; (g) average entropy of PDF. In last two figures, metrics are based on the PDFs of the $1^\text{st}$, $3^\text{rd}$ and $5\thi$ UGV using \proto-DBF, the common PDF using CbDF and using CF.}
+		\label{fig:metrics}
+		%		\vspace{-1.3em}
+	\end{figure}
+	
 %	This section simulates two sets of dynamically changing interaction topologies to demonstrate the effectiveness of \proto-DBF.
 %	Each scenario includes six static UGVs, represented as the square and stars in \cref{fig:sta_sen_sta_tar1} and \cref{fig:sta_sen_sta_tar2}.
 %	The square represents the UGV whose individual PDF is shown in the figures.

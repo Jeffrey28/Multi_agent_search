@@ -93,9 +93,8 @@ classdef Sim
                 
                 % save figure      
                 if save_plot
-                    if (count == 1) || (count == 3) || (count == 7) || (count == 10) ...
-                            || (count == 20) || (count == 30) || (count == 40)...
-                            || (count == 5) || (count == 45) %|| (count == 10) || (count == 20) || (count == 30) 
+                    if (count == 1) || (count == 5) || (count == 10)...
+                            || (count == 20) || (count == 25)
                         switch this.selection
                             case 1,  tag = 'sta_sen_sta_tar';
                             case 2,  tag = 'sta_sen_mov_tar';
@@ -511,7 +510,7 @@ classdef Sim
             this.sim_res = tmp_sim_res;
         end
         
-        function file_name = saveSimFileName(this)
+        function file_name = saveSimFileName(this,target_mode)
             % make the file name for simulation data
             switch this.selection
                 case 1,  tag = 'sta_sen_sta_tar';
@@ -527,7 +526,7 @@ classdef Sim
                 case 'htr', tag2 = 'hetero';
             end
             
-            file_name = fullfile(this.dir_name,sprintf('metrics_plot/metrics_%s_%s_%s.mat',tag2,tag,datestr(now,1)));            
+            file_name = fullfile(this.dir_name,sprintf('metrics_plot/metrics_%s_%s_%s_%s.mat',target_mode,tag2,tag,datestr(now,1)));            
         end
         
         function file_name = saveExpFileName(this)
