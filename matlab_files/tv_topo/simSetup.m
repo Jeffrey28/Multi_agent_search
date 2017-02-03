@@ -9,11 +9,11 @@ set(0,'defaultAxesFontName', 'Times New Roman')
 set(0,'defaultTextFontName', 'Times New Roman')
 
 sim_mode = true; % used in main_tv_topo.m, use simulated data instead of experiment data (no experiment in tv_topo though)
-save_data = false; % save all sim data. used in main_tv_topo.m and Sim.m
-show_plot = true; % draw pdf at each step. used in main_tv_topo.m
-save_plot = true; % save pdf of selected steps and corresponding .mat file. used in main_tv_topo.m and Sim.m (plotSim)
-DBF_only = true; % only run DBF or run DBF, CF and ConF
-comp_metric = false; % decide if needs to compute metrics and compare them. used in main_tv_topo.m
+save_data = true; % save all sim data. used in main_tv_topo.m and Sim.m
+show_plot = false; % draw pdf at each step. used in main_tv_topo.m
+save_plot = false; % save pdf of selected steps and corresponding .mat file. used in main_tv_topo.m and Sim.m (plotSim)
+DBF_only = false; % only run DBF or run DBF, CF and ConF
+comp_metric = true; % decide if needs to compute metrics and compare them. used in main_tv_topo.m
 
 sim_len = 50; % max step
 % rounds of consensus at each time step

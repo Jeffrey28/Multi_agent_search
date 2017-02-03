@@ -567,7 +567,7 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 	%\medskip
 	
 %	\todohere{it seems to me that a tighter lower bound can be achieved by using FIFO, but not sure how to compute it.}
-	\begin{prop}\label{prop1}
+	\begin{thm}\label{prop1}
 		%For a fixed and undirected network of $N$ UGVs, \proto uses the shortest path(s) between $i\thi$ and $j\thi$ UGV to exchange observation, the length of which is the delay $\tau_{i,j}$ between these two UGVs.
 		Consider a network of $N$ UGVs with switching interaction topologies.
 %		\todohere{may rephrase the following sentence}
@@ -577,7 +577,7 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 			\item the union of graphs across each such interval is jointly strongly connected,
 		\end{enumerate}
 		then any pair of UGVs can exchange measurements under \proto. And the communication delay between each pair of UGVs is no greater than \small$(N-1)T_u$\normalsize, where \small$T_u=\sup\limits_{m=1,2,\dots}\left( k_{m+1}-k_m\right) T$ \normalsize is the upper bound of interval lengths.
-	\end{prop}
+	\end{thm}
 	
 	\begin{proof}				
 		Without loss of generality, we consider the transmission of $B^i_1$ from the $i\thi$ UGV to an arbitrary $j\thi$ UGV ($j\in V\setminus \lb i\rb$).
@@ -1399,30 +1399,30 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 			\caption{Collection of changing topologies}\label{fig:com_topo1}
 		\end{subfigure}
 		~
-		\begin{subfigure}[b]{0.21\textwidth}
-			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_rbt3_step1_10-Jan-2017}
+		\begin{subfigure}[b]{0.23\textwidth}
+			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_rbt1_step5}
 			\caption{Individual PDF}\label{fig:sta_sen_sta_tar_top1_init_dbf}
 		\end{subfigure}
-		\begin{subfigure}[b]{0.21\textwidth}
-			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_rbt3_step5_10-Jan-2017}
+		\begin{subfigure}[b]{0.23\textwidth}
+			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_rbt1_step20}
 			\caption{\proto-DBF}\label{fig:sta_sen_sta_tar_top1_dbf}
 		\end{subfigure}
-		\begin{subfigure}[b]{0.21\textwidth}
-			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_rbt3_step10_10-Jan-2017}
+		\begin{subfigure}[b]{0.23\textwidth}
+			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_rbt1_step30}
 			\caption{Consensus method}\label{fig:sta_sen_sta_tar_top1_cons}
 		\end{subfigure}
-		\begin{subfigure}[b]{0.21\textwidth}
-			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_rbt3_step20_10-Jan-2017}
+		\begin{subfigure}[b]{0.23\textwidth}
+			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_rbt1_step40}
 			\caption{Centralized filter}\label{fig:sta_sen_sta_tar_top1_cent}
 		\end{subfigure}	
-		\begin{subfigure}[b]{0.23\textwidth}
-			\includegraphics[width=\textwidth]{figures/trial_pos_err}
-			\caption{Position error}\label{fig:sta_sen_sta_tar_top1_pos_err}
-		\end{subfigure}	
-		\begin{subfigure}[b]{0.23\textwidth}
-			\includegraphics[width=\textwidth]{figures/trial_ent_err}
-			\caption{Entropy reduction}\label{fig:sta_sen_sta_tar_top1_entropy}
-		\end{subfigure}		
+%		\begin{subfigure}[b]{0.23\textwidth}
+%			\includegraphics[width=\textwidth]{figures/trial_pos_err}
+%			\caption{Position error}\label{fig:sta_sen_sta_tar_top1_pos_err}
+%		\end{subfigure}	
+%		\begin{subfigure}[b]{0.23\textwidth}
+%			\includegraphics[width=\textwidth]{figures/trial_ent_err}
+%			\caption{Entropy reduction}\label{fig:sta_sen_sta_tar_top1_entropy}
+%		\end{subfigure}		
 		\caption{First scenario: (a) two types of topologies; (b) individual PDF of the $3^\text{rd}$ UGV after initial observation; (c)-(e) PDFs at the end of simulation using different filters; (f) average position estimation errors; (g) average entropy of PDF. In last two figures, metrics are based on the PDFs of the $1^\text{st}$, $3^\text{rd}$ and $5\thi$ UGV using \proto-DBF, the common PDF using CbDF and using CF.}
 		\label{fig:mov_sen_mov_tar1}
 %		\vspace{-1.3em}
@@ -1430,19 +1430,19 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 	
 	\begin{figure}%[thpb]
 		\centering
-		\begin{subfigure}[b]{0.21\textwidth}
+		\begin{subfigure}[b]{0.23\textwidth}
 			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_pos_err_noise_linear}
 			\caption{Individual PDF}\label{fig:lin_pos_err}
 		\end{subfigure}
-		\begin{subfigure}[b]{0.21\textwidth}
+		\begin{subfigure}[b]{0.23\textwidth}
 			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_pos_err_noise_circle}
 			\caption{\proto-DBF}\label{fig:cir_pos_err}
 		\end{subfigure}
-		\begin{subfigure}[b]{0.21\textwidth}
+		\begin{subfigure}[b]{0.23\textwidth}
 			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_pos_err_noise_sin}
 			\caption{Consensus method}\label{fig:sin_pos_err}
 		\end{subfigure}
-		\begin{subfigure}[b]{0.21\textwidth}
+		\begin{subfigure}[b]{0.23\textwidth}
 			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_entropy_noise_linear}
 			\caption{Centralized filter}\label{fig:lin_ent}
 		\end{subfigure}	

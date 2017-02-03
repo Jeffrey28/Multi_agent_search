@@ -14,6 +14,8 @@ load(filename);
 
 % remember: use the mean values of ml error and entropy, i.e.,
 % ml_err_xxx_mean, ent_xxx_mean
+% var_name_set = {'ml_err_dbf_mean','ent_dbf_mean'};
+% var_name_set = {'ml_err_cons_mean','ent_cons_mean'};
 var_name_set = {'ml_err_cent_mean','ent_cent_mean'};
 
 for ii = 1:length(var_name_set)

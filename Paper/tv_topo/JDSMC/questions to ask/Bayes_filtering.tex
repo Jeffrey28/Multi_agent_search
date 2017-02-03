@@ -1,0 +1,46 @@
+\documentclass[]{article}
+\usepackage{amsmath}
+%opening
+\title{Asymptotic Property of Bayesian Filters}
+\author{Chang Liu}
+
+\begin{document}
+
+\maketitle
+
+Assume there exist a moving target in the field $S$. 
+We want to use a sensor network to localize the target.
+We can model the target dynamics and the sensor measurement model as follows:
+\begin{align}
+x_{k+1}&=f(x_k,w_k)\\
+y_k&=h(x_k,v_k),
+\end{align}
+where $x_k$ is the target state at time $k$ and $y_k$ is the sensor measurement. $w_k$ and $v_k$ are random noise.
+
+Assume the placement of sensors enables the unique localization of the target, e.g., three triangularly placed range sensors.
+A centralized Bayesian filter can utilize the sensor measurements to estimate the target position, which involves two steps:
+
+\textbf{Prediction Step}
+\begin{equation*}
+P^i_{pdf}(X_k|\mathbf{z}_{1:k-1})
+=\int\limits_{X_{k-1}\in S} P(X_k|X_{k-1})P^i_{pdf}(X_{k-1}|\mathbf{z}_{1:k-1})dX_{k-1}.
+\end{equation*}
+
+\textbf{Updating Step}
+\begin{equation*}
+P^i_{pdf}(X_k|\mathbf{z}_{1:k})
+= K_iP^i_{pdf}(X_k|\mathbf{z}_{1:k-1})P(\mathbf{z}_k|X_k).
+\end{equation*}
+$\mathbf{z}_k$ is the set of measurements from the sensors of time $k$.
+
+At each time, we use a point estimate, e.g., MAP, to estimate the target position:
+\begin{equation*}
+\hat{x}_k=\arg\max_{X\in S} P^i_{pdf}(X_k|\mathbf{z}_{1:k}).
+\end{equation*}
+
+Can we show that $\|\hat{x}_k -x_k\|_2 \overset{P}{\longrightarrow} 0$?
+If the MAP does not have this property, can some other point estimate, e.g., the mean value or the median of $P^i_{pdf}(X_k|\mathbf{z}_{1:k})$, have this property? 
+
+This seems to be a parameter identification problem, where the target state is the (time-varying) parameter.
+
+\end{document}
