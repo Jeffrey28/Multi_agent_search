@@ -1,0 +1,50 @@
+\section{INTRODUCTION}
+	\todohere{mention the relation between BF and KF.}
+	\todohere{mention the OOSM issue.}
+	%Section II: Topology + \proto + Proof
+	%Section III: Binary sensor + DBF + Proof.
+	%Section IV: Simulation
+	
+	Unmanned ground vehicles (UGV) that operate without on-board operators have been used for many applications that are inconvenient, dangerous, or impossible to human. Distributed estimation using a group of networked UGVs has been applied to collectively infer status of complex environment, such as intruder detection \cite{chamberland2007wireless} and object tracking \cite{wang2003online}. Several techniques have been developed for distributed estimation, including distributed linear Kalman filters (DKF) \cite{2005distributed}, distributed extended Kalman filters \cite{madhavan2004distributed} and distributed particle filters \cite{gu2007distributed}, etc. The most generic filtering scheme is distributed Bayesian filters (DBF), which can be applied for nonlinear systems with arbitrary noise distributions \cite{bandyopadhyay2014distributed,julian2012distributed}.
+	This paper focuses on a communication-efficient DBF for networked UGVs.
+	
+	The interaction topology plays a central role on the design of DBF, of which two types are widely investigated in literature: fusion center (FC) and neighborhood (NB). In the former, local statistics estimated by each agent is transmitted to a single FC, where a global posterior distribution is calculated at each filtering cycle \cite{zuo2006bandwidth,vemula2006target}. In the latter, each agent individually executes distributed estimation and the agreement of local estimates is achieved by certain consensus strategies \cite{jadbabaie2003coordination,ren2005consensus,olfati2007consensus}. In general, the NB-based distributed filters are more suitable in practice since they do not require a fusion center with powerful computation capability and are more robust to changes in network topology and link failures. So far, the NB-based approaches have two mainstream schemes according to the transmitted data among agents, i.e., \textit{statistics dissemination} (SD) and \textit{measurement dissemination} (MD). In the SD scheme, each agent exchanges statistics such as posterior distributions and likelihood functions within neighboring nodes \cite{hlinka2013distributed}. In the MD scheme, instead of exchanging statistics, each agent sends its observations to neighboring nodes. 
+	
+%	The pioneering work of statistics dissemination scheme can date back to the 80s of last century \todohere{reference}. 
+%	Later, \todohere{reference} have considerably advanced the study of this scheme in the field of distributed estimation. 
+	Statistics dissemination scheme has gained increasing interest and been widely investigated during last decade.
+	Madhavan et al. (2004) presented a distributed extended Kalman filter for nonlinear systems \cite{madhavan2004distributed}. This filter was used to generate local terrain maps by using pose estimates to combine elevation gradient and vision-based depth with environmental features. Olfati-Saber (2005) proposed a distributed linear Kalman filter (DKF) for estimating states of linear systems with Gaussian process and measurement noise \cite{2005distributed}. Each DKF used additional low-pass and band-pass consensus filters to compute the average of weighted measurements and inverse-covariance matrices. 
+%	Sheng et al. (2005) proposed a multiple leader-based distributed particle filter with Gaussian Mixer for target tracking \cite{sheng2005distributed}. Sensors are grouped into multiple uncorrelated cliques, in each of which a leader is assigned to perform particle filtering and the particle information is then exchanged among leaders. 
+	Gu (2007) proposed a distributed particle filter for Markovian target tracking over an undirected sensor network \cite{gu2007distributed}. Gaussian mixture models (GMM) were adopted to approximate the posterior distribution from weighted particles and the parameters of GMM were exchanged via average consensus filter. 
+	Hlinka et al. (2012) proposed a distributed method for computing an approximation of the joint (all-sensors) likelihood function by means of weighted-linear-average consensus algorithm when local likelihood functions belong to the exponential family of distributions \cite{hlinka2012likelihood}. Saptarshi et al. (2014) presented a Bayesian consensus filter that uses logarithmic opinion pool for fusing posterior distributions of the tracked target \cite{bandyopadhyay2014distributed}. Other examples can be found in \cite{julian2012distributed} and \cite{beaudeau2012target}. 
+%	Generally, this scheme can be further categorized into two types: leader-based and consensus-based. In the former, statistics is sequentially passed and updated along a path formed by active UGVs, called leaders. Only leaders perform filtering based on its own measurement and received measurements from local neighbors \cite{sheng2005distributed}. In the latter, every UGV diffuses statistics among neighbors, via which global agreement of the statistics is achieved by using consensus protocols \cite{olfati2007consensus,ren2005consensus,jadbabaie2003coordination}. 
+	
+	
+	Despite the popularity of statistics dissemination, exchanging statistics can consume high communication resources. 
+	One remedy is to approximate statistics with parametric models, e.g., Gaussian Mixture Model \cite{sheng2005distributed}, which can reduce communication burden to a certain extent. 
+	However, such manipulation increases the computation burden of each agent and sacrifices filtering  accuracy due to approximation.
+	The measurement dissemination scheme is an alternative solution to address the issue of exchanging statistics. 
+	An early work on measurement dissemination was done by Coates et al. (2004), who used adaptive encoding of observations to minimize communication overhead \cite{coates2004distributed}. Ribeiro et al. (2006) exchanged quantized observations along with error-variance limits considering more pragmatic signal models \cite{ribeiro2006bandwidth}.
+	A recent work was conducted by Djuric et al. (2011), who proposed to broadcast raw measurements to other agents, and therefore each agent has a complete set of observations of other agents for executing particle filtering \cite{djuric2011non}.  
+	A shortcoming of aforementioned works is that their communication topologies are assumed to be a fixed and complete graph that every pair of distinct agents is constantly connected by a unique edge. 
+	In many real applications,the  interaction topology may change dynamically due to unreliable links, external disturbances and/or range limits \cite{xiao2008asynchronous}.
+%	The communication links between UGVs may be unreliable due to disturbances or communication range limitations. 
+%	If the information is being exchanged by direct sensing, the locally visible neighbors of a vehicle will likely change over time. 
+	In such cases, dynamically changing topologies can cause random packet loss and variable transmission delay, thus decreasing the performance of distributed estimation, and even leading to inconsistency and non-consensus. 
+	Leung et al. (2010) explored a decentralized filter for dynamic robot networks \cite{leung2010decentralized}.
+	The algorithm was shown to achieve centralized-equivalent filtering performance in simulations. 
+	However, it required the communication of both measurements and statistics, which could incur large communication overhead.
+		
+	The main contribution of the paper is that we present a measurement dissemination-based distributed Bayesian filtering (DBF) method for a group of networked UGVs with dynamically changing interaction topologies. 
+	In our previous work, we have proposed a Latest-In-and-Full-Out (LIFO) protocol for data exchange and developed a LIFO-based DBF. 
+	However, it only applies to static target.
+	In this work, we introduce the concept of the track list and extend our methods to time-varying topologies.
+	The measurement dissemination scheme uses the so-called Full-In-and-Full-Out (\proto) protocol, under which each UGV is only allowed to broadcast observations to its neighbors by using single-hopping.
+	Individual Bayesian filter is implemented locally by each UGV after exchanging observations using \proto.
+	Under the condition that the union of undirected switching topologies is connected frequently enough, two properties are achieved: (1) {\proto} can disseminate observations over the network within finite time; (2) \proto-based DBF guarantees the consistency of estimation that each individual estimate of target position converges in probability to the true target position as the number of observations tends to infinity. 
+	The main benefit of using \proto is on the reduction of communication burden, with the transmission data volume scaling linearly with the size of the UGV network. 
+	
+	The rest of this paper is organized as follows: 
+	the {\proto} protocol for dynamically changing interaction topologies is formulated in \cref{sec:lifo};
+	the \proto-based DBF algorithm is described in \cref{sec:\proto-dbf}, where the consistency of estimation is proved;
+	simulation results are presented in \cref{sec:sim} and \cref{sec:conclu} concludes the paper.

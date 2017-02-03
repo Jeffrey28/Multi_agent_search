@@ -1,0 +1,199 @@
+\section{Full-In-and-Full-Out (\proto) Protocol}\label{sec:\proto}
+	%This study proposes a Latest-In-and-Full-Out (\proto) protocol for observation exchange and derives two corresponding distributed Bayesian filtering (DBF) algorithms, shorted as \proto-DBF. 
+	%The data communication in \proto uses synchronized step as the execution of DBF.
+	%In each step, \proto only allows single-hopping communication within the direct neighborhood, but is able to broadcast observations of each UGV to any other agents after a finite number of steps.
+	%The individual PDF is forward predicted and updated in DBF after each \proto cycle.
+	%The theoretical analysis show that \proto-DBF can ensure the consistency and consensus of distributed estimation while requiring much less communication burden than statistics dissemination-based methods. 
+	This study proposes a Full-In-and-Full-Out (\proto) protocol for measurement exchange in time-varying topologies.
+%	In our previous work, we proposed a Latest-In-and-Full-Out (LIFO) protocol and can be used for time-invariant topologies.
+%	{\proto} is suitable for time-varying topologies.
+%	Let $y_k^i=\left\lbrace x^i_k,z^i_k\right\rbrace$ and $Y^i_{\K}=\left\lbrace y_{k}^i|k\in \K\right\rbrace$, where $\K$ is an index set of time steps.
+	Let $Y^i_{\K}=\lb \left[x^i_k,z^i_k\right]|k\in \K\rb$ 
+	% $Y^i_{\K^{i,j}_k}=\lb \left[x^{i,j}_t,z^{i,j}_t\right]|t\in \K^{i,j}_k\rb$
+	be the set of state-measurement pairs of robot $i$, where $\K$ is an index set of time steps.
+	Each UGV contains a communication buffer (CB) that stores state-measurement pairs consisting of measurements and the corresponding states of all UGVs:
+	\begin{equation*}		
+		\B^i_k=\left[ Y^1_{\K^{i,1}_k},\dots,Y^N_{\K^{i,N}_k}\right],
+%		\mathbf{z}^{CB,i}_k=\left[ z^1_{k^i_1},\dots,z^N_{k^i_N}\right]
+	\end{equation*}
+%	where $z^j_{k^i_j}$ represents the observation made by ${j\thi}$ UGV at time $k^i_j$. 
+	where $\B^i_k$ is the CB of $i\thi$ UGV at time $k$ and $\K^{i,j}_k (j\in V)$ is the time index set.
+	$Y^j_{\K^{i,j}_k}$ represents the set of $j\thi$ UGV's measurements of time steps in $\K^{i,j}_k$ that are stored in $i\thi$ UGV's CB.
+%	Note that under {\proto} and certain conditions (\Cref{prop1}) of interaction topologies, $\mathcal{Q}_i=\left\lbrace 1,\dots,N\right\rbrace \setminus \left\lbrace i\right\rbrace$, i.e. each robot can know the measurements from all other robots. 
+%	This will be proved in \Cref{cor1}.
+%%	$z^j_{k^i_j}$ is stored in the CB of ${i\thi}$ UGV, where $k^i_j$ is the latest observation time of ${j\thi}$ UGV that is available to ${i\thi}$ UGV by time $k$. Due to the communication delay, $k^i_j<k, \forall j\neq i$ and $k^i_i=k$ always holds.
+%	Let $G_k\in\bar{G} $ represent the interaction topology at time $k$. 
+	The \textbf{{\proto} protocol} is stated in \Cref{alg:lifo}.
+	Note that each section in the algorithm contains the CB and TL parts.
+%	Note that in the Updating Step, the algorithm uses \Cref{alg:tracklist}, which we will introduce in \Cref{sec:tracklist}. 
+	For the purpose of clarity, we ignore the TL parts at this stage and will describe them in \Cref{subsec:tracklist}.
+%	this operation and do not trim CB at this stage.
+%	For the clarity of explanation of DBF in \cref{sec:\proto-dbf}, we define a \textit{new observation set} $\mathbf{z}^{new,i}_k$ for $i\thi$ UGV to denote the set of observations that the $i\thi$ UGV receives and stores in its CB at $k$.
+		
+	
+	\begin{algorithm}
+		\caption{{\proto} Protocol}
+		\label{alg:lifo}
+		\begin{algorithmic}
+			\State \textbf{(1)} Initialization.
+			
+			
+			CB: 
+			The CB of $i\thi$ UGV is initialized at $k=0$:
+			\small\begin{equation*}
+				{B^i_0=\left[ Y^1_{\K^{i,1}_{0}},\dots,Y^N_{\K^{i,N}_{0}}\right], \text{ where } Y^j_{\K^{i,j}_0} = \lb \left[ \varnothing,\varnothing\right]\rb.}
+			\end{equation*}\normalsize
+			
+			TL:
+			The TL of $i\thi$ UGV is initialized at $k=0$:
+			\small\begin{equation*}
+				P^i_0 = \mathbf{0},\;\text{i.e. } p^{j,l}_0=0, \forall j,l\in \lb 1\dots,N\rb.
+			\end{equation*}\normalsize
+			
+			\State \textbf{(2)} At time $k\,(k\geq 1)$ for $i\thi$ UGV:	
+			
+%			\State The interaction topology is represented by $G[k]\in\bar{G}$.
+			\State (2.1) Receiving Step.
+			
+			CB:	The $i\thi$ UGV receives all CBs of its {\dnbhd} $\mathcal{N}_i(G_{k-1})$.
+			The received CBs are totally $|\mathcal{N}_i(G_{k-1})|$ groups, each of which corresponds to the $(k-1)\thi$ step CB of a UGV in $\mathcal{N}_i(G_ {k-1})$. 
+			The received CB from $l\thi$ UGV is
+			\small\begin{equation*}
+				\mathcal{B}^l_{k-1}=\left[Y^1_{\K^{l,1}_{k-1}},\dots,Y^N_{\K^{l,N}_{k-1}}\right],\; l\in\mathcal{N}_i(G_{k-1})
+			\end{equation*}\normalsize
+			
+			TL: The $i\thi$ UGV receives all TLs of its direct neighborhood $\mathcal{N}_i(G_{k-1})$.
+			The received TL from $l\thi$  $\left(l\in \mathcal{N}_i(G[k-1])\right)$ UGV is $P^l_{t_l}$.
+			\newline
+			
+			\State (2.2) Observation Step.
+			
+			CB: The $i\thi$ UGV updates $Y^i_{\K^{i,i}_{k}}$ by its own state-measurement pair at current step:
+			\small\begin{equation*}
+			Y^i_{\K^{i,i}_{k}} = Y^i_{\K^{i,i}_{k-1}} \cup \lb{\left[x^i_k,z^i_k\right]}\rb.
+			\end{equation*}\normalsize
+						
+			\State (2.3) Updating Step.
+			
+			CB: The $i\thi$ UGV updates other elements of its own CB, i.e., $Y^j_{\K^{i,j}_{k}}\,(j\neq i)$, by merging with all received CBs:						
+			\small\begin{equation*}
+				Y^j_{\K^{i,j}_{k}} = Y^j_{\K^{i,i}_{k-1}} \cup Y^j_{\K^{l,j}_{k-1}},
+				\; \forall j\neq i,\;\forall l\in \mathcal{N}_i(G_{k-1}).
+			\end{equation*}\normalsize
+			
+			TL: The $i\thi$ UGV updates its own TL using all the received TLs:
+			\begin{itemize}
+				\item if $k^{i,j}>k^{i,l}$, keep current $\mathbf{p}^j_{k^{i,j}}$;
+				\item if $k^{i,j}=k^{i,l}$, $\mathbf{p}^j_{k^{i,j}}=\mathbf{p}^j_{k^{i,j}} \lor \mathbf{p}^j_{k^{l,j}}$; \hspace{2em} $\forall j\in \lb 1\dots,N\rb$
+				\item if $k^{i,j}<k^{i,l}$, $\mathbf{p}^j_{k^{i,j}}=\mathbf{p}^j_{k^{l,j}}$ and $k^{i,j}=k^{i,l}$.
+			\end{itemize}
+			
+			Trim the CB based on the updated track lists, see \Cref{alg:tracklist}. 
+			
+			\State (2.4) Sending Step:
+			
+			CB: The $i\thi$ UGV broadcasts its updated CB, \small$\B^i_k=\left[Y^1_{\K^{l,1}_{k}},\dots,Y^N_{\K^{l,N}_{k}}\right]$\normalsize, to all of its neighbors defined in $\mathcal{N}_i(G_k)$.
+			
+			TL: The $i\thi$ UGV broadcasts its updated track list to all of its neighbors defined in $\mathcal{N}_i(G_k)$.
+			
+			\State \textbf{(3)} $k\leftarrow k+1$ until stop
+		\end{algorithmic}
+	\end{algorithm}
+	
+	\medskip
+%	\begin{rem}
+%		Compared to statistics dissemination, \proto is generally more communication-efficient for distributed filtering. 
+%		To be specific, consider a $D\times D$ grid environment with a network of $N$ UGVs, the transmitted data of \proto between each pair of UGVs are only the CB of each UGV and the corresponding UGV positions where observations were made, the length of which is $O(N)$. 
+%		On the contrary, the length of transmitted data for a statistics dissemination approach that transmits unparameterized posterior distributions or likelihood functions is $O(D^2)$, which is in the order of environmental size. 
+%		Since $D$ is generally much larger than $N$ in applications such as target localization, \proto requires much less communication resources.
+%	\end{rem}
+	
+	\medskip
+%	\todohere{change the figure to be a switching topology. change the contents here accordingly}
+	\todohere{modify the whole paragraph when new plot is made.}
+	\cref{fig:\proto} illustrates the {\proto} cycles of a network of 3 UGVs with switching line topologies.
+	There are two types of topologies: under the first one only UGV $1$ and UGV $2$ can directly communicate and under second one only UGV $2$ and UGV $3$ can directly communicate.
+	Several facts can be noticed in \cref{fig:\proto}: 
+	(1) the two topologies are jointly connected within each time intervals $\left[0,3 \right) ,\,\left[3,5 \right) ,\,\left[5,7 \right)$;
+	(2) \todohere{may need to change} CBs of all UGVs are filled within $5$ steps;
+%	, which means under \proto each UGV has a maximum delay of 2 steps for receiving observations from other UGVs; 
+	(3) after being filled, each CB keeps updated every finite time steps, which means each UGV receives new observations of other UGVs with finite delay.
+	Extending these facts to a network of $N$ UGVs, we have the following proposition:
+	%\medskip
+	
+%	\todohere{it seems to me that a tighter lower bound can be achieved by using FIFO, but not sure how to compute it.}
+	\begin{thm}\label{prop1}
+		%For a fixed and undirected network of $N$ UGVs, \proto uses the shortest path(s) between $i\thi$ and $j\thi$ UGV to exchange observation, the length of which is the delay $\tau_{i,j}$ between these two UGVs.
+		Consider a network of $N$ UGVs with switching interaction topologies.
+%		\todohere{may rephrase the following sentence}
+		If the following two conditions are satisfied:
+		\begin{enumerate}
+			\item there exists an infinite sequence of time intervals $\left[k_m,k_{m+1} \right),\,m=1,2,\dots$, starting at $k_1=0$ and are contiguous, nonempty and uniformly bounded;
+			\item the union of graphs across each such interval is jointly strongly connected,
+		\end{enumerate}
+		then any pair of UGVs can exchange measurements under \proto. And the communication delay between each pair of UGVs is no greater than \small$(N-1)T_u$\normalsize, where \small$T_u=\sup\limits_{m=1,2,\dots}\left( k_{m+1}-k_m\right) T$ \normalsize is the upper bound of interval lengths.
+	\end{thm}
+	
+	\begin{proof}				
+		Without loss of generality, we consider the transmission of $B^i_1$ from the $i\thi$ UGV to an arbitrary $j\thi$ UGV ($j\in V\setminus \lb i\rb$).
+		Since each UGV will receive \dnbhd' CBs and send the merged one to its neighbors at the next time step, the $i\thi$ UGV can transmit $B^i_1$ to $j$ if and only if there is a path from vertex $i$ to $j$.
+%		, i.e.,
+%		\begin{equation*}
+%			\exists n\in\mathbb{N}_+, \text{ s.t. } A^n_{i,j} >0.
+%		\end{equation*}
+%		 $i\thi$ and $j\thi$ UGV.		
+		As the union of graphs across the time interval $\left[k_1,k_2 \right)$ is jointly connected, $i\thi$ UGV can directly send $B^i_1$ to at least one another UGV at a time instance, i.e., $\exists l_1\in V\setminus \lb i\rb,\, \exists t_1\in \left[k_1,k_2 \right)$ s.t. $l_1\in\mathcal{N}_{i}(G_{t_1})$.
+%		This implies that observation $z^i_{t_1}$ is received and stored in the CB of $l_1\thi$ UGV at $t_1+1$ under \proto.
+%		Therefore, at least one UGV other than $i\thi$ UGV has received the CB from $i\thi$ UGV by $k_2$.
+		If $l_1=j$, then $B^i_1$ has been sent to $j$.
+		If $l_1\neq j$, $B^i_1$ has been merged into $B^{l_1}_{t_1}$ and will be sent out in the next time step. 
+		
+		By using the similar derivation for time intervals $\left[k_m,k_{m+1} \right),\;,m=2,3,\dots$, it can be shown that all UGVs can receive the state-measurement pairs in $B^i_1$ no later by $k_{N}$.
+		Therefore, the transmission delay between an arbitrary pair of UGVs is no greater than \small$(N-1)T_u$\normalsize.
+	\end{proof}
+	
+	Similar to the definition in \cite{jadbabaie2003coordination}, we define an interaction topology that satisfies the two conditions in \Cref{prop1} as a \textit{{\fc}} network.
+
+	\medskip
+	\begin{cor}\label{cor1}
+		For a {\fc} network, each UGV receive the CBs of all other UGVs under {\proto} within finite time. 
+%		This implies $\mathcal{Q}_i = \left\lbrace1,\dots,N \right\rbrace \setminus \left\lbrace i\right\rbrace $.	
+%		Additionally, the state-measurement pairs of all UGVs are updated every finite period of time.
+	\end{cor}
+	\begin{proof}
+		%In a network of $N$ UGVs, the maximal length of shortest paths is no greater than $N-1$. 
+		According to \Cref{prop1}, the transmission delay between an arbitrary pair of UGVs is no greater than \small$(N-1)T_u$\normalsize.
+		Therefore, each UGV is guaranteed to receive $B^j_t,\; \forall t\ge 0,\, j\in V$ when \small$k\geq t+(N-1)T_u$\normalsize.
+%		In addition, the state-measurement pairs in each gets updated every finite period of time that is no greater than \small$(N-1)T_u$\normalsize.
+	\end{proof}
+	
+	\begin{rem} 
+		The frequency that each UGV receive other UGVs' CBs depends on the property of the network.
+		\Cref{cor1} gives an upper bound on the transmission time for all {\fc} networks under {\proto}.
+	\end{rem}
+	
+%	\medskip
+	
+	%\begin{rem}
+	%	The \cref{prop1} provides an upper bound of the transmission delay between arbitrary pair of UGVs.
+	%	One example of such delay can be found in line topology as shown in \cref{fig:com_topo}.
+	%	\todohere{needs to write more details.}
+	%%	Suppose three types of graphs that consists Consider the tranmission
+	%\end{rem}
+	%\medskip
+	%\begin{cor}\label{cor2}
+	%For the same network condition in \Cref{prop1}, all elements in $\mathbf{z}^{CB,i}_k$ are filled, the updating of each element is non-intermittent. 	
+	%\end{cor}
+	%\begin{proof}
+	%For a network with fixed topology, shortest path(s) between any pair of nodes are fixed. 
+	%Therefore, based on \Cref{prop1}, $\tau_{i,j}$ is constant and the updating of each element in $\mathbf{z}^{CB,i}_k$ is non-intermittent.
+	%\end{proof}
+	%\medskip
+	
+	\begin{figure}%[thpb]
+		\centering
+		\includegraphics[width=0.43\textwidth]{figures/data_exchange_switch}
+		\caption{Example of \proto with three UGVs using switching line interaction topologies. The double-headed arrow represents a communication link between two UGVs.}
+		\label{fig:\proto}
+		%		\vspace{-1em}]
+	\end{figure}		

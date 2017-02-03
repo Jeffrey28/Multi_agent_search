@@ -1,0 +1,387 @@
+\section{Proof of Consistency}\label{sec:consist_proof}
+	%This section proves consistency and consensus of \proto-DBF. 
+	%Only proofs for localizing static target are presented, including static UGVs and moving UGVs.
+	%The proof of \proto-DBF for moving target is similar to that of static target by considering the dynamic model of the target, but with more complicated algebraic manipulation. 
+	
+	%Considering $S$ is finite and $x^{T^*}$ is the true location of target, define an \textit{equivalent-location} set $X^T_{eq}\subseteq S$ such that 
+	%\small\begin{equation*}
+	%X^T_{eq}=\left\lbrace x^T\in S\arrowvert P(z_k|x^{T})=P(z_k|x^{T^*}),\; \forall z_k\in \left\lbrace 0,1\right\rbrace\right\rbrace ,
+	%\end{equation*}\normalsize
+	%i.e., $x^T\in X^T_{eq}$ gives the same observation likelihood as $x^{T^*}$ for given UGV positions.
+	%%for any two parameters in $X^T_{eq}$, the sensor model with one of these two parameters generates equivalent probability value for the same observation $z_k$
+	%Since $S$ is finite, $X^T_{eq}$ is also finite. 
+	%%Let $X^T_{eq,1},\dots,X^T_{eq,u}$ denote all equi-parameter sets that partition $X^T$ such that following properties hold:
+	%%\begin{enumerate}
+	%%	\item $\bigcup^u_{i=1} X^T_{eq,i}= X^T$
+	%%	\item $X^T_{eq,i}\cap X^T_{eq,j}=\emptyset,\;i,j\in \left\lbrace 1,\dots,u\right\rbrace ,i\neq j.$
+	%%\end{enumerate}
+	%%Without loss of generality, assume $x^{T^*}\in X^T_{eq,1}$, where $x^{T^*}$ denotes the actual position of the target. 
+	%
+	%%\todohere{double check if the following examples for equi-parameter set are accurate}
+	%
+	%%\begin{rem}
+	%%	the equivalent-location set depends on the property of the sensor. 
+	%%	For example, for a laser scanner with high-fidelity sensing capability, each equivalent-location set contains only a small number of target positions.
+	%	The reason to introduce equivalent-location set is that ghost target might exist in some special UGV arrangement and sensor types.
+	%	For example, for undirected binary sensors that are linearly arranged, a ghost target can exist at the mirror position of the true target.
+	%	When sensors are overlapped at a single point, ghost targets can exist on a circle that contains the true target.
+	%	In theory, DBF cannot rule out ghost targets in such cases and prior knowledge is needed for further clarification.
+	%%	Therefore, this study only proves the convergence to the equivalent-location set rather to the true location.
+	%	However, by using high-fidelity sensors, such as cameras and laser scanners, and multiple observations from different UGV placements, equi-location set can be reduced to only contain true location of target.
+	
+	%\end{rem}
+	
+	This section proves the consistency of the maximum a posteriori (MAP) estimator of LIFO-DBF under unbiased sensors (sensors without offset).
+	A state estimator is \textit{consistent} if it converges in probability to the true value of the state \cite{amemiya1985advanced}.
+	Consistency is an important metric for stochastic filtering approaches \cite{chen2003bayesian} and it differs from the concept of consensus; the consensus implies that all UGVs' estimation results converge to a same value, while the consistency not only implies achieving consensus asymptotically, but also requires the estimated value converge to the true value.	
+	We first prove the consistency for static UGVs and then for moving UGVs. 
+	For simplicity and clarity, we assume S is a finite set (e.g. a finely discretized field).
+	
+	\subsection{Static UGVs}	
+	The consistency of \proto-DBF for static UGVs is stated as follows: 
+%	This section proves that \proto-DBF achieves consistent estimation of target position provided that the interaction topologies are jointly connected frequently enough as the system evolves.
+%	To be specific, assume that $S$ is finite, the target moves in a deterministic way, and $x^{T^*}$ is the true position of target, then the consistency of \proto-DBF is stated as follows:
+	
+	\begin{thm}\label{thm:\proto-dbf-sta-ugv}
+		Assume the UGVs are static and the sensors are unbiased. If the network of $N$ UGVs is \fc, then the MAP estimator of target position converges in probability to the true position of the target using \proto-DBF, i.e.,
+		
+		\small\begin{equation*}
+		\lim\limits_{k\rightarrow \infty}
+		P(\X_k^{MAP}=\xg_k)=
+		1,\;i\in V,
+		\end{equation*}\normalsize
+		where 
+		\small\begin{equation*}
+		\X_k^{MAP}=\arg\max\limits_{\X}P^i_{pdf}(\X_k|\mathbf{z}^{i}_{1:k}).
+		\end{equation*}
+		
+%		the estimated target position converges to the true position of target in probability using \proto-DBF, i.e.,
+		%	the set of estimated target position of each UGV converges to $ X^T_{eq}$ in probability using \proto-DBF when the number of observations tends to infinity, i.e.,
+%		\small\begin{equation*}
+%			\lim\limits_{k\rightarrow \infty}
+%			P(x^T=x^{T^*}|\mathbf{z}^{new,i}_{1:k})=
+%			%	\begin{cases}
+%			%	1 & \text{if}\; i=1\\
+%			%	0 & \text{if}\; i\neq 1
+%			%	\end{cases},\;
+%			1,\;i=1,\dots,N.
+%		\end{equation*}\normalsize
+		%	where $\mathbf{z}^{CB,i}_{1:k}=\left[z^1_{1:k^i_1},\dots,z^N_{1:k^i_N}\right] $.
+		%	, $\left\lbrace k_1,\dots,k_N\right\rbrace $ are the timestamps of the $i\thi$ UGV's latest knowledge of all UGVs' observations.
+	\end{thm}
+	\medskip
+	
+	\begin{proof}	
+		Define the time set of $i\thi$ UGV, $\K^{i,j}_{k}(\,j\in V)$, that contains the time steps of measurements by the $j\thi$ UGV that are contained in $B^i_k$.
+%		According to \Cref{thm:fifo_dbf-property}, it is known that the cardinality of $\mathscr{K}^i_{j,k}$ has following property: \small$k-(N-1)T_u<|\mathscr{K}^i_{j,k}|\leq k$\normalsize.
+%		Considering the conditional independence of measurements given $x^g_k\in S$, 
+		The batch form of DBF at $k\thi$ step is
+%		\small\begin{subequations}
+%			\begin{align*}
+%			P^i_{pdf}(\X_k|\zb^i_k)&=P^i_{pdf}(\X_k|z^1_{1:k^i_1},\dots,z^N_{1:k^i_N})\\
+%			&=\frac{P^i_{pdf}(\X_0)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|\X_l)P(\X_l|\X_{l-1})}{\sum\limits_{\X_0,\dots,\X_k\in S}P^i_{pdf}(\X_0)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|\X_l)P(\X_l|\X_{l-1})}.
+%			\end{align*}
+%		\end{subequations}\normalsize
+		\small\begin{equation*}
+			P^i_{pdf}(\X_k|\zb^i_{1:k})=\frac{P^i_{pdf}(\X_0)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\X_t)P(\X_t|\X_{t-1})}{\sum\limits_{\X_0,\dots,\X_k\in S}P^i_{pdf}(\X_0)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\X_t)P(\X_t|\X_{t-1})}.
+		\end{equation*}\normalsize
+
+%		\small\begin{equation*}			
+%			P^i_{pdf}(\X_k|\zb^i_{1:k})=\frac{P^i_{pdf}(\X_0)\prod\limits_{t=1}^{k}\prod\limits_{j\in\Omega^i_t}P(z^j_t|\X_t)P(\X_t|\X_{t-1})}{\sum\limits_{\X_0,\dots,\X_k\in S}P^i_{pdf}(\X_0)\prod\limits_{t=1}^{k}\prod\limits_{j\in\Omega^i_t}P(z^j_t|\X_t)P(\X_t|\X_{t-1})}.
+%		\end{equation*}\normalsize
+		
+%		\small\begin{equation}
+%			P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})=\frac{P^i_{pdf}(x^T)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x^T)}{\sum\limits_{x^T\in S}P^i_{pdf}(x^T)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x^T)},
+%		\end{equation}\normalsize
+%		where $P^i_{pdf}$ is the initial individual PDF of $i\thi$ UGV. 
+		%\addtocounter{equation}{-1}\\
+		
+		Comparing $P^i_{pdf}(X_k=x_k|\zb^i_{1:k})$ with $P^i_{pdf}(X_k=x^g_k|\zb^i_{1:k})$\footnote{For the purpose of simplicity, we use $P^i_{pdf}(x_k|\zb^i_{1:k})$ to represent $P^i_{pdf}(X_k=x_k|\zb^i_{1:k})$ in this proof.} yields
+%		\small\begin{equation}\label{eqn:cmp}
+%		\frac{P^i_{pdf}(X_k=x_k|B^i_k)}{P^i_{pdf}(X_k=x^g_k|B^i_k)}=\frac{P^i_{pdf}(x_0)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x_l)}{P^i_{pdf}(x^g_0)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x^g_l)}.
+%		\end{equation}\normalsize
+
+		\small\begin{equation}\label{eqn:cmp}
+			\frac{P^i_{pdf}(x_k|\zb^i_{1:k})}{P^i_{pdf}(x^g_k|\zb^i_{1:k})}=\frac{P^i_{pdf}(x_0)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|x_t)}{P^i_{pdf}(x^g_0)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|x^g_t)}.
+		\end{equation}\normalsize
+		
+%		\small\begin{equation}\label{eqn:cmp}
+%		\frac{P^i_{pdf}(x_k|\zb^i_{1:k})}{P^i_{pdf}(x^g_k|\zb^i_{1:k})}=\frac{P^i_{pdf}(x_0)\prod\limits_{t=1}^{k}\prod\limits_{j\in\Omega^i_t}P(z^j_t|x_t)}{P^i_{pdf}(x^g_0)\prod\limits_{t=1}^{k}\prod\limits_{j\in\Omega^i_t}P(z^j_t|x^g_t)}.
+%		\end{equation}\normalsize
+		
+%		Comparing $P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})$ with $P^i_{pdf}(x^{T^*}|\mathbf{z}^{new,i}_{1:k})$ yields
+%		\small\begin{equation}\label{eqn:cmp}
+%			\frac{P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^{new,i}_{1:k})}=\frac{P^i_{pdf}(x^T)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x^T)}{P^i_{pdf}(x^{T^*})\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x^{T^*})}.
+%		\end{equation}\normalsize
+		
+		Take the logarithm of \Cref{eqn:cmp} and average it over $k$ steps:
+		\small\begin{equation}\label{eqn:cmp_log}
+			\frac{1}{k}\ln\frac{P^i_{pdf}(x_k|\zb^i_{1:k})}{P^i_{pdf}(x^g_k|\zb^i_{1:k})}=\frac{1}{k}\ln\frac{P^i_{pdf}(x_0)}{P^i_{pdf}(x^g_0)}+\sum\limits_{j=1}^{N}\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x_t)}{P(z^j_t|x^g_t)}.
+		\end{equation}\normalsize
+		
+		Since $P^i_{pdf}(x_0)$ and $P^i_{pdf}(x^g_0)$ are bounded, then $\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_0)}{P^i_{pdf}(x^g_0)}= 0.$
+%		\small\begin{equation}\label{eqn:cmp_lim1}
+%			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_0)}{P^i_{pdf}(x^g_0)}= 0.
+%		\end{equation}\normalsize
+		
+%		Utilizing the facts: (1) $z^j_l$ are conditionally independent samples from $P(z^j_l|x^g_l)$ and (2) $k-(N-1)T_u<|\mathscr{K}^i_{j,k}|\leq k$, 
+		The law of large numbers yields		
+%		\small\begin{subequations}\label{eqn:cmp_lim2}
+%			\begin{align}
+%			\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x_l)}{P(z^j_l|x^g_l)}&\overset{P}{\longrightarrow}\mathbb{E}_{z^j_l} \left[\frac{P(z^j_l|x_l)}{P(z^j_l|x^g_l)}\right]\\
+%			&=\int_{z^j_l} P(z^j_l|x^g_l)\frac{P(z^j_l|x_l)}{P(z^j_l|x^g_l)} dz^j_l\\
+%			&=-D_{KL}\left(P(z^j_l|x_l)\|P(z^j_l|x^g_l)\right),
+%			\end{align}
+%		\end{subequations}\normalsize
+		
+		\todohere{big mistake: I need to differentiate the moving target and static target. For moving target, the LLN does not apply directly. Gosh, this part seems to be a huge problem. Not sure if it's worth to prove anything in this case...}
+		\small\begin{subequations}\label{eqn:cmp_lim2}
+			\begin{align}
+			\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x_t)}{P(z^j_t|x^g_t)}&\overset{P}{\longrightarrow}\mathbb{E}_{z^j_t} \left[\frac{P(z^j_t|x_t)}{P(z^j_t|x^g_t)}\right]\\
+			&=\int_{z^j_t} P(z^j_t|x^g_t)\frac{P(z^j_t|x_t)}{P(z^j_t|x^g_t)} dz^j_t\\
+			&=-D_{KL}\left(P(z^j_t|x_t)\|P(z^j_t|x^g_t)\right),
+			\end{align}
+		\end{subequations}\normalsize		
+		where ``$\overset{P}{\longrightarrow}$" represents ``convergence in probability'' and $D_{KL}(P_1\|P_2)$ denotes the Kullback-Leibler (KL) divergence between two probability distribution $P_1$ and $P_2$.
+		KL divergence has the property that $\forall P_1,\,P_2, \; D_{KL}(P_1\|P_2)\leq 0\, \text{and equality holds if and only if } \; P_1=P_2.$
+%		\begin{subequations}
+%			\begin{gather*}
+%			\forall P_1,\,P_2, \; D_{KL}(P_1\|P_2)\leq 0\\
+%			\text{equality holds iff } \; P_1=P_2.
+%			\end{gather*}
+%		\end{subequations}
+		This leads to the following conclusion:
+%		\begin{subequations}
+			\small\begin{align*}
+			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x_t)}{P(z^j_t|x^g_t)}<0,&\quad x_t\neq x^g_t\\
+			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x_t)}{P(z^j_t|x^g_t)}=0,&\quad x_t= x^g_t.
+			\end{align*}\normalsize
+%		\end{subequations}
+		
+		Then by considering the limiting case of \Cref{eqn:cmp_log}, we can get:
+%		\begin{subequations}
+			\small\begin{align}
+			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_l|\zb^i_{1:k})}{P^i_{pdf}(x^g_l|\zb^i_{1:k})}<0,&\quad x_l\neq x^g_l\label{subeqn:limit1}\\
+			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_l|\zb^i_{1:k})}{P^i_{pdf}(x^g_l|\zb^i_{1:k})}=0,&\quad x_l= x^g_l\label{subeqn:limit2}.
+			\end{align}\normalsize
+%		\end{subequations}
+		\Cref{subeqn:limit1,subeqn:limit2} imply that
+%		\begin{subequations}
+%			\small\begin{align}
+%			\frac{P^i_{pdf}(x_l|\zb^i_{1:k})}{P^i_{pdf}(x^g_l|\zb^i_{1:k})}\overset{P}{\longrightarrow}0,&\quad x_l\neq x^g_l\\
+%			\frac{P^i_{pdf}(x_l|\zb^i_{1:k})}{P^i_{pdf}(x^g_l|\zb^i_{1:k})}\overset{P}{\longrightarrow}1,&\quad x_l= x^g_l.
+%			\end{align}\normalsize
+%		\end{subequations}
+
+		\small\begin{equation*}
+		\frac{P^i_{pdf}(x_l|\zb^i_{1:k})}{P^i_{pdf}(x^g_l|\zb^i_{1:k})}\overset{P}{\longrightarrow}
+		\begin{cases}
+		0\quad x_l\neq x^g_l,\\
+		1\quad x_l= x^g_l.
+		\end{cases}		
+		\end{equation*}\normalsize
+
+		Therefore,
+		\small\begin{equation*}
+		\lim\limits_{k\rightarrow \infty}
+		P(X_k^{MAP}=x^g_k)=1.
+		\end{equation*}\normalsize		
+		
+%		The binary observations subject to Bernoulli distribution $B(1,p_j)$, yielding
+%		\small\begin{equation*}
+%			P(z^j_l|x^T)=p^{z^j_l}_j(1-p_j)^{1-z^j_l},
+%		\end{equation*}\normalsize
+%		where $p_j=P(z^j_l=1|x^T)$. 
+%		Utilizing the facts: (1) $z^j_l$ are conditionally independent samples from $B(1,p_j^*)$ and (2) $k-(N-1)T_u<|\mathscr{K}^i_{j,k}|\leq k$, the law of large numbers yields
+%		\small\begin{equation*}
+%			%\lim\limits_{k\rightarrow \infty}
+%			\frac{1}{k}\sum\limits_{l\in\mathscr{K}^i_{j,k}}z^j_l\overset{P}{\longrightarrow}p^*_j,\quad 
+%			%\lim\limits_{k\rightarrow\infty}
+%			\frac{1}{k}(|\mathscr{K}^i_{j,k}|-\sum\limits_{l\in\mathscr{K}^i_{j,k}}z^j_l)\overset{P}{\longrightarrow}1-p^*_j,
+%		\end{equation*}\normalsize
+%		where $p_j^*=P(z^j_l=1|x^{T^*})$ and ``$\overset{P}{\longrightarrow}$" denotes ``convergence in probability''.
+%		Then, 
+%		\small\begin{equation}\label{eqn:cmp_lim2}
+%			%\lim\limits_{k\rightarrow \infty}
+%			\frac{1}{k}\sum\limits_{l\in\mathscr{K}^i_{j,k}}\ln\frac{P(z^j_l|x^T)}{P(z^j_l|x^{T^*})}\overset{P}{\longrightarrow}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln \frac{1-p_j}{1-p^*_j}.
+%		\end{equation}\normalsize
+%		
+%		Note that the right-hand side of \Cref{eqn:cmp_lim2} achieves maximum value 0 if and only if $p_j=p_j^*$. 
+%		Define 
+%		\small\begin{equation*}
+%			c(x^T)=\sum\limits_{j=1}^{N}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln\frac{1-p_j}{1-p^*_j}.
+%		\end{equation*}\normalsize
+%		
+%		Considering \Cref{eqn:cmp_lim1} and \Cref{eqn:cmp_lim2}, the limit of \Cref{eqn:cmp_log} is
+%		\small \begin{equation}\label{eqn:lim}
+%			% \lim\limits_{k\rightarrow \infty}
+%			\frac{1}{k}\ln\frac{P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^{new,i}_{1:k})}\overset{P}{\longrightarrow}c(x^T).
+%			% \sum\limits_{j=1}^{N}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln \frac{1-p_j}{1-p^*_j}
+%		\end{equation}\normalsize
+%		
+%		It follows from \Cref{eqn:lim} that
+%		\small\begin{equation}\label{eqn:lim2}
+%			\frac{P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^{new,i}_{1:k})e^{c(x^T)k}}\overset{P}{\longrightarrow}1.
+%		\end{equation}\normalsize
+%		
+%		Define the set $\bar{X}^T=S\setminus \left\lbrace x^{T^*}\right\rbrace$ and $c_M=\max\limits_{x^T\in\bar{X}^T}c(x^T)$.
+%		
+%		Then $c_M<0$.
+%		Summing \Cref{eqn:lim2} over $\bar{X}^T$ yields
+%		\small\begin{equation}\label{eqn:lim3}
+%			\frac{\sum\limits_{x^T\in \bar{X}^T}P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})e^{\left[c_M-c(x^T)\right]k}}{{P^i_{pdf}(x^{T^*}|\mathbf{z}^{new,i}_{1:k})}e^{c_Mk}}\overset{P}{\longrightarrow} |\bar{X}^T|,
+%		\end{equation}\normalsize
+%		where $|\bar{X}^T|$ denotes the cardinality of $\bar{X}^T$.
+%		Since $c_M<0$,  ${P^i_{pdf}(x^{T^*}|\mathbf{z}^{new,i}_{1:k})}e^{c_Mk}{\longrightarrow}0$, \Cref{eqn:lim3} implies
+%		\begin{equation}\label{eqn:lim4}
+%			\sum\limits_{x^T\in \bar{X}^T}P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})e^{\left[c_M-c(x^T)\right]k}\overset{P}{\longrightarrow}0.
+%		\end{equation}
+%		
+%		Utilizing the relation 
+%		\begin{equation*}
+%			0\leq P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})\leq P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})e^{\left[c_M-c(x^T)\right]k},
+%		\end{equation*}
+%		it can be derived from \Cref{eqn:lim4} that
+%		\small\begin{equation*}
+%			\sum\limits_{x^T\in \bar{X}^T}P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})\overset{P}{\longrightarrow} 0.
+%		\end{equation*}\normalsize
+%		
+%		Therefore,
+%		\footnotesize\begin{equation*}
+%			\lim\limits_{k\rightarrow \infty}
+%			P(x^T=x^{T^*}|\mathbf{z}^{new,i}_{1:k})=1-\lim\limits_{k\rightarrow \infty}\sum\limits_{x^T\in \bar{X}^T}P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})=1.
+%		\end{equation*}\normalsize
+
+
+		%\begin{enumerate}
+		%	\item When $p_j\neq p^*_j$, i.e., $x^T\notin X^T_{eq}$,
+		%	\begin{align*}
+		%%		\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^T|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^i_{1:k})} & <0,
+		%		\sum\limits_{j=1}^{N}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln \frac{1-p_j}{1-p^*_j} & <0,
+		%		\;\text{thus }\\
+		%		\lim\limits_{k\rightarrow \infty}\frac{P^i_{pdf}(x^T|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^i_{1:k})} & =0
+		%	\end{align*}	
+		%	\item When $p_j= p^*_j$, i.e., $x^T\in X^T_{eq}$, \begin{align*}
+		%%	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^T|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^i_{1:k})} & =0,
+		%	\sum\limits_{j=1}^{N}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln \frac{1-p_j}{1-p^*_j} & = 0,
+		%	\;\text{thus }\\
+		%	\lim\limits_{k\rightarrow \infty}\frac{P^i_{pdf}(x^T|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^i_{1:k})} & =1
+		%	\end{align*}
+		%\end{enumerate}
+	\end{proof}
+	
+	%\subsection{Proof for moving UGVs}
+%	The consistency of \proto-DBF can also be proved for moving UGVs.
+%	The difficulty of consistency proof lies in the fact that each UGV makes observations at multiple positions.
+%	The main idea of the proof is to classify UGV observation positions into two disjoint sets: \textit{infinite-observation spots} that contains positions where a UGV makes infinite observations, and \textit{finite-observation spots} that contains positions where the UGV makes finite observations.
+%	Due to the page limitation, we state the consistency result for moving UGVs without providing a proof for the purpose of completeness.
+		
+	%%, as $k\rightarrow\infty$.
+	%Before stating main theorem, the following lemma is introduced.
+	%\begin{lem}\label{lem1}
+	%	For a set of UGVs moving within a collection of finite positions, each UGV has at least one position where infinite observations are made as $k$ tends to infinity.
+	%\end{lem}
+	%
+	%\begin{proof}
+	%Let $n^{i,k}_j$ denote the times that $i\thi$ UGV visits $j\thi$ position up to time $k$. Then, $\sum\limits_{j} n^{i,k}_j=k$. It is straightforward to see that $\exists n^{i,k}_j,$ such that $n^{i,k}_j\rightarrow \infty,$ as $k\rightarrow \infty$.
+	%\end{proof}
+	%\medskip
+	%%The main theory of consistency of \proto-DBF for moving UGVs is stated as follows:
+%	\begin{thm}\label{thm:\proto-dbf-mov-tar}
+%		Considering a network of $N$ UGVs moving within a collection of finite positions under the interaction topology condition in \cref{prop1}, the estimated target position converges to the true position of target in probability using \proto-DBF, i.e.,
+%	%	the probability of estimated target position belonging to $ X^T_{eq}$ converges to one, i.e.,
+%	%	the set of estimated target position of each UGV converges to $X^T_{eq}$ in probability using \proto-DBF when the number of observations tends to infinity, i.e.,
+%		\small\begin{equation*}
+%			\lim\limits_{k\rightarrow \infty}P(x^T=x^{T^*}|\mathbf{z}^{new,i}_{1:k})=
+%			1,\;i=1,\dots,N.
+%		\end{equation*}\normalsize
+%	%	where $\mathbf{z}^i_{1:k}=\left[z^1_{1:k^i_1},\dots,z^N_{1:k^i_N}\right]$.
+%	%	, $\left\lbrace k_1,\dots,k_N\right\rbrace$ are the timestamps of $i\thi$ UGV's latest knowledge of all UGVs' observations.
+%	\end{thm}
+%	\medskip
+	%
+	%\begin{proof}
+	%%Let $M^i\subseteq\left\lbrace 1,\dots,k_j\right\rbrace\times X^R $ denote the set of pair $(k,x^R)$ to indicate $j\thi$ UGV's position at the corresponding time of observation.
+	%Similar to \Cref{thm:\proto-dbf-sta-tar}, the batch form of DBF at $k\thi$ step is
+	%\small\begin{equation}\label{eqn:cmp2}
+	%\frac{P^i_{pdf}(x^T|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{T^{*}}|\mathbf{z}^i_{1:k})}=\frac{P^i_{pdf}(x^T)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^T;x^R_l)}{P^i_{pdf}(x^{T^{*}})\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^{T^{*}};x^R_l)}
+	%\end{equation}\normalsize
+	%
+	%The only difference from \Cref{eqn:cmp} is that $P(z^j_l|x^T;x^R_l)$ in \Cref{eqn:cmp2} varies as the UGV moves.
+	%%, needs to be grouped according to the UGV position. 
+	%For each UGV, there exists at least one position where infinite observations are made as $k\rightarrow \infty$, according to \Cref{lem1}. 
+	%All positions can be classified into finite-observation spots and infinite-observation spots. 
+	%For the former, by referring to \Cref{eqn:lim} in proof of \Cref{thm:\proto-dbf-sta-tar}, it is easy to know that their contribution to \Cref{eqn:cmp2} is zero when $k\rightarrow \infty$.
+	%Therefore, \Cref{eqn:cmp2} can be reduced to only consider infinite-observation spots, which is similar to proof of \Cref{thm:\proto-dbf-sta-tar}.
+	%\end{proof}
+	%\medskip
+	
+	
+%	\begin{rem}
+%		%	When $X^T_{eq}$ only contains $x^{T^{*}}$, consistency means the estimated target position converges to true target position in probability. Additionally, 
+%		\Cref{thm:\proto-dbf-sta-tar} guarantees the consistency of distributed filtering using \proto-DBF.
+%		This result also leads to the consensus of individual PDFs since they all converge to the same distribution.
+%%		This paper can guarantee both consistency and consensus of individual PDF. 
+%%		The reason is that all individual PDFs converge to the same distribution, thus the consensus is also achieved.
+%		Different from this study, traditional statistics dissemination-based methods only ensure consensus of individual PDFs \cite{bandyopadhyay2014distributed,julian2012distributed}. 
+%		To the best knowledge of authors, there is no proof of consistency on estimated target position.
+%		%	that guarantees the agreed PDF is close to the true target PDF.
+%		%	 of individual PDFs.
+%		%	In fact, the statistics dissemination-based methods can ensure the convergence of the state estimate among UGVs. 
+%		%	However, there's no guarantee whether the agreed estimate is close to the actual target position.
+%	\end{rem}
+	
+%	\begin{rem}
+%%		It is interesting to notice that the interaction topology condition for consistency and consensus in this study is similar to the condition for information consensus in \cite{jadbabaie2003coordination}.
+%%		However, the problems studies in this work and in \cite{jadbabaie2003coordination} are different.
+%		Different from \cite{jadbabaie2003coordination} that focuses on the information consensus by directly manipulating the communicated individual information among neighboring agents via average-consensus method.
+%		This study does not modify the exchanged information themselves during the communication process.
+%		Instead, consistency and consensus is achieved as a result of the dissemination of individual observations within the network.		
+%	\end{rem}
+	
+	\subsection{Moving UGVs}
+%	This subsection considers the case of using moving UGVs to localize a target, either static or moving.
+	The consistency proof for the moving UGVs case is different from the static UGVs case in that each moving UGV makes measurements at multiple different positions.
+	We classify UGV measurement positions into two disjoint sets: \textit{infinite-measurement spots} that contain positions where a UGV keeps revisiting as time tends to infinity, and \textit{finite-measurement spots} that contain positions where the UGV visits finitely many times (i.e., the UGV does not visit again after a finite time period).
+	It is easy to know that each UGV has at least one position where it revisits infinitely many times as $k$ tends to infinity.
+	%, as $k\rightarrow\infty$.
+%	Before stating the main theorem, the following lemma is introduced.
+%	\begin{lem}\label{lem1}
+%		For a set of UGVs moving within a collection of finite positions, each UGV has at least one position where infinite measurements are made as $k$ tends to infinity.
+%	\end{lem}
+%		
+%	\begin{proof}
+%		Let $n^{i,k}_s$ denote the times that $i\thi$ UGV visits $s\thi$ position up to time $k$. Then, $\sum\limits_{s\in S} n^{i,k}_s=k$. It is straightforward to see that $\exists n^{i,k}_s,$ such that $n^{i,k}_s\rightarrow \infty,$ as $k\rightarrow \infty$.
+%	\end{proof}
+%	\medskip
+			
+	\begin{thm}\label{thm:\proto-dbf-mov-ugv}
+		Assume UGVs move within a collection of finite positions and sensors are unbiased, then the MAP estimator of target position converges in probability to the true position of the target using \proto-DBF, i.e.,
+		\small\begin{equation*}
+		\lim\limits_{k\rightarrow \infty}
+		P(\X^{MAP}_k=\xg_k)=1,\;i\in V.
+		%		P(x=\xg|\mathbf{z}^i_{1:k})=1,\;i=1,\dots,N.
+		\end{equation*}\normalsize
+	\end{thm}
+		
+	\begin{proof}		
+%		The batch form of DBF at $k\thi$ step is
+		Similar to \Cref{eqn:cmp}, comparing $P^i_{pdf}(x^g_k|\zb^i_k)$ and $P^i_{pdf}(x^g_k|\zb^i_k)$ yields		
+		\small\begin{equation}\label{eqn:cmp2}
+		\frac{P^i_{pdf}(x_k|\zb^i_k)}{P^i_{pdf}(x^g_k|\zb^i_k)}=\frac{P^i_{pdf}(x_0)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x;x^j_l)}{P^i_{pdf}(x^g_0)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|\xg;x^j_l)}.
+		\end{equation}\normalsize
+			
+		The only difference from \Cref{eqn:cmp} is that $P(z^j_l|x;x^j_l)$ in \Cref{eqn:cmp2} varies as the UGV moves.
+		%, needs to be grouped according to the UGV position. 
+%		For each UGV there exists at least one position where infinite measurements are made as $k\rightarrow \infty$, according to \Cref{lem1}. 
+		%All positions can be classified into finite-measurement spots and infinite-measurement spots. 
+		For the finite-measurement spots, by referring to \Cref{eqn:cmp_lim2}, it is easy to know that their contribution to \Cref{eqn:cmp_log} diminishes when $k\rightarrow \infty$.
+		Therefore, proof using \Cref{eqn:cmp2} can be reduced to only considering the infinite-measurement spots and the rest of the proof is similar to that of \Cref{thm:\proto-dbf-sta-ugv}.
+	\end{proof}
+			
+%	\begin{rem}
+%		The assumption of unbiased sensors are important for the consistency of the estimator. In fact, with unknown non-zero bias, the distribution of $z^j_l$ differs from $P(z^j_l|\xg)$, which invalidates the derivation in \Cref{eqn:cmp_lim2} and the consistency proof. 
+%		This assumption also makes intuitive sense.
+%		In the extreme case, if each sensor has a very large unknown measurement offset, then the estimated target position of each sensor (without communicating with other sensors) will be very different from each other's.
+%		Therefore, no common target position can be correctly obtained when they fuse measurements.
+%	\end{rem}	
