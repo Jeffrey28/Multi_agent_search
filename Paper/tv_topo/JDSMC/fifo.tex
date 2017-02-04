@@ -1,9 +1,4 @@
-\section{Full-In-and-Full-Out (\proto) Protocol}\label{sec:\proto}
-	%This study proposes a Latest-In-and-Full-Out (\proto) protocol for observation exchange and derives two corresponding distributed Bayesian filtering (DBF) algorithms, shorted as \proto-DBF. 
-	%The data communication in \proto uses synchronized step as the execution of DBF.
-	%In each step, \proto only allows single-hopping communication within the direct neighborhood, but is able to broadcast observations of each UGV to any other agents after a finite number of steps.
-	%The individual PDF is forward predicted and updated in DBF after each \proto cycle.
-	%The theoretical analysis show that \proto-DBF can ensure the consistency and consensus of distributed estimation while requiring much less communication burden than statistics dissemination-based methods. 
+\section{Full-In-and-Full-Out (\proto) Protocol}\label{sec:\proto}	
 	This study proposes a Full-In-and-Full-Out (\proto) protocol for measurement exchange in time-varying topologies.
 %	In our previous work, we proposed a Latest-In-and-Full-Out (LIFO) protocol and can be used for time-invariant topologies.
 %	{\proto} is suitable for time-varying topologies.
@@ -11,14 +6,16 @@
 	Let $Y^i_{\K}=\lb \left[x^i_k,z^i_k\right]|k\in \K\rb$ 
 	% $Y^i_{\K^{i,j}_k}=\lb \left[x^{i,j}_t,z^{i,j}_t\right]|t\in \K^{i,j}_k\rb$
 	be the set of state-measurement pairs of robot $i$, where $\K$ is an index set of time steps.
-	Each UGV contains a communication buffer (CB) that stores state-measurement pairs consisting of measurements and the corresponding states of all UGVs:
+	Each UGV contains a communication buffer (CB) that stores state-measurement pairs 
+%	consisting of measurements and the corresponding states 
+	of all UGVs:
 	\begin{equation*}		
 		\B^i_k=\left[ Y^1_{\K^{i,1}_k},\dots,Y^N_{\K^{i,N}_k}\right],
 %		\mathbf{z}^{CB,i}_k=\left[ z^1_{k^i_1},\dots,z^N_{k^i_N}\right]
 	\end{equation*}
 %	where $z^j_{k^i_j}$ represents the observation made by ${j\thi}$ UGV at time $k^i_j$. 
 	where $\B^i_k$ is the CB of $i\thi$ UGV at time $k$ and $\K^{i,j}_k (j\in V)$ is the time index set.
-	$Y^j_{\K^{i,j}_k}$ represents the set of $j\thi$ UGV's measurements of time steps in $\K^{i,j}_k$ that are stored in $i\thi$ UGV's CB.
+	$Y^j_{\K^{i,j}_k}$ represents the set of $j\thi$ UGV's measurements at time steps in $\K^{i,j}_k$ that are stored in $i\thi$ UGV's CB at time $k$.
 %	Note that under {\proto} and certain conditions (\Cref{prop1}) of interaction topologies, $\mathcal{Q}_i=\left\lbrace 1,\dots,N\right\rbrace \setminus \left\lbrace i\right\rbrace$, i.e. each robot can know the measurements from all other robots. 
 %	This will be proved in \Cref{cor1}.
 %%	$z^j_{k^i_j}$ is stored in the CB of ${i\thi}$ UGV, where $k^i_j$ is the latest observation time of ${j\thi}$ UGV that is available to ${i\thi}$ UGV by time $k$. Due to the communication delay, $k^i_j<k, \forall j\neq i$ and $k^i_i=k$ always holds.
@@ -29,7 +26,7 @@
 	For the purpose of clarity, we ignore the TL parts at this stage and will describe them in \Cref{subsec:tracklist}.
 %	this operation and do not trim CB at this stage.
 %	For the clarity of explanation of DBF in \cref{sec:\proto-dbf}, we define a \textit{new observation set} $\mathbf{z}^{new,i}_k$ for $i\thi$ UGV to denote the set of observations that the $i\thi$ UGV receives and stores in its CB at $k$.
-		
+	\todohere{use different background colors for CB and TL.}
 	
 	\begin{algorithm}
 		\caption{{\proto} Protocol}
@@ -37,17 +34,16 @@
 		\begin{algorithmic}
 			\State \textbf{(1)} Initialization.
 			
-			
 			CB: 
-			The CB of $i\thi$ UGV is initialized at $k=0$:
+			The CB of $i\thi$ UGV is initialized as an empty set at $k=0$:
 			\small\begin{equation*}
-				{B^i_0=\left[ Y^1_{\K^{i,1}_{0}},\dots,Y^N_{\K^{i,N}_{0}}\right], \text{ where } Y^j_{\K^{i,j}_0} = \lb \left[ \varnothing,\varnothing\right]\rb.}
+				{\B^i_0=\left[ Y^1_{\K^{i1}_{0}},\dots,Y^N_{\K^{iN}_{0}}\right], \text{ where } Y^j_{\K^{ij}_0} = \lb \left[ \varnothing,\varnothing\right]\rb.}
 			\end{equation*}\normalsize
 			
 			TL:
 			The TL of $i\thi$ UGV is initialized at $k=0$:
 			\small\begin{equation*}
-				P^i_0 = \mathbf{0},\;\text{i.e. } p^{j,l}_0=0, \forall j,l\in \lb 1\dots,N\rb.
+				P^i_0 = \mathbf{0},\;\text{i.e. } p^{jl}_0=0, \forall j,l\in \lb 1\dots,N\rb.
 			\end{equation*}\normalsize
 			
 			\State \textbf{(2)} At time $k\,(k\geq 1)$ for $i\thi$ UGV:	
@@ -55,46 +51,47 @@
 %			\State The interaction topology is represented by $G[k]\in\bar{G}$.
 			\State (2.1) Receiving Step.
 			
-			CB:	The $i\thi$ UGV receives all CBs of its {\dnbhd} $\mathcal{N}_i(G_{k-1})$.
-			The received CBs are totally $|\mathcal{N}_i(G_{k-1})|$ groups, each of which corresponds to the $(k-1)\thi$ step CB of a UGV in $\mathcal{N}_i(G_ {k-1})$. 
-			The received CB from $l\thi$ UGV is
+			CB:	The $i\thi$ UGV receives all CBs of its {\dnbhd} $\mathcal{N}_i(G_{k-1})$,
+%			The received CBs are totally $|\mathcal{N}_i(G_{k-1})|$ groups, 
+			each corresponding to the $(k-1)\thi$ step CB of a UGV in $\mathcal{N}_i(G_ {k-1})$. 
+			The received CB from the $l\thi$ UGV is
 			\small\begin{equation*}
-				\mathcal{B}^l_{k-1}=\left[Y^1_{\K^{l,1}_{k-1}},\dots,Y^N_{\K^{l,N}_{k-1}}\right],\; l\in\mathcal{N}_i(G_{k-1})
+				\mathcal{B}^l_{k-1}=\left[Y^1_{\K^{l1}_{k-1}},\dots,Y^N_{\K^{lN}_{k-1}}\right],\; l\in\mathcal{N}_i(G_{k-1})
 			\end{equation*}\normalsize
 			
 			TL: The $i\thi$ UGV receives all TLs of its direct neighborhood $\mathcal{N}_i(G_{k-1})$.
-			The received TL from $l\thi$  $\left(l\in \mathcal{N}_i(G[k-1])\right)$ UGV is $P^l_{t_l}$.
+			The received TL from the $l\thi$ UGV is $Q^l_{k-1}$.
 			\newline
 			
 			\State (2.2) Observation Step.
 			
 			CB: The $i\thi$ UGV updates $Y^i_{\K^{i,i}_{k}}$ by its own state-measurement pair at current step:
 			\small\begin{equation*}
-			Y^i_{\K^{i,i}_{k}} = Y^i_{\K^{i,i}_{k-1}} \cup \lb{\left[x^i_k,z^i_k\right]}\rb.
+			Y^i_{\K^{ii}_{k}} = Y^i_{\K^{ii}_{k-1}} \cup \lb{\left[x^i_k,z^i_k\right]}\rb.
 			\end{equation*}\normalsize
 						
 			\State (2.3) Updating Step.
 			
-			CB: The $i\thi$ UGV updates other elements of its own CB, i.e., $Y^j_{\K^{i,j}_{k}}\,(j\neq i)$, by merging with all received CBs:						
+			CB: The $i\thi$ UGV updates other elements of its own CB, $Y^j_{\K^{ij}_{k}}\,(j\neq i)$, by merging with all received CBs:						
 			\small\begin{equation*}
-				Y^j_{\K^{i,j}_{k}} = Y^j_{\K^{i,i}_{k-1}} \cup Y^j_{\K^{l,j}_{k-1}},
+				Y^j_{\K^{ij}_{k}} = Y^j_{\K^{ij}_{k-1}} \cup Y^j_{\K^{lj}_{k-1}},
 				\; \forall j\neq i,\;\forall l\in \mathcal{N}_i(G_{k-1}).
 			\end{equation*}\normalsize
 			
-			TL: The $i\thi$ UGV updates its own TL using all the received TLs:
-			\begin{itemize}
-				\item if $k^{i,j}>k^{i,l}$, keep current $\mathbf{p}^j_{k^{i,j}}$;
-				\item if $k^{i,j}=k^{i,l}$, $\mathbf{p}^j_{k^{i,j}}=\mathbf{p}^j_{k^{i,j}} \lor \mathbf{p}^j_{k^{l,j}}$; \hspace{2em} $\forall j\in \lb 1\dots,N\rb$
-				\item if $k^{i,j}<k^{i,l}$, $\mathbf{p}^j_{k^{i,j}}=\mathbf{p}^j_{k^{l,j}}$ and $k^{i,j}=k^{i,l}$.
+			TL: The $i\thi$ UGV updates its own TL, $Q^i_k$, using the received TLs: $\forall l\in \mathcal{N}_i(G_{k-1}),\,\forall j\in \lb 1\dots,N\rb$
+			\begin{itemize} 
+				\item if $k^{ij}>k^{lj}$, keep current $\mathbf{q}^{ij}_{k^{ij}}$;
+				\item if $k^{ij}=k^{lj}$, $\mathbf{q}^{ij}_{k^{ij}}=\mathbf{q}^{ij}_{k^{ij}} \lor \mathbf{q}^{lj}_{k^{lj}}$;  \todohere{fix this bug}
+				\item if $k^{ij}<k^{lj}$, $\mathbf{q}^{ij}_{k^{ij}}=\mathbf{q}^{lj}_{k^{lj}}$ and $k^{ij}=k^{lj}$.
 			\end{itemize}
 			
 			Trim the CB based on the updated track lists, see \Cref{alg:tracklist}. 
 			
 			\State (2.4) Sending Step:
 			
-			CB: The $i\thi$ UGV broadcasts its updated CB, \small$\B^i_k=\left[Y^1_{\K^{l,1}_{k}},\dots,Y^N_{\K^{l,N}_{k}}\right]$\normalsize, to all of its neighbors defined in $\mathcal{N}_i(G_k)$.
+			CB: The $i\thi$ UGV broadcasts its updated CB, \small$\B^i_k=\left[Y^1_{\K^{i1}_{k}},\dots,Y^N_{\K^{iN}_{k}}\right]$\normalsize, to all of its neighbors defined in $\mathcal{N}_i(G_k)$.
 			
-			TL: The $i\thi$ UGV broadcasts its updated track list to all of its neighbors defined in $\mathcal{N}_i(G_k)$.
+			TL: The $i\thi$ UGV broadcasts its updated track list to its neighbors $\mathcal{N}_i(G_k)$.
 			
 			\State \textbf{(3)} $k\leftarrow k+1$ until stop
 		\end{algorithmic}
@@ -108,7 +105,7 @@
 %		Since $D$ is generally much larger than $N$ in applications such as target localization, \proto requires much less communication resources.
 %	\end{rem}
 	
-	\medskip
+%	\medskip
 %	\todohere{change the figure to be a switching topology. change the contents here accordingly}
 	\todohere{modify the whole paragraph when new plot is made.}
 	\cref{fig:\proto} illustrates the {\proto} cycles of a network of 3 UGVs with switching line topologies.
@@ -118,7 +115,7 @@
 	(2) \todohere{may need to change} CBs of all UGVs are filled within $5$ steps;
 %	, which means under \proto each UGV has a maximum delay of 2 steps for receiving observations from other UGVs; 
 	(3) after being filled, each CB keeps updated every finite time steps, which means each UGV receives new observations of other UGVs with finite delay.
-	Extending these facts to a network of $N$ UGVs, we have the following proposition:
+	Extending these facts to a network of $N$ UGVs, we have the following theorem to describe the property of \proto:
 	%\medskip
 	
 %	\todohere{it seems to me that a tighter lower bound can be achieved by using FIFO, but not sure how to compute it.}
@@ -126,7 +123,7 @@
 		%For a fixed and undirected network of $N$ UGVs, \proto uses the shortest path(s) between $i\thi$ and $j\thi$ UGV to exchange observation, the length of which is the delay $\tau_{i,j}$ between these two UGVs.
 		Consider a network of $N$ UGVs with switching interaction topologies.
 %		\todohere{may rephrase the following sentence}
-		If the following two conditions are satisfied:
+		If the following two conditions hold:
 		\begin{enumerate}
 			\item there exists an infinite sequence of time intervals $\left[k_m,k_{m+1} \right),\,m=1,2,\dots$, starting at $k_1=0$ and are contiguous, nonempty and uniformly bounded;
 			\item the union of graphs across each such interval is jointly strongly connected,
@@ -162,13 +159,14 @@
 	\end{cor}
 	\begin{proof}
 		%In a network of $N$ UGVs, the maximal length of shortest paths is no greater than $N-1$. 
-		According to \Cref{prop1}, the transmission delay between an arbitrary pair of UGVs is no greater than \small$(N-1)T_u$\normalsize.
-		Therefore, each UGV is guaranteed to receive $B^j_t,\; \forall t\ge 0,\, j\in V$ when \small$k\geq t+(N-1)T_u$\normalsize.
+		According to \Cref{prop1},
+%		 the transmission delay between an arbitrary pair of UGVs is no greater than \small$(N-1)T_u$\normalsize.
+		each UGV is guaranteed to receive $B^j_t,\; \forall t\ge 0,\, j\in V$ when \small$k\geq t+(N-1)T_u$\normalsize.
 %		In addition, the state-measurement pairs in each gets updated every finite period of time that is no greater than \small$(N-1)T_u$\normalsize.
 	\end{proof}
 	
 	\begin{rem} 
-		The frequency that each UGV receive other UGVs' CBs depends on the property of the network.
+		The frequency that each UGV receives other UGVs' CBs depends on the property of the network.
 		\Cref{cor1} gives an upper bound on the transmission time for all {\fc} networks under {\proto}.
 	\end{rem}
 	

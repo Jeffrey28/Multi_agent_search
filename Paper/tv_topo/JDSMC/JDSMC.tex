@@ -94,7 +94,9 @@
 }
 
 \title{\LARGE \bf
-Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically Changing Networks}
+	Distributed Bayesian Filter using Measurement Dissemination for Multiple UGVs with Dynamically Changing Interaction Topologies}
+% Measurement Dissemination-based Distributed Bayesian Filter Under Dynamically Changing Interaction Topologies for Target Tracking
+%Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically Changing Networks
 	%Distributed Bayesian Filter Under Dynamically Changing Interaction Topologies}
 
 
@@ -132,13 +134,6 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 	}
 }
 
-%\author{Chang Liu$^{1}$, Shengbo Eben Li$^{2}$ and J. Karl Hedrick$^{3}$% <-this % stops a space
-%	\thanks{*The first two authors, C. Liu and S. Li, have equally contributed to this research.}% <-this % stops a space
-%	\thanks{$^{1}$C. Liu is with the Vehicle Dynamics \& Control Lab, Department of Mechanical Engineering, University of California, Berkeley, Berkeley, CA 94709, USA. Email: {\tt\small changliu@berkeley.edu}}%
-%	\thanks{$^{2}$S. Eben Li is with the Department of Automotive Engineering, Tsinghua University, Beijing, 100084, China. He has worked at the Department of Mechanical Engineering, University of California, Berkeley as a visiting scholar. Email: {\tt\small lisb04@gmail.com}}%
-%	\thanks{$^{3}$J. K. Hedrick is with the Vehicle Dynamics \& Control Lab, Department of Mechanical Engineering, University of California, Berkeley, Berkeley, CA 94709, USA. Email: {\tt\small khedrick@me.berkeley.edu}}%
-%}
-
 
 \begin{document}
 	
@@ -152,11 +147,26 @@ Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\begin{abstract}
-		This paper presents a distributed Bayesian filtering (DBF) method for a network of multiple unmanned ground vehicles (UGVs) under dynamically changing interaction topologies. The information exchange among UGVs relies on a measurement dissemination scheme, called Latest-In-and-Full-Out (\proto) protocol. Different from statistics dissemination approaches that transmit posterior distributions or likelihood functions, each UGV under \proto only sends a buffer that contains latest available measurements to neighboring nodes, which significantly reduces the transmission burden between each pair of UGVs to scale linearly with the size of the network.
-		Under the condition that the union of undirected switching topologies is connected frequently enough,
-		\proto can disseminate observations over the network within finite time. 
-		The \proto-based DBF algorithm is then derived to estimate individual probability density function (PDF) for target localization in a static environment. The consistency of this algorithm is proved that each individual estimate of target position converges in probability to the true target position.
-		The effectiveness of this method is demonstrated by comparing with consensus-based distributed filters and the centralized filter in simulations.
+		This paper presents a novel distributed Bayesian filtering algorithm using measurement dissemination for multiple unmanned ground vehicles (UGVs) with dynamically changing interaction topologies.
+		Different from statistics dissemination-based approaches that transmit posterior distributions or likelihood functions, this algorithm relies on the measurement dissemination scheme, which significantly reduces the transmission burden between each pair of UGVs. 
+%		, called Full-In-and-Full-Out (\proto) protocol. 		
+%		\todohere{explain how to disseminate}
+%		that transmit posterior distributions or likelihood functions, each UGV under {\proto} only sends a communication buffer and a track list to neighboring agents,	
+%		The information exchange among UGVs relies on a measurement dissemination scheme, called Full-In-and-Full-Out (\proto) protocol. 		
+		Each UGV only sends a communication buffer and a track list to neighboring agents.
+		A communication buffer contains its own measurements and the received ones from other UGVs.
+		And a track list is used to trim all measurements in the buffer to reduce communication overhead.
+		%		latest available measurements to neighboring nodes, 
+%		 to scale linearly with the size of the network.
+		Under the condition that the interaction topologies are \fc,
+%		 union of undirected switching topologies is connected frequently enough,
+		each UGV's measurements can be disseminated over the network within finite time.
+%		The \proto-based DBF algorithm is then developed to estimate individual probability density function (PDF) with the application for target tracking.
+%		in a static environment. 
+		The proposed DBF algorithm is proved to achieve consistent state estimation.
+%		, of this algorithm is proved that each individual estimate of target position converges in probability to the true target position.
+		The effectiveness of this algorithm is validated by comparing with consensus-based distributed filters and the centralized filter in multi-target tracking simulations.
+%		Simulation results on multiple target tracking demonstrate that the proposed DBF achieves comparable tracking performance as a centralized filter and has more superior uncertainty reduction performance than the commonly used consensus-based filter.
 	\end{abstract}
 	
 	\input{intro}

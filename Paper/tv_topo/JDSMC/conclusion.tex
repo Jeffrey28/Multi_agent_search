@@ -1,13 +1,12 @@
 \section{Conclusion}\label{sec:conclu}	
-	This paper presents a measurement dissemination-based distributed Bayesian filtering (DBF) method for a network of multiple unmanned ground vehicles (UGVs) under dynamically changing interaction topologies.
+	This paper presents a general measurement dissemination-based distributed Bayesian filter (DBF) method for a network of multiple unmanned ground vehicles (UGVs) under dynamically changing interaction topologies.
 	The information exchange among UGVs relies on the Full-In-and-Full-Out (\proto) protocol, under which UGVs exchange the communication buffers and track lists with neighbors.
-	The {\proto} can significantly reduce the transmission burden between each pair of UGVs compared to the statistics dissemination methods. % to scale linearly with the network size.
 	Under the condition that the union of the switching topologies is \fc, {\proto} can disseminate measurements over the network within finite time. 
 	By using the track list, the CBs can be trimmed without causing information loss.
-	The \proto-based DBF algorithm is then derived to estimate individual probability density function for target localization. 	
-	The consistency of this algorithm is proved by utilizing the law of large numbers, ensuring that each individual estimate of target position converges in probability to the true value.
+	The \proto-DBF algorithm is then derived to estimate individual probability density function for target localization. 	
+	The \proto-DBF can significantly reduce the transmission burden between each pair of UGVs compared to the statistics dissemination methods. % to scale linearly with the network size.
+%	The consistency of this algorithm is proved by utilizing the law of large numbers, ensuring that each individual estimate of target position converges in probability to the true value.
 	Simulations comparing \proto-DBF with consensus-based distributed filters (CbDF) and the centralized filter (CF) show that \proto-DBF achieves similar performance as the CF and superior performance over the CbDF while requiring less communication resource.
 	
-%	Future work includes handling other types of sensors and directed interaction topologies.
-%	Other types of sensors may have biased observations and subject to non-Bernoulli distribution, which complicates the design and analysis of \proto-based Bayesian filters.
-%	The directed interaction topologies, due to the constraint of unidirectional communication, may affect condition for the consistency of \proto-DBF. 
+	In our future work, we will modify the {\proto} to handle the changing number of UGVs. 
+	We will also look into the combination of transmission of measurements and parameterized statistics to save communication cost without sacrificing estimation accuracy.

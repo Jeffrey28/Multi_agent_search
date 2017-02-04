@@ -57,6 +57,10 @@ B.~J. Julian, M.~Angermann, M.~Schwager, and D.~Rus, ``Distributed robotic
   sensor networks: An information-theoretic approach,'' \emph{The International
   Journal of Robotics Research}, vol.~31, no.~10, pp. 1134--1154, 2012.
 
+\bibitem{chen2003bayesian}
+Z.~Chen, ``Bayesian filtering: From kalman filters to particle filters, and
+  beyond,'' \emph{Statistics}, vol. 182, no.~1, pp. 1--69, 2003.
+
 \bibitem{zuo2006bandwidth}
 L.~Zuo, K.~Mehrotra, P.~K. Varshney, and C.~K. Mohan, ``Bandwidth-efficient
   target tracking in distributed sensor networks using particle filters,'' in
@@ -126,10 +130,21 @@ F.~Xiao and L.~Wang, ``Asynchronous consensus in continuous-time multi-agent
   systems with switching topology and time-varying delays,'' \emph{Automatic
   Control, IEEE Transactions on}, vol.~53, no.~8, pp. 1804--1816, 2008.
 
+\bibitem{xia2009networked}
+Y.~Xia, J.~Shang, J.~Chen, and G.-P. Liu, ``Networked data fusion with packet
+  losses and variable delays,'' \emph{IEEE Transactions on Systems, Man, and
+  Cybernetics, Part B (Cybernetics)}, vol.~39, no.~5, pp. 1107--1120, 2009.
+
 \bibitem{leung2010decentralized}
 K.~Y. Leung, T.~D. Barfoot, and H.~H. Liu, ``Decentralized localization of
   sparsely-communicating robot networks: A centralized-equivalent approach,''
   \emph{IEEE Transactions on Robotics}, vol.~26, no.~1, pp. 62--77, 2010.
+
+\bibitem{liu2016distributed}
+C.~Liu, S.~E. Li, and J.~K. Hedrick, ``Distributed target localization using a
+  group of ugvs under dynamically changing interaction topologies,'' in
+  \emph{American Control Conference (ACC), 2016}.\hskip 1em plus 0.5em minus
+  0.4em\relax IEEE, 2016, pp. 2585--2590.
 
 \bibitem{thrun2005probabilistic}
 S.~Thrun, W.~Burgard, and D.~Fox, \emph{Probabilistic robotics}.\hskip 1em plus
@@ -149,13 +164,5 @@ A.~N. Bishop, B.~Fidan, B.~D. Anderson, K.~Do{\u{g}}an{\c{c}}ay, and P.~N.
 F.~Bourgault, T.~Furukawa, and H.~F. Durrant-Whyte, ``Optimal search for a lost
   target in a bayesian world,'' in \emph{Field and service robotics}.\hskip 1em
   plus 0.5em minus 0.4em\relax Springer, 2003, pp. 209--222.
-
-\bibitem{amemiya1985advanced}
-T.~Amemiya, \emph{Advanced econometrics}.\hskip 1em plus 0.5em minus
-  0.4em\relax Harvard university press, 1985.
-
-\bibitem{chen2003bayesian}
-Z.~Chen, ``Bayesian filtering: From kalman filters to particle filters, and
-  beyond,'' \emph{Statistics}, vol. 182, no.~1, pp. 1--69, 2003.
 
 \end{thebibliography}
