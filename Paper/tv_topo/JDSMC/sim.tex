@@ -28,22 +28,22 @@
 	The average of the estimation error and entropy across ten layouts are shown in \Cref{fig:metrics}.
 	For \proto-DBF, we only show the results of the $1^\text{st}$, $3^\text{rd}$, and $5\thi$ UGV for the clarity of the plots.
 	It can be noticed that, CF achieves the most accurate position estimation and fastest entropy reduction. 
-	This is expected result since the CF utilizes all sensor measurements.
+	This is an expected result since the CF utilizes all sensor measurements.
 	The \proto-DBF achieves similar results as the CF asymptotically. 
 	This is a very interesting results, since \proto-DBF only communicates with neighboring UGVs and have a subset of other UGVs' measurements.
 	The CbDF achieves similar position estimation performance and the CF and \proto-DBF. 
 	However, it fails to effectively reduce the estimation entropy.
-	A quantitative comparison is shown in \Cref{Table}.
-
-	\todohere{add a table for quantitative comparison.}
+	This is because that, the linear combination of PDFs used in the CbDF does not follow the nonlinear nature of Bayesian filtering, thus information is loss during the combination.
+	The \proto-DBF, on the other hand, rigorously follows the procedure of Bayesian filtering, and therefore achieves better performance.
 		
+		
+	\begin{figure}		
+			\includegraphics[width=0.5\textwidth]{figures/switch_topo}
+			\caption{The dynamically changing topologies used in the simulation: (a)-(d) four types of topologies; (e) the union of these topologies is jointly strongly connected; (f) a randomly generated sequence of topologies that satisfy the \fc ness condition.}\label{fig:com_topo}		
+	\end{figure}
+	
 	\begin{figure}%[thpb]
-		\centering
-		\begin{subfigure}[b]{0.3\textwidth}
-			\includegraphics[width=\textwidth]{figures/com_topo1}
-			\caption{Collection of changing topologies}\label{fig:com_topo1}
-		\end{subfigure}
-		~
+		\centering		
 		\begin{subfigure}[b]{0.23\textwidth}
 			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_rbt1_step5}
 			\caption{\proto-DBF Step 5}\label{fig:step5}

@@ -26,7 +26,6 @@
 	For the purpose of clarity, we ignore the TL parts at this stage and will describe them in \Cref{subsec:tracklist}.
 %	this operation and do not trim CB at this stage.
 %	For the clarity of explanation of DBF in \cref{sec:\proto-dbf}, we define a \textit{new observation set} $\mathbf{z}^{new,i}_k$ for $i\thi$ UGV to denote the set of observations that the $i\thi$ UGV receives and stores in its CB at $k$.
-	\todohere{use different background colors for CB and TL.}
 	
 	\begin{algorithm}
 		\caption{{\proto} Protocol}
@@ -34,13 +33,13 @@
 		\begin{algorithmic}
 			\State \textbf{(1)} Initialization.
 			
-			CB: 
+			\CB: 
 			The CB of $i\thi$ UGV is initialized as an empty set at $k=0$:
 			\small\begin{equation*}
 				{\B^i_0=\left[ Y^1_{\K^{i1}_{0}},\dots,Y^N_{\K^{iN}_{0}}\right], \text{ where } Y^j_{\K^{ij}_0} = \lb \left[ \varnothing,\varnothing\right]\rb.}
 			\end{equation*}\normalsize
 			
-			TL:
+			\TL:
 			The TL of $i\thi$ UGV is initialized at $k=0$:
 			\small\begin{equation*}
 				P^i_0 = \mathbf{0},\;\text{i.e. } p^{jl}_0=0, \forall j,l\in \lb 1\dots,N\rb.
@@ -51,7 +50,7 @@
 %			\State The interaction topology is represented by $G[k]\in\bar{G}$.
 			\State (2.1) Receiving Step.
 			
-			CB:	The $i\thi$ UGV receives all CBs of its {\dnbhd} $\mathcal{N}_i(G_{k-1})$,
+			\CB:	The $i\thi$ UGV receives all CBs of its {\dnbhd} $\mathcal{N}_i(G_{k-1})$,
 %			The received CBs are totally $|\mathcal{N}_i(G_{k-1})|$ groups, 
 			each corresponding to the $(k-1)\thi$ step CB of a UGV in $\mathcal{N}_i(G_ {k-1})$. 
 			The received CB from the $l\thi$ UGV is
@@ -59,26 +58,26 @@
 				\mathcal{B}^l_{k-1}=\left[Y^1_{\K^{l1}_{k-1}},\dots,Y^N_{\K^{lN}_{k-1}}\right],\; l\in\mathcal{N}_i(G_{k-1})
 			\end{equation*}\normalsize
 			
-			TL: The $i\thi$ UGV receives all TLs of its direct neighborhood $\mathcal{N}_i(G_{k-1})$.
+			\TL: The $i\thi$ UGV receives all TLs of its direct neighborhood $\mathcal{N}_i(G_{k-1})$.
 			The received TL from the $l\thi$ UGV is $Q^l_{k-1}$.
 			\newline
 			
 			\State (2.2) Observation Step.
 			
-			CB: The $i\thi$ UGV updates $Y^i_{\K^{i,i}_{k}}$ by its own state-measurement pair at current step:
+			\CB: The $i\thi$ UGV updates $Y^i_{\K^{i,i}_{k}}$ by its own state-measurement pair at current step:
 			\small\begin{equation*}
 			Y^i_{\K^{ii}_{k}} = Y^i_{\K^{ii}_{k-1}} \cup \lb{\left[x^i_k,z^i_k\right]}\rb.
 			\end{equation*}\normalsize
 						
 			\State (2.3) Updating Step.
 			
-			CB: The $i\thi$ UGV updates other elements of its own CB, $Y^j_{\K^{ij}_{k}}\,(j\neq i)$, by merging with all received CBs:						
+			\CB: The $i\thi$ UGV updates other elements of its own CB, $Y^j_{\K^{ij}_{k}}\,(j\neq i)$, by merging with all received CBs:						
 			\small\begin{equation*}
 				Y^j_{\K^{ij}_{k}} = Y^j_{\K^{ij}_{k-1}} \cup Y^j_{\K^{lj}_{k-1}},
 				\; \forall j\neq i,\;\forall l\in \mathcal{N}_i(G_{k-1}).
 			\end{equation*}\normalsize
 			
-			TL: The $i\thi$ UGV updates its own TL, $Q^i_k$, using the received TLs: $\forall l\in \mathcal{N}_i(G_{k-1}),\,\forall j\in \lb 1\dots,N\rb$
+			\TL: The $i\thi$ UGV updates its own TL, $Q^i_k$, using the received TLs: $\forall l\in \mathcal{N}_i(G_{k-1}),\,\forall j\in \lb 1\dots,N\rb$
 			\begin{itemize} 
 				\item if $k^{ij}>k^{lj}$, keep current $\mathbf{q}^{ij}_{k^{ij}}$;
 				\item if $k^{ij}=k^{lj}$, $\mathbf{q}^{ij}_{k^{ij}}=\mathbf{q}^{ij}_{k^{ij}} \lor \mathbf{q}^{lj}_{k^{lj}}$;  \todohere{fix this bug}
@@ -89,9 +88,9 @@
 			
 			\State (2.4) Sending Step:
 			
-			CB: The $i\thi$ UGV broadcasts its updated CB, \small$\B^i_k=\left[Y^1_{\K^{i1}_{k}},\dots,Y^N_{\K^{iN}_{k}}\right]$\normalsize, to all of its neighbors defined in $\mathcal{N}_i(G_k)$.
+			\CB: The $i\thi$ UGV broadcasts its updated CB, \small$\B^i_k=\left[Y^1_{\K^{i1}_{k}},\dots,Y^N_{\K^{iN}_{k}}\right]$\normalsize, to all of its neighbors defined in $\mathcal{N}_i(G_k)$.
 			
-			TL: The $i\thi$ UGV broadcasts its updated track list to its neighbors $\mathcal{N}_i(G_k)$.
+			\TL: The $i\thi$ UGV broadcasts its updated track list to its neighbors $\mathcal{N}_i(G_k)$.
 			
 			\State \textbf{(3)} $k\leftarrow k+1$ until stop
 		\end{algorithmic}
@@ -190,8 +189,8 @@
 	
 	\begin{figure}%[thpb]
 		\centering
-		\includegraphics[width=0.43\textwidth]{figures/data_exchange_switch}
-		\caption{Example of \proto with three UGVs using switching line interaction topologies. The double-headed arrow represents a communication link between two UGVs.}
+		\includegraphics[width=0.5\textwidth]{figures/fifo}
+		\caption{Example of {\proto} with three UGVs using switching line interaction topologies. The double-headed arrow represents a communication link between two UGVs.}
 		\label{fig:\proto}
 		%		\vspace{-1em}]
 	\end{figure}		

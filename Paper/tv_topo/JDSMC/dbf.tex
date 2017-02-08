@@ -27,8 +27,8 @@
 %				K_{\xi}=\left[\int_S P_{tmp}^{pre}(\X_{\xi})\prod\limits_{j\in\Omega^i_{\xi}}P(z^j_{\xi}|\X_{\xi})d\X_{\xi}\right]^{-1}.
 %				\end{gather*} \normalsize
 				\small\begin{gather*}
-				P^i_{tmp}(\X_{\xi})=K_{\xi} P_{tmp}^{pre}(\X_{\xi})P(\zb^i_{\xi}|\X_{\xi}),\\
-				K_{\xi}=\left[\int_S P_{tmp}^{pre}(\X_{\xi})P(\zb^i_{\xi}|\X_{\xi})d\X_{\xi}\right]^{-1}.
+				P^i_{tmp}(\X_{\xi})=K_{\xi} P_{tmp}^{pre}(\X_{\xi})P(\Z^i_{\xi}|\X_{\xi}),\\
+				K_{\xi}=\left[\int_S P_{tmp}^{pre}(\X_{\xi})P(\Z^i_{\xi}|\X_{\xi})d\X_{\xi}\right]^{-1}.
 				\end{gather*} \normalsize
 				
 				\State(2.3) When $\xi=t+1$, if $z^j_{t+1}\neq\emptyset$ for $\forall j\in V$, update the stored PDF:
@@ -51,10 +51,12 @@
 	%, which is also stated in \cite{bandyopadhyay2014distributed} and \cite{julian2012distributed}. 
 	%Each UGV has its individual estimation of the probability density function (PDF) of target position, called \textit{individual PDF}. 
 	Let $\X_k\in S$ be the random variable representing the position of the target at time $k$.
-	Define $\zb^i_k$ as the set of all measurements of time $k$ in the $i\thi$ UGV's CB, i.e., \small$\zb^i_k=\lb z^j_k| \left[x^j_k,z^j_k\right]\in \B^i_k,\; \forall j\in V\rb$\normalsize and let $\zb^i_{1:k} = \bigcup\limits_{t=1}^k \zb^i_t$.
+	Define $\Z^i_k$ as the set of the measurements of time $k$ from all UGVs that are in the $i\thi$ UGV's CB, i.e., \small$\Z^i_k=\lb z^j_k| \left[x^j_k,z^j_k\right]\in \B^i_k,\; \forall j\in V\rb$\normalsize and let $\Z^i_{1:k} = \bigcup\limits_{t=1}^k \Z^i_t$. 
+	To avoid confusion, we define $\zb^i_{1:k}=\left[z^i_1,\dots,z^i_k\right]$ as the set of the $i\thi$ UGV's measurements of times $1$ through $k$.
+%	\todohere{probably use $z^V_{1:k}$ here? And then use $z^i_{1:k}$ as the set for only UGV $i$.}
 	The probability density function (PDF) of $\X_k$, called \textit{individual PDF}, of the $i\thi$ UGV is represented by
 	%=\left\lbrace z^i_1,\dots,z^i_k\right\rbrace
-	$P^i_{pdf}(\X_{k}|\mathbf{z}^i_{1:k})$ and is the estimation of the target position given all the measurements that the $i\thi$ UGV has received.	
+	$P^i_{pdf}(\X_{k}|\Z^i_{1:k})$ and is the estimation of the target position given all the measurements that the $i\thi$ UGV has received.	
 %	where $\mathbf{z}^i_{1:k}$ denotes the set of measurements by $i\thi$ UGV and by UGVs in $\mathcal{Q}_i$, that have been received by $i\thi$ UGV until time $k$.
 	%by UGVs in $\mathcal{Q}_i$ that have been transmitted to $i\thi$ UGV by time $k$.
 	%from time $1$ through $k$ and $z^{\mathcal{Q}_i}_{1:k}$ means the set of measurements by UGVs in $\mathcal{Q}_i$ that are transmitted to $i\thi$ UGV.
@@ -71,15 +73,15 @@
 	%The $i\thi$ individual PDF at time $k-1$ is known, denoted as $P^i_{pdf}(x_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})$. 
 	%At time $k$, the prior individual PDF $P^i_{pdf}(x_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})$ is first predicted forward by using the Chapman-Kolmogorov equation:
 	\textbf{Prediction.}
-	At time $k$, the prior individual PDF $P^i_{pdf}(\X_{k-1}|\mathbf{z}^i_{1:k-1})$ is first predicted forward by using the Chapman-Kolmogorov equation:
+	At time $k$, the prior individual PDF $P^i_{pdf}(\X_{k-1}|\Z^i_{1:k-1})$ is first predicted forward by using the Chapman-Kolmogorov equation:
 	%\small\begin{align}\label{eqn:bayes_pred}
 	%&P^i_{pdf}(x_k|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})\notag\\
 	%&=\int P(x_k|x_{k-1})P^i_{pdf}(x_{k-1}|z^i_{1:k-1},z^{\mathcal{Q}_i}_{1:k-1})dx_{k-1}
 	%\end{align}\normalsize
 	\small
 	\begin{equation}\label{eqn:bayes_pred}
-	P^i_{pdf}(\X_k|\mathbf{z}^i_{1:k-1})
-	=\int\limits_{\X_{k-1}\in S} P(\X_k|\X_{k-1})P^i_{pdf}(\X_{k-1}|\mathbf{z}^i_{1:k-1})d\X_{k-1},
+	P^i_{pdf}(\X_k|\Z^i_{1:k-1})
+	=\int\limits_{\X_{k-1}\in S} P(\X_k|\X_{k-1})P^i_{pdf}(\X_{k-1}|\Z^i_{1:k-1})d\X_{k-1},
 	\end{equation}\normalsize
 	where $P(\X_k|\X_{k-1})$ represents the state transition probability of the target, based on the Markovian motion model (\Cref{eqn:tar_motion_model}). % from the prior position $\X_{k-1}$ to the posterior position $\X_k$, 
 	% independent of UGV states. 
@@ -96,12 +98,12 @@
 	
 %	\subsubsection{Updating}
 	\textbf{Updating.}
-	The $i\thi$ individual PDF is then updated by the Bayes' rule using the set of newly received measurements at time $k$, i.e., $\mathbf{z}^i_k$:
+	The $i\thi$ individual PDF is then updated by the Bayes' rule using the set of newly received measurements at time $k$, i.e., $\Z^i_k$:
 		\small\begin{align}\label{eqn:bayes_upd}
 			\begin{split}
-				P^i_{pdf}(\X_k|\mathbf{z}^i_{1:k})
-				&= K_iP^i_{pdf}(\X_k|\mathbf{z}^i_{1:k-1})P(\mathbf{z}^i_k|\X_k)\\
-				&=K_iP^i_{pdf}(\X_k|\mathbf{z}^i_{1:k-1})\prod\limits_{j\in\Omega^i_k}P(z^j_k|\X_{k})
+				P^i_{pdf}(\X_k|\Z^i_{1:k})
+				&= K_iP^i_{pdf}(\X_k|\Z^i_{1:k-1})P(\Z^i_k|\X_k)\\
+				&=K_iP^i_{pdf}(\X_k|\Z^i_{1:k-1})\prod\limits_{j\in\Omega^i_k}P(z^j_k|\X_{k})
 			\end{split}
 		\end{align}\normalsize
 %	\end{subequations*}
@@ -113,10 +115,10 @@
 	%K_i=1/\int P^i_{pdf}(x_k|\mathbf{z}^i_{1:k-1})P(z^i_k|x_k)\prod\limits_{j\in\mathcal{Q}_i}P(z^j_k|x_k)dx_k
 	%\end{align*}\normalsize
 	\small\begin{align*}
-	K_i=\left[\int\limits_{\X_k\in S} P^i_{pdf}(\X_k|\mathbf{z}^i_{1:k-1})P(\mathbf{z}^i_k|\X_k)d\X_k\right]^{-1}.
+	K_i=\left[\int\limits_{\X_k\in S} P^i_{pdf}(\X_k|\mathbf{z}^i_{1:k-1})P(\Z^i_k|\X_k)d\X_k\right]^{-1}.
 	\end{align*}\normalsize
 	The $\Omega^i_k$ denotes the index set of UGVs whose state-measurement pair of time $k$ is stored in the $i\thi$ UGV's CB, i.e. $\Omega^i_k=\lb j\in V | \left[x^j_k,z^j_k\right]\in \B^i_k,\, \forall j\in V\rb$.
-	The factorization of $P(\zb^i_k|\X_k)$ comes from the conditional independence of measurements between each UGV given the target position and the corresponding UGV's position.	
+	The factorization of $P(\Z^i_k|\X_k)$ comes from the conditional independence of measurements between each UGV given the target position and the corresponding UGV's position.	
 	
 	\subsection{FIFO-DBF}
 	The generic DBF is not directly applicable to time-varying interaction topologies. 
@@ -133,7 +135,7 @@
 	The choice of $t$ is described in \Cref{subsec:tracklist}.
 	%	 that are in the $i\thi$ UGV's CB.	
 	%	Therefore, the choice of $t$ needs to ensure that the $i\thi$ UGV has received the state-measurement pairs of times no greater than $t$ from all UGVs, which is described in \Cref{sec:tracklist} by using the track lists.
-	The individual PDF, $P^i_{pdf}(\X_k|\zb^i_{1:k})$, is then computed by fusing the measurements from time $t+1$ to $k$ in the CB into $P^i_{sto}(\X_t)$, running the Bayesian filter (\Cref{eqn:bayes_pred,eqn:bayes_upd}).
+	The individual PDF, $P^i_{pdf}(\X_k|\Z^i_{1:k})$, is then computed by fusing the measurements from time $t+1$ to $k$ in the CB into $P^i_{sto}(\X_t)$, running the Bayesian filter (\Cref{eqn:bayes_pred,eqn:bayes_upd}).
 	Note that initially, $P^{i}_{sto}(\X_0)$ = $P^i_{pdf}(\X_0)$.
 	
 	The \textbf{\proto-DBF algorithm} is stated in \cref{alg:lifo-dbf}.
@@ -148,11 +150,12 @@
 	Since the stored PDF has incorporated all UGVs' measurements up to some time step $t$, the information loss problem no longer exists. % when computing the individual PDF.
 	%	each UGV only needs to start from the stored PDF each time it computes the individual PDF.
 	We point out that the time $t$ of each UGV's stored PDF can be different from others.
-	The stored PDF is saved locally by each UGV and not transmitted to others\footnote{\todohere{change notations here} Due to the space limit, in this figure we use $P^i_{pdf}(k)$, $P^i_{pdf}(k-N)$ and $P^i_{pdf}(k-N+1)$ to represent $P^i_{pdf}(\X|\mathbf{z}^{i}_{1:k})$ $P^i_{pdf}(\X|\mathbf{z}^{i}_{1:k-N})$ and $P^i_{pdf}(\X|\mathbf{z}^{i}_{1:k-N+1})$, respectively.}.
+	The stored PDF is saved locally by each UGV and not transmitted to others.
+%	\footnote{\todohere{change notations here} Due to the space limit, in this figure we use $P^i_{pdf}(k)$, $P^i_{pdf}(k-N)$ and $P^i_{pdf}(k-N+1)$ to represent $P^i_{pdf}(\X|\mathbf{z}^{i}_{1:k})$ $P^i_{pdf}(\X|\mathbf{z}^{i}_{1:k-N})$ and $P^i_{pdf}(\X|\mathbf{z}^{i}_{1:k-N+1})$, respectively.}.
 	
 	\begin{figure}%[thpb]
 		\centering
-		\includegraphics[width=0.51\textwidth]{figures/DBF_demo}
+		\includegraphics[width=0.50\textwidth]{figures/fifo-dbf}
 		\caption{Example of \proto-DBF for $1^\text{st}$ UGV at time $k$.
 			Networked UGVs take a line topology.
 			The stored individual PDF is represented by $ P^1_{pdf}(k-N)$.
@@ -170,6 +173,23 @@
 	%\end{rem}
 	
 	\subsection{Track Lists for Trimming Communication Buffers}\label{subsec:tracklist}
+	\begin{algorithm}
+		\caption{Trimming CBs using TLs}
+		\label{alg:tracklist}
+		\begin{algorithmic}
+			\State 
+			For the $i\thi$ UGV:			
+			find the smallest time in the track list: $k^i_m=\min\lb k^{1},\dots,k^{N} \rb$. 			
+			If all entries associated with time $k^i_m$ in $\Q^i_k$ are $1$'s, then 
+			\begin{enumerate}
+				\item set all these items in the track list to be $0$, let $k_m \leftarrow k_m+1.$
+				\item update the track list with the measurements in the current CB, i.e., $q^{jl}_{k^{ij}}=1$ if and only if $\left[x^l_{k^{ij}},z^l_{k^{ij}}\right]\in \B^i_k$.
+				\item remove all corresponding measurements in the $i\thi$ UGV's CB.
+			\end{enumerate}				
+		\end{algorithmic}
+	\end{algorithm}
+	
+	
 	The size of CBs can keep increasing as measurements cumulate over time. 
 	The use of the stored PDF has made it feasible to trim excessive measurements from the CBs.
 	%	while ensuring no information is lost in the sense that all UGVs' measurements have been used for update hte individual PDF.
@@ -270,15 +290,25 @@
 		Therefore, the first time a TL is all $1$'s the trim occurs.
 	\end{proof}	
 	
-	%	Under the \fc ness condition, it can be derived that the CB of each UGV is upper bounded.
-	%	\begin{thm}
-	%		The length of the $i\thi$ UGV's CB is no greater than $2(N-1)T_u$.
-	%	\end{thm}
-	%	
-	%	\begin{proof}
-	%		Consider the time intervals $\left[k_m,k_{m+1} \right),\,m=1,2,\dots$ that are {\fc}. 
-	%		By $k_3$, each UGV has received all other UGVs' measurements of $\left[k_1,k_2 \right)$, and by $k_4$, the times of each UGV's track list has been updated to no less that $k_2$.
-	%	\end{proof}
+	Under the \fc ness condition, it can be derived that the size of each UGV's CB is upper bounded.
+	\begin{thm}\label{thm:max_CB_size}
+		The length of the $i\thi$ UGV's CB is no greater than $NT_u$.
+	\end{thm}
+	
+	\begin{proof}
+		Consider the time intervals $\left[k_m,k_{m+1} \right),\,m=1,2,\dots$ that are {\fc}, where $k_1=0$.
+		Define $\Delta_m = k_{m+1}-k_m,\,m=1,2,\dots$.
+		It is easy to know that $\Delta_i\le T_u$.
+		At $k_2$, the worst-case size of a UGV's CB is $(N-1)\Delta_1$.	
+		This can occur if UGVs do not communicate with each other until at $k_2$, when a UGV communicates with all others except one.
+		At $k_3$, according to the definition of a \fc network, every UGV has received measurements made at or before time $k_2$ from all UGVs.
+		The worst-case size of a UGV's CB is then $max \left[(N-1)(\Delta_2-\Delta_1),N(\Delta_1-\Delta_2)\right]$.  %$\Delta_2 = max(k_3-k_2-\Delta_1,0)$.
+		The first term is the worst-case size if $\Delta_2\ge\Delta_1$ and can be achieved similarly to the case of the time interval $\left[k_1,k_2\right)$. 
+		The second term corresponds to the worst-case size when $\Delta_1>\Delta_2$ and can be achieved if a UGV can receive measurements from all other UGVs in the whole time interval $\left[k_2,k_3\right)$. 
+		In general, at $k_{m+1}$, each UGV has already received all UGVs' measurements made at or before time $k_m$. 
+		The worst-case size of a UGV's CB within the time interval $\left[k_m,k_{m+1}\right)$ is $max\left[(N-1)(\Delta_m-\Delta_{m-1}),N(\Delta_{m-1}-\Delta_m)\right]$.
+		Since $\Delta_m\le T_u,\, m=1,2,\dots$, we know that the maximum CB size of each UGV is no greater than $NT_u$.
+	\end{proof}
 	
 	%	\begin{cor}
 	%		The time between two consecutive trims of the $i\thi$ UGV's CB is 
@@ -297,47 +327,19 @@
 	%		If $n'_i \ge n_i$, then it takes longer time for the later measurements to be trimmed and thus $\Delta k = 1+n_i'-n_i$.
 	%	\end{proof}
 	
-	\begin{algorithm}
-		\caption{Trimming CBs using TLs}
-		\label{alg:tracklist}
-		\begin{algorithmic}
-			\State 
-			For the $i\thi$ UGV:			
-			find the smallest time in the track list: $k^i_m=\min\lb k^{1},\dots,k^{N} \rb$. 			
-			If all entries associated with time $k^i_m$ in $\Q^i_k$ are $1$'s, then 
-			\begin{enumerate}
-				\item set all these items in the track list to be $0$, let $k_m \leftarrow k_m+1.$
-				\item update the track list with the measurements in the current CB, i.e., $q^{jl}_{k^{ij}}=1$ if and only if $\left[x^l_{k^{ij}},z^l_{k^{ij}}\right]\in \B^i_k$.
-				\item remove all corresponding measurements in the $i\thi$ UGV's CB.
-			\end{enumerate}				
-		\end{algorithmic}
-	\end{algorithm}
-	
-	%	Using the track list to trim CBs, we can guarantee no information loss under than network condition in \Cref{prop1}, which is stated in the following theorem:
-	
-	%	\begin{thm}\label{thm:fifo_dbf-property}
-	%		Consider a frequently connected network of $N$ UGVs, arbitrary pairs of UGVs can exchange observations under \proto. 
-	%		By using track lists to trim CBs, no loss of information happens.
-	%		The maximum size of CBs transmitted by UGVs is $O(NT_m)$, where $T_m=\max\limits_{l,j,i}\lb d_{lj}+d_{ji}\rb$. 
-	%		Besides, $T_m\le NT_u$, where $\small T_u=\sup\limits_{m=1,2,\dots}\left( k_{m+1}-k_m\right) T. \normalsize$
-	%	\end{thm}
-	
-	%	\begin{proof}
-	%		The proof is straightforward by considering \Cref{prop1}, \Cref{thm:upd_tl_freq,thm:trim_no_loss}.
-	%	\end{proof}
+
 	
 	\subsection{Complexity of FIFO-DBF}
-	\todohere{this part requires the analysis of the length of CB. needs to work on this.}
-	Compared to statistics dissemination, {\proto} is generally more communication-efficient for distributed filtering. 
-	To be specific, consider a grid representation of the environment of the size $D\times D$. %with a network of $N$ UGVs, 
+	Compared to statistics dissemination, {\proto} is usually more communication-efficient for distributed filtering. 
+	To be specific, consider a grid representation of the environment with the size $D\times D$. %with a network of $N$ UGVs, 
 	The transmitted data between each pair of UGVs are the CB and TL of each UGV.
 	%	 and the corresponding UGV positions where observations were made, the length of which is $O(N)$. 
-	The size of the CB is $O(NL)$ and the size of the TL is $O(N^2)$.
-	According to \Cref{thm:upd_tl_freq}, the worst-case size of the CB is $O(N^2T_u)$.
-	Therefore, the overall communication complexity is $O(N^2T_u)$.	
+	The size of the CB is upper bounded by $O(NT_u)$, according to \Cref{thm:max_CB_size}, and the size of the TL is $O(N^2)$.
+	Therefore, the overall communication complexity is $O(N^2+NT_u)$.	
 	On the contrary, the communicated data of a statistics dissemination approach that transmits unparameterized posterior distributions or likelihood functions is $O(D^2)$.
 	%	, which is in the order of environmental size. 
-	Since $D$ is generally much larger than $N$ in applications such as target localization and it usually requires multiple rounds to arrive at consensus, the {\proto} protocol requires much less communication burden.
+	In applications such as the target localization, $D$ is generally much larger than $N$ and the consensus filters usually requires multiple rounds to arrive at consensual results.
+	Therefore, when $T_u$ is not comparable to $D^2$, the {\proto} protocol requires much less communication burden.
 	
 	%	It is worth noting that, for the static target, each UGV only needs current-step CB to update individual PDFs. 
 	%	Therefore, besides storing its own individual PDF of size $O(M^2)$, only current-step CB of size $O(N)$ is stored in an UGV's memory and all previous CBs can be discarded, which means that the size of needed memory is $O(N+M^2)$. 

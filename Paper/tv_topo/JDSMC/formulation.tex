@@ -11,21 +11,23 @@
 	\subsection{Target and Sensor Model}
 	%Probabilistic Model of Binary Sensor}
 	%In this paper, distributed Bayesian filter is used to estimate the true target position by a network of binary sensors.
-	The target motion takes a deterministic discrete-time model: % that can be described by
+	The target motion uses a stochastic discrete-time model: % that can be described by
 	
 	\begin{equation}
 		\small
 		\label{eqn:tar_motion_model}
-		\xg_{k+1}=f(\xg_k), %,u^g_k
+		\xg_{k+1}=f(\xg_k,v_k), %,u^g_k
 		%x_{k+1}=A_kx_k+B_ku^g_k+\epsilon,
 	\end{equation}\normalsize
-	where the superscript $g$ represents the target and $\xg_k\in S$ is the target position at time $k$. % and $u^g_k$ is the target control input.
+	where the superscript $g$ represents the target and $\xg_k\in S$ is the target position at time $k$;
+	$v_k$ is the white process noise.
+	% and $u^g_k$ is the target control input.
 	%$A_k\in\mathbb{R}^{2\times 2},\;B_k\in\mathbb{R}^{2\times 2}$ and $\epsilon$ denotes the process noise.
 	
 	%Each UGV constantly measures the target position and the 
 	The sensor measurement is described by a stochastic model:
 	\begin{equation}\label{eqn:meas_model}
-		z^i_k = h_i(\xg_k,x^i_k)+w^i_k,
+		z^i_k = h_i(\xg_k,x^i_k,w^i_k),
 	\end{equation}
 	where the superscript $i\in\left\lbrace 1,\dots,N\right\rbrace$ represents the index of the UGV; $x^i_k\in S$ is the sensor position and $w^i_k$ is the white measurement noise.
 	% $x^i_k=[x^i_k;\theta^i_k]$ represents the sensor state, consisting of the sensor position $x^i_k$ and direction $\theta^i_k$.
@@ -36,7 +38,7 @@
 %	We define $P(z^i_k|x^g_k;x^i_k)$ as this conditional probability.
 %	 of $z^i_k$ given the sensor state $x^i_k$ and the target state $\xg_k$. 
 	It also depends on the distribution of the measurement noise.
-	For example, if $w^i_k$ is a zero-mean Gaussian white noise with covariance $\Gamma_k^i$, then, according to \Cref{eqn:meas_model}, $P(z^i_k|x^g_k;x^i_k)$ can be described as
+	For example, if $w^i_k$ is an additive, zero-mean Gaussian white noise with covariance $\Gamma_k^i$, then, according to \Cref{eqn:meas_model}, $P(z^i_k|x^g_k;x^i_k)$ can be described as
 	\small\begin{equation*}%\label{eqn:prob_sensor3}
 		P(z^i_k|x^g_k;x^i_k)=\mathcal{N}(h_i(\xg_k,x^i_k),\Gamma_k^i).
 	\end{equation*}\normalsize

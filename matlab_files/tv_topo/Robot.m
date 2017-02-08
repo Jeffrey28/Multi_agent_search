@@ -429,11 +429,7 @@ classdef Robot
                        elseif this.track_list(ll,end) == tmp_rbt.track_list(ll,end)
                            this.track_list(ll,1:end-1) = this.track_list(ll,1:end-1)|tmp_rbt.track_list(ll,1:end-1);                           
                        end
-                    end
-                    
-                    % exchange measurement list                    
-%                     this.meas_list(this.idx).meas_hist = ;
-                    
+                    end                    
                 end
             end
             

@@ -2,11 +2,11 @@
 % filtering
 
 %% linear target
-%{
+%
 mode_num = 4;
 
 u_set = [[1;1],[-1;-1],[1;-1],[-1;1]]; %inPara.u_set; 
-V_set = 0.25*eye(2); % 
+V_set = 0.1*eye(2); % 
 
 fld_size = [100;100];
 
@@ -27,25 +27,27 @@ for mode_cnt = 1:mode_num
             % transition matrix            
             % tmp_trans(x,y) shows the transition probability P(x^i_k+1|[x;y]),            
             % considering the dynamic model of vehicle            
-            % tmp_trans = zeros(fld_size(1),fld_size(2));            
-            tmp_trans = mvncdf([ptx(:),pty(:)],mu',V_set);
-            tmp_trans_mat = (reshape(tmp_trans,fld_size(2)+1,fld_size(1)+1))';
+            % tmp_trans = zeros(fld_size(1),fld_size(2)); 
+            % read trans_mat in column, so trans_mat(:,1) is the transition
+            % matrix from (1,1) point to all other points.
+            tmp_trans = mvncdf([ptx(:),pty(:)],mu',V_set); % transition along the y direction, i.e., (1,1),(1,2),...,(2,1),...
+            tmp_trans_mat = (reshape(tmp_trans,fld_size(2)+1,fld_size(1)+1))'; % after the reshape, the matrix shows the transition to [(1,1) (1,2) ... (1,N); (2,1), ...]
             tmp_trans_mat2 = tmp_trans_mat(2:end,2:end)-tmp_trans_mat(1:end-1,2:end)-tmp_trans_mat(2:end,1:end-1)+tmp_trans_mat(1:end-1,1:end-1);
             tmp_trans_mat2 = tmp_trans_mat2';
-            trans_mat(:,count) = tmp_trans_mat2(:);
+            trans_mat(:,count) = tmp_trans_mat2(:); % transition probability along the x direction, i.e., [(1,1);(2,1);...;(N,1);(1,2),...]
             count = count + 1;                        
         end        
     end
     upd_matrix{mode_cnt} = trans_mat;
 end
 
-save('upd_matrix_v025.mat','upd_matrix','-v7.3');
+save('upd_matrix_v01.mat','upd_matrix','-v7.3');
 %}
 
 %% sinusoidal target
 %{
 u_set = [[-1;1],[1;1],[-1;-1],[1;-1]];
-V_set = 0.01*eye(2); % 
+V_set = 0.1*eye(2); % 
 mode_num = size(u_set,2);
 dt = 1;
 
@@ -84,13 +86,13 @@ for mode_cnt = 1:mode_num
     upd_matrix{mode_cnt} = trans_mat;
 end
 
-save('upd_matrix_sin_v001.mat','upd_matrix','-v7.3');
+save('upd_matrix_sin_v01.mat','upd_matrix','-v7.3');
 %}
 
 %% circular target
-%
+%{
 center_set = [[50.5;50.5],[50.5;150.5],[50.5;-150.5],[-50.5;50.5],[150.5;50.5]];
-V_set = 0.01*eye(2); % 
+V_set = 0.1*eye(2); % 
 mode_num = size(center_set,2);
 dt = 1;
 
@@ -137,5 +139,5 @@ for mode_cnt = 1:mode_num
     upd_matrix{mode_cnt} = trans_mat;
 end
 
-save('upd_matrix_cir_v001.mat','upd_matrix','-v7.3');
+save('upd_matrix_cir_v01.mat','upd_matrix','-v7.3');
 %}

@@ -1,3 +1,0 @@
-2/1/17
-
-use the generated trajectory data to generate the process plot that shows all three targets in the same plot.

@@ -35,7 +35,9 @@
 	A state estimator is \textit{consistent} if it converges in probability to the true value of the state \cite{amemiya1985advanced}.
 	Consistency is an important metric for stochastic filtering approaches \cite{chen2003bayesian} and it differs from the concept of consensus; the consensus implies that all UGVs' estimation results converge to a same value, while the consistency not only implies achieving consensus asymptotically, but also requires the estimated value converge to the true value.	
 	We first prove the consistency for static UGVs and then for moving UGVs. 
-	For simplicity and clarity, we assume S is a finite set (e.g. a finely discretized field).
+	For simplicity and clarity, we assume that S is a finite set (e.g. a finely discretized field) and the target is static.
+	This makes sense if the convergence is achieved much faster than the target's dynamics.
+	We also assume that the target position can be uniquely defined by the multi-UGV network (e.g. via appropriate placement).
 	
 	\subsection{Static UGVs}	
 	The consistency of \proto-DBF for static UGVs is stated as follows: 
@@ -47,275 +49,155 @@
 		
 		\small\begin{equation*}
 		\lim\limits_{k\rightarrow \infty}
-		P(\X_k^{MAP}=\xg_k)=
+		P(\X_k^{MAP}=\xg)=
 		1,\;i\in V,
 		\end{equation*}\normalsize
 		where 
 		\small\begin{equation*}
-		\X_k^{MAP}=\arg\max\limits_{\X}P^i_{pdf}(\X_k|\mathbf{z}^{i}_{1:k}).
-		\end{equation*}
-		
-%		the estimated target position converges to the true position of target in probability using \proto-DBF, i.e.,
-		%	the set of estimated target position of each UGV converges to $ X^T_{eq}$ in probability using \proto-DBF when the number of observations tends to infinity, i.e.,
-%		\small\begin{equation*}
-%			\lim\limits_{k\rightarrow \infty}
-%			P(x^T=x^{T^*}|\mathbf{z}^{new,i}_{1:k})=
-%			%	\begin{cases}
-%			%	1 & \text{if}\; i=1\\
-%			%	0 & \text{if}\; i\neq 1
-%			%	\end{cases},\;
-%			1,\;i=1,\dots,N.
-%		\end{equation*}\normalsize
-		%	where $\mathbf{z}^{CB,i}_{1:k}=\left[z^1_{1:k^i_1},\dots,z^N_{1:k^i_N}\right] $.
-		%	, $\left\lbrace k_1,\dots,k_N\right\rbrace $ are the timestamps of the $i\thi$ UGV's latest knowledge of all UGVs' observations.
+		\X_k^{MAP}=\arg\max\limits_{\X}P^i_{pdf}(\X|\mathbf{z}^{i}_{1:k}).
+		\end{equation*}		
 	\end{thm}
-	\medskip
+%	\medskip
 	
 	\begin{proof}	
 		Define the time set of $i\thi$ UGV, $\K^{i,j}_{k}(\,j\in V)$, that contains the time steps of measurements by the $j\thi$ UGV that are contained in $B^i_k$.
-%		According to \Cref{thm:fifo_dbf-property}, it is known that the cardinality of $\mathscr{K}^i_{j,k}$ has following property: \small$k-(N-1)T_u<|\mathscr{K}^i_{j,k}|\leq k$\normalsize.
-%		Considering the conditional independence of measurements given $x^g_k\in S$, 
 		The batch form of DBF at $k\thi$ step is
-%		\small\begin{subequations}
-%			\begin{align*}
-%			P^i_{pdf}(\X_k|\zb^i_k)&=P^i_{pdf}(\X_k|z^1_{1:k^i_1},\dots,z^N_{1:k^i_N})\\
-%			&=\frac{P^i_{pdf}(\X_0)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|\X_l)P(\X_l|\X_{l-1})}{\sum\limits_{\X_0,\dots,\X_k\in S}P^i_{pdf}(\X_0)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|\X_l)P(\X_l|\X_{l-1})}.
-%			\end{align*}
-%		\end{subequations}\normalsize
 		\small\begin{equation*}
-			P^i_{pdf}(\X_k|\zb^i_{1:k})=\frac{P^i_{pdf}(\X_0)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\X_t)P(\X_t|\X_{t-1})}{\sum\limits_{\X_0,\dots,\X_k\in S}P^i_{pdf}(\X_0)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\X_t)P(\X_t|\X_{t-1})}.
+		P^i_{pdf}(\X|\zb^i_{1:k})=\frac{P^i_{pdf}(\X)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\X)}{\sum\limits_{\X\in S}P^i_{pdf}(\X)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\X)}.
 		\end{equation*}\normalsize
-
-%		\small\begin{equation*}			
-%			P^i_{pdf}(\X_k|\zb^i_{1:k})=\frac{P^i_{pdf}(\X_0)\prod\limits_{t=1}^{k}\prod\limits_{j\in\Omega^i_t}P(z^j_t|\X_t)P(\X_t|\X_{t-1})}{\sum\limits_{\X_0,\dots,\X_k\in S}P^i_{pdf}(\X_0)\prod\limits_{t=1}^{k}\prod\limits_{j\in\Omega^i_t}P(z^j_t|\X_t)P(\X_t|\X_{t-1})}.
-%		\end{equation*}\normalsize
 		
-%		\small\begin{equation}
-%			P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})=\frac{P^i_{pdf}(x^T)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x^T)}{\sum\limits_{x^T\in S}P^i_{pdf}(x^T)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x^T)},
-%		\end{equation}\normalsize
-%		where $P^i_{pdf}$ is the initial individual PDF of $i\thi$ UGV. 
-		%\addtocounter{equation}{-1}\\
+		Comparing $P^i_{pdf}(X_k=x|\zb^i_{1:k})$ with $P^i_{pdf}(X_k=\xg|\zb^i_{1:k})$\footnote{For the purpose of simplicity, we use $P^i_{pdf}(x|\zb^i_{1:k})$ to represent $P^i_{pdf}(X_k=x|\zb^i_{1:k})$ in this proof.} yields
 		
-		Comparing $P^i_{pdf}(X_k=x_k|\zb^i_{1:k})$ with $P^i_{pdf}(X_k=x^g_k|\zb^i_{1:k})$\footnote{For the purpose of simplicity, we use $P^i_{pdf}(x_k|\zb^i_{1:k})$ to represent $P^i_{pdf}(X_k=x_k|\zb^i_{1:k})$ in this proof.} yields
-%		\small\begin{equation}\label{eqn:cmp}
-%		\frac{P^i_{pdf}(X_k=x_k|B^i_k)}{P^i_{pdf}(X_k=x^g_k|B^i_k)}=\frac{P^i_{pdf}(x_0)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x_l)}{P^i_{pdf}(x^g_0)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x^g_l)}.
-%		\end{equation}\normalsize
-
 		\small\begin{equation}\label{eqn:cmp}
-			\frac{P^i_{pdf}(x_k|\zb^i_{1:k})}{P^i_{pdf}(x^g_k|\zb^i_{1:k})}=\frac{P^i_{pdf}(x_0)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|x_t)}{P^i_{pdf}(x^g_0)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|x^g_t)}.
+		\frac{P^i_{pdf}(x|\zb^i_{1:k})}{P^i_{pdf}(\xg|\zb^i_{1:k})}=\frac{P^i_{pdf}(x)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|x)}{P^i_{pdf}(\xg)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\xg)}.
 		\end{equation}\normalsize
-		
-%		\small\begin{equation}\label{eqn:cmp}
-%		\frac{P^i_{pdf}(x_k|\zb^i_{1:k})}{P^i_{pdf}(x^g_k|\zb^i_{1:k})}=\frac{P^i_{pdf}(x_0)\prod\limits_{t=1}^{k}\prod\limits_{j\in\Omega^i_t}P(z^j_t|x_t)}{P^i_{pdf}(x^g_0)\prod\limits_{t=1}^{k}\prod\limits_{j\in\Omega^i_t}P(z^j_t|x^g_t)}.
-%		\end{equation}\normalsize
-		
-%		Comparing $P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})$ with $P^i_{pdf}(x^{T^*}|\mathbf{z}^{new,i}_{1:k})$ yields
-%		\small\begin{equation}\label{eqn:cmp}
-%			\frac{P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^{new,i}_{1:k})}=\frac{P^i_{pdf}(x^T)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x^T)}{P^i_{pdf}(x^{T^*})\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x^{T^*})}.
-%		\end{equation}\normalsize
 		
 		Take the logarithm of \Cref{eqn:cmp} and average it over $k$ steps:
 		\small\begin{equation}\label{eqn:cmp_log}
-			\frac{1}{k}\ln\frac{P^i_{pdf}(x_k|\zb^i_{1:k})}{P^i_{pdf}(x^g_k|\zb^i_{1:k})}=\frac{1}{k}\ln\frac{P^i_{pdf}(x_0)}{P^i_{pdf}(x^g_0)}+\sum\limits_{j=1}^{N}\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x_t)}{P(z^j_t|x^g_t)}.
+		\frac{1}{k}\ln\frac{P^i_{pdf}(x|\zb^i_{1:k})}{P^i_{pdf}(\xg|\zb^i_{1:k})}=\frac{1}{k}\ln\frac{P^i_{pdf}(x)}{P^i_{pdf}(\xg)}+\sum\limits_{j=1}^{N}\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x)}{P(z^j_t|\xg)}.
 		\end{equation}\normalsize
 		
-		Since $P^i_{pdf}(x_0)$ and $P^i_{pdf}(x^g_0)$ are bounded, then $\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_0)}{P^i_{pdf}(x^g_0)}= 0.$
-%		\small\begin{equation}\label{eqn:cmp_lim1}
-%			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_0)}{P^i_{pdf}(x^g_0)}= 0.
-%		\end{equation}\normalsize
-		
-%		Utilizing the facts: (1) $z^j_l$ are conditionally independent samples from $P(z^j_l|x^g_l)$ and (2) $k-(N-1)T_u<|\mathscr{K}^i_{j,k}|\leq k$, 
+		Since $P^i_{pdf}(x)$ and $P^i_{pdf}(\xg)$ are bounded and nonzero by the choice of the initial PDF, $\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x)}{P^i_{pdf}(\xg)}= 0.$
 		The law of large numbers yields		
-%		\small\begin{subequations}\label{eqn:cmp_lim2}
-%			\begin{align}
-%			\frac{1}{k}\sum\limits_{l=1}^{k^i_j}\ln\frac{P(z^j_l|x_l)}{P(z^j_l|x^g_l)}&\overset{P}{\longrightarrow}\mathbb{E}_{z^j_l} \left[\frac{P(z^j_l|x_l)}{P(z^j_l|x^g_l)}\right]\\
-%			&=\int_{z^j_l} P(z^j_l|x^g_l)\frac{P(z^j_l|x_l)}{P(z^j_l|x^g_l)} dz^j_l\\
-%			&=-D_{KL}\left(P(z^j_l|x_l)\|P(z^j_l|x^g_l)\right),
-%			\end{align}
-%		\end{subequations}\normalsize
 		
-		\todohere{big mistake: I need to differentiate the moving target and static target. For moving target, the LLN does not apply directly. Gosh, this part seems to be a huge problem. Not sure if it's worth to prove anything in this case...}
 		\small\begin{subequations}\label{eqn:cmp_lim2}
 			\begin{align}
-			\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x_t)}{P(z^j_t|x^g_t)}&\overset{P}{\longrightarrow}\mathbb{E}_{z^j_t} \left[\frac{P(z^j_t|x_t)}{P(z^j_t|x^g_t)}\right]\\
-			&=\int_{z^j_t} P(z^j_t|x^g_t)\frac{P(z^j_t|x_t)}{P(z^j_t|x^g_t)} dz^j_t\\
-			&=-D_{KL}\left(P(z^j_t|x_t)\|P(z^j_t|x^g_t)\right),
+			\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x)}{P(z^j_t|\xg)}&\overset{P}{\longrightarrow}\mathbb{E}_{z^j_t} \left[\frac{P(z^j_t|x)}{P(z^j_t|\xg)}\right]\\
+			&=\int_{z^j_t} P(z^j_t|\xg)\frac{P(z^j_t|x)}{P(z^j_t|\xg)} dz^j_t\\
+			&=-D_{KL}\left(P(z^j_t|x)\|P(z^j_t|\xg)\right),
 			\end{align}
 		\end{subequations}\normalsize		
 		where ``$\overset{P}{\longrightarrow}$" represents ``convergence in probability'' and $D_{KL}(P_1\|P_2)$ denotes the Kullback-Leibler (KL) divergence between two probability distribution $P_1$ and $P_2$.
-		KL divergence has the property that $\forall P_1,\,P_2, \; D_{KL}(P_1\|P_2)\leq 0\, \text{and equality holds if and only if } \; P_1=P_2.$
-%		\begin{subequations}
-%			\begin{gather*}
-%			\forall P_1,\,P_2, \; D_{KL}(P_1\|P_2)\leq 0\\
-%			\text{equality holds iff } \; P_1=P_2.
-%			\end{gather*}
-%		\end{subequations}
-		This leads to the following conclusion:
-%		\begin{subequations}
-			\small\begin{align*}
-			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x_t)}{P(z^j_t|x^g_t)}<0,&\quad x_t\neq x^g_t\\
-			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x_t)}{P(z^j_t|x^g_t)}=0,&\quad x_t= x^g_t.
-			\end{align*}\normalsize
-%		\end{subequations}
+		KL divergence has the property that $\forall P_1,\,P_2, \; D_{KL}(P_1\|P_2)\leq 0$, and the equality holds if and only if $\; P_1=P_2.$ Therefore
+%		This leads to the following conclusion:
+		%		\begin{subequations}
+		\small\begin{align*}
+		\lim\limits_{k\rightarrow \infty}\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x)}{P(z^j_t|\xg)}<0,&\quad x\neq \xg\\
+		\lim\limits_{k\rightarrow \infty}\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x)}{P(z^j_t|\xg)}=0,&\quad x= \xg.
+		\end{align*}\normalsize
+		%		\end{subequations}
 		
-		Then by considering the limiting case of \Cref{eqn:cmp_log}, we can get:
-%		\begin{subequations}
-			\small\begin{align}
-			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_l|\zb^i_{1:k})}{P^i_{pdf}(x^g_l|\zb^i_{1:k})}<0,&\quad x_l\neq x^g_l\label{subeqn:limit1}\\
-			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_l|\zb^i_{1:k})}{P^i_{pdf}(x^g_l|\zb^i_{1:k})}=0,&\quad x_l= x^g_l\label{subeqn:limit2}.
-			\end{align}\normalsize
-%		\end{subequations}
+		Considering the limiting case of \Cref{eqn:cmp_log}, we get
+		%		\begin{subequations}
+		\small\begin{align}
+		\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x|\zb^i_{1:k})}{P^i_{pdf}(\xg|\zb^i_{1:k})}<0,&\quad x\neq \xg\label{subeqn:limit1}\\
+		\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x|\zb^i_{1:k})}{P^i_{pdf}(\xg|\zb^i_{1:k})}=0,&\quad x= \xg\label{subeqn:limit2}.
+		\end{align}\normalsize
+		%		\end{subequations}
 		\Cref{subeqn:limit1,subeqn:limit2} imply that
-%		\begin{subequations}
-%			\small\begin{align}
-%			\frac{P^i_{pdf}(x_l|\zb^i_{1:k})}{P^i_{pdf}(x^g_l|\zb^i_{1:k})}\overset{P}{\longrightarrow}0,&\quad x_l\neq x^g_l\\
-%			\frac{P^i_{pdf}(x_l|\zb^i_{1:k})}{P^i_{pdf}(x^g_l|\zb^i_{1:k})}\overset{P}{\longrightarrow}1,&\quad x_l= x^g_l.
-%			\end{align}\normalsize
-%		\end{subequations}
-
+		
 		\small\begin{equation*}
-		\frac{P^i_{pdf}(x_l|\zb^i_{1:k})}{P^i_{pdf}(x^g_l|\zb^i_{1:k})}\overset{P}{\longrightarrow}
+		\frac{P^i_{pdf}(x|\zb^i_{1:k})}{P^i_{pdf}(\xg|\zb^i_{1:k})}\overset{P}{\longrightarrow}
 		\begin{cases}
-		0\quad x_l\neq x^g_l,\\
-		1\quad x_l= x^g_l.
+		0\quad x\neq \xg,\\
+		1\quad x= \xg.
 		\end{cases}		
 		\end{equation*}\normalsize
-
+		
 		Therefore,
 		\small\begin{equation*}
 		\lim\limits_{k\rightarrow \infty}
-		P(X_k^{MAP}=x^g_k)=1.
+		P(X_k^{MAP}=\xg)=1.
 		\end{equation*}\normalsize		
-		
-%		The binary observations subject to Bernoulli distribution $B(1,p_j)$, yielding
-%		\small\begin{equation*}
-%			P(z^j_l|x^T)=p^{z^j_l}_j(1-p_j)^{1-z^j_l},
-%		\end{equation*}\normalsize
-%		where $p_j=P(z^j_l=1|x^T)$. 
-%		Utilizing the facts: (1) $z^j_l$ are conditionally independent samples from $B(1,p_j^*)$ and (2) $k-(N-1)T_u<|\mathscr{K}^i_{j,k}|\leq k$, the law of large numbers yields
-%		\small\begin{equation*}
-%			%\lim\limits_{k\rightarrow \infty}
-%			\frac{1}{k}\sum\limits_{l\in\mathscr{K}^i_{j,k}}z^j_l\overset{P}{\longrightarrow}p^*_j,\quad 
-%			%\lim\limits_{k\rightarrow\infty}
-%			\frac{1}{k}(|\mathscr{K}^i_{j,k}|-\sum\limits_{l\in\mathscr{K}^i_{j,k}}z^j_l)\overset{P}{\longrightarrow}1-p^*_j,
-%		\end{equation*}\normalsize
-%		where $p_j^*=P(z^j_l=1|x^{T^*})$ and ``$\overset{P}{\longrightarrow}$" denotes ``convergence in probability''.
-%		Then, 
-%		\small\begin{equation}\label{eqn:cmp_lim2}
-%			%\lim\limits_{k\rightarrow \infty}
-%			\frac{1}{k}\sum\limits_{l\in\mathscr{K}^i_{j,k}}\ln\frac{P(z^j_l|x^T)}{P(z^j_l|x^{T^*})}\overset{P}{\longrightarrow}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln \frac{1-p_j}{1-p^*_j}.
-%		\end{equation}\normalsize
-%		
-%		Note that the right-hand side of \Cref{eqn:cmp_lim2} achieves maximum value 0 if and only if $p_j=p_j^*$. 
-%		Define 
-%		\small\begin{equation*}
-%			c(x^T)=\sum\limits_{j=1}^{N}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln\frac{1-p_j}{1-p^*_j}.
-%		\end{equation*}\normalsize
-%		
-%		Considering \Cref{eqn:cmp_lim1} and \Cref{eqn:cmp_lim2}, the limit of \Cref{eqn:cmp_log} is
-%		\small \begin{equation}\label{eqn:lim}
-%			% \lim\limits_{k\rightarrow \infty}
-%			\frac{1}{k}\ln\frac{P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^{new,i}_{1:k})}\overset{P}{\longrightarrow}c(x^T).
-%			% \sum\limits_{j=1}^{N}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln \frac{1-p_j}{1-p^*_j}
-%		\end{equation}\normalsize
-%		
-%		It follows from \Cref{eqn:lim} that
-%		\small\begin{equation}\label{eqn:lim2}
-%			\frac{P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^{new,i}_{1:k})e^{c(x^T)k}}\overset{P}{\longrightarrow}1.
-%		\end{equation}\normalsize
-%		
-%		Define the set $\bar{X}^T=S\setminus \left\lbrace x^{T^*}\right\rbrace$ and $c_M=\max\limits_{x^T\in\bar{X}^T}c(x^T)$.
-%		
-%		Then $c_M<0$.
-%		Summing \Cref{eqn:lim2} over $\bar{X}^T$ yields
-%		\small\begin{equation}\label{eqn:lim3}
-%			\frac{\sum\limits_{x^T\in \bar{X}^T}P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})e^{\left[c_M-c(x^T)\right]k}}{{P^i_{pdf}(x^{T^*}|\mathbf{z}^{new,i}_{1:k})}e^{c_Mk}}\overset{P}{\longrightarrow} |\bar{X}^T|,
-%		\end{equation}\normalsize
-%		where $|\bar{X}^T|$ denotes the cardinality of $\bar{X}^T$.
-%		Since $c_M<0$,  ${P^i_{pdf}(x^{T^*}|\mathbf{z}^{new,i}_{1:k})}e^{c_Mk}{\longrightarrow}0$, \Cref{eqn:lim3} implies
-%		\begin{equation}\label{eqn:lim4}
-%			\sum\limits_{x^T\in \bar{X}^T}P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})e^{\left[c_M-c(x^T)\right]k}\overset{P}{\longrightarrow}0.
-%		\end{equation}
-%		
-%		Utilizing the relation 
-%		\begin{equation*}
-%			0\leq P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})\leq P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})e^{\left[c_M-c(x^T)\right]k},
-%		\end{equation*}
-%		it can be derived from \Cref{eqn:lim4} that
-%		\small\begin{equation*}
-%			\sum\limits_{x^T\in \bar{X}^T}P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})\overset{P}{\longrightarrow} 0.
-%		\end{equation*}\normalsize
-%		
-%		Therefore,
-%		\footnotesize\begin{equation*}
-%			\lim\limits_{k\rightarrow \infty}
-%			P(x^T=x^{T^*}|\mathbf{z}^{new,i}_{1:k})=1-\lim\limits_{k\rightarrow \infty}\sum\limits_{x^T\in \bar{X}^T}P^i_{pdf}(x^T|\mathbf{z}^{new,i}_{1:k})=1.
-%		\end{equation*}\normalsize
-
-
-		%\begin{enumerate}
-		%	\item When $p_j\neq p^*_j$, i.e., $x^T\notin X^T_{eq}$,
-		%	\begin{align*}
-		%%		\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^T|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^i_{1:k})} & <0,
-		%		\sum\limits_{j=1}^{N}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln \frac{1-p_j}{1-p^*_j} & <0,
-		%		\;\text{thus }\\
-		%		\lim\limits_{k\rightarrow \infty}\frac{P^i_{pdf}(x^T|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^i_{1:k})} & =0
-		%	\end{align*}	
-		%	\item When $p_j= p^*_j$, i.e., $x^T\in X^T_{eq}$, \begin{align*}
-		%%	\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x^T|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^i_{1:k})} & =0,
-		%	\sum\limits_{j=1}^{N}p^*_j\ln \frac{p_j}{p^*_j}+(1-p^*_j)\ln \frac{1-p_j}{1-p^*_j} & = 0,
-		%	\;\text{thus }\\
-		%	\lim\limits_{k\rightarrow \infty}\frac{P^i_{pdf}(x^T|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{T^*}|\mathbf{z}^i_{1:k})} & =1
-		%	\end{align*}
-		%\end{enumerate}
 	\end{proof}
 	
-	%\subsection{Proof for moving UGVs}
-%	The consistency of \proto-DBF can also be proved for moving UGVs.
-%	The difficulty of consistency proof lies in the fact that each UGV makes observations at multiple positions.
-%	The main idea of the proof is to classify UGV observation positions into two disjoint sets: \textit{infinite-observation spots} that contains positions where a UGV makes infinite observations, and \textit{finite-observation spots} that contains positions where the UGV makes finite observations.
-%	Due to the page limitation, we state the consistency result for moving UGVs without providing a proof for the purpose of completeness.
-		
-	%%, as $k\rightarrow\infty$.
-	%Before stating main theorem, the following lemma is introduced.
-	%\begin{lem}\label{lem1}
-	%	For a set of UGVs moving within a collection of finite positions, each UGV has at least one position where infinite observations are made as $k$ tends to infinity.
-	%\end{lem}
-	%
-	%\begin{proof}
-	%Let $n^{i,k}_j$ denote the times that $i\thi$ UGV visits $j\thi$ position up to time $k$. Then, $\sum\limits_{j} n^{i,k}_j=k$. It is straightforward to see that $\exists n^{i,k}_j,$ such that $n^{i,k}_j\rightarrow \infty,$ as $k\rightarrow \infty$.
-	%\end{proof}
-	%\medskip
-	%%The main theory of consistency of \proto-DBF for moving UGVs is stated as follows:
-%	\begin{thm}\label{thm:\proto-dbf-mov-tar}
-%		Considering a network of $N$ UGVs moving within a collection of finite positions under the interaction topology condition in \cref{prop1}, the estimated target position converges to the true position of target in probability using \proto-DBF, i.e.,
-%	%	the probability of estimated target position belonging to $ X^T_{eq}$ converges to one, i.e.,
-%	%	the set of estimated target position of each UGV converges to $X^T_{eq}$ in probability using \proto-DBF when the number of observations tends to infinity, i.e.,
+%%% proof for moving target. seems to be wrong.
+%\begin{thm}\label{thm:\proto-dbf-sta-ugv}
+%	Assume the UGVs are static and the sensors are unbiased. If the network of $N$ UGVs is \fc, then the MAP estimator of target position converges in probability to the true position of the target using \proto-DBF, i.e.,
+%	
+%	\small\begin{equation*}
+%	\lim\limits_{k\rightarrow \infty}
+%	P(\X_k^{MAP}=\xg_k)=
+%	1,\;i\in V,
+%	\end{equation*}\normalsize
+%	where 
+%	\small\begin{equation*}
+%	\X_k^{MAP}=\arg\max\limits_{\X}P^i_{pdf}(\X_k|\mathbf{z}^{i}_{1:k}).
+%	\end{equation*}		
+%\end{thm}
+
+%	\begin{proof}	
+%		Define the time set of $i\thi$ UGV, $\K^{i,j}_{k}(\,j\in V)$, that contains the time steps of measurements by the $j\thi$ UGV that are contained in $B^i_k$.
+%		The batch form of DBF at $k\thi$ step is
 %		\small\begin{equation*}
-%			\lim\limits_{k\rightarrow \infty}P(x^T=x^{T^*}|\mathbf{z}^{new,i}_{1:k})=
-%			1,\;i=1,\dots,N.
+%			P^i_{pdf}(\X_k|\zb^i_{1:k})=\frac{P^i_{pdf}(\X_0)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\X_t)P(\X_t|\X_{t-1})}{\sum\limits_{\X_0,\dots,\X_k\in S}P^i_{pdf}(\X_0)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\X_t)P(\X_t|\X_{t-1})}.
 %		\end{equation*}\normalsize
-%	%	where $\mathbf{z}^i_{1:k}=\left[z^1_{1:k^i_1},\dots,z^N_{1:k^i_N}\right]$.
-%	%	, $\left\lbrace k_1,\dots,k_N\right\rbrace$ are the timestamps of $i\thi$ UGV's latest knowledge of all UGVs' observations.
-%	\end{thm}
-%	\medskip
-	%
-	%\begin{proof}
-	%%Let $M^i\subseteq\left\lbrace 1,\dots,k_j\right\rbrace\times X^R $ denote the set of pair $(k,x^R)$ to indicate $j\thi$ UGV's position at the corresponding time of observation.
-	%Similar to \Cref{thm:\proto-dbf-sta-tar}, the batch form of DBF at $k\thi$ step is
-	%\small\begin{equation}\label{eqn:cmp2}
-	%\frac{P^i_{pdf}(x^T|\mathbf{z}^i_{1:k})}{P^i_{pdf}(x^{T^{*}}|\mathbf{z}^i_{1:k})}=\frac{P^i_{pdf}(x^T)\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^T;x^R_l)}{P^i_{pdf}(x^{T^{*}})\prod\limits_{j=1}^{N}\prod\limits_{l=1}^{k^i_j}P(z^j_l|x^{T^{*}};x^R_l)}
-	%\end{equation}\normalsize
-	%
-	%The only difference from \Cref{eqn:cmp} is that $P(z^j_l|x^T;x^R_l)$ in \Cref{eqn:cmp2} varies as the UGV moves.
-	%%, needs to be grouped according to the UGV position. 
-	%For each UGV, there exists at least one position where infinite observations are made as $k\rightarrow \infty$, according to \Cref{lem1}. 
-	%All positions can be classified into finite-observation spots and infinite-observation spots. 
-	%For the former, by referring to \Cref{eqn:lim} in proof of \Cref{thm:\proto-dbf-sta-tar}, it is easy to know that their contribution to \Cref{eqn:cmp2} is zero when $k\rightarrow \infty$.
-	%Therefore, \Cref{eqn:cmp2} can be reduced to only consider infinite-observation spots, which is similar to proof of \Cref{thm:\proto-dbf-sta-tar}.
-	%\end{proof}
-	%\medskip
-	
+%
+%		Comparing $P^i_{pdf}(X_k=x_k|\zb^i_{1:k})$ with $P^i_{pdf}(X_k=\xg_k|\zb^i_{1:k})$\footnote{For the purpose of simplicity, we use $P^i_{pdf}(x_k|\zb^i_{1:k})$ to represent $P^i_{pdf}(X_k=x_k|\zb^i_{1:k})$ in this proof.} yields
+%
+%		\small\begin{equation}\label{eqn:cmp}
+%			\frac{P^i_{pdf}(x_k|\zb^i_{1:k})}{P^i_{pdf}(\xg_k|\zb^i_{1:k})}=\frac{P^i_{pdf}(x_0)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|x_t)}{P^i_{pdf}(\xg_0)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\xg_t)}.
+%		\end{equation}\normalsize
+%				
+%		Take the logarithm of \Cref{eqn:cmp} and average it over $k$ steps:
+%		\small\begin{equation}\label{eqn:cmp_log}
+%			\frac{1}{k}\ln\frac{P^i_{pdf}(x_k|\zb^i_{1:k})}{P^i_{pdf}(\xg_k|\zb^i_{1:k})}=\frac{1}{k}\ln\frac{P^i_{pdf}(x_0)}{P^i_{pdf}(\xg_0)}+\sum\limits_{j=1}^{N}\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x_t)}{P(z^j_t|\xg_t)}.
+%		\end{equation}\normalsize
+%		
+%		Since $P^i_{pdf}(x_0)$ and $P^i_{pdf}(\xg_0)$ are bounded, then $\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_0)}{P^i_{pdf}(\xg_0)}= 0.$
+%		The law of large numbers yields		
+%		
+%		\todohere{big mistake: I need to differentiate the moving target and static target. For moving target, the LLN does not apply directly. Gosh, this part seems to be a huge problem. Not sure if it's worth to prove anything in this case...}
+%		\small\begin{subequations}\label{eqn:cmp_lim2}
+%			\begin{align}
+%			\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x_t)}{P(z^j_t|\xg_t)}&\overset{P}{\longrightarrow}\mathbb{E}_{z^j_t} \left[\frac{P(z^j_t|x_t)}{P(z^j_t|\xg_t)}\right]\\
+%			&=\int_{z^j_t} P(z^j_t|\xg_t)\frac{P(z^j_t|x_t)}{P(z^j_t|\xg_t)} dz^j_t\\
+%			&=-D_{KL}\left(P(z^j_t|x_t)\|P(z^j_t|\xg_t)\right),
+%			\end{align}
+%		\end{subequations}\normalsize		
+%		where ``$\overset{P}{\longrightarrow}$" represents ``convergence in probability'' and $D_{KL}(P_1\|P_2)$ denotes the Kullback-Leibler (KL) divergence between two probability distribution $P_1$ and $P_2$.
+%		KL divergence has the property that $\forall P_1,\,P_2, \; D_{KL}(P_1\|P_2)\leq 0\, \text{and equality holds if and only if } \; P_1=P_2.$
+%		This leads to the following conclusion:
+%%		\begin{subequations}
+%			\small\begin{align*}
+%			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x_t)}{P(z^j_t|\xg_t)}<0,&\quad x_t\neq \xg_t\\
+%			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x_t)}{P(z^j_t|\xg_t)}=0,&\quad x_t= \xg_t.
+%			\end{align*}\normalsize
+%%		\end{subequations}
+%		
+%		Then by considering the limiting case of \Cref{eqn:cmp_log}, we can get:
+%%		\begin{subequations}
+%			\small\begin{align}
+%			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_l|\zb^i_{1:k})}{P^i_{pdf}(\xg_l|\zb^i_{1:k})}<0,&\quad x_l\neq \xg_l\label{subeqn:limit1}\\
+%			\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x_l|\zb^i_{1:k})}{P^i_{pdf}(\xg_l|\zb^i_{1:k})}=0,&\quad x_l= \xg_l\label{subeqn:limit2}.
+%			\end{align}\normalsize
+%%		\end{subequations}
+%		\Cref{subeqn:limit1,subeqn:limit2} imply that
+%
+%		\small\begin{equation*}
+%		\frac{P^i_{pdf}(x_l|\zb^i_{1:k})}{P^i_{pdf}(\xg_l|\zb^i_{1:k})}\overset{P}{\longrightarrow}
+%		\begin{cases}
+%		0\quad x_l\neq \xg_l,\\
+%		1\quad x_l= \xg_l.
+%		\end{cases}		
+%		\end{equation*}\normalsize
+%
+%		Therefore,
+%		\small\begin{equation*}
+%		\lim\limits_{k\rightarrow \infty}
+%		P(X_k^{MAP}=\xg_k)=1.
+%		\end{equation*}\normalsize		
+%	\end{proof}
 	
 %	\begin{rem}
 %		%	When $X^T_{eq}$ only contains $x^{T^{*}}$, consistency means the estimated target position converges to true target position in probability. Additionally, 
@@ -359,16 +241,16 @@
 		Assume UGVs move within a collection of finite positions and sensors are unbiased, then the MAP estimator of target position converges in probability to the true position of the target using \proto-DBF, i.e.,
 		\small\begin{equation*}
 		\lim\limits_{k\rightarrow \infty}
-		P(\X^{MAP}_k=\xg_k)=1,\;i\in V.
+		P(\X^{MAP}_k=\xg)=1,\;i\in V.
 		%		P(x=\xg|\mathbf{z}^i_{1:k})=1,\;i=1,\dots,N.
 		\end{equation*}\normalsize
 	\end{thm}
 		
 	\begin{proof}		
 %		The batch form of DBF at $k\thi$ step is
-		Similar to \Cref{eqn:cmp}, comparing $P^i_{pdf}(x^g_k|\zb^i_k)$ and $P^i_{pdf}(x^g_k|\zb^i_k)$ yields		
+		Similar to \Cref{eqn:cmp}, comparing $P^i_{pdf}(x|\zb^i_k)$ and $P^i_{pdf}(\xg|\zb^i_k)$ yields		
 		\small\begin{equation}\label{eqn:cmp2}
-		\frac{P^i_{pdf}(x_k|\zb^i_k)}{P^i_{pdf}(x^g_k|\zb^i_k)}=\frac{P^i_{pdf}(x_0)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|x;x^j_l)}{P^i_{pdf}(x^g_0)\prod\limits_{j=1}^{N}\prod\limits_{l\in\mathscr{K}^{i}_{j,k}}P(z^j_l|\xg;x^j_l)}.
+		\frac{P^i_{pdf}(x|\zb^i_k)}{P^i_{pdf}(\xg|\zb^i_k)}=\frac{P^i_{pdf}(x)\prod\limits_{j=1}^{N}\prod\limits_{t\in\mathscr{K}^{i,j}_{k}}P(z^j_t|x;x^j_t)}{P^i_{pdf}(\xg)\prod\limits_{j=1}^{N}\prod\limits_{t\in\mathscr{K}^{i,j}_{k}}P(z^j_t|\xg;x^j_t)}.
 		\end{equation}\normalsize
 			
 		The only difference from \Cref{eqn:cmp} is that $P(z^j_l|x;x^j_l)$ in \Cref{eqn:cmp2} varies as the UGV moves.

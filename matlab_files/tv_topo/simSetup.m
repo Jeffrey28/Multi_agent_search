@@ -9,11 +9,11 @@ set(0,'defaultAxesFontName', 'Times New Roman')
 set(0,'defaultTextFontName', 'Times New Roman')
 
 sim_mode = true; % used in main_tv_topo.m, use simulated data instead of experiment data (no experiment in tv_topo though)
-save_data = true; % save all sim data. used in main_tv_topo.m and Sim.m
-show_plot = false; % draw pdf at each step. used in main_tv_topo.m
+show_plot = true; % draw pdf at each step. used in main_tv_topo.m
 save_plot = false; % save pdf of selected steps and corresponding .mat file. used in main_tv_topo.m and Sim.m (plotSim)
-DBF_only = false; % only run DBF or run DBF, CF and ConF
-comp_metric = true; % decide if needs to compute metrics and compare them. used in main_tv_topo.m
+DBF_only = false; % only run DBF (true) or run DBF, CF and ConF (false)
+save_data = false; % save all sim data. used in main_tv_topo.m and Sim.m and for drawing metrics plot
+comp_metric = false; % decide if needs to compute metrics and compare them. used in main_tv_topo.m
 
 sim_len = 50; % max step
 % rounds of consensus at each time step
@@ -38,7 +38,7 @@ if r_move == 0
     sim_r_idx = [1,3,5];
 else
 %     sim_r_idx = [1,3,5];
-    sim_r_idx = 1;
+    sim_r_idx = 5;
 end
 
 % the sensor type of each robot
@@ -99,13 +99,13 @@ save('sensor_spec.mat','rbt');
 % these are randomly generated sensor specifications
 % load the variable using the name that I want
 rbt_spec = load('rbt_spec.mat');
-rbt_spec = rbt_spec.rbt;
+rbt_spec = rbt_spec.rbt; % gives the center of the circular motion
 
 % tx_set = [68, 55, 41, 10, 75, 35, 60, 72, 14, 16];
 % ty_set = [55, 49, 86, 77, 71, 9, 11, 13, 77, 90];
 
 % radius, period and moving direction (clockwise or counterclockwise) of sensor circular trajectory
-r_set = [5 10 7 10 15 7];
+r_set = [20 10 15 10 15 10]; %[5 10 7 10 15 7];
 T_set = [20,15,30,25,15,20];
 dir_set = [1 -1 1 -1 -1 -1];
 
@@ -175,16 +175,16 @@ switch topo_select
 end
 
 %% define target 
-target_mode = 'sin'; %%!!! warning: whenever change the target_mode, remember to delete the previous upd_matrix first
+target_mode = 'linear'; %%!!! warning: whenever change the target_mode, remember to delete the previous upd_matrix first
 
 if strcmp(target_mode, 'linear')    
     % linear target model
     mode_num = 4;
     u_set = [[1;1],[-1;-1],[1;-1],[-1;1]]; %inPara.u_set;
-    V_set = 0.01*eye(2);%
+    V = 0.1*eye(2);%
     % load update matrices
     if exist('upd_matrix','var') == 0
-        load('upd_matrix_v001.mat','upd_matrix');
+        load('upd_matrix_v01.mat','upd_matrix');
     end
     % these are randomly generated target positions from [20,80] at each
     % direction
@@ -195,10 +195,10 @@ elseif strcmp(target_mode, 'sin')
     % sinusoidal target model
     mode_num = 4;
     u_set = [[-1;1],[1;1],[-1;-1],[1;-1]];
-    V_set = 0.01*eye(2);
+    V = 0.1*eye(2);
     % load update matrices
     if exist('upd_matrix','var') == 0
-        load('upd_matrix_sin_v001.mat','upd_matrix');
+        load('upd_matrix_sin_v01.mat','upd_matrix');
     end    
     % these are randomly generated target positions from [20,80] at each
     % direction
@@ -208,9 +208,9 @@ elseif strcmp(target_mode, 'sin')
 elseif strcmp(target_mode, 'circle') 
     mode_num = 5;
     center_set = [[50.5;50.5],[50.5;150.5],[50.5;-150.5],[-50.5;50.5],[150.5;50.5]]; %swtich the center of the circle
-    V_set = 0.01*eye(2);%
+    V = 0.1*eye(2);%
     if exist('upd_matrix','var') == 0
-        load('upd_matrix_cir_v001.mat','upd_matrix');
+        load('upd_matrix_cir_v01.mat','upd_matrix');
     end
     % these are randomly generated target positions from [20,80] at each
     % direction

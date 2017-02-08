@@ -31,11 +31,11 @@ inPara_sim.cons_fig = cons_fig;
 inPara_sim.sensor_set_type = sensor_set_type; % 'bin': binary,'ran': range-only,'brg': bearing-only,'rb': range-bearing
 sim = Sim(inPara_sim);
 
-for trial_cnt = 1:trial_num
+for trial_cnt = 8%1:trial_num
     % initialize field class    
     target.pos = [tx_set(trial_cnt);ty_set(trial_cnt)];
     
-    target.V_set = V_set; % Covariance of process noise model for the target
+    target.V = V; % Covariance of process noise model for the target
     target.model_idx = 1;
     target.traj = target.pos;
     target.mode = target_mode;
@@ -59,7 +59,7 @@ for trial_cnt = 1:trial_num
         if r_move == 0
             inPara_rbt.pos = rbt_spec(rbt_cnt).init_pos(:,trial_cnt);
         elseif r_move == 1
-            inPara_rbt.center = rbt_spec(rbt_cnt).init_pos(:,rbt_cnt);
+            inPara_rbt.center = rbt_spec(rbt_cnt).init_pos(:,trial_cnt);
             inPara_rbt.r = r_set(rbt_cnt);
             inPara_rbt.T = T_set(rbt_cnt);
             inPara_rbt.w = dir_set(rbt_cnt)*2*pi/inPara_rbt.T;
@@ -110,10 +110,10 @@ for trial_cnt = 1:trial_num
                 rbt{ii}.tar_mod = [rbt{ii}.tar_mod,fld.target.model_idx];
                 rbt{ii} = rbt{ii}.robotMove();
             end
-        elseif r_move == 2
-            for ii = 1:num_robot
-                rbt{ii} = r_pos_set_exp(ii,k);
-            end
+%         elseif r_move == 2
+%             for ii = 1:num_robot
+%                 rbt{ii} = r_pos_set_exp(ii,k);
+%             end
         end
         
         %% %%%%% filtering %%%%%

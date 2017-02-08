@@ -33,45 +33,45 @@ Warning--empty year in sheng2005distributed
 Warning--empty year in djuric2011non
 
 Done.
-You've used 28 entries,
+You've used 29 entries,
             4039 wiz_defined-function locations,
-            977 strings with 12775 characters,
-and the built_in function-call counts, 24446 in all, are:
-= -- 2011
-> -- 538
+            982 strings with 12859 characters,
+and the built_in function-call counts, 24776 in all, are:
+= -- 2033
+> -- 542
 < -- 267
-+ -- 306
-- -- 77
-* -- 1182
-:= -- 3520
-add.period$ -- 60
-call.type$ -- 28
++ -- 308
+- -- 78
+* -- 1191
+:= -- 3578
+add.period$ -- 62
+call.type$ -- 29
 change.case$ -- 27
 chr.to.int$ -- 624
-cite$ -- 36
-duplicate$ -- 1696
-empty$ -- 1902
-format.name$ -- 100
-if$ -- 5688
+cite$ -- 37
+duplicate$ -- 1723
+empty$ -- 1948
+format.name$ -- 101
+if$ -- 5765
 int.to.chr$ -- 0
-int.to.str$ -- 28
-missing$ -- 256
-newline$ -- 107
-num.names$ -- 28
-pop$ -- 549
+int.to.str$ -- 29
+missing$ -- 261
+newline$ -- 110
+num.names$ -- 29
+pop$ -- 565
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 1894
+skip$ -- 1924
 stack$ -- 0
 substring$ -- 1483
-swap$ -- 1477
+swap$ -- 1490
 text.length$ -- 59
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 28
+type$ -- 29
 warning$ -- 8
-while$ -- 133
-width$ -- 30
-write$ -- 296
+while$ -- 134
+width$ -- 31
+write$ -- 303
 (There were 3 error messages)
