@@ -9,10 +9,10 @@
 	Each UGV contains a communication buffer (CB) that stores state-measurement pairs 
 %	consisting of measurements and the corresponding states 
 	of all UGVs:
-	\begin{equation*}		
+	\small\begin{equation*}		
 		\B^i_k=\left[ Y^1_{\K^{i,1}_k},\dots,Y^N_{\K^{i,N}_k}\right],
 %		\mathbf{z}^{CB,i}_k=\left[ z^1_{k^i_1},\dots,z^N_{k^i_N}\right]
-	\end{equation*}
+	\end{equation*}\normalsize
 %	where $z^j_{k^i_j}$ represents the observation made by ${j\thi}$ UGV at time $k^i_j$. 
 	where $\B^i_k$ is the CB of $i\thi$ UGV at time $k$ and $\K^{i,j}_k (j\in V)$ is the time index set.
 	$Y^j_{\K^{i,j}_k}$ represents the set of $j\thi$ UGV's measurements at time steps in $\K^{i,j}_k$ that are stored in $i\thi$ UGV's CB at time $k$.
@@ -77,14 +77,8 @@
 				\; \forall j\neq i,\;\forall l\in \mathcal{N}_i(G_{k-1}).
 			\end{equation*}\normalsize
 			
-			\TL: The $i\thi$ UGV updates its own TL, $Q^i_k$, using the received TLs: $\forall l\in \mathcal{N}_i(G_{k-1}),\,\forall j\in \lb 1\dots,N\rb$
-			\begin{itemize} 
-				\item if $k^{ij}>k^{lj}$, keep current $\mathbf{q}^{ij}_{k^{ij}}$;
-				\item if $k^{ij}=k^{lj}$, $\mathbf{q}^{ij}_{k^{ij}}=\mathbf{q}^{ij}_{k^{ij}} \lor \mathbf{q}^{lj}_{k^{lj}}$;  \todohere{fix this bug}
-				\item if $k^{ij}<k^{lj}$, $\mathbf{q}^{ij}_{k^{ij}}=\mathbf{q}^{lj}_{k^{lj}}$ and $k^{ij}=k^{lj}$.
-			\end{itemize}
-			
-			Trim the CB based on the updated track lists, see \Cref{alg:tracklist}. 
+			\TL: The $i\thi$ UGV updates its own TL, $Q^i_k$, using the received TLs (see \Cref{alg:upd_tl}).
+			Trim the CB based on the updated track lists (see \Cref{alg:tracklist}). 
 			
 			\State (2.4) Sending Step:
 			
@@ -106,14 +100,14 @@
 	
 %	\medskip
 %	\todohere{change the figure to be a switching topology. change the contents here accordingly}
-	\todohere{modify the whole paragraph when new plot is made.}
-	\cref{fig:\proto} illustrates the {\proto} cycles of a network of 3 UGVs with switching line topologies.
-	There are two types of topologies: under the first one only UGV $1$ and UGV $2$ can directly communicate and under second one only UGV $2$ and UGV $3$ can directly communicate.
+%	\todohere{modify the whole paragraph when new plot is made.}
+	\cref{fig:\proto} illustrates the {\proto} cycles of a network of 3 UGVs with switching topologies.
+%	There are two types of topologies: under the first one only UGV $1$ and UGV $2$ can directly communicate and under second one only UGV $2$ and UGV $3$ can directly communicate.
 	Several facts can be noticed in \cref{fig:\proto}: 
-	(1) the two topologies are jointly connected within each time intervals $\left[0,3 \right) ,\,\left[3,5 \right) ,\,\left[5,7 \right)$;
-	(2) \todohere{may need to change} CBs of all UGVs are filled within $5$ steps;
+	(1) the topologies are jointly strongly connected in the time interval $\left[1,6\right]$;
+	(2) CBs of all UGVs are filled within finite steps;
 %	, which means under \proto each UGV has a maximum delay of 2 steps for receiving observations from other UGVs; 
-	(3) after being filled, each CB keeps updated every finite time steps, which means each UGV receives new observations of other UGVs with finite delay.
+%	(3) after being filled, each CB keeps updated every finite time steps, which means each UGV receives new observations of other UGVs with finite delay.
 	Extending these facts to a network of $N$ UGVs, we have the following theorem to describe the property of \proto:
 	%\medskip
 	

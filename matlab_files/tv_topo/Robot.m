@@ -399,11 +399,14 @@ classdef Robot
         
         function this = dataExch(this,inPara)
             % (2) data transmission
-            % exchange communication buffer and track list with neighbors
+            % exchange and update the communication buffer and track list 
+            % with neighbors
             rbt_nbhd_set = inPara.rbt_nbhd_set;
             for t = 1:length(rbt_nbhd_set)               
                 tmp_rbt = rbt_nbhd_set{t};
+                tmp_idx = tmp_rbt.idx;
                 for jj = 1:this.num_robot
+                    %% exchange and update CB
                     % first merge CB of ego and neighboring robots
                     this.buffer(jj).pos = [this.buffer(jj).pos,tmp_rbt.buffer(jj).pos];
                     this.buffer(jj).z = [this.buffer(jj).z,tmp_rbt.buffer(jj).z];
@@ -411,7 +414,7 @@ classdef Robot
                     % in real experiment, this prob term should not
                     % be communicated. In simulation, this is for
                     % the purpose of accelerating the computation speed.
-                    this.buffer(jj).lkhd_map = [this.buffer(jj).lkhd_map,tmp_rbt.buffer(jj).lkhd_map];
+                    this.buffer(jj).lkhd_map = [this.buffer(jj).lkhd_map,tmp_rbt.buffer(jj).lkhd_map];                                        
                     
                     % second pick the unique items in terms of the
                     % measurement time                    
@@ -421,27 +424,67 @@ classdef Robot
                     this.buffer(jj).z = this.buffer(jj).z(:,idx);
                     this.buffer(jj).lkhd_map = this.buffer(jj).lkhd_map(idx);
                     
-                    % exchange track list
-                    % get the knowledge of each robot's oldest measruement in CB 
+                    %% exchange and update track list
+                    % get the knowledge of each robot's oldest measruement in CB
+                    
+                    % case 1: the TL entries corresponding to the ego UGV
+                    % update these entries based on the ego UGV's CB
                     for ll = 1:this.num_robot
-                       if this.track_list(ll,end) < tmp_rbt.track_list(ll,end)
-                           this.track_list(ll,:) = tmp_rbt.track_list(ll,:);
-                       elseif this.track_list(ll,end) == tmp_rbt.track_list(ll,end)
-                           this.track_list(ll,1:end-1) = this.track_list(ll,1:end-1)|tmp_rbt.track_list(ll,1:end-1);                           
-                       end
+                        % if the ego UGV's track list corresponding to its 
+                        % own CB is too old such that the corresponding 
+                        % record has already been trimmed from in tmp_rbt's 
+                        % CB, then the ego UGV sets the entry to 1
+                        if this.track_list(this.idx,end) < min(this.buffer(ll).k)
+                            this.track_list(this.idx,ll) = 1;
+                            
+                        % if the ego UGV's track list is not too old, then
+                        % look for corresponding entries in its own CB
+                        elseif ismember(this.track_list(this.idx,end),this.buffer(ll).k)
+                            this.track_list(this.idx,ll) = 1;
+                        end
+                    end
+                    
+                    % case 2: the TL entries corresponding to the tmp_rbt
+                    % update these entries based on the tmp_rbt's CB                                       
+                    for ll = 1:this.num_robot
+                        % if the ego UGV's track list for the tmp_rbt is too
+                        % old such that the corresponding record has already 
+                        % been trimmed from in tmp_rbt'CB, then the ego UGV 
+                        % set the entry to 1
+                        if this.track_list(tmp_idx,end) < min(this.buffer(ll).k)
+                            this.track_list(tmp_idx,ll) = 1;
+                            
+                        % if the ego UGV's track list is not too old, then
+                        % look for corresponding entries in tmp_rbt's CB
+                        elseif ismember(this.track_list(tmp_idx,end),this.buffer(ll).k)
+                            this.track_list(tmp_idx,ll) = 1;
+                        end
+                    end
+                    
+                    % case 3: the rows/entries corresponding to UGVs other than the
+                    % ego one and the tmp_rbt
+                    for ll = 1:this.num_robot
+                        if ll == this.idx || ll == tmp_idx
+                            continue
+                        end
+                        if this.track_list(ll,end) < tmp_rbt.track_list(ll,end)
+                            this.track_list(ll,:) = tmp_rbt.track_list(ll,:);
+                        elseif this.track_list(ll,end) == tmp_rbt.track_list(ll,end)
+                            this.track_list(ll,1:end-1) = this.track_list(ll,1:end-1)|tmp_rbt.track_list(ll,1:end-1);
+                        end
                     end                    
                 end
             end
             
-            % ego robot's track list need one more update to
-            % reflect its own knowledge about other robot's CB
-            for ll = 1:this.num_robot
-                % the tracked time tag for ego robot's track list
-                tmp_track_time = this.track_list(this.idx,end);
-                if ismember(tmp_track_time,this.buffer(ll).k)
-                    this.track_list(this.idx,ll) = 1;
-                end
-            end
+%             % ego robot's track list need one more update to
+%             % reflect its own knowledge about other robot's CB
+%             for ll = 1:this.num_robot
+%                 % the tracked time tag for ego robot's track list
+%                 tmp_track_time = this.track_list(this.idx,end);
+%                 if ismember(tmp_track_time,this.buffer(ll).k)
+%                     this.track_list(this.idx,ll) = 1;
+%                 end
+%             end
         end
         
         %% filters
@@ -567,10 +610,10 @@ classdef Robot
                     this.trim_list(2,t2) = this.step_cnt;
                 end
                 this.track_list(min_idx,end) = t2+1;
-                this.track_list(min_idx,1:this.num_robot) = zeros(length(min_idx),this.num_robot);
-                this.track_list(this.idx,1:this.num_robot) = tmp_meas_hist(1:this.num_robot,t2+1);                
-                
-                
+                display(this.idx)
+                display(min_idx)
+                this.track_list(min_idx,1:this.num_robot) = zeros(nnz(min_idx),this.num_robot);
+                this.track_list(this.idx,1:this.num_robot) = tmp_meas_hist(1:this.num_robot,t2+1);                                
             end
         end
         

@@ -172,6 +172,25 @@
 	
 	%\end{rem}
 	
+	\begin{algorithm}
+		\caption{Updating TLs}
+		\label{alg:upd_tl}
+		\begin{algorithmic}
+			\State Consider updating the $i\thi$ UGV's TL using the received $j\thi$ UGV's TL.
+			
+			\State \textbf{(1)} Update the $i\thi$ row of TL using the $i\thi$ UGV's CB (\Cref{eqn:tl_entry}).
+			\State \textbf{(2)} Update the $j\thi$ row of TL using the received $j\thi$ UGV's CB $\B^j_{k-1}$.
+			\State \textbf{(3)} Update other rows of TL:
+			$\forall l\in \mathcal{N}_i(G_{k-1})\setminus\lb j\rb,\,\forall r\in \lb 1\dots,N\rb,$
+			\begin{itemize} 
+				\item if $k^{ir}>k^{lr}$, keep current $\mathbf{q}^{ir}_{k^{ir}}$;
+				\item if $k^{ir}=k^{lr}$, $\mathbf{q}^{ir}_{k^{ir}}=\mathbf{q}^{ir}_{k^{ir}} \lor\footnotemark\mathbf{q}^{lr}_{k^{lr}}$; 
+				\item if $k^{ir}<k^{lr}$, $\mathbf{q}^{ir}_{k^{ir}}=\mathbf{q}^{lr}_{k^{lr}}$ and $k^{ir}=k^{lr}$.
+			\end{itemize}
+		\end{algorithmic}
+	\end{algorithm}
+	\footnotetext{`$\lor$' is the notation of the logical `OR' operator.}
+	
 	\subsection{Track Lists for Trimming Communication Buffers}\label{subsec:tracklist}
 	\begin{algorithm}
 		\caption{Trimming CBs using TLs}
@@ -188,13 +207,14 @@
 			\end{enumerate}				
 		\end{algorithmic}
 	\end{algorithm}
-	
+		
 	
 	The size of CBs can keep increasing as measurements cumulate over time. 
 	The use of the stored PDF has made it feasible to trim excessive measurements from the CBs.
 	%	while ensuring no information is lost in the sense that all UGVs' measurements have been used for update hte individual PDF.
 	To avoid information loss, a state-measurement pair can be trimmed from a UGV's CB only when \textit{all} UGVs have received it.
 	To keep track of each UGV's reception of other UGVs' measurements, every UGV maintains a \textit{track list} (TL), $\Q^i_k=\left[\mathbf{q}^{i1}_{k^{i1}},\dots, \mathbf{q}^{iN}_{k^{iN}}\right]^T \,(\forall i\in V)$, where $\mathbf{q}^{ij}_{k^{ij}}=\left[q^{jl}_{k^{ij}}, l\in V\right]$ is a binary vector with size $N$.
+	Therefore, a TL can be represented by a binary matrix with the size $N\times N$.
 	For the $i\thi$ UGV, the $\Q^i_k$ represents its knowledge of the earliest measurements, in terms of the measurement time, by all UGVs.	
 	Each element $q^{jl}_{k^{ij}}$ equals $1$ if the $i\thi$ robot knows that the state-measurement pair of the $l\thi$ UGV of time $k^{ij}$, $\left[x^l_{k^{ij}},z^l_{k^{ij}}\right]$, has been received by the $j\thi$ robot, and equals $0$ if the $i\thi$ robot cannot determine whether $\left[x^l_{k^{ij}},z^l_{k^{ij}}\right]$ has been received by the $j\thi$ robot, i.e.,
 	%	\begin{equation*}
@@ -204,23 +224,24 @@
 	%	0 & \text{if}\quad \nexists t\in\mathbb{N}, \text{ s.t. }k^{i,j}\le t\le k \text{ and } \left[x^l_{k^{i,j}},z^l_{k^{i,j}}\right]\in B^j_t.
 	%	\end{cases}
 	%	\end{equation*}
-	\begin{equation*}
+	\small\begin{equation}\label{eqn:tl_entry}
 	q^{jl}_{k^{ij}}=
 	\begin{cases}
-	1 & \text{if}\quad \exists t\in\left[k^{ij}, k\right] \text{ s.t. } \left[x^l_{k^{ij}},z^l_{k^{ij}}\right]\in B^j_t,\\
-	0 & \text{if}\quad \nexists t\in\left[k^{ij}, k\right] \text{ s.t. } \left[x^l_{k^{ij}},z^l_{k^{ij}}\right]\in B^j_t.
+	1 & \text{if}\quad \exists t\in\left[k^{ij}, k\right] \text{ s.t. } \left[x^l_{k^{ij}},z^l_{k^{ij}}\right]\in \B^j_t,\\
+	0 & \text{if}\quad \nexists t\in\left[k^{ij}, k\right] \text{ s.t. } \left[x^l_{k^{ij}},z^l_{k^{ij}}\right]\in \B^j_t.
 	\end{cases}
-	\end{equation*}
+	\end{equation}\normalsize
 	It can happen that $\left[x^l_{k^{ij}},z^l_{k^{ij}}\right]$ has been received by the $j\thi$ UGV but the $i\thi$ UGV does not know this and thus $q^{jl}_{k^{ij}}=0$.
 %	When all elements of $\Q^i_k$ are $1$'s, the $i\thi$ UGV can be sure that the $j\thi$ UGV ($\forall j\in V$) has received the state-measurement pairs of time $k^{i,j}$ from all UGVs.
 	%	Choose the minimum time $k^i_m=\min\limits_j k^{i,j}$.
 	%	Then the $i\thi$ robot fuse all the measurements of time no greater than $k^i_m$ in its own CB to update the stored PDF.
 	%	TLs are exchanged when UGVs communicate and are used to trim the CBs. 
 	
-	The exchange and updating of TLs are described in the TL part in \Cref{alg:lifo}.
+	The exchange and updating of TLs are described in the TL part in \Cref{alg:lifo,alg:upd_tl}.
 	The \Cref{alg:tracklist} describes the approach to trim CBs using TLs.
 	Since a TL only keeps track of the earliest measurements in CBs, the CBs are only trimmed by one time step each time the trim happens.
-	\Cref{fig:} shows the trim of a CB.	
+	\todohere{add a plot showing the change of TL.}
+	\todohere{think how to illustrate the trim process?}
 	
 	The use of TLs can avoid the excessive size of CBs and guarantee that trimming the CBs will not lose any information; the trimmed measurements have been encoded into the stored PDF.
 	The following theorem formalizes this property.
@@ -291,17 +312,25 @@
 	\end{proof}	
 	
 	Under the \fc ness condition, it can be derived that the size of each UGV's CB is upper bounded.
+	\begin{thm}
+		The maximum interval between two consecutive trims is no greater than $(N-1)T_u$.
+	\end{thm}
+	\begin{proof}
+		See the Appendix.
+	\end{proof}
+	
 	\begin{thm}\label{thm:max_CB_size}
 		The length of the $i\thi$ UGV's CB is no greater than $NT_u$.
 	\end{thm}
 	
 	\begin{proof}
+		See the Appendix.
 		Consider the time intervals $\left[k_m,k_{m+1} \right),\,m=1,2,\dots$ that are {\fc}, where $k_1=0$.
 		Define $\Delta_m = k_{m+1}-k_m,\,m=1,2,\dots$.
 		It is easy to know that $\Delta_i\le T_u$.
 		At $k_2$, the worst-case size of a UGV's CB is $(N-1)\Delta_1$.	
 		This can occur if UGVs do not communicate with each other until at $k_2$, when a UGV communicates with all others except one.
-		At $k_3$, according to the definition of a \fc network, every UGV has received measurements made at or before time $k_2$ from all UGVs.
+		At $k_3$, according to the definition of a {\fc} network, every UGV has received measurements made at or before time $k_2$ from all UGVs.
 		The worst-case size of a UGV's CB is then $max \left[(N-1)(\Delta_2-\Delta_1),N(\Delta_1-\Delta_2)\right]$.  %$\Delta_2 = max(k_3-k_2-\Delta_1,0)$.
 		The first term is the worst-case size if $\Delta_2\ge\Delta_1$ and can be achieved similarly to the case of the time interval $\left[k_1,k_2\right)$. 
 		The second term corresponds to the worst-case size when $\Delta_1>\Delta_2$ and can be achieved if a UGV can receive measurements from all other UGVs in the whole time interval $\left[k_2,k_3\right)$. 

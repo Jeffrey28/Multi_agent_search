@@ -7,16 +7,16 @@
 % save('test_mat','sim_for_save2')
 
 %% write data to cvs, which will be then copied for matplotlib plotting
-%
+%{
 filepath = './figures/JDSMC/metrics_plot/';
-filename = [filepath,'metrics_sin_hetero_mov_sen_mov_tar_01-Feb-2017'];
+filename = [filepath,'metrics_circle_hetero_mov_sen_mov_tar_08-Feb-2017'];
 load(filename);
 
 % remember: use the mean values of ml error and entropy, i.e.,
 % ml_err_xxx_mean, ent_xxx_mean
-% var_name_set = {'ml_err_dbf_mean','ent_dbf_mean'};
+var_name_set = {'ml_err_dbf_mean','ent_dbf_mean'};
 % var_name_set = {'ml_err_cons_mean','ent_cons_mean'};
-var_name_set = {'ml_err_cent_mean','ent_cent_mean'};
+% var_name_set = {'ml_err_cent_mean','ent_cent_mean'};
 
 for ii = 1:length(var_name_set)
     csvwrite([filepath,var_name_set{ii}],sim_for_save.sim_res.(var_name_set{ii}))
@@ -64,4 +64,13 @@ for t = 1:n-1
         end
     end
 end
+%}
+
+%% change rbt_spec
+%{
+tmp = [[35;73],[50;77],[21;26],[75;15],[46;22],[77;58]];
+for ii = 1:6
+    rbt(ii).init_pos = [rbt(ii).init_pos,tmp(:,ii)];
+end
+save('rbt_spec.mat','rbt')
 %}

@@ -4,6 +4,13 @@
 % 1/1/17
 % get the code from the fixed-topology case
 
+% user guide:
+% 1. set up the program in simSetup.m. If I want to draw process plot,
+% change trial_cnt in this file to be the trial number that I want to use;
+% if drawing the metrics plot, use 1:trial_num.
+% 2. when target_mode is changed, remember to delete upd_matrix and load a
+% new one.
+
 % main function for running the simulation. use with simSetup
 clearvars -except upd_matrix
 clc; close all
@@ -20,7 +27,13 @@ inPara_sim.tar_move = tar_move;
 inPara_sim.sim_len = sim_len;
 inPara_sim.cons_step = cons_step;
 inPara_sim.num_robot = num_robot;
-inPara_sim.r_init_pos_set = extractfield(rbt_spec,'init_pos');
+% if process_plot
+    % to draw a good process plot, we specifically design the initial
+    % positions of robots
+%     inPara_sim.r_init_pos_set = r_init_pos;
+% else
+    inPara_sim.r_init_pos_set = extractfield(rbt_spec,'init_pos');
+% end
 inPara_sim.fld_size = fld_size;
 inPara_sim.t_init_pos_set = [tx_set;ty_set];
 inPara_sim.sim_r_idx = sim_r_idx;
@@ -31,7 +44,12 @@ inPara_sim.cons_fig = cons_fig;
 inPara_sim.sensor_set_type = sensor_set_type; % 'bin': binary,'ran': range-only,'brg': bearing-only,'rb': range-bearing
 sim = Sim(inPara_sim);
 
-for trial_cnt = 8%1:trial_num
+% temporarily record the length of each CB for the purpose of validating
+% theory of CB size
+tmp_cb_len = zeros(num_robot,sim_len);
+tmp_t_len = zeros(num_robot,sim_len);
+
+for trial_cnt = 11%1:trial_num
     % initialize field class    
     target.pos = [tx_set(trial_cnt);ty_set(trial_cnt)];
     
@@ -57,9 +75,17 @@ for trial_cnt = 8%1:trial_num
     for rbt_cnt = 1:num_robot
         inPara_rbt = struct;
         if r_move == 0
-            inPara_rbt.pos = rbt_spec(rbt_cnt).init_pos(:,trial_cnt);
+%             if process_plot
+%                 inPara_rbt.pos = r_init_pos;
+%             else
+                inPara_rbt.pos = rbt_spec(rbt_cnt).init_pos(:,trial_cnt);
+%             end
         elseif r_move == 1
-            inPara_rbt.center = rbt_spec(rbt_cnt).init_pos(:,trial_cnt);
+%             if process_plot
+%                 inPara_rbt.center = r_init_pos;
+%             else
+                inPara_rbt.center = rbt_spec(rbt_cnt).init_pos(:,trial_cnt);
+%             end
             inPara_rbt.r = r_set(rbt_cnt);
             inPara_rbt.T = T_set(rbt_cnt);
             inPara_rbt.w = dir_set(rbt_cnt)*2*pi/inPara_rbt.T;
@@ -152,11 +178,20 @@ for trial_cnt = 8%1:trial_num
         % so continue to step (3)
         
         % step (3) dbf
+        % in this code, the trim of CB is conducted in this.DBF. May change
+        % this later.
         for ii = 1:num_robot                        
             inPara3 = struct('selection',selection,'target_model',fld.target.model_idx);
             rbt{ii} = rbt{ii}.DBF(inPara3);
         end    
-
+        
+        % temporarily record the size of CB
+        for ii = 1:num_robot
+%             tmp_cb_len(ii,count) = nnz(rbt{ii}.buffer);
+            tmp_t_len(ii,count) = count-rbt{ii}.talign_t;
+        end
+        
+        
         % step (1) exchange
         tmp_rbt = rbt; % use tmp_rbt in data exchange
         
@@ -231,8 +266,7 @@ for trial_cnt = 8%1:trial_num
                      inPara5 = struct;
                      inPara5.selection = selection;
                      inPara5.cons_fig = cons_fig;
-                     inPara5.rbt_nbhd_set = rbt(rbt{ii}.nbhd_idx{top_idx});
-                     %                  inPara5.rbt_nbhd_set = [];
+                     inPara5.rbt_nbhd_set = rbt(rbt{ii}.nbhd_idx{top_idx});                     
                      tmp_rbt_cons{ii} = tmp_rbt_cons{ii}.cons(inPara5);
                  end
                  rbt = tmp_rbt_cons;
@@ -251,16 +285,14 @@ for trial_cnt = 8%1:trial_num
              % use the first robot as the centralized filter
              rbt{1}.buffer_cent.pos = rbt{1}.pos;
              rbt{1}.buffer_cent.z = {rbt{1}.z};
-             rbt{1}.buffer_cent.k = rbt{1}.k;
-             %          rbt{1}.buffer_cent.lkhd_map = {ones(size(rbt{1}.lkhd_map))};
+             rbt{1}.buffer_cent.k = rbt{1}.k;             
              rbt{1}.buffer_cent.lkhd_map = {rbt{1}.lkhd_map};
              
              for ii = 2:num_robot
                  rbt{1}.buffer_cent.pos = [rbt{1}.buffer_cent.pos,rbt{ii}.pos];
                  rbt{1}.buffer_cent.z = [rbt{1}.buffer_cent.z,{rbt{ii}.z}];
                  rbt{1}.buffer_cent.k = [rbt{1}.buffer_cent.k,rbt{ii}.k];
-                 rbt{1}.buffer_cent.lkhd_map = [rbt{1}.buffer_cent.lkhd_map,rbt{ii}.lkhd_map];
-                 %              rbt{1}.buffer_cent.lkhd_map = [rbt{1}.buffer_cent.lkhd_map,ones(size(rbt{ii}.lkhd_map))];
+                 rbt{1}.buffer_cent.lkhd_map = [rbt{1}.buffer_cent.lkhd_map,rbt{ii}.lkhd_map];                 
              end
              inPara6 = struct;
              inPara6.selection = selection;

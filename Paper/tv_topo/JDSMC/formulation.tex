@@ -26,9 +26,9 @@
 	
 	%Each UGV constantly measures the target position and the 
 	The sensor measurement is described by a stochastic model:
-	\begin{equation}\label{eqn:meas_model}
+	\small\begin{equation}\label{eqn:meas_model}
 		z^i_k = h_i(\xg_k,x^i_k,w^i_k),
-	\end{equation}
+	\end{equation}\normalsize
 	where the superscript $i\in\left\lbrace 1,\dots,N\right\rbrace$ represents the index of the UGV; $x^i_k\in S$ is the sensor position and $w^i_k$ is the white measurement noise.
 	% $x^i_k=[x^i_k;\theta^i_k]$ represents the sensor state, consisting of the sensor position $x^i_k$ and direction $\theta^i_k$.
 	The measurement function $h_i$ depends on the type of the sensor. 
@@ -52,9 +52,9 @@
 	$h_i$ only depends on the relative Euclidean distance between the sensor and the target:
 	%\begin{subequations}
 	%	\begin{align}
-	\begin{equation*}%\label{eqn:ran_only}
+	\small\begin{equation*}%\label{eqn:ran_only}
 		h_i(\xg_k,x^i_k)=\|\xg_k-x^i_k\|_2,
-	\end{equation*}	
+	\end{equation*}	\normalsize
 	%\begin{equation}\label{eqn:ran_only}
 	%h_i(\xg_k,w^i_k;x^i_k)=
 	%\begin{cases}
@@ -70,9 +70,9 @@
 	\textbf{Bearing-only sensors:} 
 	%when the target is within the sensor's sensing domain, 
 	$h_i$ only depends on the relative bearing between the sensor and the target:
-	\begin{equation*}
+	\small\begin{equation*}
 		h_i(\xg_k,x^i_k)=\measuredangle (\xg_k-x^i_k),
-	\end{equation*}
+	\end{equation*}\normalsize
 	%\begin{equation}
 	%h_i(\xg_k,w^i_k;x^i_k)=
 	%\begin{cases}
@@ -83,9 +83,9 @@
 	where $\measuredangle$ denotes the angle from the sensor to the target.
 	
 	\textbf{Range-bearing sensors:} $h_i$ includes both the relative distance and bearing: % between the sensor and the target:
-	\begin{equation*}
+	\small\begin{equation*}
 		h_i(x^g_k,x^i_k)=x^g_k-x^i_k.
-	\end{equation*}
+	\end{equation*}\normalsize
 	
 %	\subsection{Target and Sensor Model}
 %	The target motion takes a deterministic discrete-time model:	
