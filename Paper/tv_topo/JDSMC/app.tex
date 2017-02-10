@@ -1,10 +1,10 @@
 \appendix
 	\section*{Appendix: Proof of the Maximal Time Interval between Consecutive Trims}
-	\todohere{check if I can define my network using this definition, not the one I used before.}
 	
-	Consider the time intervals $\left[T_m,T_{m+1} \right),\,m=1,2,\dots$ that are {\fc}, where $T_1=0$.
-	Within each interval, there exists at least one path between any two pairs of UGVs.
-	Note that, $\left[T_m,T_{m+1}\right)$ is different from $\left[k_n,k_{n+1}\right)$.
+	We consider the time intervals $\left[T_m,T_{m+1} \right),\,m=1,2,\dots$, where $T_1=0$.
+	The time intervals are defined in the way that within each interval a UGV can send its information to any another UGVs.
+	\Cref{prop1} ensures that such time intervals exist and are of finite length.
+%	Note that, $\left[T_m,T_{m+1}\right)$ is different from $\left[k_n,k_{n+1}\right)$.
 %	The latter requires that the union within the interval is a jointly connected graph, 
 	Define $L^{ij}_m\,(i,j\in V, m=1,2,\dots)$ as the size of the measurements from the $j\thi$ UGV that are stored in the $i\thi$ UGV's CB at time $T_m$.
 	Let $C^i_m$ be the length of time steps of which the $i\thi$ UGV CB has got the measurements from all UGVs but have not yet been trimmed at $T_m$.

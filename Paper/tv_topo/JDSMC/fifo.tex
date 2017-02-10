@@ -42,7 +42,7 @@
 			\TL:
 			The TL of $i\thi$ UGV is initialized at $k=0$:
 			\small\begin{equation*}
-				P^i_0 = \mathbf{0},\;\text{i.e. } p^{jl}_0=0, \forall j,l\in \lb 1\dots,N\rb.
+				P^i_1 = \mathbf{0},\;\text{i.e. } p^{jl}_1=0, \forall j,l\in \lb 1\dots,N\rb.
 			\end{equation*}\normalsize
 			
 			\State \textbf{(2)} At time $k\,(k\geq 1)$ for $i\thi$ UGV:	
@@ -90,30 +90,16 @@
 		\end{algorithmic}
 	\end{algorithm}
 	
-	\medskip
-%	\begin{rem}
-%		Compared to statistics dissemination, \proto is generally more communication-efficient for distributed filtering. 
-%		To be specific, consider a $D\times D$ grid environment with a network of $N$ UGVs, the transmitted data of \proto between each pair of UGVs are only the CB of each UGV and the corresponding UGV positions where observations were made, the length of which is $O(N)$. 
-%		On the contrary, the length of transmitted data for a statistics dissemination approach that transmits unparameterized posterior distributions or likelihood functions is $O(D^2)$, which is in the order of environmental size. 
-%		Since $D$ is generally much larger than $N$ in applications such as target localization, \proto requires much less communication resources.
-%	\end{rem}
-	
 %	\medskip
-%	\todohere{change the figure to be a switching topology. change the contents here accordingly}
-%	\todohere{modify the whole paragraph when new plot is made.}
 	\cref{fig:\proto} illustrates the {\proto} cycles of a network of 3 UGVs with switching topologies.
 %	There are two types of topologies: under the first one only UGV $1$ and UGV $2$ can directly communicate and under second one only UGV $2$ and UGV $3$ can directly communicate.
 	Several facts can be noticed in \cref{fig:\proto}: 
 	(1) the topologies are jointly strongly connected in the time interval $\left[1,6\right]$;
 	(2) CBs of all UGVs are filled within finite steps;
-%	, which means under \proto each UGV has a maximum delay of 2 steps for receiving observations from other UGVs; 
-%	(3) after being filled, each CB keeps updated every finite time steps, which means each UGV receives new observations of other UGVs with finite delay.
 	Extending these facts to a network of $N$ UGVs, we have the following theorem to describe the property of \proto:
 	%\medskip
 	
-%	\todohere{it seems to me that a tighter lower bound can be achieved by using FIFO, but not sure how to compute it.}
 	\begin{thm}\label{prop1}
-		%For a fixed and undirected network of $N$ UGVs, \proto uses the shortest path(s) between $i\thi$ and $j\thi$ UGV to exchange observation, the length of which is the delay $\tau_{i,j}$ between these two UGVs.
 		Consider a network of $N$ UGVs with switching interaction topologies.
 %		\todohere{may rephrase the following sentence}
 		If the following two conditions hold:
