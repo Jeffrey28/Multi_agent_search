@@ -3,7 +3,7 @@
 %	In our previous work, we proposed a Latest-In-and-Full-Out (LIFO) protocol and can be used for time-invariant topologies.
 %	{\proto} is suitable for time-varying topologies.
 %	Let $y_k^i=\left\lbrace x^i_k,z^i_k\right\rbrace$ and $Y^i_{\K}=\left\lbrace y_{k}^i|k\in \K\right\rbrace$, where $\K$ is an index set of time steps.
-	Let $Y^i_{\K}=\lb \left[x^i_k,z^i_k\right]|k\in \K\rb$ 
+	Let \small$Y^i_{\K}=\lb \left[x^i_k,z^i_k\right]|k\in \K\rb$\normalsize 
 	% $Y^i_{\K^{i,j}_k}=\lb \left[x^{i,j}_t,z^{i,j}_t\right]|t\in \K^{i,j}_k\rb$
 	be the set of state-measurement pairs of robot $i$, where $\K$ is an index set of time steps.
 	Each UGV contains a communication buffer (CB) that stores state-measurement pairs 
@@ -15,7 +15,7 @@
 	\end{equation*}\normalsize
 %	where $z^j_{k^i_j}$ represents the observation made by ${j\thi}$ UGV at time $k^i_j$. 
 	where $\B^i_k$ is the CB of $i\thi$ UGV at time $k$ and $\K^{i,j}_k (j\in V)$ is the time index set.
-	$Y^j_{\K^{i,j}_k}$ represents the set of $j\thi$ UGV's measurements at time steps in $\K^{i,j}_k$ that are stored in $i\thi$ UGV's CB at time $k$.
+	$Y^j_{\K^{i,j}_k}$ represents the set of $j\thi$ UGV's state-measurement pairs of time steps in $\K^{i,j}_k$ that are stored in $i\thi$ UGV's CB at time $k$.
 %	Note that under {\proto} and certain conditions (\Cref{prop1}) of interaction topologies, $\mathcal{Q}_i=\left\lbrace 1,\dots,N\right\rbrace \setminus \left\lbrace i\right\rbrace$, i.e. each robot can know the measurements from all other robots. 
 %	This will be proved in \Cref{cor1}.
 %%	$z^j_{k^i_j}$ is stored in the CB of ${i\thi}$ UGV, where $k^i_j$ is the latest observation time of ${j\thi}$ UGV that is available to ${i\thi}$ UGV by time $k$. Due to the communication delay, $k^i_j<k, \forall j\neq i$ and $k^i_i=k$ always holds.
@@ -94,8 +94,8 @@
 	\cref{fig:\proto} illustrates the {\proto} cycles of a network of 3 UGVs with switching topologies.
 %	There are two types of topologies: under the first one only UGV $1$ and UGV $2$ can directly communicate and under second one only UGV $2$ and UGV $3$ can directly communicate.
 	Several facts can be noticed in \cref{fig:\proto}: 
-	(1) the topologies are jointly strongly connected in the time interval $\left[1,6\right]$;
-	(2) CBs of all UGVs are filled within finite steps;
+	(1) the topologies are jointly strongly connected in the time interval $\left[1,6\right)$;
+	(2) CBs of all UGVs are filled within finite steps.
 	Extending these facts to a network of $N$ UGVs, we have the following theorem to describe the property of \proto:
 	%\medskip
 	
@@ -107,7 +107,7 @@
 			\item there exists an infinite sequence of time intervals $\left[k_m,k_{m+1} \right),\,m=1,2,\dots$, starting at $k_1=0$ and are contiguous, nonempty and uniformly bounded;
 			\item the union of graphs across each such interval is jointly strongly connected,
 		\end{enumerate}
-		then any pair of UGVs can exchange measurements under \proto. And the communication delay between each pair of UGVs is no greater than \small$(N-1)T_u$\normalsize, where \small$T_u=\sup\limits_{m=1,2,\dots}\left( k_{m+1}-k_m\right) T$ \normalsize is the upper bound of interval lengths.
+		then any pair of UGVs can exchange measurements under \proto. And the communication distance (in terms of time) between each pair of UGVs is no greater than \small$(N-1)T_u$\normalsize, where \small$T_u=\sup\limits_{m=1,2,\dots}\left( k_{m+1}-k_m\right) T$ \normalsize is the upper bound of interval lengths.
 	\end{thm}
 	
 	\begin{proof}				
@@ -125,7 +125,7 @@
 		If $l_1\neq j$, $B^i_1$ has been merged into $B^{l_1}_{t_1}$ and will be sent out in the next time step. 
 		
 		By using the similar derivation for time intervals $\left[k_m,k_{m+1} \right),\;,m=2,3,\dots$, it can be shown that all UGVs can receive the state-measurement pairs in $B^i_1$ no later by $k_{N}$.
-		Therefore, the transmission delay between an arbitrary pair of UGVs is no greater than \small$(N-1)T_u$\normalsize.
+		Therefore, the transmission time between an arbitrary pair of UGVs is no greater than \small$(N-1)T_u$\normalsize.
 	\end{proof}
 	
 	Similar to the definition in \cite{jadbabaie2003coordination}, we define an interaction topology that satisfies the two conditions in \Cref{prop1} as a \textit{{\fc}} network.
@@ -170,7 +170,7 @@
 	\begin{figure}%[thpb]
 		\centering
 		\includegraphics[width=0.5\textwidth]{figures/fifo}
-		\caption{Example of {\proto} with three UGVs using switching line interaction topologies. The double-headed arrow represents a communication link between two UGVs.}
+		\caption{Example of {\proto} with three UGVs using switching line interaction topologies. The arrows represent a directed communication link between two UGVs. $\varnothing$ denotes the empty set.}
 		\label{fig:\proto}
 		%		\vspace{-1em}]
 	\end{figure}		

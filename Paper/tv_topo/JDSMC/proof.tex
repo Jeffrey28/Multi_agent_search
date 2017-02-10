@@ -54,7 +54,7 @@
 		\end{equation*}\normalsize
 		where 
 		\small\begin{equation*}
-		\X_k^{MAP}=\arg\max\limits_{\X}P^i_{pdf}(\X|\mathbf{z}^{i}_{1:k}).
+		\X_k^{MAP}=\arg\max\limits_{\X}P^i_{pdf}(\X|\Z^{i}_{1:k}).
 		\end{equation*}		
 	\end{thm}
 %	\medskip
@@ -63,18 +63,18 @@
 		Define the time set of $i\thi$ UGV, $\K^{i,j}_{k}(\,j\in V)$, that contains the time steps of measurements by the $j\thi$ UGV that are contained in $B^i_k$.
 		The batch form of DBF at $k\thi$ step is
 		\small\begin{equation*}
-		P^i_{pdf}(\X|\zb^i_{1:k})=\frac{P^i_{pdf}(\X)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\X)}{\sum\limits_{\X\in S}P^i_{pdf}(\X)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\X)}.
+		P^i_{pdf}(\X|\Z^i_{1:k})=\frac{P^i_{pdf}(\X)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\X)}{\sum\limits_{\X\in S}P^i_{pdf}(\X)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\X)}.
 		\end{equation*}\normalsize
 		
-		Comparing $P^i_{pdf}(X_k=x|\zb^i_{1:k})$ with $P^i_{pdf}(X_k=\xg|\zb^i_{1:k})$\footnote{For the purpose of simplicity, we use $P^i_{pdf}(x|\zb^i_{1:k})$ to represent $P^i_{pdf}(X_k=x|\zb^i_{1:k})$ in this proof.} yields
+		Comparing $P^i_{pdf}(X_k=x|\Z^i_{1:k})$ with $P^i_{pdf}(X_k=\xg|\Z^i_{1:k})$\footnote{For the purpose of simplicity, we use $P^i_{pdf}(x|\Z^i_{1:k})$ to represent $P^i_{pdf}(X_k=x|\Z^i_{1:k})$ in this proof.} yields
 		
 		\small\begin{equation}\label{eqn:cmp}
-		\frac{P^i_{pdf}(x|\zb^i_{1:k})}{P^i_{pdf}(\xg|\zb^i_{1:k})}=\frac{P^i_{pdf}(x)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|x)}{P^i_{pdf}(\xg)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\xg)}.
+		\frac{P^i_{pdf}(x|\Z^i_{1:k})}{P^i_{pdf}(\xg|\Z^i_{1:k})}=\frac{P^i_{pdf}(x)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|x)}{P^i_{pdf}(\xg)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\xg)}.
 		\end{equation}\normalsize
 		
 		Take the logarithm of \Cref{eqn:cmp} and average it over $k$ steps:
 		\small\begin{equation}\label{eqn:cmp_log}
-		\frac{1}{k}\ln\frac{P^i_{pdf}(x|\zb^i_{1:k})}{P^i_{pdf}(\xg|\zb^i_{1:k})}=\frac{1}{k}\ln\frac{P^i_{pdf}(x)}{P^i_{pdf}(\xg)}+\sum\limits_{j=1}^{N}\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x)}{P(z^j_t|\xg)}.
+		\frac{1}{k}\ln\frac{P^i_{pdf}(x|\Z^i_{1:k})}{P^i_{pdf}(\xg|\Z^i_{1:k})}=\frac{1}{k}\ln\frac{P^i_{pdf}(x)}{P^i_{pdf}(\xg)}+\sum\limits_{j=1}^{N}\frac{1}{k}\sum\limits_{t\in\K^{i,j}_{k}}\ln\frac{P(z^j_t|x)}{P(z^j_t|\xg)}.
 		\end{equation}\normalsize
 		
 		Since $P^i_{pdf}(x)$ and $P^i_{pdf}(\xg)$ are bounded and nonzero by the choice of the initial PDF, $\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x)}{P^i_{pdf}(\xg)}= 0.$
@@ -100,14 +100,14 @@
 		Considering the limiting case of \Cref{eqn:cmp_log}, we get
 		%		\begin{subequations}
 		\small\begin{align}
-		\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x|\zb^i_{1:k})}{P^i_{pdf}(\xg|\zb^i_{1:k})}<0,&\quad x\neq \xg\label{subeqn:limit1}\\
-		\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x|\zb^i_{1:k})}{P^i_{pdf}(\xg|\zb^i_{1:k})}=0,&\quad x= \xg\label{subeqn:limit2}.
+		\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x|\Z^i_{1:k})}{P^i_{pdf}(\xg|\Z^i_{1:k})}<0,&\quad x\neq \xg\label{subeqn:limit1}\\
+		\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x|\Z^i_{1:k})}{P^i_{pdf}(\xg|\Z^i_{1:k})}=0,&\quad x= \xg\label{subeqn:limit2}.
 		\end{align}\normalsize
 		%		\end{subequations}
 		\Cref{subeqn:limit1,subeqn:limit2} imply that
 		
 		\small\begin{equation*}
-		\frac{P^i_{pdf}(x|\zb^i_{1:k})}{P^i_{pdf}(\xg|\zb^i_{1:k})}\overset{P}{\longrightarrow}
+		\frac{P^i_{pdf}(x|\Z^i_{1:k})}{P^i_{pdf}(\xg|\Z^i_{1:k})}\overset{P}{\longrightarrow}
 		\begin{cases}
 		0\quad x\neq \xg,\\
 		1\quad x= \xg.
@@ -248,9 +248,9 @@
 		
 	\begin{proof}		
 %		The batch form of DBF at $k\thi$ step is
-		Similar to \Cref{eqn:cmp}, comparing $P^i_{pdf}(x|\zb^i_k)$ and $P^i_{pdf}(\xg|\zb^i_k)$ yields		
+		Similar to \Cref{eqn:cmp}, comparing $P^i_{pdf}(x|\Z^i_k)$ and $P^i_{pdf}(\xg|\Z^i_k)$ yields		
 		\small\begin{equation}\label{eqn:cmp2}
-		\frac{P^i_{pdf}(x|\zb^i_k)}{P^i_{pdf}(\xg|\zb^i_k)}=\frac{P^i_{pdf}(x)\prod\limits_{j=1}^{N}\prod\limits_{t\in\mathscr{K}^{i,j}_{k}}P(z^j_t|x;x^j_t)}{P^i_{pdf}(\xg)\prod\limits_{j=1}^{N}\prod\limits_{t\in\mathscr{K}^{i,j}_{k}}P(z^j_t|\xg;x^j_t)}.
+		\frac{P^i_{pdf}(x|\Z^i_k)}{P^i_{pdf}(\xg|\Z^i_k)}=\frac{P^i_{pdf}(x)\prod\limits_{j=1}^{N}\prod\limits_{t\in\mathscr{K}^{i,j}_{k}}P(z^j_t|x;x^j_t)}{P^i_{pdf}(\xg)\prod\limits_{j=1}^{N}\prod\limits_{t\in\mathscr{K}^{i,j}_{k}}P(z^j_t|\xg;x^j_t)}.
 		\end{equation}\normalsize
 			
 		The only difference from \Cref{eqn:cmp} is that $P(z^j_l|x;x^j_l)$ in \Cref{eqn:cmp2} varies as the UGV moves.

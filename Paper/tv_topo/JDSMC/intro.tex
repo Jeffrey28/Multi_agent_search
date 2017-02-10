@@ -1,15 +1,19 @@
 \section{INTRODUCTION}
 	
 %	Unmanned ground vehicles (UGV) that operate without on-board operators have been used for many applications that are inconvenient, dangerous, or impossible to human. 
-	Distributed estimation using a group of networked UGVs has been utilized to collectively infer environment status, such as intruder detection \cite{chamberland2007wireless} and object tracking \cite{wang2003online}. 
-	Several techniques have been developed for distributed estimation, including distributed linear Kalman filter (DKF) \cite{2005distributed}, distributed extended Kalman filter \cite{madhavan2004distributed}, and distributed particle filter \cite{gu2007distributed}. 
-	The most generic filtering scheme is the distributed Bayesian filter (DBF), which can be applied for nonlinear systems with arbitrary noise distributions \cite{bandyopadhyay2014distributed,julian2012distributed}.
-	In fact, under the assumption of linearity and Gaussian noise, a DBF can be reduced to a DKF \cite{chen2003bayesian}.
-	This paper focuses on the DBF for networked UGVs under dynamically changing interaction topologies.
+	Estimation using a group of networked UGVs has been utilized to collectively measure environment status \cite{hedrick2011tools}, such as intruder detection \cite{chamberland2007wireless}, and signal source seeking \cite{atanasov2015distributed}, and pollution field estimation \cite{madhag2017distributed}. 
+	Filtering methods such as the Kalman Filter, extended Kalman filter, and the particle filter have been widely adopted \cite{thrun2005probabilistic}.
+%	Several techniques have been developed for distributed estimation, including distributed linear Kalman filter (DKF) \cite{2005distributed}, distributed extended Kalman filter \cite{madhavan2004distributed}, and distributed particle filter \cite{gu2007distributed}. 
+	The most generic filtering scheme is the Bayesian filter, which can be applied for nonlinear systems with arbitrary noise distributions \cite{bandyopadhyay2014distributed,julian2012distributed}.
+	In fact, under the assumption of linearity and Gaussian noise, a Bayesian filter can be reduced to the Kalman filter \cite{chen2003bayesian}.
+	For general nonlinear systems, the particle filter is usually utilized as the numerical implementation of the Bayesian filter \cite{chen2003bayesian}, due to the advantage in computation.
+	This paper focuses on the networked Bayesian filter for target tracking under dynamically changing interaction topologies.
 	
-	The interaction topology plays a central role on the design of DBF, of which two types are widely investigated in literature: fusion center (FC) and neighborhood (NB). 
-	In the former, local statistics estimated by each agent is transmitted to a single FC, where a global posterior distribution is calculated at each filtering cycle \cite{zuo2006bandwidth,vemula2006target}. 
-	In the latter, each agent individually executes distributed estimation and the agreement of local estimates is achieved by certain consensus strategies \cite{jadbabaie2003coordination,ren2005consensus,olfati2007consensus}.In general, the NB-based distributed filters are more suitable in practice since they do not require a fusion center with powerful computation capability and are more robust to changes in network topology and link failures. So far, the NB-based approaches have two mainstream schemes according to the transmitted data among agents, i.e., \textit{statistics dissemination} (SD) and \textit{measurement dissemination} (MD). 
+	The interaction topology plays a central role on the design of the networked Bayesian filter, of which two types are widely investigated in literature: the centralized filter and the distributed filter.
+	In the former, local statistics estimated by each agent is transmitted to a single fusion center, where a global posterior distribution is calculated at each filtering cycle \cite{zuo2006bandwidth,vemula2006target}. 
+	In the latter, each agent individually executes distributed estimation and the agreement of local estimates is achieved by certain consensus strategies \cite{jadbabaie2003coordination,ren2005consensus,olfati2007consensus}.
+	In general, the distributed filters are more suitable in practice since they do not require a fusion center with powerful computation capability and are more robust to changes in network topology and link failures. 
+	So far, the distributed filters have two mainstream schemes in terms of the transmitted data among agents, i.e., the \textit{statistics dissemination} (SD) and the \textit{measurement dissemination} (MD). 
 	In the SD scheme, each agent exchanges statistics such as posterior distributions and likelihood functions within neighboring nodes \cite{hlinka2013distributed}. 
 	In the MD scheme, instead of exchanging statistics, each agent sends measurements to neighboring nodes. 
 	

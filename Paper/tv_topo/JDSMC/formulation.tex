@@ -1,12 +1,20 @@
 \section{Problem Formulation}\label{sec:prob}
+\begin{figure}%[thpb]
+	\centering
+	\includegraphics[width=0.45\textwidth]{figures/scenario}
+	\caption{Target tracking scenario. The interaction topology is dynamically changing and UGVs can only communicate with neighboring UGVs.}
+	\label{fig:scenario}
+	%		\vspace{-1em}]
+\end{figure}
 %	\section{\proto Protocol for Dynamically Changing Interaction Topologies}\label{sec:lifo}
-	Consider a network of $N$ UGVs in a bounded two-dimensional space $S$. 
+	Consider a network of $N$ UGVs in a bounded two-dimensional space $S$, as shown in \cref{fig:scenario}.
 	The interaction topology can be dynamically changing due to limited communication range, varying team formation or link failure.
 	Each UGV is equipped with a sensor for target detection. 
 	Due to the limit of communication range, each UGV can only exchange sensor measurements with its local neighbors. 
 %	The Bayesian filter is run locally on each UGV based on its own measurements and the received measurements from other UGVs to estimate the target position in $S$.
 	Every UGV locally runs a Bayesian filter to estimate the target position in $S$ utilizing its own measurements and the received measurements from other UGVs. 
 	Since this work is focused on the distributed Bayesian filter for target localization, we assume that UGVs' states are accurately known.
+%	An illustration of the scenario is shown in \cref{fig:scenario}.
 	
 	\subsection{Target and Sensor Model}
 	%Probabilistic Model of Binary Sensor}
@@ -204,14 +212,14 @@
 %	The interaction topology can be dynamically changing due to limited communication range, varying team formation or link failure.
 %	Let $\bar{G}=\left\lbrace G_1,G_2,\dots,G_L\right\rbrace $ denote the set of all possible simple and undirected graphs defined for the network of UGVs.
 %	Let $\bar{G}$ denote the set of all possible simple and undirected graphs defined for the network of UGVs.
-	Let $\bar{G}$ denote the set of all possible simple directed graphs\footnote{For undirected graphs, we consider the set of simple undirected graphs.} defined over the network of UGVs.
+%	Let $\bar{G}$ denote the set of all possible simple directed graphs\footnote{For undirected graphs, we consider the set of simple undirected graphs.} defined over the network of UGVs.
 %	It is easy to know that $\bar{G}$ has finite elements.
-	The adjacency matrix associated with a graph $G_l\in\bar{G}$ is denoted as $A_l=[a^l_{ij}]$.	
-	Define the \textit{union} of a collection of graphs $\left\lbrace G_{i_1},G_{i_2},\dots,G_{i_l} \right\rbrace \subset \bar{G}$ as the graph with the vertices in $V$ and the edge set given by the union of edge sets of $G_{i_j},\,j=1\dots,l$.
+%	The adjacency matrix associated with a graph $G_l\in\bar{G}$ is denoted as $A_l=[a^l_{ij}]$.	
+	Define the \textit{union} of a collection of simple directed graphs\footnote{For undirected graphs, we consider the set of simple undirected graphs.} \small$\left\lbrace G_{i_1},G_{i_2},\dots,G_{i_l} \right\rbrace$\normalsize as the graph with the vertices in $V$ and the edge set given by the union of edge sets of \small$G_{i_j},\,j=1\dots,l$\normalsize.
 	Such collection is \textit{jointly strongly connected} if the union of its members forms a strongly connected graph\footnote{For undirected graphs, such collection is \textit{jointly connected} \cite{jadbabaie2003coordination}.}.
 %	We define the concept of neighbors in a UGV network.
 %	\todohere{note that the definition for neighbor here means neighbors who can receive robot $i$'s CB, so it's outbound neighbors for directed graph.}
-	We define the \textit{\dnbhd} of $i\thi$ UGV under topology $G_{l}$ as the set $\mathcal{N}_i(G_{l})=\left\lbrace j|a^l_{ij}=1,\,j\in V\right\rbrace $. %\left\lbrace1,\dots,N \right\rbrace 
+	We define the \textit{\dnbhd} of $i\thi$ UGV under topology $G_{l}$ as the set \small$\mathcal{N}_i(G_{l})=\left\lbrace j|a^l_{ij}=1,\,j\in V\right\rbrace $\normalsize. %\left\lbrace1,\dots,N \right\rbrace 
 	All UGVs in $\mathcal{N}_i(G_{l})$ can directly receive information from the $i\thi$ UGV via the single hopping.
 %	The \textit{\anbhd} is defined as $\mathcal{Q}_i(G_{l})$ that contains indices of UGVs whose information can be received by the $i\thi$ UGV, possibly via multi-hopping, given a specific data exchange protocol and the interaction topology $G_{l}$. 
 %	Note that in general $\mathcal{N}_i(G_{l})\subseteq\mathcal{Q}_i(G_{l})$.

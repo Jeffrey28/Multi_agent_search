@@ -21,17 +21,25 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
+\bibitem{hedrick2011tools}
+J.~K. Hedrick, B.~Basso, J.~Love, and B.~M. Lavis, ``Tools and techniques for
+  mobile sensor network control,'' \emph{Journal of Dynamic Systems,
+  Measurement, and Control}, vol. 133, no.~2, p. 024001, 2011.
+
 \bibitem{chamberland2007wireless}
 J.-F. Chamberland and V.~V. Veeravalli, ``Wireless sensors in distributed
   detection applications,'' \emph{Signal Processing Magazine, IEEE}, vol.~24,
   no.~3, pp. 16--25, 2007.
 
-\bibitem{wang2003online}
-C.-C. Wang, C.~Thorpe, and S.~Thrun, ``Online simultaneous localization and
-  mapping with detection and tracking of moving objects: Theory and results
-  from a ground vehicle in crowded urban areas,'' in \emph{Robotics and
-  Automation, 2003. Proceedings. ICRA'03. IEEE International Conference on},
-  vol.~1.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2003, pp. 842--849.
+\bibitem{atanasov2015distributed}
+N.~A. Atanasov, J.~Le~Ny, and G.~J. Pappas, ``Distributed algorithms for
+  stochastic source seeking with mobile robot networks,'' \emph{Journal of
+  Dynamic Systems, Measurement, and Control}, vol. 137, no.~3, p. 031004, 2015.
+
+\bibitem{madhag2017distributed}
+A.~Madhag and J.~Choi, ``A distributed navigation strategy for mobile sensor
+  networks with the probabilistic wireless links,'' \emph{Journal of Dynamic
+  Systems, Measurement, and Control}, vol. 139, no.~3, p. 031004, 2017.
 
 \bibitem{2005distributed}
 R.~Olfati-Saber, ``Distributed kalman filter with embedded consensus filters,''
