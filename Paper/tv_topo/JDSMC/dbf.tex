@@ -3,12 +3,13 @@
 	%, which is also stated in \cite{bandyopadhyay2014distributed} and \cite{julian2012distributed}. 
 	%Each UGV has its individual estimation of the probability density function (PDF) of target position, called \textit{individual PDF}. 
 	Let $\X_k\in S$ be the random variable representing the position of the target at time $k$.
-	Define $\Z^i_k$ as the set of the measurements of time $k$ from all UGVs that are in the $i\thi$ UGV's CB, i.e., \small$\Z^i_k=\lb z^j_k| \left[x^j_k,z^j_k\right]\in \B^i_k,\; \forall j\in V\rb$\normalsize and let $\Z^i_{1:k} = \bigcup\limits_{t=1}^k \Z^i_t$. 
-	To avoid confusion, we define $\zb^i_{1:k}=\left[z^i_1,\dots,z^i_k\right]$ as the set of the $i\thi$ UGV's measurements of times $1$ through $k$.
+	Define $\Z^i_k$ as the set of measurements of time $k$ that are in the $i\thi$ UGV's CB, i.e., \small$\Z^i_k=\lb z^j_k| \left[x^j_k,z^j_k\right]\in \B^i_k,\; \forall j\in V\rb$\normalsize and let $\Z^i_{1:k} = \bigcup\limits_{t=1}^k \Z^i_t$. 
+	We also define $\zb^i_{1:k}=\left[z^i_1,\dots,z^i_k\right]$ as the set of the $i\thi$ UGV's measurements of times $1$ through $k$.
 %	\todohere{probably use $z^V_{1:k}$ here? And then use $z^i_{1:k}$ as the set for only UGV $i$.}
 	The probability density function (PDF) of $\X_k$, called \textit{individual PDF}, of the $i\thi$ UGV is represented by
 	%=\left\lbrace z^i_1,\dots,z^i_k\right\rbrace
-	$P^i_{pdf}(\X_{k}|\Z^i_{1:k})$ and is the estimation of the target position given all the measurements that the $i\thi$ UGV has received.	
+	$P^i_{pdf}(\X_{k}|\Z^i_{1:k})$.
+	It is the estimation of the target position given all the measurements that the $i\thi$ UGV has received.	
 %	where $\mathbf{z}^i_{1:k}$ denotes the set of measurements by $i\thi$ UGV and by UGVs in $\mathcal{Q}_i$, that have been received by $i\thi$ UGV until time $k$.
 	%by UGVs in $\mathcal{Q}_i$ that have been transmitted to $i\thi$ UGV by time $k$.
 	%from time $1$ through $k$ and $z^{\mathcal{Q}_i}_{1:k}$ means the set of measurements by UGVs in $\mathcal{Q}_i$ that are transmitted to $i\thi$ UGV.
@@ -70,7 +71,7 @@
 	K_i=\left[\int\limits_{\X_k\in S} P^i_{pdf}(\X_k|\mathbf{z}^i_{1:k-1})P(\Z^i_k|\X_k)d\X_k\right]^{-1}.
 	\end{align*}\normalsize
 	The $\Omega^i_k$ denotes the index set of UGVs whose state-measurement pair of time $k$ is stored in the $i\thi$ UGV's CB, i.e. $\Omega^i_k=\lb j\in V | \left[x^j_k,z^j_k\right]\in \B^i_k,\, \forall j\in V\rb$.
-	The factorization of $P(\Z^i_k|\X_k)$ comes from the conditional independence of measurements between each UGV given the target position and the corresponding UGV's position.	
+	The factorization of $P(\Z^i_k|\X_k)$ comes from the conditional independence of measurements from each UGV given the target position and the corresponding UGV's position.	
 	
 	\begin{algorithm}
 		\caption{\proto-DBF Algorithm}\label{alg:lifo-dbf}
@@ -103,7 +104,8 @@
 			K_{\xi}=\left[\int_S P_{tmp}^{pre}(\X_{\xi})P(\Z^i_{\xi}|\X_{\xi})d\X_{\xi}\right]^{-1}.
 			\end{gather*} \normalsize
 			
-			\State(2.3)\footnotemark If $z^j_{\xi}\neq\emptyset$ for $\forall j\in V$, update the stored PDF:
+			\State(2.3)
+			If $z^j_{\xi}\neq\emptyset$ for $\forall j\in V$, update the stored PDF:
 			%				When $\xi=t+1$, if $z^j_{t+1}\neq\emptyset$ for $\forall j\in V$, update the stored PDF:
 			%				then the stored PDF will be updated to be the temporary PDF of time $t+1$:
 			\small\begin{equation*}
@@ -119,16 +121,15 @@
 			$P^i_{pdf}(\X_{k}|\mathbf{z}^{i}_{1:k})=P^i_{tmp}(\X_k)$.		
 		\end{algorithmic}
 	\end{algorithm}
-	\footnotetext{This step will be modified in \Cref{subsec:tracklist} after introducing the track list.}
 	
-	\subsection{FIFO-DBF}
+	\subsection{FIFO-DBF Algorithm}
 	The generic DBF is not directly applicable to time-varying interaction topologies. 
 	This is because changing topologies can cause intermittent and out-of-sequence arrival of measurements from different UGVs, giving rise to the OOSM problem.
 	One possible solution is to ignore all measurements that are out of the temporal order.
-	This is, however, undesirable since this will cause information loss.
-	Another possible remedy is to fuse all measurements by running the filtering algorithm from the initial individual PDF at every time step.
-	This, however, causes excessive computational burden.
-	To avoid the OOSM problem and unnecessary computational complexity, we add a new PDF, namely the \textit{stored PDF}, $P^{i}_{sto}(\X_t)$, that is updated from the $i\thi$ UGV's initial PDF by fusing the state-measurement pairs of \textit{all} UGVs up to a certain time $t\le k$.
+	This is undesirable since this will cause significant information loss.
+	Another possible remedy is to fuse all measurements by running the filtering algorithm from the beginning at each time step.
+	This solution naturally causes excessive computational burden.
+	To avoid both OOSM problem and unnecessary computational complexity, we add a new PDF, namely the \textit{stored PDF}, $P^{i}_{sto}(\X_t)$, that is updated from the $i\thi$ UGV's initial PDF by fusing the state-measurement pairs of \textit{all} UGVs up to a certain time $t\le k$.
 	The choice of $t$ is described in \Cref{subsec:tracklist}.
 	%	 that are in the $i\thi$ UGV's CB.	
 	%	Therefore, the choice of $t$ needs to ensure that the $i\thi$ UGV has received the state-measurement pairs of times no greater than $t$ from all UGVs, which is described in \Cref{sec:tracklist} by using the track lists.
@@ -141,10 +142,10 @@
 	%	We use $\Omega^i_{\xi}\,\left(\xi=t+1,\dots,k\right)$ to denote the index set of UGVs whose state-measurement pair of time $(\xi)$ is stored in $i\thi$ UGV's CB, i.e. $\Omega^i_{\xi}=\left\lbrace j\in \mathcal{Q}_i \bigcup \left\lbrace i \right\rbrace | \left[x^j_\xi,z^j_{\xi}\right]\in B^i_k\rb$.
 	%	The measurements will be sequentially used to update the temporary PDF until the latest measurements are used.
 %	The temporary PDF is then assigned as the individual PDF of time $k$.
-	It should be noted that, when the UGV's CB contains all UGVs' state-measurement pairs of time $t+1$, the temporary PDF of $t+1$ is assigned as the stored PDF.
+	It should be noted that, when the UGV's CB contains all UGVs' state-measurement pairs from $t$ to $\xi$, the temporary PDF of $\xi$ is assigned as the stored PDF.
 	\cref{fig:LIFO-DBF} illustrates the \proto-DBF procedure for the $1^\text{st}$ UGV as an example.
 	It can be noticed that, the purpose of using the stored PDF is to avoid running the Bayesian filtering from the initial PDF at every time step. 
-	Since the stored PDF has incorporated all UGVs' measurements up to some time step $t$, the information loss problem no longer exists. % when computing the individual PDF.
+	Since the stored PDF has incorporated all UGVs' measurements up to some time step $t$, the information loss is prevented. % when computing the individual PDF.
 	%	each UGV only needs to start from the stored PDF each time it computes the individual PDF.
 	We point out that the time $t$ of each UGV's stored PDF can be different from others.
 	The stored PDF is saved locally by each UGV and not transmitted to others.
@@ -165,32 +166,25 @@
 %			In this example, $\Omega^1_{\xi}=\left\lbrace 1,2,\dots,N+1-\xi\right\rbrace $, $\xi=1,\dots,N$.}
 		\label{fig:LIFO-DBF}
 %		\vspace{-1em}
-	\end{figure}
-			
+	\end{figure}			
 	
-	%\medskip
-	%\begin{rem}
-	
-	%\end{rem}
-	
-	
-	
-	
-	\subsection{Track Lists for Trimming Communication Buffers}\label{subsec:tracklist}
+	\subsection{Track Lists for Trimming CBs}\label{subsec:tracklist}
 	
 	\begin{algorithm}
 		\caption{Updating TLs}
 		\label{alg:upd_tl}
 		\begin{algorithmic}
-			\State Consider updating the $i\thi$ UGV's TL using the received $l\thi$ UGV's TL. 			
-			\State \textbf{(1)} Update the $i\thi$ row of TL using the $i\thi$ UGV's CB (\Cref{eqn:tl_entry}).
-			%			\State \textbf{(2)} Update the $j\thi$ row of TL using the received $j\thi$ UGV's CB $\B^j_{k-1}$.
-			\State \textbf{(2)} Update other rows of TL:
-			$\forall r\in \mathcal{N}_i(G_{k-1}),$ %$,\,\forall r\in \lb 1,\dots,N\rb,$
+			\State Consider updating the $i\thi$ UGV's TL, $\Q^i_k$, using the received $r\thi$ UGV's TL, $\Q^r_{k-1}$.		
+			\State \textbf{(1)} Update the $i\thi$ row of $\Q^i_k$, using $\B^i_k$:
+			\begin{itemize}
+				\item choose $k^{ii}$ so that $\exists l\in V \text{ s.t. } \left[x^l_{k^{ii}},z^l_{k^{ii}}\right]\notin \B^i_k$ and $k^{ii} \ge t_m-1$, where $t_m$ is the minimum time of state-measurement pairs in $\B^i_k$.
+			\end{itemize}
+			\State \textbf{(2)} Update other rows of $\Q^i_k$:
+			$\forall j\in V\setminus\lb i\rb$
 			\begin{itemize} 
-				\item if $k^{ir}>k^{lr}$, keep current $\mathbf{q}^{ir}_{k^{ir}}$;
-				\item if $k^{ir}=k^{lr}$, $\mathbf{q}^{ir}_{k^{ir}}=\mathbf{q}^{ir}_{k^{ir}} \lor\footnotemark\mathbf{q}^{lr}_{k^{lr}}$; 
-				\item if $k^{ir}<k^{lr}$, $\mathbf{q}^{ir}_{k^{ir}}=\mathbf{q}^{lr}_{k^{lr}}$ and $k^{ir}=k^{lr}$.
+				\item if $k^{ij}>k^{rj}$, keep current $\mathbf{q}^{ij}_{k^{ij}}$;
+				\item if $k^{ij}=k^{rj}$, $\mathbf{q}^{ij}_{k^{ij}}=\mathbf{q}^{ij}_{k^{ij}} \lor\footnotemark\mathbf{q}^{rj}_{k^{rj}}$; 
+				\item if $k^{ij}<k^{rj}$, $\mathbf{q}^{ij}_{k^{ij}}=\mathbf{q}^{rj}_{k^{rj}}$ and $k^{ij}=k^{rj}$.
 			\end{itemize}
 		\end{algorithmic}
 	\end{algorithm}
@@ -209,7 +203,7 @@
 	%	while ensuring no information is lost in the sense that all UGVs' measurements have been used for update hte individual PDF.
 	To avoid information loss, a state-measurement pair can only be trimmed from a UGV's CB when \textit{all} UGVs have received it.
 	To keep track of each UGV's reception of other UGVs' measurements, every UGV maintains a \textit{track list} (TL), $\Q^i_k=\left[\mathbf{q}^{i1}_{k^{i1}},\dots, \mathbf{q}^{iN}_{k^{iN}}\right]^T \,(\forall i\in V)$, where $\mathbf{q}^{ij}_{k^{ij}}=\left[q^{j1}_{k^{ij}},\dots,q^{jN}_{k^{ij}},k^{ij}\right]^T$ ($j\in V$) is a $(N+1)\times 1$ binary vector.
-	Therefore, a TL can be represented by a binary matrix with the size $N\times (N+1)$.
+	Therefore, a TL can be represented by a binary matrix with size $N\times (N+1)$, with the last column corresponding to the measurement times.
 	$\Q^i_k$ represents the $i\thi$ UGV's knowledge of its own and other UGVs' measurements of the times specified by $k^{ij}$'s: %, in terms of the measurement time,
 	the entry $q^{jl}_{k^{ij}}$ equals $1$ if the $i\thi$ robot knows that the $j\thi$ UGV has received the state-measurement pair of the $l\thi$ UGV of time $k^{ij}$, $\left[x^l_{k^{ij}},z^l_{k^{ij}}\right]$, and equals $0$ if the $i\thi$ robot cannot determine whether $\left[x^l_{k^{ij}},z^l_{k^{ij}}\right]$ has been received by the $j\thi$ robot, i.e.,
 	%	\begin{equation*}
@@ -227,25 +221,27 @@
 	\end{cases}
 	\end{equation}\normalsize
 	Therefore it can happen that $\left[x^l_{k^{ij}},z^l_{k^{ij}}\right]$ has been received by the $j\thi$ UGV but the $i\thi$ UGV does not know this and thus $q^{jl}_{k^{ij}}=0$.
-	It is guaranteed by the updating rule that the $i\thi$ UGV knows that the $j\thi$ UGV has received the state-measurement pairs of time earlier that $k^{ij}$ from any other UGVs.
+	
 %	When all elements of $\Q^i_k$ are $1$'s, the $i\thi$ UGV can be sure that the $j\thi$ UGV ($\forall j\in V$) has received the state-measurement pairs of time $k^{i,j}$ from all UGVs.
 	%	Choose the minimum time $k^i_m=\min\limits_j k^{i,j}$.
 	%	Then the $i\thi$ robot fuse all the measurements of time no greater than $k^i_m$ in its own CB to update the stored PDF.
 	%	TLs are exchanged when UGVs communicate and are used to trim the CBs. 
 %	\todohere{rethink about how many steps a TL can be trimmed.}
 	
-	The exchange and updating of TLs are described in the TL parts in \Cref{alg:lifo}, with the details of the updating presented in \cref{alg:upd_tl}.
+%	\todohere{explain what's going on in the algorithm.}
+	The exchange and updating of TLs are described in \Cref{alg:lifo}, with the updating details presented in \cref{alg:upd_tl}.
+	The updating rule guarantees that, when the last term of the $j\thi$ row is $k^{ij}$, the $i\thi$ UGV knows that every UGV has received state-measurement pairs of times earlier than $k^{ij}$ from all UGVs.
 %	It can be noticed that, a TL keeps track of the earliest time of state-measurement pairs that the corresponding UGV does not have.
 	The \Cref{alg:tracklist} describes the approach to trim CBs using TLs.
-	Note that, due to the trimming of CBs, (2.3) in \Cref{alg:lifo-dbf} needs to be revised as follows:
-	
-	If $\xi<k^i_m$, then update the stored PDF:
-	\small\begin{equation*}
-	P^i_{sto}(\X_{\xi})=P^i_{tmp}(\X_{\xi}).
-	%		P^i_{pdf}(\X_{k-N+1}|z^1_{1:k-N+1},\dots,z^N_{1:k-N+1})=P^i_{tmp}(\X_{k-N+1}).
-	\end{equation*}\normalsize
-	
+%	Note that, due to the trimming of CBs, (2.3) in \Cref{alg:lifo-dbf} needs to be revised as follows:
+%	
+%	If $\xi<k^i_m$, then update the stored PDF:
+%	\small\begin{equation*}
+%	P^i_{sto}(\X_{\xi})=P^i_{tmp}(\X_{\xi}).
+%	%		P^i_{pdf}(\X_{k-N+1}|z^1_{1:k-N+1},\dots,z^N_{1:k-N+1})=P^i_{tmp}(\X_{k-N+1}).
+%	\end{equation*}\normalsize	
 %	Since a TL only keeps track of the earliest measurements in CBs, the CBs are only trimmed by one time step each time the trim happens.
+%\todohere{explain what's going on in the algorithm.}
 	\cref{fig:upd_tl} shows the updating of each UGV's TLs using the \cref{alg:upd_tl}.
 	In the example, the $1^\text{st}$ and $3^\text{rd}$ UGV's CB will be trimmed at $k=6$ and the trimmed state-measurement pairs corresponds to times $1,2,$ and $3$.
 	
@@ -255,19 +251,20 @@
 	\begin{thm}\label{thm:trim_no_loss}
 %		For a {\fc} network using FIFO-DBF, 
 %		each UGV's individual PDF is updated with measurements from all UGVs. 
-		Each UGV's estimation result using the trimmed CB by the TL is the same as that using the non-trimmed CB.
+		Each UGV's estimation result using the trimmed CB is the same as that using the non-trimmed CB.
 	\end{thm}
 	
 	\begin{proof}
 %		According to \Cref{cor1}, each UGV receives the state-measurement pairs from all other UGVs within finite time steps that are used for updating the individual PDF.
 		
 		Consider the $i\thi$ UGV. Let $k^i_m=\min\limits_j k^{ij}$. 
-		Trimming $Q^i_k$ happens when all entries corresponding to time $k^i_m$ equal $1$. 
+		Trimming $\B^i_k$ happens when all entries in $\Q^i_k$ corresponding to time $k^i_m$ equal $1$. 
 		This indicates that each UGV has received the state-measurement pairs of time $k^i_m$ from all UGVs.
 %		, i.e., $\left[x^l_{k_m},z^l_{k_m}\right],\,l\in V$. 
-		A UGV has either saved the pairs in its CB or already fused them to obtain the stored PDF.
+		A UGV has either stored the pairs in its CB or already fused them to obtain the stored PDF.
 		In both cases, such pairs are no longer needed to be transmitted. %since it will not add any unused information to the multi-agent team. 
-		Therefore, it causes no loss to trim theses measurements.
+		Therefore, it causes no loss to trim theses measurements.		
+%		\hfill\qedsymbol
 	\end{proof}
 	
 	%	Since TLs are used to reduce the size of CBs, it is necessary to understand how often the CBs will be trimmed.
@@ -289,6 +286,8 @@
 %		Then at $\tilde{k}_j$, the $j\thi$ UGV's CB has received all other UGVs' measurements at $t$.
 		The $i\thi$ UGV can trim $\lb\left[x^l_t,z^l_t\right] \,(\forall l\in V)\rb$ only when it is sure that all other UGVs have also received these state-measurement pairs.
 		This happens at $\tilde{k}^i_t$ and is thus the time when the trim occurs. 
+		
+%		\hfill\qedsymbol
 		
 		%		To compute the upper bound, we consider the time interval between the trims of time $t$ and $t+1$.\part{title}
 		%		The largest interval is achieved when the CBs of all UGVs at $t$ are all empty
@@ -337,6 +336,8 @@
 
 		The maximum size the of CB occurs when the state-measurement pairs of a certain time from all but one UGV are saved in the $i\thi$ UGV's CB.
 		Therefore, the size of any UGV's CB is no greater than $2(N-1)^2T_u$.		
+		
+%		\hfill\qedsymbol
 	\end{proof}
 	
 %	\begin{proof}
@@ -378,12 +379,12 @@
 		\begin{algorithmic}
 			\State 
 			For the $i\thi$ UGV:			
-			find the smallest time in the track list: $k^i_m=\min\lb k^{1},\dots,k^{N} \rb$. 			
+			find the smallest time in $\Q^i_k$: $k^i_m=\min\lb k^{1},\dots,k^{N} \rb$. 			
 			If all entries associated with time $k^i_m$ in $\Q^i_k$ are $1$'s, then 
 			\begin{enumerate}
-				\item set all these items in the track list to be $0$, let $k^i_m \leftarrow k^i_m+1.$
-				\item update the track list with the measurements in the current CB, i.e., $q^{jl}_{k^{ij}}=1$ if and only if $\left[x^l_{k^{ij}},z^l_{k^{ij}}\right]\in \B^i_k$.
-				\item remove all corresponding measurements in the $i\thi$ UGV's CB.
+				\item set all these items in $\Q^i_k$ to be $0$, let $k^i_m \leftarrow k^i_m+1.$
+				\item update the $i\thi$ row of $\Q^i_k$ using the current CB, i.e., $q^{il}_{k^{ij}}=1$ if and only if $\left[x^l_{k^{ij}},z^l_{k^{ij}}\right]\in \B^i_k$.
+				\item remove all corresponding state-measurement pairs in $\B^i_k$.
 			\end{enumerate}				
 		\end{algorithmic}
 	\end{algorithm}

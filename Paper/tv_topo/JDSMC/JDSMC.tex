@@ -27,6 +27,9 @@
 %\usepackage{booktabs}
 \usepackage{balance}
 \usepackage{tcolorbox}
+\let\proof\relax
+\let\endproof\relax
+\usepackage{amsthm}
 
 % format for theorems etc.
 \newtheorem{thm}{\bfseries Theorem}
@@ -58,6 +61,7 @@
 \newcommand{\lb}{\left\lbrace}
 \newcommand{\rb}{\right\rbrace}
 \newcommand{\X}{X}
+\newcommand{\N}{\mathcal{N}}
 \newcommand{\Z}{\mathcal{Z}}
 \newcommand{\zb}{\mathbf{z}}
 \newcommand{\B}{\mathcal{B}}
@@ -66,8 +70,8 @@
 \newcommand{\xg}{x^g}
 \newcommand{\fc}{frequently jointly strongly connected}
 \newcommand{\thi}{^\text{th}}
-\newcommand{\dnbhd}{direct neighbors}
-\newcommand{\anbhd}{accessible neighbors}
+\newcommand{\inbhd}{inbound neighbors}
+\newcommand{\onbhd}{outbound neighbors}
 \newcommand{\CB}{\textbf{\textit{CB}}}
 \newcommand{\TL}{\textbf{\textit{TL}}}
 
@@ -94,6 +98,9 @@
 	\renewcommand{\todoQ}[1]{}
 	\renewcommand{\todohere}[1]{}
 }
+
+%=====end of proof===== %
+%\renewcommand{\qedsymbol}{\rule{0.7em}{0.7em}}
 
 \title{\LARGE \bf
 	Distributed Bayesian Filter using Measurement Dissemination for Multiple UGVs with Dynamically Changing Interaction Topologies}
@@ -149,33 +156,36 @@
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\begin{abstract}
-		This paper presents a novel distributed Bayesian filtering algorithm using measurement dissemination for multiple unmanned ground vehicles (UGVs) with dynamically changing interaction topologies.
-		Different from statistics dissemination-based approaches that transmit posterior distributions or likelihood functions, this algorithm relies on the measurement dissemination scheme, which significantly reduces the transmission burden between each pair of UGVs. 
-%		, called Full-In-and-Full-Out (\proto) protocol. 		
-%		\todohere{explain how to disseminate}
-%		that transmit posterior distributions or likelihood functions, each UGV under {\proto} only sends a communication buffer and a track list to neighboring agents,	
-%		The information exchange among UGVs relies on a measurement dissemination scheme, called Full-In-and-Full-Out (\proto) protocol. 		
-		Each UGV only sends a communication buffer and a track list to neighboring agents.
-		A communication buffer contains its own measurements and the received ones from other UGVs.
-		And a track list is used to trim all measurements in the buffer to reduce communication overhead.
-		%		latest available measurements to neighboring nodes, 
-%		 to scale linearly with the size of the network.
-		Under the condition that the interaction topologies are \fc,
-%		 union of undirected switching topologies is connected frequently enough,
-		each UGV's measurements can be disseminated over the network within finite time.
-%		The \proto-based DBF algorithm is then developed to estimate individual probability density function (PDF) with the application for target tracking.
-%		in a static environment. 
-		The proposed DBF algorithm is proved to achieve consistent state estimation.
-%		, of this algorithm is proved that each individual estimate of target position converges in probability to the true target position.
-		The effectiveness of this algorithm is validated by comparing with consensus-based distributed filters and the centralized filter in multi-target tracking simulations.
-%		Simulation results on multiple target tracking demonstrate that the proposed DBF achieves comparable tracking performance as a centralized filter and has more superior uncertainty reduction performance than the commonly used consensus-based filter.
+		This paper presents a novel distributed Bayesian filtering (DFB) algorithm using measurement dissemination for multiple unmanned ground vehicles (UGVs) with dynamically	changing interaction topologies. Different from statistics dissemination-based algorithms that transmit posterior distributions or likelihood functions, this method relies on a full-in-full-out (FIFO) transmission protocol, which significantly reduces the transmission burden between each pair of UGVs. 
+		Each UGV only sends a communication buffer and a track list to its neighbors, in which the former contains a history of measurements from all UGVs, and the latter trims the used measurements in the buffer to reduce communication overhead. 
+		It is proved that each UGV can disseminate its measurements over the whole network within finite time and is able to achieve consistent state estimation. The effectiveness of this algorithm is validated by comparing with consensus-based distributed filters and centralized filter in a multi-target tracking problem.
+%		This paper presents a novel distributed Bayesian filtering algorithm using measurement dissemination for multiple unmanned ground vehicles (UGVs) with dynamically changing interaction topologies.
+%		Different from statistics dissemination-based approaches that transmit posterior distributions or likelihood functions, this algorithm relies on the measurement dissemination scheme, which significantly reduces the transmission burden between each pair of UGVs. 
+%%		, called Full-In-and-Full-Out (\proto) protocol. 		
+%%		\todohere{explain how to disseminate}
+%%		that transmit posterior distributions or likelihood functions, each UGV under {\proto} only sends a communication buffer and a track list to neighboring agents,	
+%%		The information exchange among UGVs relies on a measurement dissemination scheme, called Full-In-and-Full-Out (\proto) protocol. 		
+%		Each UGV only sends a communication buffer and a track list to neighboring agents.
+%		A communication buffer contains its own measurements and the received ones from other UGVs.
+%		And a track list is used to trim all measurements in the buffer to reduce communication overhead.
+%		%		latest available measurements to neighboring nodes, 
+%%		 to scale linearly with the size of the network.
+%		Under the condition that the interaction topologies are \fc,
+%%		 union of undirected switching topologies is connected frequently enough,
+%		each UGV's measurements can be disseminated over the network within finite time.
+%%		The \proto-based DBF algorithm is then developed to estimate individual probability density function (PDF) with the application for target tracking.
+%%		in a static environment. 
+%		The proposed DBF algorithm is proved to achieve consistent state estimation.
+%%		, of this algorithm is proved that each individual estimate of target position converges in probability to the true target position.
+%		The effectiveness of this algorithm is validated by comparing with consensus-based distributed filters and the centralized filter in multi-target tracking simulations.
+%%		Simulation results on multiple target tracking demonstrate that the proposed DBF achieves comparable tracking performance as a centralized filter and has more superior uncertainty reduction performance than the commonly used consensus-based filter.
 	\end{abstract}
 	
 	\input{intro}
 	\input{formulation}
 	\input{fifo}
 	\input{dbf}
-	\input{proof}
+	\input{dbf-proof}
 	\input{sim}
 	\input{conclusion}
 %	\input{app}

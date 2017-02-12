@@ -145,7 +145,7 @@
 %		 the transmission delay between an arbitrary pair of UGVs is no greater than \small$(N-1)T_u$\normalsize.
 		each UGV is guaranteed to receive $\B^j_t\; (\forall t\ge 0,\, j\in V)$ when \small$k\geq t+NT_u$\normalsize.
 		
-%		\hfill\qedsymbol
+		\hfill\qedsymbol
 %		In addition, the state-measurement pairs in each gets updated every finite period of time that is no greater than \small$(N-1)T_u$\normalsize.
 	\end{proof}
 	

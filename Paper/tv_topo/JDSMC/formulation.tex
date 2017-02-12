@@ -8,12 +8,12 @@
 \end{figure}
 %	\section{\proto Protocol for Dynamically Changing Interaction Topologies}\label{sec:lifo}
 	Consider a network of $N$ UGVs in a bounded two-dimensional space $S$, as shown in \cref{fig:scenario}.
-	The interaction topology can be dynamically changing due to limited communication range, varying team formation or link failure.
+	The interaction topology can be dynamically changing due to limited communication range, team reconfiguration, or intermittently link failure.
 	Each UGV is equipped with a sensor for target detection. 
 	Due to the limit of communication range, each UGV can only exchange sensor measurements with its local neighbors. 
 %	The Bayesian filter is run locally on each UGV based on its own measurements and the received measurements from other UGVs to estimate the target position in $S$.
 	Every UGV locally runs a Bayesian filter to estimate the target position in $S$ utilizing its own measurements and the received measurements from other UGVs. 
-	Since this work is focused on the distributed Bayesian filter for target localization, we assume that UGVs' states are accurately known.
+%	Since this work is focused on the distributed Bayesian filter for target localization, we assume that UGVs' states are accurately known.
 %	An illustration of the scenario is shown in \cref{fig:scenario}.
 	
 	\subsection{Target and Sensor Model}
@@ -35,29 +35,29 @@
 	%Each UGV constantly measures the target position and the 
 	The sensor measurement is described by a stochastic model:
 	\small\begin{equation}\label{eqn:meas_model}
-		z^i_k = h_i(\xg_k,x^i_k,w^i_k),
+		z^i_k = h_i(\xg_k,x^i_k)+w^i_k,
 	\end{equation}\normalsize
 	where the superscript $i\in\left\lbrace 1,\dots,N\right\rbrace$ represents the index of the UGV; $x^i_k\in S$ is the sensor position and $w^i_k$ is the white measurement noise.
 	% $x^i_k=[x^i_k;\theta^i_k]$ represents the sensor state, consisting of the sensor position $x^i_k$ and direction $\theta^i_k$.
 	The measurement function $h_i$ depends on the type of the sensor. 
 	%Let $\mathcal{F}(x^i_k)$ denote the sensor's sensing domain, 
 	
-	The conditional probability, $P(z^i_k|x^g_k;x^i_k)$, of obtaining a certain measurement $z^i_k$ conditioning on the target and sensor states is critical to designing the Bayesian filter \cite{thrun2005probabilistic}. 
+%	The conditional probability, denoted by $P(z^i_k|x^g_k;x^i_k)$, of obtaining a certain measurement $z^i_k$ conditioning on the target and sensor states is critical to designing the Bayesian filter \cite{thrun2005probabilistic}. 
+	The design of the Bayesian filter relies on the conditional probability of obtaining a certain measurement $z^i_k$ given the target and sensor states, which is denoted by $P(z^i_k|x^g_k;x^i_k)$ \cite{thrun2005probabilistic}. 	
 %	We define $P(z^i_k|x^g_k;x^i_k)$ as this conditional probability.
 %	 of $z^i_k$ given the sensor state $x^i_k$ and the target state $\xg_k$. 
-	It also depends on the distribution of the measurement noise.
-	For example, if $w^i_k$ is an additive, zero-mean Gaussian white noise with covariance $\Gamma_k^i$, then, according to \Cref{eqn:meas_model}, $P(z^i_k|x^g_k;x^i_k)$ can be described as
-	\small\begin{equation*}%\label{eqn:prob_sensor3}
-		P(z^i_k|x^g_k;x^i_k)=\mathcal{N}(h_i(\xg_k,x^i_k),\Gamma_k^i).
-	\end{equation*}\normalsize
-	For non-Gaussian noise distributions, such as the Poisson noise or Cauchy noise \cite{kitagawa1996monte}, $P(z^i_k|x^g_k;x^i_k)$\footnote{For the purpose of simplicity, we will not explicitly write the parameter $x^{i}_k$ in $P(z^i_k|x^g_k;x^i_k)$ for the rest of the paper.} can also be similarly defined.
-	It should be noted that, the approach presented in this work does not rely on the specific distribution of the noise.
-	
-	The $h_i$ for several typical sensors are defined as follows \cite{bishop2010optimality}:
+	The conditional probability $P(z^i_k|x^g_k;x^i_k)$ depends on both $h_i$ and/or $w^i_k$ in \Cref{eqn:meas_model}.
+	For example, if $w^i_k$ is a zero-mean Gaussian white noise with covariance $\Gamma_k^i$, $P(z^i_k|x^g_k;x^i_k)$ can be described as $P(z^i_k|x^g_k;x^i_k)=\mathcal{N}(h_i(\xg_k,x^i_k),\Gamma_k^i)$.
+%	\small\begin{equation*}%\label{eqn:prob_sensor3}
+%		P(z^i_k|x^g_k;x^i_k)=\mathcal{N}(h_i(\xg_k,x^i_k),\Gamma_k^i).
+%	\end{equation*}\normalsize
+	For non-Gaussian noise, such as Poisson noise or Cauchy noise \cite{kitagawa1996monte}, $P(z^i_k|x^g_k;x^i_k)$ can also be similarly defined (for the purpose of simplicity, $P(z^i_k|x^g_k;x^i_k)$ is shorted as $P(z^i_k|x^g_k)$ for the rest of the paper). 
+	It should be noted that this work is not confined to any specific distribution of the noise.
+	The measurement function $h_i$ for several typical sensors are listed as follows \cite{bishop2010optimality}:
 	
 	\textbf{Range-only sensors:} 
 	%when the target is within the sensor's sensing domain, 
-	$h_i$ only depends on the relative Euclidean distance between the sensor and the target:
+	$h_i$ is a function of the relative Euclidean distance between the sensor and the target:
 	%\begin{subequations}
 	%	\begin{align}
 	\small\begin{equation*}%\label{eqn:ran_only}
@@ -77,7 +77,7 @@
 	
 	\textbf{Bearing-only sensors:} 
 	%when the target is within the sensor's sensing domain, 
-	$h_i$ only depends on the relative bearing between the sensor and the target:
+	$h_i$ is a function of the relative bearing between the sensor and the target:
 	\small\begin{equation*}
 		h_i(\xg_k,x^i_k)=\measuredangle (\xg_k-x^i_k),
 	\end{equation*}\normalsize
@@ -192,8 +192,9 @@
 	%The UGV network is always assumed to be connected, i.e., there exists a path, either direct or indirect, between every pair of UGVs.
 	%Under this assumption, consider an undirected and fixed graph 
 	We consider a simple\footnote{A (directed/undirected) graph $G=(V,E)$ is \textit{simple} if it has no self-loops (i.e., $\left( i,j\right)\in E\,\text{only if } i\neq j$) or multiple edges with the same source and target nodes (i.e., $E$ only contains distinct elements).} graph $G=(V,E)$ to represent the interaction topology of N networked UGVs, where the vertex set $V=\left\lbrace 1,\dots,N\right\rbrace $ represents the index set of UGVs and $E=V\times V$ denotes the edge set. 
-	For the purpose of clarity and generalizability, we use directed graphs to describe our approach in this work.
-	However, the approach can conveniently apply to undirected graphs, which can be treated as bidirectional directed graphs.
+	For the purpose of narrative simplicity, we use directed graphs to describe our approach in this work.
+%	The approach can conveniently apply to undirected graphs, which can be treated as bidirectional directed graphs.
+	The undirected graphs can be treated as bidirectional directed graphs.
 	
 	The \textit{adjacency matrix} $A=\left[ a_{ij}\right] $ of the graph $G$ describes the interaction topology:
 	\small\begin{equation*}
@@ -205,7 +206,7 @@
 	where $a_{ij}$ is the entry on the $i\thi$ row and $j\thi$ column of the adjacency matrix. 
 	The notation $a_{ij}=1$ indicates that the $i\thi$ UGV can directly communicate to the $j\thi$ UGV and $a_{ij}=0$ indicates no direct communication from $i$ to $j$.
 %	 a communication link exists from the $i\thi$ to $j\thi$ UGV and $m_{ij}=0$ indicates no communication from $i$ to $j$.
-	 A directed graph is \textit{strongly connected} if there is a directed path connecting any two arbitrary vertices in $V$\footnote{An undirected graph with this property is called a \textit{connected} graph.}.
+	 A directed graph is \textit{strongly connected} if there is a directed path connecting any two arbitrary vertices in $V$. %\footnote{An undirected graph with this property is called a \textit{connected} graph.}.
 %	\cref{fig:com_topo} illustrates three types of typical simple directed topologies: ring \cite{lawton2003decentralized}, line \cite{liu2010simple}, and star \cite{thatte2008sensor}. 
 %	All of them are represented by simple and undirected graphs.
 	
@@ -215,12 +216,17 @@
 %	Let $\bar{G}$ denote the set of all possible simple directed graphs\footnote{For undirected graphs, we consider the set of simple undirected graphs.} defined over the network of UGVs.
 %	It is easy to know that $\bar{G}$ has finite elements.
 %	The adjacency matrix associated with a graph $G_l\in\bar{G}$ is denoted as $A_l=[a^l_{ij}]$.	
-	Define the \textit{union} of a collection of simple directed graphs\footnote{For undirected graphs, we consider the set of simple undirected graphs.} \small$\left\lbrace G_{i_1},G_{i_2},\dots,G_{i_l} \right\rbrace$\normalsize as the graph with the vertices in $V$ and the edge set given by the union of edge sets of \small$G_{i_j},\,j=1\dots,l$\normalsize.
-	Such collection is \textit{jointly strongly connected} if the union of its members forms a strongly connected graph\footnote{For undirected graphs, such collection is \textit{jointly connected} \cite{jadbabaie2003coordination}.}.
+	Define the \textit{union} of a collection of simple directed graphs 
+	%\footnote{For undirected graphs, we consider the set of simple undirected graphs.} 
+%	\small$\lb G_{i_1},G_{i_2},\dots,G_{i_l} \rb$\normalsize
+	as the graph with the vertices in $V$ and the edge set given by the union of each member's edge sets.
+%	 of \small$G_{i_j},\,j=1\dots,l$\normalsize.
+	Such collection is \textit{jointly strongly connected} if the union of its members forms a strongly connected graph.
+%	\footnote{For undirected graphs, such collection is \textit{jointly connected} \cite{jadbabaie2003coordination}.}.
 %	We define the concept of neighbors in a UGV network.
 %	\todohere{note that the definition for neighbor here means neighbors who can receive robot $i$'s CB, so it's outbound neighbors for directed graph.}
-	We define the \textit{\dnbhd} of $i\thi$ UGV under topology $G_{l}$ as the set \small$\mathcal{N}_i(G_{l})=\left\lbrace j|a^l_{ij}=1,\,j\in V\right\rbrace $\normalsize. %\left\lbrace1,\dots,N \right\rbrace 
-	All UGVs in $\mathcal{N}_i(G_{l})$ can directly receive information from the $i\thi$ UGV via the single hopping.
+	We use $G_{k}$ to represent the interaction topology of time $k$ and define the \textit{\inbhd} and \textit{\onbhd} of the $i\thi$ UGV under $G_{k}$ as the set \small$\N^\text{in}_i(G_{k})=\left\lbrace j|a^k_{ji}=1,\,j\in V\right\rbrace $\normalsize and  \small$\N^\text{out}_i(G_{k})=\left\lbrace j|a^k_{ij}=1,\,j\in V\right\rbrace $\normalsize. %\left\lbrace1,\dots,N \right\rbrace 
+	All UGVs in $\N_i(G_{k})$ can directly receive information from the $i\thi$ UGV via the single hopping.
 %	The \textit{\anbhd} is defined as $\mathcal{Q}_i(G_{l})$ that contains indices of UGVs whose information can be received by the $i\thi$ UGV, possibly via multi-hopping, given a specific data exchange protocol and the interaction topology $G_{l}$. 
 %	Note that in general $\mathcal{N}_i(G_{l})\subseteq\mathcal{Q}_i(G_{l})$.
 	%but when only single-hopping is allowed, $\mathcal{N}_i=\mathcal{Q}_i$. 

@@ -31,13 +31,16 @@
 	
 	%\end{rem}
 	
-	This section proves the consistency of the maximum a posteriori (MAP) estimator of LIFO-DBF under unbiased sensors (sensors without offset).
+	This section proves the consistency of the \textit{maximum a posteriori} (MAP) estimator of LIFO-DBF under unbiased sensors (sensors without offset).
 	A state estimator is \textit{consistent} if it converges in probability to the true value of the state \cite{amemiya1985advanced}.
-	Consistency is an important metric for stochastic filtering approaches \cite{chen2003bayesian} and it differs from the concept of consensus; the consensus implies that all UGVs' estimation results converge to a same value, while the consistency not only implies achieving consensus asymptotically, but also requires the estimated value converge to the true value.	
+	Consistency is an important metric for stochastic filtering approaches \cite{chen2003bayesian}, which 
+%	which implies that all UGVs' estimation results converge to a same value, while the consistency
+	not only implies achieving consensus asymptotically, but also requires the estimated value converge to the true value.	
 	We first prove the consistency for static UGVs and then for moving UGVs. 
-	For simplicity and clarity, we assume that S is a finite set (e.g. a finely discretized field) and the target is static.
-	This makes sense if the convergence is achieved much faster than the target's dynamics.
-	We also assume that the target position can be uniquely defined by the multi-UGV network (e.g. via appropriate placement).
+%	For simplicity and clarity, 
+	Here we assume that $S$ is a finite set (e.g. a finely discretized field) and the target is relatively slow compared to the filtering dynamics.
+%	This makes sense if the convergence is achieved much faster than the target's dynamics.
+	In addition, the target position can be uniquely determined by the multi-UGV network with proper placement (i.e., excluding the special case of ghost targets \cite{malanowski2012two}).
 	
 	\subsection{Static UGVs}	
 	The consistency of \proto-DBF for static UGVs is stated as follows: 
@@ -119,6 +122,8 @@
 		\lim\limits_{k\rightarrow \infty}
 		P(X_k^{MAP}=\xg)=1.
 		\end{equation*}\normalsize		
+		
+%		\hfill\qedsymbol
 	\end{proof}
 	
 %%% proof for moving target. seems to be wrong.
@@ -259,6 +264,8 @@
 		%All positions can be classified into finite-measurement spots and infinite-measurement spots. 
 		For the finite-measurement spots, by referring to \Cref{eqn:cmp_lim2}, it is easy to know that their contribution to \Cref{eqn:cmp_log} diminishes when $k\rightarrow \infty$.
 		Therefore, proof using \Cref{eqn:cmp2} can be reduced to only considering the infinite-measurement spots and the rest of the proof is similar to that of \Cref{thm:\proto-dbf-sta-ugv}.
+		
+%		\hfill\qedsymbol
 	\end{proof}
 			
 %	\begin{rem}
