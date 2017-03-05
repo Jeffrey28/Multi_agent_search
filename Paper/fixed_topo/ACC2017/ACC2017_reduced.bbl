@@ -39,8 +39,8 @@ X.~Cao, J.~Chen, Y.~Zhang, and Y.~Sun, ``Development of an integrated wireless
 
 \bibitem{2005distributed}
 R.~Olfati-Saber, ``Distributed kalman filter with embedded consensus filters,''
-  in \emph{Decision and Control, 2005 and 2005 European Control Conference.
-  CDC-ECC'05. 44th IEEE Conference on}, pp. 8179--8184.
+  in \emph{Decision and Control, 2005 and European Control Conference, 2005,
+  44th IEEE Conference on}, pp. 8179--8184.
 
 \bibitem{madhavan2004distributed}
 R.~Madhavan, K.~Fregene, and L.~E. Parker, ``Distributed cooperative outdoor
@@ -61,11 +61,6 @@ B.~J. Julian, M.~Angermann, M.~Schwager, and D.~Rus, ``Distributed robotic
   sensor networks: An information-theoretic approach,'' \emph{The International
   Journal of Robotics Research}, vol.~31, no.~10, pp. 1134--1154, 2012.
 
-\bibitem{olfati2007consensus}
-R.~Olfati-Saber, A.~Fax, and R.~M. Murray, ``Consensus and cooperation in
-  networked multi-agent systems,'' \emph{Proceedings of the IEEE}, vol.~95,
-  no.~1, pp. 215--233, 2007.
-
 \bibitem{zuo2006bandwidth}
 L.~Zuo, K.~Mehrotra, P.~K. Varshney, and C.~K. Mohan, ``Bandwidth-efficient
   target tracking in distributed sensor networks using particle filters,'' in
@@ -82,27 +77,11 @@ X.~Sheng, Y.-H. Hu, and P.~Ramanathan, ``Distributed particle filter with gmm
   sensor network,'' in \emph{Proceedings of the 4th international symposium on
   Information processing in sensor networks}, p.~24.
 
-\bibitem{ren2005consensus}
-W.~Ren, R.~W. Beard \emph{et~al.}, ``Consensus seeking in multiagent systems
-  under dynamically changing interaction topologies,'' \emph{IEEE Transactions
-  on automatic control}, vol.~50, no.~5, pp. 655--661, 2005.
-
-\bibitem{jadbabaie2003coordination}
-A.~Jadbabaie, J.~Lin \emph{et~al.}, ``Coordination of groups of mobile
-  autonomous agents using nearest neighbor rules,'' \emph{Automatic Control,
-  IEEE Transactions on}, vol.~48, no.~6, pp. 988--1001, 2003.
-
 \bibitem{hlinka2012likelihood}
 O.~Hlinka, O.~Slu{\v{c}}iak, F.~Hlawatsch, P.~M. Djuri{\'c}, and M.~Rupp,
   ``Likelihood consensus and its application to distributed particle
   filtering,'' \emph{Signal Processing, IEEE Transactions on}, vol.~60, no.~8,
   pp. 4334--4349, 2012.
-
-\bibitem{beaudeau2012target}
-J.~Beaudeau, M.~F. Bugallo, and P.~M. Djuric, ``Target tracking with
-  asynchronous measurements by a network of distributed mobile agents,'' in
-  \emph{Acoustics, Speech and Signal Processing (ICASSP), 2012 IEEE
-  International Conference on}, pp. 3857--3860.
 
 \bibitem{coates2004distributed}
 M.~Coates, ``Distributed particle filters for sensor networks,'' in
@@ -137,30 +116,16 @@ P.~M. Djuri{\'c}, M.~Vemula, and M.~F. Bugallo, ``Target tracking by particle
   filtering in binary sensor networks,'' \emph{Signal Processing, IEEE
   Transactions on}, vol.~56, no.~6, pp. 2229--2238, 2008.
 
+\bibitem{liu2016distributed}
+C.~Liu, S.~E. Li, and J.~K. Hedrick, ``Distributed target localization using a
+  group of ugvs under dynamically changing interaction topologies,'' in
+  \emph{American Control Conference (ACC), 2016}.\hskip 1em plus 0.5em minus
+  0.4em\relax IEEE, 2016, pp. 2585--2590.
+
 \bibitem{bourgault2003optimal}
 F.~Bourgault, T.~Furukawa, and H.~F. Durrant-Whyte, ``Optimal search for a lost
   target in a bayesian world,'' in \emph{Field and service robotics}.\hskip 1em
   plus 0.5em minus 0.4em\relax Springer, 2003, pp. 209--222.
-
-\bibitem{lawton2003decentralized}
-J.~R. Lawton, R.~W. Beard, and B.~J. Young, ``A decentralized approach to
-  formation maneuvers,'' \emph{Robotics and Automation, IEEE Transactions on},
-  vol.~19, no.~6, pp. 933--941, 2003.
-
-\bibitem{liu2010simple}
-H.~Liu, X.~Chu, Y.-W. Leung, and R.~Du, ``Simple movement control algorithm for
-  bi-connectivity in robotic sensor networks,'' \emph{Selected Areas in
-  Communications, IEEE Journal on}, vol.~28, no.~7, pp. 994--1005, 2010.
-
-\bibitem{thatte2008sensor}
-G.~Thatte and U.~Mitra, ``Sensor selection and power allocation for distributed
-  estimation in sensor networks: Beyond the star topology,'' \emph{Signal
-  Processing, IEEE Transactions on}, vol.~56, no.~7, pp. 2649--2661, 2008.
-
-\bibitem{kulich2014single}
-M.~Kulich, L.~Preucil, and J.~J. Miranda~Bront, ``Single robot search for a
-  stationary object in an unknown environment,'' in \emph{Robotics and
-  Automation (ICRA), 2014 IEEE International Conference on}, pp. 5830--5835.
 
 \bibitem{thrun2005probabilistic}
 S.~Thrun, W.~Burgard, and D.~Fox, \emph{Probabilistic robotics}.\hskip 1em plus

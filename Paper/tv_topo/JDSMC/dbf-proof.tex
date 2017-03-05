@@ -255,7 +255,7 @@
 %		The batch form of DBF at $k\thi$ step is
 		Similar to \Cref{eqn:cmp}, comparing $P^i_{pdf}(x|\Z^i_k)$ and $P^i_{pdf}(\xg|\Z^i_k)$ yields		
 		\small\begin{equation}\label{eqn:cmp2}
-		\frac{P^i_{pdf}(x|\Z^i_k)}{P^i_{pdf}(\xg|\Z^i_k)}=\frac{P^i_{pdf}(x)\prod\limits_{j=1}^{N}\prod\limits_{t\in\mathscr{K}^{i,j}_{k}}P(z^j_t|x;x^j_t)}{P^i_{pdf}(\xg)\prod\limits_{j=1}^{N}\prod\limits_{t\in\mathscr{K}^{i,j}_{k}}P(z^j_t|\xg;x^j_t)}.
+		\frac{P^i_{pdf}(x|\Z^i_k)}{P^i_{pdf}(\xg|\Z^i_k)}=\frac{P^i_{pdf}(x)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|x;x^j_t)}{P^i_{pdf}(\xg)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\xg;x^j_t)}.
 		\end{equation}\normalsize
 			
 		The only difference from \Cref{eqn:cmp} is that $P(z^j_l|x;x^j_l)$ in \Cref{eqn:cmp2} varies as the UGV moves.

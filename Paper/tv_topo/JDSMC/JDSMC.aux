@@ -51,7 +51,7 @@
 \newlabel{alg:lifo@cref}{{[algorithm][1][]1}{4}}
 \newlabel{prop1}{{1}{4}}
 \newlabel{prop1@cref}{{[thm][1][]1}{4}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Example of {FIFO} with three UGVs using switching line interaction topologies. The arrows represent a directed communication link between two UGVs. $\varnothing $ denotes the empty set.\relax }}{4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Example of {FIFO} with three UGVs under dynamically changing interaction topologies. The arrows represent a directed communication link between two UGVs. $\varnothing $ denotes the empty set. For the purpose of clarity, we only show measurements, not the states, in the CB in this example.\relax }}{4}}
 \newlabel{fig:FIFO}{{2}{4}}
 \newlabel{fig:FIFO@cref}{{[figure][2][]2}{4}}
 \newlabel{cor1}{{1}{4}}
@@ -63,24 +63,24 @@
 \newlabel{eqn:bayes_pred@cref}{{[equation][3][]3}{5}}
 \newlabel{eqn:bayes_upd}{{4}{5}}
 \newlabel{eqn:bayes_upd@cref}{{[equation][4][]4}{5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}FIFO-DBF Algorithm}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}The FIFO-DBF Algorithm}{5}}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces FIFO-DBF Algorithm\relax }}{5}}
 \newlabel{alg:lifo-dbf}{{2}{5}}
 \newlabel{alg:lifo-dbf@cref}{{[algorithm][2][]2}{5}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Track Lists for Trimming CBs}{5}}
 \newlabel{subsec:tracklist}{{4.2}{5}}
 \newlabel{subsec:tracklist@cref}{{[subsection][2][4]4.2}{5}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Example of FIFO-DBF for the $1^\text  {st}$ UGV at time $k$. Only the measurement (not the state) is shown for the purpose of clarity. The UGV first calculates $ P^1_{tmp}(X_{t+1})$. Since the UGV has received all UGVs' measurements of $t+1$, the $ P^1_{tmp}(X_{t+1})$ is assigned as the new stored PDF. The dashed arrow on the right shows the sequence to fuse measurements in the CB.\relax }}{6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Example of FIFO-DBF for the $1^\text  {st}$ UGV at time $k$. Only the measurement (not the state) is shown in the figure. The UGV first calculates $ P^1_{tmp}(X_{t+1})$. Since the UGV has received all UGVs' measurements of $t+1$, the $ P^1_{tmp}(X_{t+1})$ is assigned as the new stored PDF. The dashed arrow on the right shows the order to fuse measurements in the CB.\relax }}{6}}
 \newlabel{fig:LIFO-DBF}{{3}{6}}
 \newlabel{fig:LIFO-DBF@cref}{{[figure][3][]3}{6}}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Updating TLs\relax }}{6}}
 \newlabel{alg:upd_tl}{{3}{6}}
 \newlabel{alg:upd_tl@cref}{{[algorithm][3][]3}{6}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Example of updating TLs. For the $1^\text  {st}$ UGV's TL, the $j^\text  {th}\tmspace  +\thinmuskip {.1667em}(j\in V)$ entry on the $i^\text  {th}\tmspace  +\thinmuskip {.1667em}(i\in V)$ row represents this UGV's knowledge about whether the $i^\text  {th}$ UGV has received the $j^\text  {th}$ UGV's state-measurement pair of time $k^{1i}$, where $k^{1i}$ is the last entry of the $i^\text  {th}$ row. TLs are updated using \cref  {alg:upd_tl}.\relax }}{6}}
-\newlabel{fig:upd_tl}{{4}{6}}
-\newlabel{fig:upd_tl@cref}{{[figure][4][]4}{6}}
 \newlabel{eqn:tl_entry}{{5}{6}}
 \newlabel{eqn:tl_entry@cref}{{[equation][5][]5}{6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Example of updating TLs. For the $1^\text  {st}$ UGV's TL, the $j^\text  {th}\tmspace  +\thinmuskip {.1667em}(j\in V)$ entry on the $i^\text  {th}\tmspace  +\thinmuskip {.1667em}(i\in V)$ row represents this UGV's knowledge about whether the $i^\text  {th}$ UGV has received the $j^\text  {th}$ UGV's state-measurement pair of time $k^{1i}$, where $k^{1i}$ is the last entry of the $i^\text  {th}$ row. TLs are updated using \cref  {alg:upd_tl,alg:tracklist}.\relax }}{6}}
+\newlabel{fig:upd_tl}{{4}{6}}
+\newlabel{fig:upd_tl@cref}{{[figure][4][]4}{6}}
 \newlabel{thm:trim_no_loss}{{2}{6}}
 \newlabel{thm:trim_no_loss@cref}{{[thm][2][]2}{6}}
 \citation{amemiya1985advanced}
@@ -93,7 +93,7 @@
 \@writefile{loa}{\contentsline {algorithm}{\numberline {4}{\ignorespaces Trimming CBs using TLs\relax }}{7}}
 \newlabel{alg:tracklist}{{4}{7}}
 \newlabel{alg:tracklist@cref}{{[algorithm][4][]4}{7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Complexity of FIFO-DBF}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Complexity Analysis of FIFO-DBF}{7}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Proof of Consistency}{7}}
 \newlabel{sec:consist_proof}{{5}{7}}
 \newlabel{sec:consist_proof@cref}{{[section][5][]5}{7}}
@@ -145,12 +145,18 @@
 \newlabel{fig:step40@cref}{{[subfigure][6][6]6f}{9}}
 \newlabel{sub@fig:step40}{{f}{9}}
 \newlabel{sub@fig:step40@cref}{{[subfigure][6][6]6f}{9}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces  \texthl  {(\textbf  {TODO:} update the caption)}First scenario: (a) two types of topologies; (b) individual PDF of the $3^\text  {rd}$ UGV after initial observation; (c)-(e) PDFs at the end of simulation using different filters; (f) average position estimation errors; (g) average entropy of PDF. In last two figures, metrics are based on the PDFs of the $1^\text  {st}$, $3^\text  {rd}$ and $5^\text  {th}$ UGV using FIFO-DBF, the common PDF using CbDF and using CF.\relax }}{9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Evolution of the target estimation using FIFO-DBF. The colorful background represents the sum of the individual PDF of three targets.\relax }}{9}}
 \newlabel{fig:mov_sen_mov_tar1}{{6}{9}}
 \newlabel{fig:mov_sen_mov_tar1@cref}{{[figure][6][]6}{9}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{9}}
-\newlabel{sec:conclu}{{7}{9}}
-\newlabel{sec:conclu@cref}{{[section][7][]7}{9}}
+\newlabel{fig:cbdf_step40}{{7a}{9}}
+\newlabel{fig:cbdf_step40@cref}{{[subfigure][1][7]7a}{9}}
+\newlabel{sub@fig:cbdf_step40}{{a}{9}}
+\newlabel{sub@fig:cbdf_step40@cref}{{[subfigure][1][7]7a}{9}}
+\newlabel{fig:cf_step40}{{7b}{9}}
+\newlabel{fig:cf_step40@cref}{{[subfigure][2][7]7b}{9}}
+\newlabel{sub@fig:cf_step40}{{b}{9}}
+\newlabel{sub@fig:cf_step40@cref}{{[subfigure][2][7]7b}{9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Target estimation using (a) CbDF and (b) CF. The estimation uncertainty remains large for CbDF.\relax }}{9}}
 \bibstyle{IEEEtran}
 \bibdata{references}
 \bibcite{hedrick2011tools}{1}
@@ -166,15 +172,8 @@
 \bibcite{jadbabaie2003coordination}{11}
 \bibcite{ren2005consensus}{12}
 \bibcite{olfati2007consensus}{13}
-\newlabel{fig:cbdf_step40}{{7a}{10}}
-\newlabel{fig:cbdf_step40@cref}{{[subfigure][1][7]7a}{10}}
-\newlabel{sub@fig:cbdf_step40}{{a}{10}}
-\newlabel{sub@fig:cbdf_step40@cref}{{[subfigure][1][7]7a}{10}}
-\newlabel{fig:cf_step40}{{7b}{10}}
-\newlabel{fig:cf_step40@cref}{{[subfigure][2][7]7b}{10}}
-\newlabel{sub@fig:cf_step40}{{b}{10}}
-\newlabel{sub@fig:cf_step40@cref}{{[subfigure][2][7]7b}{10}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces \texthl  {(\textbf  {TODO:} fill the caption)}\relax }}{10}}
+\bibcite{hlinka2013distributed}{14}
+\bibcite{madhavan2004distributed}{15}
 \newlabel{fig:lin_pos_err}{{8a}{10}}
 \newlabel{fig:lin_pos_err@cref}{{[subfigure][1][8]8a}{10}}
 \newlabel{sub@fig:lin_pos_err}{{a}{10}}
@@ -199,11 +198,12 @@
 \newlabel{fig:sin_ent@cref}{{[subfigure][6][8]8f}{10}}
 \newlabel{sub@fig:sin_ent}{{f}{10}}
 \newlabel{sub@fig:sin_ent@cref}{{[subfigure][6][8]8f}{10}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces First scenario: (a) two types of topologies; (b) individual PDF of the $3^\text  {rd}$ UGV after initial observation; (c)-(e) PDFs at the end of simulation using different filters; (f) average position estimation errors; (g) average entropy of PDF. In last two figures, metrics are based on the PDFs of the $1^\text  {st}$, $3^\text  {rd}$ and $5^\text  {th}$ UGV using FIFO-DBF, the common PDF using CbDF and using CF. \texthl  {(\textbf  {TODO:} use solid lines for the CbDF in the entropy plots)}\relax }}{10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces First scenario: (a) two types of topologies; (b) individual PDF of the $3^\text  {rd}$ UGV after initial observation; (c)-(e) PDFs at the end of simulation using different filters; (f) average position estimation errors; (g) average entropy of PDF. In last two figures, metrics are based on the PDFs of the $1^\text  {st}$, $3^\text  {rd}$ and $5^\text  {th}$ UGV using FIFO-DBF, the common PDF using CbDF and using CF.\relax }}{10}}
 \newlabel{fig:metrics}{{8}{10}}
 \newlabel{fig:metrics@cref}{{[figure][8][]8}{10}}
-\bibcite{hlinka2013distributed}{14}
-\bibcite{madhavan2004distributed}{15}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{10}}
+\newlabel{sec:conclu}{{7}{10}}
+\newlabel{sec:conclu@cref}{{[section][7][]7}{10}}
 \bibcite{2005distributed}{16}
 \bibcite{gu2007distributed}{17}
 \bibcite{hlinka2012likelihood}{18}

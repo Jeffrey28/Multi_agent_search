@@ -2,14 +2,13 @@
 	
 %	Unmanned ground vehicles (UGV) that operate without on-board operators have been used for many applications that are inconvenient, dangerous, or impossible to human. 
 	Estimation using a group of networked UGVs has been utilized to collectively measure environment status \cite{hedrick2011tools}, such as intruder detection \cite{chamberland2007wireless}, and signal source seeking \cite{atanasov2015distributed}, and pollution field estimation \cite{madhag2017distributed},
-	due to its merits on low cost, high efficiency, and reliability.
-	The widely adopted estimation approaches include the Kalman Filter, extended Kalman filter, and the particle filter \cite{thrun2005probabilistic}, and
+	due to its merits on low cost, high efficiency, and good reliability.
+	The widely adopted estimation approaches include the Kalman Filter, extended Kalman filter, and particle filter \cite{thrun2005probabilistic}, and
 %	Several techniques have been developed for distributed estimation, including distributed linear Kalman filter (DKF) \cite{2005distributed}, distributed extended Kalman filter \cite{madhavan2004distributed}, and distributed particle filter \cite{gu2007distributed}. 
 	the most generic scheme might be the Bayesian filter because of its applicability for nonlinear systems with arbitrary noise distributions \cite{bandyopadhyay2014distributed,julian2012distributed}.
 	In fact, a Bayesian filter can be reduced to other methods in certain conditions.
-	For example, under the assumption of linearity and Gaussian noise, a Bayesian filter can be reduced to the Kalman filter \cite{chen2003bayesian}.
-	For general nonlinear systems, a Bayesian filter can be numerically implemented as a particle filter due to the advantage in computation \cite{chen2003bayesian}.
-	Because of this generality, this paper focuses on the networked Bayesian filter for target tracking using local communication between neighboring UGVs. % under dynamically changing interaction topologies.
+	For example, under the assumption of linearity and Gaussian noise, a Bayesian filter can be reduced to the Kalman filter \cite{chen2003bayesian}, and for general nonlinear systems, a Bayesian filter can be numerically implemented as a particle filter due to the advantage in computation \cite{chen2003bayesian}.
+	Because of this generality, this study focuses on its networked variant, which can track targets using local communication between neighboring UGVs. % under dynamically changing interaction topologies.
 	
 	The interaction topology plays a central role on the design of networked Bayesian filter, of which two types are widely investigated in literature: centralized filters and distributed filters.
 	In the former, local statistics estimated by each agent is transmitted to a single fusion center, where a global posterior distribution is calculated at each filtering cycle \cite{zuo2006bandwidth,vemula2006target}. 
@@ -48,7 +47,7 @@
 	However, it requires the communication of both measurements and statistics, which can still incur large communication overhead.
 		
 	The main contribution of the paper is to design a distributed Bayesian filtering (DBF) method only using measurement dissemination for a group of networked UGVs with dynamically changing interaction topologies. 
-	In our previous work \cite{liu2016distributed}, we have proposed a Latest-In-and-Full-Out (LIFO) protocol for measurement exchange and developed a corresponding DBF.
+	In our previous work \cite{liu2016distributed}, we have proposed a Latest-In-and-Full-Out (LIFO) protocol for measurement exchange and developed a corresponding DBF algorithm.
 	However, it only applies to static targets with simple binary sensor model because each UGV only transmits the latest measurements in the network, leading to the out-of-sequence measurement problem caused by moving targets.
 	In this work, we introduce the a new protocol, called the Full-In-and-Full-Out (\proto), which additionally includes a track list of communication history.
 	The {\proto} allows each UGV to broadcast a history of measurements to its neighbors by using single-hopping, thus enabling the tracking of moving targets with more general sensor models under time-varying topologies.

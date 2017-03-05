@@ -1,5 +1,5 @@
 \section{Full-In-and-Full-Out (\proto) Protocol}\label{sec:\proto}		
-	This study proposes a Full-In-and-Full-Out (\proto) protocol for measurement exchange in dynamically changing interaction topologies for the purpose of applying distributed Bayesian filters to moving target tracking.
+	This study proposes a Full-In-and-Full-Out (\proto) protocol for measurement exchange in dynamically changing interaction topologies for the purpose of applying distributed Bayesian filters to target tracking.
 %	In our previous work, we proposed a Latest-In-and-Full-Out (LIFO) protocol and can be used for time-invariant topologies.
 %	{\proto} is suitable for time-varying topologies.
 %	Let $y_k^i=\left\lbrace x^i_k,z^i_k\right\rbrace$ and $Y^i_{\K}=\left\lbrace y_{k}^i|k\in \K\right\rbrace$, where $\K$ is an index set of time steps.
@@ -21,7 +21,7 @@
 %	This will be proved in \Cref{cor1}.
 %%	$z^j_{k^i_j}$ is stored in the CB of ${i\thi}$ UGV, where $k^i_j$ is the latest observation time of ${j\thi}$ UGV that is available to ${i\thi}$ UGV by time $k$. Due to the communication delay, $k^i_j<k, \forall j\neq i$ and $k^i_i=k$ always holds.
 %	Let $G_k\in\bar{G} $ represent the interaction topology at time $k$. 
-	The TL stores the information of a UGV's reception of other UGVs' measurements and is used for trimming old state-measurement pairs in the CB to reduce the communication burden.
+	The TL stores the information of each UGV's reception of other UGVs' measurements and is used for trimming old state-measurement pairs in the CB to reduce the communication burden.
 	The details of TL will be introduced in \Cref{subsec:tracklist}.
 	Each UGV sends its CB and TL to its {\onbhd} at every time step.
 	
@@ -46,7 +46,7 @@
 			\TL:
 			The TL of $i\thi$ UGV is initialized at $k=0$:
 			\small\begin{equation*}
-				\mathbf{q}^{ij}_1 = \mathbf{0},\;\text{i.e. } q^{jl}_1=0, \forall j,l\in \lb 1\dots,N\rb.
+				\mathbf{q}^{ij}_1 = \left[0,\dots,0,1\right],\;\text{i.e. } q^{jl}_1=0, \forall j,l\in \lb 1\dots,N\rb.
 			\end{equation*}\normalsize
 			
 			\State \textbf{(2)} At time $k\,(k\geq 1)$ for $i\thi$ UGV:	
@@ -111,7 +111,7 @@
 			\item there exists an infinite sequence of time intervals $\left[k_m,k_{m+1} \right),\,m=1,2,\dots$, starting at $k_1=0$ and are contiguous, nonempty and uniformly bounded;
 			\item the union of graphs across each such interval is jointly strongly connected,
 		\end{enumerate}
-		then any pair of UGVs can exchange measurements under \proto. 
+		then each pair of UGVs can exchange measurements under \proto. 
 		In addition, it takes no more than $NT_u$ steps for a UGV to communicate to another one, 
 %		the communication distance (in terms of time) between each pair of UGVs is no greater than \small$(N-1)T_u$\normalsize, 
 		where \small$T_u=\sup\limits_{m=1,2,\dots}\left( k_{m+1}-k_m\right) T$ \normalsize is the upper bound of interval lengths.
@@ -175,7 +175,7 @@
 	\begin{figure}%[thpb]
 		\centering
 		\includegraphics[width=0.5\textwidth]{figures/fifo}
-		\caption{Example of {\proto} with three UGVs using switching line interaction topologies. The arrows represent a directed communication link between two UGVs. $\varnothing$ denotes the empty set.}
+		\caption{Example of {\proto} with three UGVs under dynamically changing interaction topologies. The arrows represent a directed communication link between two UGVs. $\varnothing$ denotes the empty set. For the purpose of clarity, we only show measurements, not the states, in the CB in this example.}
 		\label{fig:\proto}
 		%		\vspace{-1em}]
 	\end{figure}		

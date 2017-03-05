@@ -3,39 +3,7 @@
 	\begin{figure}		
 		\includegraphics[width=0.5\textwidth]{figures/switch_topo}
 		\caption{The dynamically changing interaction topologies used in the simulation: (a)-(d) four types of topologies; (e) the union of these topologies is jointly strongly connected. The bottom axis shows a randomly generated sequence of topologies that satisfy the \fc ness condition.}\label{fig:com_topo}		
-	\end{figure}
-	
-	\begin{figure}%[thpb]
-		\centering		
-		\begin{subfigure}[b]{0.23\textwidth}
-			\includegraphics[width=\textwidth]{figures/dbf_hetero_mov_sen_mov_tar_rbt5_step3}
-			\caption{\proto-DBF Step 3}\label{fig:step3}
-		\end{subfigure}
-		\begin{subfigure}[b]{0.23\textwidth}
-			\includegraphics[width=\textwidth]{figures/dbf_hetero_mov_sen_mov_tar_rbt5_step5}
-			\caption{\proto-DBF at Step 5}\label{fig:step5}
-		\end{subfigure}
-		\begin{subfigure}[b]{0.23\textwidth}
-			\includegraphics[width=\textwidth]{figures/dbf_hetero_mov_sen_mov_tar_rbt5_step7}
-			\caption{\proto-DBF at Step 7}\label{fig:step7}
-		\end{subfigure}
-		\begin{subfigure}[b]{0.23\textwidth}
-			\includegraphics[width=\textwidth]{figures/dbf_hetero_mov_sen_mov_tar_rbt5_step10}
-			\caption{\proto-DBF at Step 10}\label{fig:step10}
-		\end{subfigure}
-		\begin{subfigure}[b]{0.23\textwidth}
-			\includegraphics[width=\textwidth]{figures/dbf_hetero_mov_sen_mov_tar_rbt5_step20}
-			\caption{\proto-DBF at Step 20}\label{fig:step20}
-		\end{subfigure}	
-		\begin{subfigure}[b]{0.23\textwidth}
-			\includegraphics[width=\textwidth]{figures/dbf_hetero_mov_sen_mov_tar_rbt5_step40}
-			\caption{\proto-DBF at Step 40}\label{fig:step40}
-		\end{subfigure}			
-		\caption{
-			\todohere{update the caption}First scenario: (a) two types of topologies; (b) individual PDF of the $3^\text{rd}$ UGV after initial observation; (c)-(e) PDFs at the end of simulation using different filters; (f) average position estimation errors; (g) average entropy of PDF. In last two figures, metrics are based on the PDFs of the $1^\text{st}$, $3^\text{rd}$ and $5\thi$ UGV using \proto-DBF, the common PDF using CbDF and using CF.}
-		\label{fig:mov_sen_mov_tar1}
-		%		\vspace{-1.3em}
-	\end{figure}
+	\end{figure}		
 			
 	We conduct a simulation that uses a team of six UGVs to localize three moving targets.
 	Every UGV maintains three individual PDFs, each corresponding to a target.
@@ -54,10 +22,10 @@
 	\cref{fig:step3,fig:step5,fig:step7,fig:step10,fig:step20,fig:step40} show that the \proto-DBF can successfully localize and track moving target's positions and effectively reduce the estimation uncertainty, which is similar to the performance of the CF (\cref{fig:cf_step40}).
 	On the contrary, CbDF is less effective to reduce the estimation uncertainty (\cref{fig:cbdf_step40}).
 	
-	We compares the three filters in terms of the estimation error and entropy of the uncertainty.
+	We quantitatively compare the three filters in terms of the estimation error and entropy of the uncertainty.
 	The estimation error is defined as the difference between the true target position and the MAP estimate of the individual PDF:
 	\small\begin{equation*}
-		\Delta_k = \|x^\text{MAP}_k-x^g_k\|_2.
+		\Delta_k = \|X^\text{MAP}_k-x^g_k\|_2.
 	\end{equation*}\normalsize
 	The entropy of the uncertainty is
 	\small\begin{equation*}
@@ -69,10 +37,43 @@
 	This is an expected result since the CF utilizes all sensor measurements.
 	The \proto-DBF achieves similar results as the CF asymptotically. 
 	This is a very interesting results, since \proto-DBF only communicates with neighboring UGVs and have a subset of other UGVs' measurements.
-	The CbDF achieves similar position estimation performance and the CF and \proto-DBF. 
+	The CbDF achieves similar position estimation performance as the CF and \proto-DBF. 
 	However, it fails to effectively reduce the estimation entropy.
 	This is because that, the linear combination of PDFs used in the CbDF does not follow the nonlinear nature of Bayesian filtering, thus information is loss during the combination.
 	The \proto-DBF, on the other hand, rigorously follows the procedure of Bayesian filtering, and therefore achieves better performance.
+	
+	
+	\begin{figure}%[thpb]
+		\centering		
+		\begin{subfigure}[b]{0.23\textwidth}
+			\includegraphics[width=\textwidth]{figures/dbf_hetero_mov_sen_mov_tar_rbt5_step3}
+			\caption{\proto-DBF at step 3}\label{fig:step3}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.23\textwidth}
+			\includegraphics[width=\textwidth]{figures/dbf_hetero_mov_sen_mov_tar_rbt5_step5}
+			\caption{\proto-DBF at step 5}\label{fig:step5}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.23\textwidth}
+			\includegraphics[width=\textwidth]{figures/dbf_hetero_mov_sen_mov_tar_rbt5_step7}
+			\caption{\proto-DBF at step 7}\label{fig:step7}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.23\textwidth}
+			\includegraphics[width=\textwidth]{figures/dbf_hetero_mov_sen_mov_tar_rbt5_step10}
+			\caption{\proto-DBF at step 10}\label{fig:step10}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.23\textwidth}
+			\includegraphics[width=\textwidth]{figures/dbf_hetero_mov_sen_mov_tar_rbt5_step20}
+			\caption{\proto-DBF at step 20}\label{fig:step20}
+		\end{subfigure}	
+		\begin{subfigure}[b]{0.23\textwidth}
+			\includegraphics[width=\textwidth]{figures/dbf_hetero_mov_sen_mov_tar_rbt5_step40}
+			\caption{\proto-DBF at step 40}\label{fig:step40}
+		\end{subfigure}			
+		\caption{Evolution of the target estimation using \proto-DBF. The colorful background represents the sum of the individual PDF of three targets.}
+		%			The uncertainty shrinks as more sensor measurements are utilized.}
+		\label{fig:mov_sen_mov_tar1}
+		%		\vspace{-1.3em}
+	\end{figure}
 	
 	\begin{figure}%[thpb]
 		\centering	
@@ -84,7 +85,7 @@
 			\includegraphics[width=\textwidth]{figures/cent_hetero_mov_sen_mov_tar_rbt1_step40}
 			\caption{CF at Step 40}\label{fig:cf_step40}
 		\end{subfigure}
-		\caption{\todohere{fill the caption}}
+		\caption{Target estimation using (a) CbDF and (b) CF. The estimation uncertainty remains large for CbDF.}
 	\end{figure}
 	
 	\begin{figure}%[thpb]
@@ -113,8 +114,7 @@
 			\includegraphics[width=\textwidth]{figures/hetero_mov_sen_mov_tar_entropy_noise_sin}
 			\caption{Entropy of Target $3$}\label{fig:sin_ent}
 		\end{subfigure}		
-		\caption{First scenario: (a) two types of topologies; (b) individual PDF of the $3^\text{rd}$ UGV after initial observation; (c)-(e) PDFs at the end of simulation using different filters; (f) average position estimation errors; (g) average entropy of PDF. In last two figures, metrics are based on the PDFs of the $1^\text{st}$, $3^\text{rd}$ and $5\thi$ UGV using \proto-DBF, the common PDF using CbDF and using CF. 
-			\todohere{use solid lines for the CbDF in the entropy plots}}
+		\caption{First scenario: (a) two types of topologies; (b) individual PDF of the $3^\text{rd}$ UGV after initial observation; (c)-(e) PDFs at the end of simulation using different filters; (f) average position estimation errors; (g) average entropy of PDF. In last two figures, metrics are based on the PDFs of the $1^\text{st}$, $3^\text{rd}$ and $5\thi$ UGV using \proto-DBF, the common PDF using CbDF and using CF.}
 		\label{fig:metrics}
 		%		\vspace{-1.3em}
 	\end{figure}		

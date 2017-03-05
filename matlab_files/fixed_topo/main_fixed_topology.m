@@ -49,6 +49,8 @@ inPara_sim.cons_fig = cons_fig;
 inPara_sim.sensor_set_type = sensor_set_type; % 'bin': binary,'ran': range-only,'brg': bearing-only,'rb': range-bearing
 sim = Sim(inPara_sim);
 
+F(sim_len) = struct('cdata',[],'colormap',[]);
+
 for trial_cnt = 1%1:trial_num
     % initialize field class    
     target.pos = [tx_set(trial_cnt);ty_set(trial_cnt)];
@@ -239,6 +241,7 @@ for trial_cnt = 1%1:trial_num
          if show_plot
              sim.plotSim(rbt,fld,count,save_plot);
 %              pause()
+%              F(count) = getframe;
          end
                 
          %% go to next iteration

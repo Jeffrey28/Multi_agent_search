@@ -1,6 +1,6 @@
 This is BibTeX, Version 0.99d (TeX Live 2015)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
-The top-level auxiliary file: ACC2017.aux
+The top-level auxiliary file: ACC2017_reduced.aux
 The style file: IEEEtran.bst
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
@@ -20,52 +20,50 @@ Warning--empty year in gu2007distributed
 Warning--empty year in bandyopadhyay2014distributed
 Warning--empty year in zuo2006bandwidth
 Warning--empty year in sheng2005distributed
-Warning--empty year in beaudeau2012target
 Warning--empty year in djuric2011non
 Warning--empty year in bonnie2012modelling
 Warning--empty year in liu2015model
-Warning--empty year in kulich2014single
 
 Done.
-You've used 28 entries,
+You've used 21 entries,
             4039 wiz_defined-function locations,
-            969 strings with 12920 characters,
-and the built_in function-call counts, 24177 in all, are:
-= -- 1958
-> -- 560
-< -- 258
-+ -- 323
-- -- 83
-* -- 1165
-:= -- 3436
-add.period$ -- 59
-call.type$ -- 28
-change.case$ -- 27
-chr.to.int$ -- 615
-cite$ -- 38
-duplicate$ -- 1685
-empty$ -- 1900
-format.name$ -- 108
-if$ -- 5630
+            929 strings with 11491 characters,
+and the built_in function-call counts, 17542 in all, are:
+= -- 1390
+> -- 409
+< -- 177
++ -- 233
+- -- 62
+* -- 839
+:= -- 2485
+add.period$ -- 46
+call.type$ -- 21
+change.case$ -- 20
+chr.to.int$ -- 429
+cite$ -- 29
+duplicate$ -- 1232
+empty$ -- 1437
+format.name$ -- 80
+if$ -- 4091
 int.to.chr$ -- 0
-int.to.str$ -- 28
-missing$ -- 254
-newline$ -- 107
-num.names$ -- 28
-pop$ -- 566
+int.to.str$ -- 21
+missing$ -- 188
+newline$ -- 86
+num.names$ -- 21
+pop$ -- 442
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 1869
+skip$ -- 1354
 stack$ -- 0
-substring$ -- 1463
-swap$ -- 1447
-text.length$ -- 53
+substring$ -- 1024
+swap$ -- 1027
+text.length$ -- 34
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 28
-warning$ -- 10
-while$ -- 125
-width$ -- 30
-write$ -- 288
+type$ -- 21
+warning$ -- 8
+while$ -- 90
+width$ -- 23
+write$ -- 215
 (There was 1 error message)

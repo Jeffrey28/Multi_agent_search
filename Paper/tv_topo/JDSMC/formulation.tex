@@ -43,11 +43,11 @@
 	%Let $\mathcal{F}(x^i_k)$ denote the sensor's sensing domain, 
 	
 %	The conditional probability, denoted by $P(z^i_k|x^g_k;x^i_k)$, of obtaining a certain measurement $z^i_k$ conditioning on the target and sensor states is critical to designing the Bayesian filter \cite{thrun2005probabilistic}. 
-	The design of the Bayesian filter relies on the conditional probability of obtaining a certain measurement $z^i_k$ given the target and sensor states, which is denoted by $P(z^i_k|x^g_k;x^i_k)$ \cite{thrun2005probabilistic}. 	
+	The design of the Bayesian filter relies on the conditional probability of obtaining a certain measurement $z^i_k$ given the current target and sensor states, which is denoted by $P(z^i_k|x^g_k;x^i_k)$ \cite{thrun2005probabilistic}. 	
 %	We define $P(z^i_k|x^g_k;x^i_k)$ as this conditional probability.
 %	 of $z^i_k$ given the sensor state $x^i_k$ and the target state $\xg_k$. 
 	The conditional probability $P(z^i_k|x^g_k;x^i_k)$ depends on both $h_i$ and/or $w^i_k$ in \Cref{eqn:meas_model}.
-	For example, if $w^i_k$ is a zero-mean Gaussian white noise with covariance $\Gamma_k^i$, $P(z^i_k|x^g_k;x^i_k)$ can be described as $P(z^i_k|x^g_k;x^i_k)=\mathcal{N}(h_i(\xg_k,x^i_k),\Gamma_k^i)$.
+	For example, if $w^i_k$ is a zero-mean Gaussian white noise with covariance $\Gamma_k^i$, $P(z^i_k|x^g_k;x^i_k)$ can be described as $P(z^i_k|x^g_k;x^i_k)=N(h_i(\xg_k,x^i_k),\Gamma_k^i)$.
 %	\small\begin{equation*}%\label{eqn:prob_sensor3}
 %		P(z^i_k|x^g_k;x^i_k)=\mathcal{N}(h_i(\xg_k,x^i_k),\Gamma_k^i).
 %	\end{equation*}\normalsize

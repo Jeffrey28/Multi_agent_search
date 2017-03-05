@@ -115,11 +115,11 @@ rbt_nbhd = {[2,6],[1,3],[2,4],[3,5],[4,6],[1,5]}; %{[],[],[],[],[],[]};
 mode_num = 4;
 
 u_set = [[1;1],[-1;-1],[1;-1],[-1;1]]; %inPara.u_set; 
-V_set = 0.01*eye(2);%
+V_set = 0.25*eye(2);%
 
 % load update matrices
 if exist('upd_matrix','var') == 0
-    load('upd_matrix_v001.mat','upd_matrix');
+    load('upd_matrix_v025.mat','upd_matrix');
 end
 
 %% Compute the sensor probility matrix
