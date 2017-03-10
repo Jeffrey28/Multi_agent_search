@@ -9,16 +9,17 @@ set(0,'defaultAxesFontName', 'Times New Roman')
 set(0,'defaultTextFontName', 'Times New Roman')
 
 sim_mode = true; % used in main_tv_topo.m, use simulated data instead of experiment data (no experiment in tv_topo though)
-show_plot = false; % draw pdf at each step. used in main_tv_topo.m
+show_plot = true; % draw pdf at each step. used in main_tv_topo.m
 save_plot = false; % save pdf of selected steps and corresponding .mat file. used in main_tv_topo.m and Sim.m (plotSim)
-DBF_only = false; % only run DBF (true) or run DBF, CF and ConF (false)
-save_data = true; % save all sim data. used in main_tv_topo.m and Sim.m and for drawing metrics plot
-comp_metric = true; % decide if needs to compute metrics and compare them. used in main_tv_topo.m
+DBF_only = true; % only run DBF (true) or run DBF, CF and ConF (false)
+save_video = true; % save the progress figures to a video. When using this, don't use dual monitors, which can cause problem in the captured video region
+save_data = false; % save all sim data. used in main_tv_topo.m and Sim.m and for drawing metrics plot
+comp_metric = false; % decide if needs to compute metrics and compare them. used in main_tv_topo.m
 
 % decide which plot I want to draw. This is a shortcut to set up the
 % parameters. If I choose both process_plot and metrics_plot to be false,
 % then the parameter is manually chosen.
-process_plot = true;
+process_plot = false;
 metrics_plot = false;
 
 if process_plot
@@ -61,7 +62,7 @@ if r_move == 0
     sim_r_idx = [1,3,5];
 else
 %     sim_r_idx = [1,3,5];
-    sim_r_idx = 5;
+    sim_r_idx = 3;
 end
 
 % the sensor type of each robot

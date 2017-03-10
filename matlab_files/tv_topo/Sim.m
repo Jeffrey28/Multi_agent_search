@@ -42,7 +42,7 @@ classdef Sim
         end
        
         
-        function plotSim(this,rbt,fld,count,save_plot,DBF_only)
+        function dbf_hd = plotSim(this,rbt,fld,count,save_plot,DBF_only)
             % Plotting for simulation process
             tmp_fig_cnt = this.fig_cnt;
             %% LIFO-DBF
@@ -62,25 +62,28 @@ classdef Sim
                     if j==k
 %                         display(rbt{j}.traj(1,:)) 
 %                         display(rbt{j}.traj(2,:))
-                        line_hdl = line(rbt{j}.traj(1,:), rbt{j}.traj(2,:));
-                        set(line_hdl,'Marker','.','Color','r','MarkerSize',3,'LineWidth',2);
-                        plot(rbt{j}.traj(1,end), rbt{j}.traj(2,end), 's','Color','r','MarkerSize',25,'LineWidth',3);
+%                         line_hdl = line(rbt{j}.traj(1,:), rbt{j}.traj(2,:));
+%                         set(line_hdl,'Marker','.','Color','r','MarkerSize',3,'LineWidth',2);
+%                         plot(rbt{j}.traj(1,end), rbt{j}.traj(2,end), 's','Color','r','MarkerSize',20,'LineWidth',3);
+                        plot(rbt{j}.traj(1,end), rbt{j}.traj(2,end), 's','Color','r','MarkerSize',20,'MarkerFaceColor','r','LineWidth',1);
                     else
-                        line_hdl = line(rbt{j}.traj(1,:), rbt{j}.traj(2,:));
-                        set(line_hdl,'Marker','.','Color','g','MarkerSize',3,'LineWidth',2);
-                        plot(rbt{j}.traj(1,end), rbt{j}.traj(2,end), 'p','Color','g','MarkerSize',25,'LineWidth',1.5);
+%                         line_hdl = line(rbt{j}.traj(1,:), rbt{j}.traj(2,:));
+%                         set(line_hdl,'Marker','.','Color','g','MarkerSize',3,'LineWidth',2);
+%                         plot(rbt{j}.traj(1,end), rbt{j}.traj(2,end), 'p','Color','g','MarkerSize',25,'LineWidth',1.5);
+                        plot(rbt{j}.traj(1,end), rbt{j}.traj(2,end), 's','Color','g','MarkerSize',20,'MarkerFaceColor','g','LineWidth',1);
                     end
-                    text(rbt{j}.traj(1,end)-3, rbt{j}.traj(2,end)-3, sprintf('%d',j),'FontSize',10);
+                    text(rbt{j}.traj(1,end)-3, rbt{j}.traj(2,end)-3, sprintf('%d',j),'FontSize',20);
                     
                     % draw target trajectory
                     line_hdl = line(fld.target.traj(1,:), fld.target.traj(2,:));
                     set(line_hdl,'Marker','.','Color','k','MarkerSize',3,'LineWidth',2);
-                    plot(fld.target.pos(1), fld.target.pos(2), 'k+','MarkerSize',25,'LineWidth',3);
+%                     plot(fld.target.pos(1), fld.target.pos(2), 'k+','MarkerSize',25,'LineWidth',3);
+                    plot(fld.target.pos(1), fld.target.pos(2), 'kp','MarkerSize',20,'MarkerFaceColor','k','LineWidth',1);
                     plot(fld.target.traj(1,:), fld.target.traj(2,:), 'LineWidth',3);
                     set(gca,'fontsize',30)                                   
                 end
-                title(sprintf('DBF Robot %d',k))
-                xlabel(['Step=',num2str(count)],'FontSize',30);
+%                 title(sprintf('DBF Robot %d',k))
+%                 xlabel(['Step=',num2str(count)],'FontSize',30);
                 tmp_fig_cnt = tmp_fig_cnt+1;
                 
                 drawnow

@@ -34,7 +34,8 @@ classdef Field
                     end
                     tmp_pos = this.target.pos + tmp_u_set(:,tmp_idx)*this.dt;
                 end
-                this.target.pos = tmp_pos;
+%                 this.target.pos = tmp_pos;
+                this.target.pos = (mvnrnd(tmp_pos',tmp_v))';
                 this.target.traj = [this.target.traj,tmp_pos];
                 this.target.model_idx = tmp_idx;
                 

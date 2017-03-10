@@ -49,6 +49,13 @@ sim = Sim(inPara_sim);
 tmp_cb_len = zeros(num_robot,sim_len);
 tmp_t_len = zeros(num_robot,sim_len);
 
+% save to video
+if save_video
+    vidObj = VideoWriter('tv_topo.avi');
+    vidObj.FrameRate = 2;
+    open(vidObj);
+end
+
 for trial_cnt = 11%1:trial_num
     % initialize field class    
     target.pos = [tx_set(trial_cnt);ty_set(trial_cnt)];
@@ -305,8 +312,13 @@ for trial_cnt = 11%1:trial_num
          %% draw current step
          % draw plot
          if show_plot
-             sim.plotSim(rbt,fld,count,save_plot,DBF_only);
-             pause(0.5)
+             [fig_hdl] = sim.plotSim(rbt,fld,count,save_plot,DBF_only);
+%              pause(0.5)
+            % save the plot as a video
+             frame_hdl = getframe(fig_hdl);
+             if save_video
+                writeVideo(vidObj,frame_hdl);
+            end
          end
                 
          %% go to next iteration
@@ -330,6 +342,10 @@ for trial_cnt = 11%1:trial_num
         
     sim.rbt_set{trial_cnt}.rbt = rbt;
     sim.fld_set{trial_cnt}.fld = fld;   
+end
+
+if save_video
+    close(vidObj)
 end
 
 %% %%%%%%%%%%%%%%%%%%%%%% Simulation Results %%%%%%%%%%%%%%%%%%%%%%

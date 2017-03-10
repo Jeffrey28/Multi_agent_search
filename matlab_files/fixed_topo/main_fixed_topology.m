@@ -49,9 +49,14 @@ inPara_sim.cons_fig = cons_fig;
 inPara_sim.sensor_set_type = sensor_set_type; % 'bin': binary,'ran': range-only,'brg': bearing-only,'rb': range-bearing
 sim = Sim(inPara_sim);
 
-F(sim_len) = struct('cdata',[],'colormap',[]);
+% save progress plot as a video
+if save_video
+    vidObj = VideoWriter('fixed_topo.avi');
+    vidObj.FrameRate = 2;
+    open(vidObj);
+end
 
-for trial_cnt = 1%1:trial_num
+for trial_cnt = 2%1:trial_num
     % initialize field class    
     target.pos = [tx_set(trial_cnt);ty_set(trial_cnt)];
     target.u_set = u_set;
@@ -239,9 +244,13 @@ for trial_cnt = 1%1:trial_num
          %% draw current step
          % draw plot
          if show_plot
-             sim.plotSim(rbt,fld,count,save_plot);
+            fig_hdl = sim.plotSim(rbt,fld,count,save_plot);
 %              pause()
-%              F(count) = getframe;
+            % save the plot as a video
+            frame_hdl = getframe(fig_hdl);
+            if save_video
+                writeVideo(vidObj,frame_hdl);
+            end
          end
                 
          %% go to next iteration
@@ -261,6 +270,10 @@ for trial_cnt = 1%1:trial_num
         
     sim.rbt_set{trial_cnt}.rbt = rbt;
     sim.fld_set{trial_cnt}.fld = fld;   
+end
+
+if save_video
+    close(vidObj)
 end
 
 %% %%%%%%%%%%%%%%%%%%%%%% Simulation Results %%%%%%%%%%%%%%%%%%%%%%
