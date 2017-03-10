@@ -27,13 +27,7 @@ inPara_sim.tar_move = tar_move;
 inPara_sim.sim_len = sim_len;
 inPara_sim.cons_step = cons_step;
 inPara_sim.num_robot = num_robot;
-% if process_plot
-    % to draw a good process plot, we specifically design the initial
-    % positions of robots
-%     inPara_sim.r_init_pos_set = r_init_pos;
-% else
-    inPara_sim.r_init_pos_set = extractfield(rbt_spec,'init_pos');
-% end
+inPara_sim.r_init_pos_set = extractfield(rbt_spec,'init_pos');
 inPara_sim.fld_size = fld_size;
 inPara_sim.t_init_pos_set = [tx_set;ty_set];
 inPara_sim.sim_r_idx = sim_r_idx;
@@ -56,7 +50,7 @@ if save_video
     open(vidObj);
 end
 
-for trial_cnt = 11%1:trial_num
+for trial_cnt = 11%1:trial_num % note: the 11th trial is for generating good simulation plot, not used for computing the metrics of DBF
     % initialize field class    
     target.pos = [tx_set(trial_cnt);ty_set(trial_cnt)];
     
@@ -82,17 +76,9 @@ for trial_cnt = 11%1:trial_num
     for rbt_cnt = 1:num_robot
         inPara_rbt = struct;
         if r_move == 0
-%             if process_plot
-%                 inPara_rbt.pos = r_init_pos;
-%             else
-                inPara_rbt.pos = rbt_spec(rbt_cnt).init_pos(:,trial_cnt);
-%             end
+            inPara_rbt.pos = rbt_spec(rbt_cnt).init_pos(:,trial_cnt);
         elseif r_move == 1
-%             if process_plot
-%                 inPara_rbt.center = r_init_pos;
-%             else
-                inPara_rbt.center = rbt_spec(rbt_cnt).init_pos(:,trial_cnt);
-%             end
+            inPara_rbt.center = rbt_spec(rbt_cnt).init_pos(:,trial_cnt);
             inPara_rbt.r = r_set(rbt_cnt);
             inPara_rbt.T = T_set(rbt_cnt);
             inPara_rbt.w = dir_set(rbt_cnt)*2*pi/inPara_rbt.T;
@@ -143,10 +129,6 @@ for trial_cnt = 11%1:trial_num
                 rbt{ii}.tar_mod = [rbt{ii}.tar_mod,fld.target.model_idx];
                 rbt{ii} = rbt{ii}.robotMove();
             end
-%         elseif r_move == 2
-%             for ii = 1:num_robot
-%                 rbt{ii} = r_pos_set_exp(ii,k);
-%             end
         end
         
         %% %%%%% filtering %%%%%

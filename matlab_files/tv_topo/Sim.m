@@ -60,16 +60,20 @@ classdef Sim
                 for j=1:this.num_robot
                     % draw robot trajectory
                     if j==k
-%                         display(rbt{j}.traj(1,:)) 
-%                         display(rbt{j}.traj(2,:))
+                        % draw the robot's whole trajectory
 %                         line_hdl = line(rbt{j}.traj(1,:), rbt{j}.traj(2,:));
 %                         set(line_hdl,'Marker','.','Color','r','MarkerSize',3,'LineWidth',2);
 %                         plot(rbt{j}.traj(1,end), rbt{j}.traj(2,end), 's','Color','r','MarkerSize',20,'LineWidth',3);
+                        % only draw robot's current position. used in the
+                        % progress video.
                         plot(rbt{j}.traj(1,end), rbt{j}.traj(2,end), 's','Color','r','MarkerSize',20,'MarkerFaceColor','r','LineWidth',1);
                     else
+                        % draw the robot's whole trajectory
 %                         line_hdl = line(rbt{j}.traj(1,:), rbt{j}.traj(2,:));
 %                         set(line_hdl,'Marker','.','Color','g','MarkerSize',3,'LineWidth',2);
 %                         plot(rbt{j}.traj(1,end), rbt{j}.traj(2,end), 'p','Color','g','MarkerSize',25,'LineWidth',1.5);
+                        % only draw robot's current position. used in the
+                        % progress video.
                         plot(rbt{j}.traj(1,end), rbt{j}.traj(2,end), 's','Color','g','MarkerSize',20,'MarkerFaceColor','g','LineWidth',1);
                     end
                     text(rbt{j}.traj(1,end)-3, rbt{j}.traj(2,end)-3, sprintf('%d',j),'FontSize',20);
@@ -82,8 +86,8 @@ classdef Sim
                     plot(fld.target.traj(1,:), fld.target.traj(2,:), 'LineWidth',3);
                     set(gca,'fontsize',30)                                   
                 end
-%                 title(sprintf('DBF Robot %d',k))
-%                 xlabel(['Step=',num2str(count)],'FontSize',30);
+                title(sprintf('DBF Robot %d',k))
+                xlabel(['Step=',num2str(count)],'FontSize',30);
                 tmp_fig_cnt = tmp_fig_cnt+1;
                 
                 drawnow
@@ -401,20 +405,17 @@ classdef Sim
             % for LIFO-DBF, we draw different robot's performance metrics
             for ii = [1,3,5]%plot_rbt_idx
                 plot(1:count-2,tmp_sim_res.ml_err_dbf_mean(ii,1:count-2),line_clr(ii),'LineWidth',2,'Marker',line_marker{ii},'MarkerSize',2); hold on;
-%                 semilogy(1:count-2,tmp_sim_res.ml_err_dbf_mean(ii,1:count-2),line_clr(ii),'LineWidth',2,'Marker',line_marker{ii},'MarkerSize',2); hold on;
 %                 errorbar(1:count-2,tmp_sim_res.ml_err_dbf_mean(ii,1:count-2),sqrt(tmp_sim_res.ml_err_dbf_cov(ii,1:count-2)),...
 %                         line_clr(ii),'LineWidth',2,'Marker',line_marker{ii},'MarkerSize',2); hold on;
             end
             
             % for consensus, we draw one robot's performance metrics.
             plot(1:count-2,tmp_sim_res.ml_err_cons_mean(1,1:count-2),line_clr(2),'LineStyle','--','LineWidth',2,'Marker',line_marker{2},'MarkerSize',2); hold on;
-%             semilogy(1:count-2,tmp_sim_res.ml_err_cons_mean(1,1:count-2),line_clr(2),'LineStyle','--','LineWidth',2,'Marker',line_marker{2},'MarkerSize',2); hold on;
             % errorbar(1:count-2,tmp_sim_res.ml_err_cons_mean(1,1:count-2),sqrt(tmp_sim_res.ml_err_cons_cov(1,1:count-2)),...
             %     line_clr(1),'LineStyle','--','LineWidth',2,'Marker',line_marker{1},'MarkerSize',2); hold on;
             
             % only on centralized filter
             plot(1:count-2,tmp_sim_res.ml_err_cent_mean(1:count-2),line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{6},'MarkerSize',2); hold on;
-%             semilogy(1:count-2,tmp_sim_res.ml_err_cent_mean(1:count-2),line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{6},'MarkerSize',2); hold on;
             % errorbar(1:count-2,tmp_sim_res.ml_err_cent_mean(1:count-2),sqrt(tmp_sim_res.ml_err_cent_cov(1:count-2)),...
             %     line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{6},'MarkerSize',2); hold on;
             xlim([0,count-1])
@@ -472,10 +473,6 @@ classdef Sim
                 tmp_sim_res.ml_err_dbf(ii,:) = this.rbt_set{1}.rbt{ii}.ml_err_dbf;
                 tmp_sim_res.ml_err_cons(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.ml_err_cons;
                 
-                % norm of cov of pdf
-% % %               tmp_sim_res.pdf_norm_dbf(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.pdf_norm_dbf;
-% % %               tmp_sim_res.pdf_norm_cons(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.pdf_norm_cons;
-                
                 % entropy of pdf
                 tmp_sim_res.ent_dbf(ii,:) = this.rbt_set{1}.rbt{ii}.ent_dbf;
                 tmp_sim_res.ent_cons(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.ent_cons;
@@ -497,17 +494,6 @@ classdef Sim
                 tmp_sim_res.ml_err_cons_mean(ii,:) = mean(tmp_ml_err_cons,1);
                 tmp_sim_res.ml_err_cons_cov(ii,:) = diag(cov(tmp_ml_err_cons)');
                 
-                % norm of cov of pdf
-                % dbf
-% % %                 tmp_pdf_norm_dbf = squeeze(tmp_sim_res.pdf_norm_dbf(ii,:,:));
-% % %                 tmp_sim_res.pdf_norm_dbf_mean(ii,:) = mean(tmp_pdf_norm_dbf,1);
-% % %                 tmp_sim_res.pdf_norm_dbf_cov(ii,:) = diag(cov(tmp_pdf_norm_dbf)');
-% %                 
-% % %                 % consensus
-% % %                 tmp_pdf_norm_cons = squeeze(tmp_sim_res.pdf_norm_cons(ii,:,:));
-% % %                 tmp_sim_res.pdf_norm_cons_mean(ii,:) = mean(tmp_pdf_norm_cons,1);
-% % %                 tmp_sim_res.pdf_norm_cons_cov(ii,:) = diag(cov(tmp_pdf_norm_cons)');
-                
                 % entropy of pdf
                 % dbf
                 tmp_ent_dbf = squeeze(tmp_sim_res.ent_dbf(ii,:,:));
@@ -525,13 +511,7 @@ classdef Sim
             tmp_ml_err_cent = tmp_sim_res.ml_err_cent;
             tmp_sim_res.ml_err_cent_mean = mean(tmp_ml_err_cent,1);
             tmp_sim_res.ml_err_cent_cov = diag(cov(tmp_ml_err_cent)');
-            
-            % norm of cov of pdf
-            % centralized
-% %             tmp_pdf_norm_cent = tmp_sim_res.pdf_norm_cent;
-% %             tmp_sim_res.pdf_norm_cent_mean = mean(tmp_pdf_norm_cent,1);
-% %             tmp_sim_res.pdf_norm_cent_cov = diag(cov(tmp_pdf_norm_cent)');
-            
+                       
             % entropy of pdf
             % centralized
             tmp_ent_cent = tmp_sim_res.ent_cent;
@@ -554,13 +534,11 @@ classdef Sim
             
             % for consensus, we draw one robot's performance metrics.
             plot(1:count-2,tmp_sim_res.ml_err_cons_mean(1,1:count-2),line_clr(2),'LineStyle','--','LineWidth',2,'Marker',line_marker{2},'MarkerSize',2); hold on;
-            %             semilogy(1:count-2,tmp_sim_res.ml_err_cons_mean(1,1:count-2),line_clr(2),'LineStyle','--','LineWidth',2,'Marker',line_marker{2},'MarkerSize',2); hold on;
             % errorbar(1:count-2,tmp_sim_res.ml_err_cons_mean(1,1:count-2),sqrt(tmp_sim_res.ml_err_cons_cov(1,1:count-2)),...
             %     line_clr(1),'LineStyle','--','LineWidth',2,'Marker',line_marker{1},'MarkerSize',2); hold on;
             
             % only on centralized filter
             plot(1:count-2,tmp_sim_res.ml_err_cent_mean(1:count-2),line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{6},'MarkerSize',2); hold on;
-            %             semilogy(1:count-2,tmp_sim_res.ml_err_cent_mean(1:count-2),line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{6},'MarkerSize',2); hold on;
             % errorbar(1:count-2,tmp_sim_res.ml_err_cent_mean(1:count-2),sqrt(tmp_sim_res.ml_err_cent_cov(1:count-2)),...
             %     line_clr(6),'LineStyle','-.','LineWidth',2,'Marker',line_marker{6},'MarkerSize',2); hold on;
             xlim([0,count-1])

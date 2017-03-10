@@ -58,16 +58,20 @@ classdef Sim
                 for j=1:this.num_robot
                     % draw robot trajectory
                     if j==k
-%                         display(rbt{j}.traj(1,:)) 
-%                         display(rbt{j}.traj(2,:))
+                        % draw the robot's whole trajectory
 %                         line_hdl = line(rbt{j}.traj(1,:), rbt{j}.traj(2,:));
 %                         set(line_hdl,'Marker','.','Color','r','MarkerSize',3,'LineWidth',2);
 %                         plot(rbt{j}.traj(1,end), rbt{j}.traj(2,end), 's','Color','r','MarkerSize',25,'LineWidth',3);
+                        % only draw robot's current position. used in the
+                        % progress video.
                         plot(rbt{j}.traj(1,end), rbt{j}.traj(2,end), 's','Color','r','MarkerSize',20,'MarkerFaceColor','r','LineWidth',1);
                     else
+                        % draw the robot's whole trajectory
 %                         line_hdl = line(rbt{j}.traj(1,:), rbt{j}.traj(2,:));
 %                         set(line_hdl,'Marker','.','Color','g','MarkerSize',3,'LineWidth',2);
 %                         plot(rbt{j}.traj(1,end), rbt{j}.traj(2,end), 'p','Color','g','MarkerSize',25,'LineWidth',1.5);
+                        % only draw robot's current position. used in the
+                        % progress video.
                         plot(rbt{j}.traj(1,end), rbt{j}.traj(2,end), 's','Color','g','MarkerSize',20,'MarkerFaceColor','g','LineWidth',1);
                     end
                     text(rbt{j}.traj(1,end)-3, rbt{j}.traj(2,end)-3, sprintf('%d',j),'FontSize',10);
@@ -78,16 +82,10 @@ classdef Sim
 %                     plot(fld.target.pos(1), fld.target.pos(2), 'k+','MarkerSize',25,'LineWidth',3);
                     plot(fld.target.pos(1), fld.target.pos(2), 'kp','MarkerSize',20,'MarkerFaceColor','k','LineWidth',1);
                     plot(fld.target.traj(1,:), fld.target.traj(2,:), 'LineWidth',3);
-                    set(gca,'fontsize',30)
-                    
-%                     % debug purpose for bearing-only sensor, can comment out later
-%                     % draw the direction of the measurement direction
-%                     tmp_end = 30*[cos(rbt{j}.z);sin(rbt{j}.z)]+rbt{j}.pos;
-%                     plot([rbt{j}.pos(1),tmp_end(1)],[rbt{j}.pos(2),tmp_end(2)])
-                    
+                    set(gca,'fontsize',30)                    
                 end
-%                 title(sprintf('DBF Robot %d',k))
-%                 xlabel(['Step=',num2str(count)],'FontSize',30);
+                title(sprintf('DBF Robot %d',k))
+                xlabel(['Step=',num2str(count)],'FontSize',30);
                 tmp_fig_cnt = tmp_fig_cnt+1;
                 
                 drawnow
