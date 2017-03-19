@@ -8,10 +8,10 @@ set(0,'defaultTextFontName', 'Times New Roman')
 save_data = false;
 save_data_exp = false; % save all sim data
 show_plot = true; % draw plots
-save_plot = true; % save plots and corresponding .mat file 
+save_plot = false; % save plots and corresponding .mat file 
 exp_mode = true;
 
-sim_len = 30;%50; % max step
+sim_len = 40;%50; % max step
 % rounds of consensus at each time step
 cons_step = 10;
 cons_fig = false; % whether to show intermediate step of consensus
@@ -52,7 +52,7 @@ dt = 1; % discretization time interval
 
 fld_size = floor([250.7;358]*2.54/100*scale);  % Field size
 
-filter_type = [1 0 0]; % 1: turn on the corresponding filters. [dbf,cons,cent]
+filter_type = [1 1 1]; % 1: turn on the corresponding filters. [dbf,cons,cent]
 
 tx_set = [123.5]*2.54/100*scale;
 ty_set = [122]*2.54/100*scale;

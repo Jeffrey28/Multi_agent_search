@@ -7,11 +7,13 @@
 % save('test_mat','sim_for_save2')
 
 %% write data to cvs, which will be then copied for matplotlib plotting
-filepath = './figures/data_exchange/Journal/metrics_plot/';
-filename = [filepath,'metrics_sonar_mov_sen_sta_tar_17-Oct-2016'];
+filepath = './figures/Journal/metrics_plot/';
+filename = [filepath,'metrics_sonar_mov_sen_sta_tar_18-Mar-2017'];
 load(filename);
 
 var_name_set = {'ml_err_dbf','ent_dbf'};
+% var_name_set = {'ml_err_cons','ent_cons'};
+% var_name_set = {'ml_err_cent','ent_cent'};
 
 for ii = 1:length(var_name_set)
     csvwrite([filepath,var_name_set{ii}],exp_for_save.sim_res.(var_name_set{ii}))

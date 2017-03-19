@@ -283,6 +283,7 @@ sim = sim.compareMetrics();
 % save data 
 % note 'sim' contains all data about rbt, fld and simulation results.
 % However it is so huge that we cannot save all...
+% run testFile.m to convert mat file to csv and draw plots in matplotlib
 if save_data
     sim_for_save = sim;
     sim_for_save.rbt_set = {};
