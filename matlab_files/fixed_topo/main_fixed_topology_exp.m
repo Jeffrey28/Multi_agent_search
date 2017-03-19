@@ -208,7 +208,7 @@ for trial_cnt = 1
          % draw plot
          if show_plot
              sim.plotSim(rbt,fld,count,save_plot);
-             pause()
+%              pause()
          end                        
          
          %% compute metrics

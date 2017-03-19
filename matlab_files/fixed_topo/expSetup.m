@@ -8,10 +8,10 @@ set(0,'defaultTextFontName', 'Times New Roman')
 save_data = false;
 save_data_exp = false; % save all sim data
 show_plot = true; % draw plots
-save_plot = false; % save plots and corresponding .mat file 
+save_plot = true; % save plots and corresponding .mat file 
 exp_mode = true;
 
-sim_len = 40;%50; % max step
+sim_len = 50;%50; % max step
 % rounds of consensus at each time step
 cons_step = 10;
 cons_fig = false; % whether to show intermediate step of consensus
