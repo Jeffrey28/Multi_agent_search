@@ -1,0 +1,1259 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  14 FEB 2017 13:31
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**JDSMC.tex
+(./JDSMC.tex
+LaTeX2e <2015/01/01>
+Babel <3.9l> and hyphenation patterns for 79 languages loaded.
+(./asme2ej.cls
+
+LaTeX Warning: You have requested document class `asme2ej',
+               but the document class provides `asme2e'.
+
+Document Class: asme2e 2001/2/14 v2.0 Standard LaTeX document class
+(/usr/local/texlive/2015/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/times.sty
+Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/mathptm.sty
+Package: mathptm 2005/04/12 PSNFSS-v9.2a Times w/ Math (SPQR, WaS) 
+
+
+Package mathptm Warning: This package is to be regarded as obsolete.
+(mathptm)                See the PSNFSS documentation.
+
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 31.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/ptmcm/m/n on input line 31.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/ptmcm/m/n on input line 31.
+LaTeX Font Info:    Redeclaring symbol font `letters' on input line 32.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/ptmcm/m/it on input line 32.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/ptmcm/m/it on input line 32.
+LaTeX Font Info:    Redeclaring symbol font `symbols' on input line 33.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/pzccm/m/n on input line 33.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/pzccm/m/n on input line 33.
+LaTeX Font Info:    Redeclaring symbol font `largesymbols' on input line 34.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/psycm/m/n on input line 34.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/psycm/m/n on input line 34.
+\symbold=\mathgroup4
+\symitalic=\mathgroup5
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 37.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/ptm/bx/n on input line 37.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/ptm/bx/n on input line 37.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 38.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/ptm/m/it on input line 38.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/ptm/m/it on input line 38.
+) (/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
+)
+Ten Point
+LaTeX Font Info:    Try loading font information for OT1+phv on input line 301.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ot1phv.fd
+File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\tempbox=\box26
+\c@figure=\count85
+\c@table=\count86
+\@authcnt=\count87
+\@tmpcnt=\count88
+\bibindent=\dimen102
+\tempbox=\box27
+\minute=\count89
+\hour=\count90
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2014/10/28 v1.0p Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/graphics.cfg
+File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 94.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count91
+))
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/epsfig.sty
+Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+\epsfxsize=\dimen105
+\epsfysize=\dimen106
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2013/02/03 v1.1-62 Sub-captions (AR)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2013/05/02 v3.3-89 Customizing captions (AR)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2013/05/02 v1.6-88 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 57.
+\captionmargin=\dimen107
+\captionmargin@=\dimen108
+\captionwidth=\dimen109
+\caption@tempdima=\dimen110
+\caption@indent=\dimen111
+\caption@parindent=\dimen112
+\caption@hangindent=\dimen113
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+Package caption Info: Unknown document class (or package),
+(caption)             standard defaults will be used.
+)
+
+Package caption Warning: Unsupported document class (or package) detected,
+(caption)                usage of the caption package is not recommended.
+See the caption package documentation for explanation.
+
+Package caption Info: \@makecaption = \long macro:#1#2-> \par \addvspace {6pt}{
+\tensf \setbox \@tempboxa \hbox {\egtsf #1.\quad #2}\ifdim \wd \@tempboxa >\hsi
+ze {\egtsf #1.\quad \ignorespaces #2}\par \else \hbox to\hsize {\hfil \box \@te
+mpboxa \hfil }\fi }.
+\c@ContinuedFloat=\count92
+)
+\c@subfigure=\count93
+\c@subtable=\count94
+) (/usr/local/texlive/2015/texmf-dist/tex/latex/cite/cite.sty
+LaTeX Info: Redefining \citen on input line 81.
+LaTeX Info: Redefining \cite on input line 302.
+LaTeX Info: Redefining \nocite on input line 332.
+Package: cite 2015/02/27  v 5.5
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2013/01/14 v2.14 AMS math features
+\@mathmargin=\skip43
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks15
+\ex@=\dimen114
+))
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen115
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count95
+LaTeX Info: Redefining \frac on input line 210.
+\uproot@=\count96
+\leftroot@=\count97
+LaTeX Info: Redefining \overline on input line 306.
+\classnum@=\count98
+\DOTSCASE@=\count99
+LaTeX Info: Redefining \ldots on input line 378.
+LaTeX Info: Redefining \dots on input line 381.
+LaTeX Info: Redefining \cdots on input line 466.
+\Mathstrutbox@=\box28
+\strutbox@=\box29
+\big@size=\dimen116
+LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
+\macc@depth=\count100
+\c@MaxMatrixCols=\count101
+\dotsspace@=\muskip10
+\c@parentequation=\count102
+\dspbrk@lvl=\count103
+\tag@help=\toks16
+\row@=\count104
+\column@=\count105
+\maxfields@=\count106
+\andhelp@=\toks17
+\eqnshift@=\dimen117
+\alignsep@=\dimen118
+\tagshift@=\dimen119
+\tagwidth@=\dimen120
+\totwidth@=\dimen121
+\lineht@=\dimen122
+\@envbody=\toks18
+\multlinegap=\skip44
+\multlinetaggap=\skip45
+\mathdisplay@stack=\toks19
+LaTeX Info: Redefining \[ on input line 2665.
+LaTeX Info: Redefining \] on input line 2666.
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup6
+\symAMSb=\mathgroup7
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/usr/local/texlive/2015/texmf-dist/tex/latex/jknapltx/mathrsfs.sty
+Package: mathrsfs 1996/01/01 Math RSFS package v1.0 (jk)
+\symrsfs=\mathgroup8
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/algorithms/algorithm.sty
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
+nment
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count107
+\float@exts=\toks20
+\float@box=\box30
+\@float@everytoks=\toks21
+\@floatcapt=\box31
+)
+\@float@every@algorithm=\toks22
+\c@algorithm=\count108
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
+Package: algpseudocode 
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty
+Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
+
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+\c@ALG@line=\count109
+\c@ALG@rem=\count110
+\c@ALG@nested=\count111
+\ALG@tlm=\skip46
+\ALG@thistlm=\skip47
+\c@ALG@Lnr=\count112
+\c@ALG@blocknr=\count113
+\c@ALG@storecount=\count114
+\c@ALG@tmpcounter=\count115
+\ALG@tmplength=\skip48
+)
+Document Style - pseudocode environments for use with the `algorithmicx' style
+) (/usr/local/texlive/2015/texmf-dist/tex/latex/preprint/balance.sty
+Package: balance 1999/02/23 4.3 (PWD)
+\oldvsize=\dimen123
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/tcolorbox/tcolorbox.sty
+Package: tcolorbox 2015/05/07 version 3.60 text color boxes
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.te
+x
+\pgfutil@everybye=\toks23
+\pgfutil@tempdima=\dimen124
+\pgfutil@tempdimb=\dimen125
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-li
+sts.tex))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box32
+(/usr/local/texlive/2015/texmf-dist/tex/latex/ms/everyshi.sty
+Package: everyshi 2001/05/15 v3.00 EveryShipout Package (MS)
+))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+Package: pgfrcs 2013/12/20 v3.0.0 (rcs-revision 1.28)
+))
+Package: pgf 2013/12/18 v3.0.0 (rcs-revision 1.14)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2013/11/30 v3.0.0 (rcs-revision 1.47)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks24
+\pgfkeys@temptoks=\toks25
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.c
+ode.tex
+\pgfkeys@tmptoks=\toks26
+))
+\pgf@x=\dimen126
+\pgf@y=\dimen127
+\pgf@xa=\dimen128
+\pgf@ya=\dimen129
+\pgf@xb=\dimen130
+\pgf@yb=\dimen131
+\pgf@xc=\dimen132
+\pgf@yc=\dimen133
+\w@pgf@writea=\write3
+\r@pgf@reada=\read1
+\c@pgf@counta=\count116
+\c@pgf@countb=\count117
+\c@pgf@countc=\count118
+\c@pgf@countd=\count119
+\t@pgf@toka=\toks27
+\t@pgf@tokb=\toks28
+\t@pgf@tokc=\toks29
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2008/05/14  (rcs-revision 1.7)
+)
+Driver file for pgf: pgfsys-pdftex.def
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.d
+ef
+File: pgfsys-pdftex.def 2013/07/18  (rcs-revision 1.33)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-p
+df.def
+File: pgfsys-common-pdf.def 2013/10/10  (rcs-revision 1.13)
+)))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.
+code.tex
+File: pgfsyssoftpath.code.tex 2013/09/09  (rcs-revision 1.9)
+\pgfsyssoftpath@smallbuffer@items=\count120
+\pgfsyssoftpath@bigbuffer@items=\count121
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.
+code.tex
+File: pgfsysprotocol.code.tex 2006/10/16  (rcs-revision 1.4)
+)) (/usr/local/texlive/2015/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+Package: pgfcore 2010/04/11 v3.0.0 (rcs-revision 1.7)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
+\pgfmath@dimen=\dimen134
+\pgfmath@count=\count122
+\pgfmath@box=\box33
+\pgfmath@toks=\toks30
+\pgfmath@stack@operand=\toks31
+\pgfmath@stack@operation=\toks32
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.
+tex
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic
+.code.tex)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigo
+nometric.code.tex)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.rando
+m.code.tex)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.compa
+rison.code.tex)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.
+code.tex)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round
+.code.tex)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.
+code.tex)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integ
+erarithmetics.code.tex)))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count123
+))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.co
+de.tex
+File: pgfcorepoints.code.tex 2013/10/07  (rcs-revision 1.27)
+\pgf@picminx=\dimen135
+\pgf@picmaxx=\dimen136
+\pgf@picminy=\dimen137
+\pgf@picmaxy=\dimen138
+\pgf@pathminx=\dimen139
+\pgf@pathmaxx=\dimen140
+\pgf@pathminy=\dimen141
+\pgf@pathmaxy=\dimen142
+\pgf@xx=\dimen143
+\pgf@xy=\dimen144
+\pgf@yx=\dimen145
+\pgf@yy=\dimen146
+\pgf@zx=\dimen147
+\pgf@zy=\dimen148
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconst
+ruct.code.tex
+File: pgfcorepathconstruct.code.tex 2013/10/07  (rcs-revision 1.29)
+\pgf@path@lastx=\dimen149
+\pgf@path@lasty=\dimen150
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage
+.code.tex
+File: pgfcorepathusage.code.tex 2013/12/13  (rcs-revision 1.23)
+\pgf@shorten@end@additional=\dimen151
+\pgf@shorten@start@additional=\dimen152
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.co
+de.tex
+File: pgfcorescopes.code.tex 2013/10/09  (rcs-revision 1.44)
+\pgfpic=\box34
+\pgf@hbox=\box35
+\pgf@layerbox@main=\box36
+\pgf@picture@serial@count=\count124
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicst
+ate.code.tex
+File: pgfcoregraphicstate.code.tex 2013/09/19  (rcs-revision 1.11)
+\pgflinewidth=\dimen153
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransform
+ations.code.tex
+File: pgfcoretransformations.code.tex 2013/10/10  (rcs-revision 1.17)
+\pgf@pt@x=\dimen154
+\pgf@pt@y=\dimen155
+\pgf@pt@temp=\dimen156
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.cod
+e.tex
+File: pgfcorequick.code.tex 2008/10/09  (rcs-revision 1.3)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.c
+ode.tex
+File: pgfcoreobjects.code.tex 2006/10/11  (rcs-revision 1.2)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathproce
+ssing.code.tex
+File: pgfcorepathprocessing.code.tex 2013/09/09  (rcs-revision 1.9)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.co
+de.tex
+File: pgfcorearrows.code.tex 2013/11/07  (rcs-revision 1.40)
+\pgfarrowsep=\dimen157
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.cod
+e.tex
+File: pgfcoreshade.code.tex 2013/07/15  (rcs-revision 1.15)
+\pgf@max=\dimen158
+\pgf@sys@shading@range@num=\count125
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.cod
+e.tex
+File: pgfcoreimage.code.tex 2013/07/15  (rcs-revision 1.18)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.
+code.tex
+File: pgfcoreexternal.code.tex 2013/07/15  (rcs-revision 1.20)
+\pgfexternal@startupbox=\box37
+))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.co
+de.tex
+File: pgfcorelayers.code.tex 2013/07/18  (rcs-revision 1.7)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretranspare
+ncy.code.tex
+File: pgfcoretransparency.code.tex 2013/09/30  (rcs-revision 1.5)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.
+code.tex
+File: pgfcorepatterns.code.tex 2013/11/07  (rcs-revision 1.5)
+)))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.cod
+e.tex
+File: pgfmoduleshapes.code.tex 2013/10/31  (rcs-revision 1.34)
+\pgfnodeparttextbox=\box38
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.
+tex
+File: pgfmoduleplot.code.tex 2013/07/31  (rcs-revision 1.12)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-0-65.sty
+Package: pgfcomp-version-0-65 2007/07/03 v3.0.0 (rcs-revision 1.7)
+\pgf@nodesepstart=\dimen159
+\pgf@nodesepend=\dimen160
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-1-18.sty
+Package: pgfcomp-version-1-18 2007/07/23 v3.0.0 (rcs-revision 1.1)
+)) (/usr/local/texlive/2015/texmf-dist/tex/latex/tools/verbatim.sty
+Package: verbatim 2014/10/28 v1.5q LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks33
+\verbatim@line=\toks34
+\verbatim@in@stream=\read2
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/environ/environ.sty
+Package: environ 2014/05/04 v0.3 A new way to define environments
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/trimspaces/trimspaces.sty
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+))
+(/usr/local/texlive/2015/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2015/05/04 v2.2 e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count126
+)
+\tcb@titlebox=\box39
+\tcb@upperbox=\box40
+\tcb@lowerbox=\box41
+\tcb@phantombox=\box42
+\c@tcbbreakpart=\count127
+\c@tcblayer=\count128
+\tcb@temp=\box43
+\tcb@temp=\box44
+\tcb@temp=\box45
+\tcb@temp=\box46
+\tcb@out=\write4
+\tcb@record@out=\write5
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amscls/amsthm.sty
+Package: amsthm 2015/03/04 v2.20.2
+\thm@style=\toks35
+\thm@bodyfont=\toks36
+\thm@headfont=\toks37
+\thm@notefont=\toks38
+\thm@headpunct=\toks39
+\thm@preskip=\skip49
+\thm@postskip=\skip50
+\thm@headsep=\skip51
+\dth@everypar=\toks40
+LaTeX Info: Redefining \qed on input line 264.
+)
+\c@thm=\count129
+\c@lem=\count130
+\c@cor=\count131
+\c@prop=\count132
+\c@rem=\count133
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/cleveref/cleveref.sty
+Package: cleveref 2013/12/28 v0.19 Intelligent cross-referencing
+Package cleveref Info: `amsthm' support loaded on input line 2858.
+Package cleveref Info: `algorithmicx' support loaded on input line 2939.
+Package cleveref Info: always capitalise cross-reference names on input line 74
+70.
+Package cleveref Info: always capitalise cross-reference names on input line 74
+93.
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/todonotes/todonotes.sty
+Package: todonotes 2012/07/25 .dtx Todonotes source and documentation.
+Package: todonotes 2012/07/25
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+Package: xkeyval 2014/12/03 v2.7a package option processing (HA)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/local/texlive/2015/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+\XKV@toks=\toks41
+\XKV@tempa@toks=\toks42
+)
+\XKV@depth=\count134
+File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
+))
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex)
+) (/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+Package: pgffor 2013/12/13 v3.0.0 (rcs-revision 1.25)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)
+\pgffor@iter=\dimen161
+\pgffor@skip=\dimen162
+\pgffor@stack=\toks43
+\pgffor@toks=\toks44
+))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.cod
+e.tex
+Package: tikz 2013/12/13 v3.0.0 (rcs-revision 1.142)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothan
+dlers.code.tex
+File: pgflibraryplothandlers.code.tex 2013/08/31 v3.0.0 (rcs-revision 1.20)
+\pgf@plot@mark@count=\count135
+\pgfplotmarksize=\dimen163
+)
+\tikz@lastx=\dimen164
+\tikz@lasty=\dimen165
+\tikz@lastxsaved=\dimen166
+\tikz@lastysaved=\dimen167
+\tikzleveldistance=\dimen168
+\tikzsiblingdistance=\dimen169
+\tikz@figbox=\box47
+\tikz@figbox@bg=\box48
+\tikz@tempbox=\box49
+\tikz@tempbox@bg=\box50
+\tikztreelevel=\count136
+\tikznumberofchildren=\count137
+\tikznumberofcurrentchild=\count138
+\tikz@fig@count=\count139
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.cod
+e.tex
+File: pgfmodulematrix.code.tex 2013/09/17  (rcs-revision 1.8)
+\pgfmatrixcurrentrow=\count140
+\pgfmatrixcurrentcolumn=\count141
+\pgf@matrix@numberofcolumns=\count142
+)
+\tikz@expandcount=\count143
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2008/06/17 v3.0.0 (rcs-revision 1.2)
+)))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarypositioning.code.tex
+File: tikzlibrarypositioning.code.tex 2008/10/06 v3.0.0 (rcs-revision 1.7)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count144
+\calc@Bcount=\count145
+\calc@Adimen=\dimen170
+\calc@Bdimen=\dimen171
+\calc@Askip=\skip52
+\calc@Bskip=\skip53
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count146
+\calc@Cskip=\skip54
+)
+\c@@todonotes@numberoftodonotes=\count147
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/soul/soul.sty
+Package: soul 2003/11/17 v2.4 letterspacing/underlining (mf)
+\SOUL@word=\toks45
+\SOUL@lasttoken=\toks46
+\SOUL@cmds=\toks47
+\SOUL@buffer=\toks48
+\SOUL@token=\toks49
+\SOUL@spaceskip=\skip55
+\SOUL@ttwidth=\dimen172
+\SOUL@uldp=\dimen173
+\SOUL@ulht=\dimen174
+) (./JDSMC.aux)
+\openout1 = `JDSMC.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 148.
+LaTeX Font Info:    ... okay on input line 148.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 148.
+LaTeX Font Info:    ... okay on input line 148.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 148.
+LaTeX Font Info:    ... okay on input line 148.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 148.
+LaTeX Font Info:    ... okay on input line 148.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 148.
+LaTeX Font Info:    ... okay on input line 148.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 148.
+LaTeX Font Info:    ... okay on input line 148.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 148.
+
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+(/usr/local/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count148
+\scratchdimen=\dimen175
+\scratchbox=\box51
+\nofMPsegments=\count149
+\nofMParguments=\count150
+\everyMPshowfont=\toks50
+\MPscratchCnt=\count151
+\MPscratchDim=\dimen176
+\MPnumerator=\count152
+\makeMPintoPDFobject=\count153
+\everyMPtoPDFconversion=\toks51
+) (/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
+))
+(/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 452.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
+Package caption Info: End \AtBeginDocument code.
+
+ABD: EveryShipout initializing macros
+LaTeX Font Info:    Try loading font information for OT1+ptmcm on input line 15
+2.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ot1ptmcm.fd
+File: ot1ptmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ptmcm.
+)
+LaTeX Font Info:    Try loading font information for OML+ptmcm on input line 15
+2.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/omlptmcm.fd
+File: omlptmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ptmcm.
+)
+LaTeX Font Info:    Try loading font information for OMS+pzccm on input line 15
+2.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/omspzccm.fd
+File: omspzccm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/pzccm.
+)
+LaTeX Font Info:    Try loading font information for OMX+psycm on input line 15
+2.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/omxpsycm.fd
+File: omxpsycm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/psycm.
+)
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 152.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 152.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 152.
+LaTeX Font Info:    Try loading font information for U+msa on input line 152.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 152.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 152.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/jknapltx/ursfs.fd
+File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
+)
+Underfull \hbox (badness 10000) detected at line 152
+[]
+ []
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 152.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 152.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 152.
+(./intro.tex
+Overfull \vbox (17.47093pt too high) has occurred while \output is active []
+
+
+Underfull \vbox (badness 3579) has occurred while \output is active []
+
+ [1{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+
+
+])
+(./formulation.tex <figures/scenario.pdf, id=15, 769.37921pt x 488.30704pt>
+File: figures/scenario.pdf Graphic file (type pdf)
+
+<use figures/scenario.pdf>
+Package pdftex.def Info: figures/scenario.pdf used on input line 4.
+(pdftex.def)             Requested size: 222.77095pt x 141.38188pt.
+ [2 <./figures/scenario.pdf>]
+
+LaTeX Font Warning: Command \small invalid in math mode on input line 25.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 29.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 29.
+LaTeX Font Info:    Calculating math sizes for size <> on input line 29.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 29.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <0.7> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 29.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <0.5> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 29.
+
+LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <> not available
+(Font)              size <5> substituted on input line 29.
+
+
+LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <0.7> not available
+(Font)              size <5> substituted on input line 29.
+
+
+LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <0.5> not available
+(Font)              size <5> substituted on input line 29.
+
+
+Overfull \vbox (13.94305pt too high) has occurred while \output is active []
+
+)
+(./fifo.tex
+Underfull \hbox (badness 1325) in paragraph at lines 2--13
+\OT1/ptm/m/n/10 tributed Bayesian fil-ters to tar-get track-ing. Let $\OML/ptmc
+m/m/it/9 Y[] \OT1/ptmcm/m/n/9 =
+ []
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 40.
+
+Underfull \hbox (badness 10000) in paragraph at lines 65--68
+
+ []
+
+[3]
+Underfull \hbox (badness 2142) in paragraph at lines 111--112
+[]\OT1/ptm/m/it/10 there ex-ists an in-fi-nite se-quence of time in-ter-vals
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 128--130
+[]\OT1/ptm/m/n/10 Using the sim-i-lar rea-son-ing for time in-ter-vals
+ []
+
+<figures/fifo.pdf, id=51, 621.07362pt x 415.83122pt>
+File: figures/fifo.pdf Graphic file (type pdf)
+ <use figures/fifo.pdf>
+Package pdftex.def Info: figures/fifo.pdf used on input line 177.
+(pdftex.def)             Requested size: 247.52496pt x 165.72675pt.
+
+Overfull \hbox (6.14288pt too wide) in paragraph at lines 177--178
+ [][] 
+ []
+
+) (./dbf.tex [4 <./figures/fifo.pdf>]
+Underfull \hbox (badness 1371) in paragraph at lines 28--35
+[]\OT1/ptm/b/n/10 Prediction. \OT1/ptm/m/n/10 At time $\OML/ptmcm/m/it/10 k$\OT
+1/ptm/m/n/10 , the prior in-di-vid-ual PDF
+ []
+
+
+Underfull \hbox (badness 2735) in paragraph at lines 120--122
+[]\OT1/ptm/b/n/10 (3) \OT1/ptm/m/n/10 The in-di-vid-ual PDF of $\OML/ptmcm/m/it
+/10 i[]$ \OT1/ptm/m/n/10 UGV at time $\OML/ptmcm/m/it/10 k$ \OT1/ptm/m/n/10 is
+ []
+
+<figures/fifo-dbf.pdf, id=156, 693.55528pt x 503.07072pt>
+File: figures/fifo-dbf.pdf Graphic file (type pdf)
+
+<use figures/fifo-dbf.pdf>
+Package pdftex.def Info: figures/fifo-dbf.pdf used on input line 156.
+(pdftex.def)             Requested size: 247.52496pt x 179.53937pt.
+
+Overfull \hbox (6.14288pt too wide) in paragraph at lines 156--163
+ [][] 
+ []
+
+<figures/track_list.pdf, id=157, 683.50798pt x 523.6627pt>
+File: figures/track_list.pdf Graphic file (type pdf)
+
+<use figures/track_list.pdf>
+Package pdftex.def Info: figures/track_list.pdf used on input line 195.
+(pdftex.def)             Requested size: 247.52496pt x 189.63708pt.
+
+Overfull \hbox (6.14288pt too wide) in paragraph at lines 195--196
+ [][] 
+ []
+
+
+Overfull \vbox (14.9004pt too high) has occurred while \output is active []
+
+
+[5]
+Underfull \hbox (badness 2547) in paragraph at lines 252--253
+[]\OT1/ptm/b/n/10 Theorem 2. []\OT1/ptm/m/it/10 Each UGV's es-ti-ma-tion re-sul
+t us-ing the
+ []
+
+
+Underfull \hbox (badness 4940) in paragraph at lines 269--276
+[]\OT1/ptm/m/n/10 The fol-low-ing the-o-rem de-scribes when CBs get
+ []
+
+[6 <./figures/fifo-dbf.pdf> <./figures/track_list.pdf>]
+Underfull \hbox (badness 1584) in paragraph at lines 387--388
+[]\OT1/ptm/m/n/10 remove all cor-re-spond-ing state-measurement
+ []
+
+) (./dbf-proof.tex [7]
+Underfull \hbox (badness 1418) in paragraph at lines 72--72
+[][]\OT1/ptm/m/n/8 For the pur-pose of sim-plic-ity, we use $\OML/ptmcm/m/it/8 
+P[]\OT1/ptmcm/m/n/8 (\OML/ptmcm/m/it/8 x\OMS/pzccm/m/n/8 jZ[]\OT1/ptmcm/m/n/8 )
+$ \OT1/ptm/m/n/8 to rep-re-sent
+ []
+
+
+Underfull \hbox (badness 3364) in paragraph at lines 256--257
+[]\OT1/ptm/m/n/10 Similar to Eq. (6), com-par-ing $\OML/ptmcm/m/it/10 P[]\OT1/p
+tmcm/m/n/10 (\OML/ptmcm/m/it/10 x\OMS/pzccm/m/n/10 jZ[]\OT1/ptmcm/m/n/10 )$ \OT
+1/ptm/m/n/10 and
+ []
+
+) (./sim.tex <figures/switch_topo.pdf, id=437, 960.81482pt x 519.12953pt>
+File: figures/switch_topo.pdf Graphic file (type pdf)
+
+<use figures/switch_topo.pdf>
+Package pdftex.def Info: figures/switch_topo.pdf used on input line 4.
+(pdftex.def)             Requested size: 247.52496pt x 133.73477pt.
+
+Overfull \hbox (6.14288pt too wide) in paragraph at lines 4--5
+[][] 
+ []
+
+[8]
+<figures/dbf_hetero_mov_sen_mov_tar_rbt5_step3.pdf, id=441, 468.69917pt x 367.1
+843pt>
+File: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step3.pdf Graphic file (type pdf)
+
+ <use figures/dbf_hetero_mov_sen_mov_tar_rbt5_step3.pdf>
+Package pdftex.def Info: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step3.pdf used
+ on input line 49.
+(pdftex.def)             Requested size: 113.85936pt x 89.19615pt.
+
+<figures/dbf_hetero_mov_sen_mov_tar_rbt5_step5.pdf, id=442, 468.69917pt x 367.1
+843pt>
+File: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step5.pdf Graphic file (type pdf)
+
+ <use figures/dbf_hetero_mov_sen_mov_tar_rbt5_step5.pdf>
+Package pdftex.def Info: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step5.pdf used
+ on input line 53.
+(pdftex.def)             Requested size: 113.85936pt x 89.19615pt.
+
+<figures/dbf_hetero_mov_sen_mov_tar_rbt5_step7.pdf, id=443, 468.69917pt x 367.1
+843pt>
+File: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step7.pdf Graphic file (type pdf)
+
+ <use figures/dbf_hetero_mov_sen_mov_tar_rbt5_step7.pdf>
+Package pdftex.def Info: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step7.pdf used
+ on input line 57.
+(pdftex.def)             Requested size: 113.85936pt x 89.19615pt.
+
+<figures/dbf_hetero_mov_sen_mov_tar_rbt5_step10.pdf, id=444, 468.69917pt x 367.
+1843pt>
+File: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step10.pdf Graphic file (type pdf
+)
+ <use figures/dbf_hetero_mov_sen_mov_tar_rbt5_step10.pdf>
+Package pdftex.def Info: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step10.pdf use
+d on input line 61.
+(pdftex.def)             Requested size: 113.85936pt x 89.19615pt.
+
+<figures/dbf_hetero_mov_sen_mov_tar_rbt5_step20.pdf, id=445, 468.69917pt x 367.
+1843pt>
+File: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step20.pdf Graphic file (type pdf
+)
+ <use figures/dbf_hetero_mov_sen_mov_tar_rbt5_step20.pdf>
+Package pdftex.def Info: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step20.pdf use
+d on input line 65.
+(pdftex.def)             Requested size: 113.85936pt x 89.19615pt.
+
+<figures/dbf_hetero_mov_sen_mov_tar_rbt5_step40.pdf, id=446, 468.69917pt x 367.
+1843pt>
+File: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step40.pdf Graphic file (type pdf
+)
+ <use figures/dbf_hetero_mov_sen_mov_tar_rbt5_step40.pdf>
+Package pdftex.def Info: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step40.pdf use
+d on input line 69.
+(pdftex.def)             Requested size: 113.85936pt x 89.19615pt.
+
+<figures/cons_hetero_mov_sen_mov_tar_rbt5_step40.pdf, id=447, 468.69917pt x 367
+.1843pt>
+File: figures/cons_hetero_mov_sen_mov_tar_rbt5_step40.pdf Graphic file (type pd
+f)
+ <use figures/cons_hetero_mov_sen_mov_tar_rbt5_step40.pdf>
+Package pdftex.def Info: figures/cons_hetero_mov_sen_mov_tar_rbt5_step40.pdf us
+ed on input line 81.
+(pdftex.def)             Requested size: 113.85936pt x 89.19615pt.
+
+<figures/cent_hetero_mov_sen_mov_tar_rbt1_step40.pdf, id=448, 468.69917pt x 367
+.1843pt>
+File: figures/cent_hetero_mov_sen_mov_tar_rbt1_step40.pdf Graphic file (type pd
+f)
+ <use figures/cent_hetero_mov_sen_mov_tar_rbt1_step40.pdf>
+Package pdftex.def Info: figures/cent_hetero_mov_sen_mov_tar_rbt1_step40.pdf us
+ed on input line 85.
+(pdftex.def)             Requested size: 113.85936pt x 89.19615pt.
+
+<figures/hetero_mov_sen_mov_tar_pos_err_noise_linear.pdf, id=449, 524.44682pt x
+ 426.8839pt>
+File: figures/hetero_mov_sen_mov_tar_pos_err_noise_linear.pdf Graphic file (typ
+e pdf)
+ <use figures/hetero_mov_sen_mov_tar_pos_err_noise_linear.pdf>
+Package pdftex.def Info: figures/hetero_mov_sen_mov_tar_pos_err_noise_linear.pd
+f used on input line 94.
+(pdftex.def)             Requested size: 113.85936pt x 92.67714pt.
+
+<figures/hetero_mov_sen_mov_tar_entropy_noise_linear.pdf, id=450, 524.44682pt x
+ 426.8839pt>
+File: figures/hetero_mov_sen_mov_tar_entropy_noise_linear.pdf Graphic file (typ
+e pdf)
+ <use figures/hetero_mov_sen_mov_tar_entropy_noise_linear.pdf>
+Package pdftex.def Info: figures/hetero_mov_sen_mov_tar_entropy_noise_linear.pd
+f used on input line 98.
+(pdftex.def)             Requested size: 113.85936pt x 92.67714pt.
+
+<figures/hetero_mov_sen_mov_tar_pos_err_noise_circle.pdf, id=451, 524.44682pt x
+ 426.8839pt>
+File: figures/hetero_mov_sen_mov_tar_pos_err_noise_circle.pdf Graphic file (typ
+e pdf)
+ <use figures/hetero_mov_sen_mov_tar_pos_err_noise_circle.pdf>
+Package pdftex.def Info: figures/hetero_mov_sen_mov_tar_pos_err_noise_circle.pd
+f used on input line 102.
+(pdftex.def)             Requested size: 113.85936pt x 92.67714pt.
+
+<figures/hetero_mov_sen_mov_tar_entropy_noise_circle.pdf, id=452, 524.44682pt x
+ 426.8839pt>
+File: figures/hetero_mov_sen_mov_tar_entropy_noise_circle.pdf Graphic file (typ
+e pdf)
+ <use figures/hetero_mov_sen_mov_tar_entropy_noise_circle.pdf>
+Package pdftex.def Info: figures/hetero_mov_sen_mov_tar_entropy_noise_circle.pd
+f used on input line 106.
+(pdftex.def)             Requested size: 113.85936pt x 92.67714pt.
+
+<figures/hetero_mov_sen_mov_tar_pos_err_noise_sin.pdf, id=453, 524.44682pt x 42
+6.8839pt>
+File: figures/hetero_mov_sen_mov_tar_pos_err_noise_sin.pdf Graphic file (type p
+df)
+ <use figures/hetero_mov_sen_mov_tar_pos_err_noise_sin.pdf>
+Package pdftex.def Info: figures/hetero_mov_sen_mov_tar_pos_err_noise_sin.pdf u
+sed on input line 110.
+(pdftex.def)             Requested size: 113.85936pt x 92.67714pt.
+
+<figures/hetero_mov_sen_mov_tar_entropy_noise_sin.pdf, id=454, 524.44682pt x 41
+7.16791pt>
+File: figures/hetero_mov_sen_mov_tar_entropy_noise_sin.pdf Graphic file (type p
+df)
+ <use figures/hetero_mov_sen_mov_tar_entropy_noise_sin.pdf>
+Package pdftex.def Info: figures/hetero_mov_sen_mov_tar_entropy_noise_sin.pdf u
+sed on input line 114.
+(pdftex.def)             Requested size: 113.85936pt x 90.56778pt.
+)
+(./conclusion.tex
+Underfull \hbox (badness 10000) in paragraph at lines 2--9
+[]\OT1/ptm/m/n/10 This pa-per presents a gen-eral mea-sure-ment
+ []
+
+
+Underfull \hbox (badness 7649) in paragraph at lines 2--9
+\OT1/ptm/m/n/10 dissemination-based dis-tributed Bayesian fil-ter (DBF)
+ []
+
+
+Underfull \hbox (badness 2418) in paragraph at lines 2--9
+\OT1/ptm/m/n/10 hi-cles (UGVs) un-der dy-nam-i-cally chang-ing in-ter-ac-tion
+ []
+
+
+Underfull \hbox (badness 1675) in paragraph at lines 2--9
+\OT1/ptm/m/n/10 the in-ter-ac-tion topolo-gies is fre-quently jointly strongly
+ []
+
+
+Underfull \hbox (badness 1067) in paragraph at lines 2--9
+\OT1/ptm/m/n/10 be-tween each pair of UGVs com-pared to the statis-tics
+ []
+
+
+Underfull \vbox (badness 3646) has occurred while \output is active []
+
+ [9 <./figures/switch_topo.pdf> <./figures/dbf_hetero_mov_sen_mov_tar_rbt5_step
+3.pdf> <./figures/dbf_hetero_mov_sen_mov_tar_rbt5_step5.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/dbf_hetero_mov_sen
+_mov_tar_rbt5_step5.pdf): PDF inclusion: multiple pdfs with page group included
+ in a single page
+> <./figures/dbf_hetero_mov_sen_mov_tar_rbt5_step7.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/dbf_hetero_mov_sen
+_mov_tar_rbt5_step7.pdf): PDF inclusion: multiple pdfs with page group included
+ in a single page
+> <./figures/dbf_hetero_mov_sen_mov_tar_rbt5_step10.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/dbf_hetero_mov_sen
+_mov_tar_rbt5_step10.pdf): PDF inclusion: multiple pdfs with page group include
+d in a single page
+> <./figures/dbf_hetero_mov_sen_mov_tar_rbt5_step20.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/dbf_hetero_mov_sen
+_mov_tar_rbt5_step20.pdf): PDF inclusion: multiple pdfs with page group include
+d in a single page
+> <./figures/dbf_hetero_mov_sen_mov_tar_rbt5_step40.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/dbf_hetero_mov_sen
+_mov_tar_rbt5_step40.pdf): PDF inclusion: multiple pdfs with page group include
+d in a single page
+> <./figures/cons_hetero_mov_sen_mov_tar_rbt5_step40.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/cons_hetero_mov_se
+n_mov_tar_rbt5_step40.pdf): PDF inclusion: multiple pdfs with page group includ
+ed in a single page
+> <./figures/cent_hetero_mov_sen_mov_tar_rbt1_step40.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/cent_hetero_mov_se
+n_mov_tar_rbt1_step40.pdf): PDF inclusion: multiple pdfs with page group includ
+ed in a single page
+>]
+Underfull \vbox (badness 1270) has occurred while \output is active []
+
+)
+(./JDSMC.bbl
+Underfull \hbox (badness 1292) in paragraph at lines 45--47
+[]\OT1/ptm/m/n/10 S. Thrun, W. Bur-gard, and D. Fox, \OT1/ptm/m/it/10 Prob-a-bi
+lis-tic
+ []
+
+
+Underfull \hbox (badness 2460) in paragraph at lines 54--57
+\OT1/ptm/m/n/10 theoretic ap-proach,'' \OT1/ptm/m/it/10 The In-ter-na-tional Jo
+ur-nal of
+ []
+
+[10 <./figures/hetero_mov_sen_mov_tar_pos_err_noise_linear.pdf> <./figures/hete
+ro_mov_sen_mov_tar_entropy_noise_linear.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/hetero_mov_sen_mov
+_tar_entropy_noise_linear.pdf): PDF inclusion: multiple pdfs with page group in
+cluded in a single page
+> <./figures/hetero_mov_sen_mov_tar_pos_err_noise_circle.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/hetero_mov_sen_mov
+_tar_pos_err_noise_circle.pdf): PDF inclusion: multiple pdfs with page group in
+cluded in a single page
+> <./figures/hetero_mov_sen_mov_tar_entropy_noise_circle.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/hetero_mov_sen_mov
+_tar_entropy_noise_circle.pdf): PDF inclusion: multiple pdfs with page group in
+cluded in a single page
+> <./figures/hetero_mov_sen_mov_tar_pos_err_noise_sin.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/hetero_mov_sen_mov
+_tar_pos_err_noise_sin.pdf): PDF inclusion: multiple pdfs with page group inclu
+ded in a single page
+> <./figures/hetero_mov_sen_mov_tar_entropy_noise_sin.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/hetero_mov_sen_mov
+_tar_entropy_noise_sin.pdf): PDF inclusion: multiple pdfs with page group inclu
+ded in a single page
+>]
+Underfull \hbox (badness 6125) in paragraph at lines 130--134
+[]\OT1/ptm/m/n/10 A. Ribeiro and G. B. Gi-an-nakis, ``Bandwidth-
+ []
+
+
+Underfull \hbox (badness 1242) in paragraph at lines 130--134
+\OT1/ptm/m/n/10 sor networks-part ii: un-known prob-a-bil-ity den-sity
+ []
+
+
+Underfull \hbox (badness 1024) in paragraph at lines 136--139
+\OT1/ptm/m/n/10 centralized tar-get track-ing with mo-bile agents,'' in
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+) [11]
+(./JDSMC.aux)
+
+LaTeX Font Warning: Size substitutions with differences
+(Font)              up to 4.5pt have occurred.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 18782 strings out of 493089
+ 373409 string characters out of 6134842
+ 431877 words of memory out of 5000000
+ 21818 multiletter control sequences out of 15000+600000
+ 83852 words of font info for 178 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 54i,15n,75p,824b,560s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
+exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmbsy7.pfb></usr/loc
+al/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/loca
+l/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/
+texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/t
+exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex9.pfb></usr/loca
+l/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local
+/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/t
+exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/t
+exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmmib7.pfb></usr/loc
+al/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local
+/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/te
+xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/tex
+live/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texli
+ve/2015/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/t
+exlive/2015/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/loc
+al/texlive/2015/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texl
+ive/2015/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/201
+5/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2015/texmf-dis
+t/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/ty
+pe1/urw/times/utmbi8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/t
+imes/utmr8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/times/utmri
+8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/zapfchan/uzcmi8a.pfb
+>
+Output written on JDSMC.pdf (11 pages, 980567 bytes).
+PDF statistics:
+ 930 PDF objects out of 1000 (max. 8388607)
+ 544 compressed objects within 6 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 108 words of extra memory for PDF output out of 10000 (max. 10000000)
+

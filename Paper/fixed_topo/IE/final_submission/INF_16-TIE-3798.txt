@@ -1,0 +1,21 @@
+(a) Document ID: 16-TIE-3798
+
+(b) Document title: Measurement Dissemination-based Distributed Bayesian Filter using the Latest-In-and-Full-Out Exchange Protocol for Networked Unmanned Vehicles
+
+(c) Document subject: Intelligent Systems
+
+(d) Keywords: Bayesian filter, Distributed estimation, Networked vehicles, Nonlinear filter, Unmanned vehicles
+
+(e) Corresponding author: 
+       full name: Shengbo Eben Li
+       complete address: A643 LSK Building, Tsinghua University, Beijing, 100084, China
+       email: lisb04@gmail.com
+       telephone number: (86)10-62796150
+       fax number: N/A
+         
+f) Authors names and  IEEE and IES memberships 
+	Chang Liu, S 2015, 92140784, no
+	Shengbo Eben Li, M 2012, SM 2016, 92882217, no
+	J. Karl Hedrick, no, no	
+
+(g) Do you want to print some of your figures in color? (you will be asked to pay for this extra service): No

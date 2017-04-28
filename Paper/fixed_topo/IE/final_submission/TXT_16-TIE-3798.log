@@ -1,0 +1,1438 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  18 APR 2017 00:58
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**TXT_16-TIE-3798.tex
+(./TXT_16-TIE-3798.tex
+LaTeX2e <2015/01/01>
+Babel <3.9l> and hyphenation patterns for 79 languages loaded.
+(./IEEEtranTIE.cls
+Document Class: IEEEtranTIE 2015/08/26 V1.8b by Michael Shell
+-- See the "IEEEtran_HOWTO" manual for usage information.
+-- http://www.michaelshell.org/tex/ieeetran/
+\@IEEEtrantmpdimenA=\dimen102
+\@IEEEtrantmpdimenB=\dimen103
+\@IEEEtrantmpdimenC=\dimen104
+\@IEEEtrantmpcountA=\count79
+\@IEEEtrantmpcountB=\count80
+\@IEEEtrantmpcountC=\count81
+\@IEEEtrantmptoksA=\toks14
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 505.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+-- Using 8.5in x 11in (letter) paper.
+-- Using PDF output.
+\@IEEEnormalsizeunitybaselineskip=\dimen105
+-- This is a 10 point document.
+\CLASSINFOnormalsizebaselineskip=\dimen106
+\CLASSINFOnormalsizeunitybaselineskip=\dimen107
+\IEEEnormaljot=\dimen108
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1092.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <5> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1092.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1092.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1092.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1092.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1092.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1092.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1092.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1092.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1092.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <11> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1092.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <11> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1092.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1092.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1092.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1092.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <17> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1092.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <20> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1092.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <20> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1092.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1092.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <24> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1092.
+
+\IEEEquantizedlength=\dimen109
+\IEEEquantizedlengthdiff=\dimen110
+\IEEEquantizedtextheightdiff=\dimen111
+\IEEEilabelindentA=\dimen112
+\IEEEilabelindentB=\dimen113
+\IEEEilabelindent=\dimen114
+\IEEEelabelindent=\dimen115
+\IEEEdlabelindent=\dimen116
+\IEEElabelindent=\dimen117
+\IEEEiednormlabelsep=\dimen118
+\IEEEiedmathlabelsep=\dimen119
+\IEEEiedtopsep=\skip41
+\c@section=\count82
+\c@subsection=\count83
+\c@subsubsection=\count84
+\c@paragraph=\count85
+\c@IEEEsubequation=\count86
+\abovecaptionskip=\skip42
+\belowcaptionskip=\skip43
+\c@figure=\count87
+\c@table=\count88
+\@IEEEeqnnumcols=\count89
+\@IEEEeqncolcnt=\count90
+\@IEEEsubeqnnumrollback=\count91
+\@IEEEquantizeheightA=\dimen120
+\@IEEEquantizeheightB=\dimen121
+\@IEEEquantizeheightC=\dimen122
+\@IEEEquantizeprevdepth=\dimen123
+\@IEEEquantizemultiple=\count92
+\@IEEEquantizeboxA=\box26
+\@IEEEtmpitemindent=\dimen124
+\IEEEPARstartletwidth=\dimen125
+\c@IEEEbiography=\count93
+\@IEEEtranrubishbin=\box27
+) (/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2014/10/28 v1.0p Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/graphics.cfg
+File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 94.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count94
+))
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/epsfig.sty
+Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks15
+)
+\Gin@req@height=\dimen126
+\Gin@req@width=\dimen127
+)
+\epsfxsize=\dimen128
+\epsfysize=\dimen129
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2013/02/03 v1.1-62 Sub-captions (AR)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2013/05/02 v3.3-89 Customizing captions (AR)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2013/05/02 v1.6-88 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 57.
+\captionmargin=\dimen130
+\captionmargin@=\dimen131
+\captionwidth=\dimen132
+\caption@tempdima=\dimen133
+\caption@indent=\dimen134
+\caption@parindent=\dimen135
+\caption@hangindent=\dimen136
+Package caption Info: Unknown document class (or package),
+(caption)             standard defaults will be used.
+)
+
+Package caption Warning: Unsupported document class (or package) detected,
+(caption)                usage of the caption package is not recommended.
+See the caption package documentation for explanation.
+
+Package caption Info: \@makecaption = \long macro:#1#2->\ifx \@captype \@IEEEta
+blestring \footnotesize \bgroup \par \centering \@IEEEtabletopskipstrut {\norma
+lfont \sffamily \footnotesize #1}\\{\normalfont \sffamily \footnotesize \scshap
+e #2}\par \addvspace {0.5\baselineskip }\egroup \@IEEEtablecaptionsepspace \els
+e \@IEEEfigurecaptionsepspace \setbox \@tempboxa \hbox {\normalfont \sffamily \
+footnotesize {#1.}\nobreakspace \sffamily \nobreakspace #2}\ifdim \wd \@tempbox
+a >\hsize \setbox \@tempboxa \hbox {\normalfont \sffamily \footnotesize {#1.}\n
+obreakspace \sffamily \nobreakspace }\parbox [t]{\hsize }{\normalfont \footnote
+size \sffamily \noindent \unhbox \@tempboxa #2}\else \ifCLASSOPTIONconference \
+hbox to\hsize {\normalfont \sffamily \footnotesize \hfil \box \@tempboxa \hfil 
+}\else \hbox to\hsize {\normalfont \sffamily \footnotesize \box \@tempboxa \hfi
+l }\fi \fi \fi .
+\c@ContinuedFloat=\count95
+)
+\c@subfigure=\count96
+\c@subtable=\count97
+) (/usr/local/texlive/2015/texmf-dist/tex/latex/cite/cite.sty
+LaTeX Info: Redefining \cite on input line 302.
+LaTeX Info: Redefining \nocite on input line 332.
+Package: cite 2015/02/27  v 5.5
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/algorithms/algorithm.sty
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
+nment
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count98
+\float@exts=\toks16
+\float@box=\box28
+\@float@everytoks=\toks17
+\@floatcapt=\box29
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\@float@every@algorithm=\toks18
+\c@algorithm=\count99
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
+Package: algpseudocode 
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty
+Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
+
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+\c@ALG@line=\count100
+\c@ALG@rem=\count101
+\c@ALG@nested=\count102
+\ALG@tlm=\skip44
+\ALG@thistlm=\skip45
+\c@ALG@Lnr=\count103
+\c@ALG@blocknr=\count104
+\c@ALG@storecount=\count105
+\c@ALG@tmpcounter=\count106
+\ALG@tmplength=\skip46
+)
+Document Style - pseudocode environments for use with the `algorithmicx' style
+) (/usr/local/texlive/2015/texmf-dist/tex/latex/was/gensymb.sty
+Package: gensymb 2003/07/02 v1.0 (WaS)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2013/01/14 v2.14 AMS math features
+\@mathmargin=\skip47
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks19
+\ex@=\dimen137
+))
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen138
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count107
+LaTeX Info: Redefining \frac on input line 210.
+\uproot@=\count108
+\leftroot@=\count109
+LaTeX Info: Redefining \overline on input line 306.
+\classnum@=\count110
+\DOTSCASE@=\count111
+LaTeX Info: Redefining \ldots on input line 378.
+LaTeX Info: Redefining \dots on input line 381.
+LaTeX Info: Redefining \cdots on input line 466.
+\Mathstrutbox@=\box30
+\strutbox@=\box31
+\big@size=\dimen139
+LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
+\macc@depth=\count112
+\c@MaxMatrixCols=\count113
+\dotsspace@=\muskip10
+\c@parentequation=\count114
+\dspbrk@lvl=\count115
+\tag@help=\toks20
+\row@=\count116
+\column@=\count117
+\maxfields@=\count118
+\andhelp@=\toks21
+\eqnshift@=\dimen140
+\alignsep@=\dimen141
+\tagshift@=\dimen142
+\tagwidth@=\dimen143
+\totwidth@=\dimen144
+\lineht@=\dimen145
+\@envbody=\toks22
+\multlinegap=\skip48
+\multlinetaggap=\skip49
+\mathdisplay@stack=\toks23
+LaTeX Info: Redefining \[ on input line 2665.
+LaTeX Info: Redefining \] on input line 2666.
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amscls/amsthm.sty
+Package: amsthm 2015/03/04 v2.20.2
+\thm@style=\toks24
+\thm@bodyfont=\toks25
+\thm@headfont=\toks26
+\thm@notefont=\toks27
+\thm@headpunct=\toks28
+\thm@preskip=\skip50
+\thm@postskip=\skip51
+\thm@headsep=\skip52
+\dth@everypar=\toks29
+)
+\c@thm=\count119
+\c@lem=\count120
+\c@cor=\count121
+\c@prop=\count122
+\c@rem=\count123
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/cleveref/cleveref.sty
+Package: cleveref 2013/12/28 v0.19 Intelligent cross-referencing
+Package cleveref Info: `amsthm' support loaded on input line 2858.
+Package cleveref Info: `algorithmicx' support loaded on input line 2939.
+Package cleveref Info: always capitalise cross-reference names on input line 74
+70.
+Package cleveref Info: always capitalise cross-reference names on input line 74
+93.
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/todonotes/todonotes.sty
+Package: todonotes 2012/07/25 .dtx Todonotes source and documentation.
+Package: todonotes 2012/07/25
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+Package: xkeyval 2014/12/03 v2.7a package option processing (HA)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/local/texlive/2015/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+\XKV@toks=\toks30
+\XKV@tempa@toks=\toks31
+)
+\XKV@depth=\count124
+File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
+))
+(/usr/local/texlive/2015/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.te
+x
+\pgfutil@everybye=\toks32
+\pgfutil@tempdima=\dimen146
+\pgfutil@tempdimb=\dimen147
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-li
+sts.tex))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box32
+(/usr/local/texlive/2015/texmf-dist/tex/latex/ms/everyshi.sty
+Package: everyshi 2001/05/15 v3.00 EveryShipout Package (MS)
+))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+Package: pgfrcs 2013/12/20 v3.0.0 (rcs-revision 1.28)
+))
+Package: pgf 2013/12/18 v3.0.0 (rcs-revision 1.14)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2013/11/30 v3.0.0 (rcs-revision 1.47)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks33
+\pgfkeys@temptoks=\toks34
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.c
+ode.tex
+\pgfkeys@tmptoks=\toks35
+))
+\pgf@x=\dimen148
+\pgf@y=\dimen149
+\pgf@xa=\dimen150
+\pgf@ya=\dimen151
+\pgf@xb=\dimen152
+\pgf@yb=\dimen153
+\pgf@xc=\dimen154
+\pgf@yc=\dimen155
+\w@pgf@writea=\write3
+\r@pgf@reada=\read1
+\c@pgf@counta=\count125
+\c@pgf@countb=\count126
+\c@pgf@countc=\count127
+\c@pgf@countd=\count128
+\t@pgf@toka=\toks36
+\t@pgf@tokb=\toks37
+\t@pgf@tokc=\toks38
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2008/05/14  (rcs-revision 1.7)
+)
+Driver file for pgf: pgfsys-pdftex.def
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-pdftex.d
+ef
+File: pgfsys-pdftex.def 2013/07/18  (rcs-revision 1.33)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-common-p
+df.def
+File: pgfsys-common-pdf.def 2013/10/10  (rcs-revision 1.13)
+)))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.
+code.tex
+File: pgfsyssoftpath.code.tex 2013/09/09  (rcs-revision 1.9)
+\pgfsyssoftpath@smallbuffer@items=\count129
+\pgfsyssoftpath@bigbuffer@items=\count130
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.
+code.tex
+File: pgfsysprotocol.code.tex 2006/10/16  (rcs-revision 1.4)
+))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.code.tex
+Package: pgfcore 2010/04/11 v3.0.0 (rcs-revision 1.7)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
+\pgfmath@dimen=\dimen156
+\pgfmath@count=\count131
+\pgfmath@box=\box33
+\pgfmath@toks=\toks39
+\pgfmath@stack@operand=\toks40
+\pgfmath@stack@operation=\toks41
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.
+tex
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic
+.code.tex)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigo
+nometric.code.tex)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.rando
+m.code.tex)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.compa
+rison.code.tex)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.
+code.tex)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round
+.code.tex)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.
+code.tex)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integ
+erarithmetics.code.tex)))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count132
+))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.co
+de.tex
+File: pgfcorepoints.code.tex 2013/10/07  (rcs-revision 1.27)
+\pgf@picminx=\dimen157
+\pgf@picmaxx=\dimen158
+\pgf@picminy=\dimen159
+\pgf@picmaxy=\dimen160
+\pgf@pathminx=\dimen161
+\pgf@pathmaxx=\dimen162
+\pgf@pathminy=\dimen163
+\pgf@pathmaxy=\dimen164
+\pgf@xx=\dimen165
+\pgf@xy=\dimen166
+\pgf@yx=\dimen167
+\pgf@yy=\dimen168
+\pgf@zx=\dimen169
+\pgf@zy=\dimen170
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconst
+ruct.code.tex
+File: pgfcorepathconstruct.code.tex 2013/10/07  (rcs-revision 1.29)
+\pgf@path@lastx=\dimen171
+\pgf@path@lasty=\dimen172
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage
+.code.tex
+File: pgfcorepathusage.code.tex 2013/12/13  (rcs-revision 1.23)
+\pgf@shorten@end@additional=\dimen173
+\pgf@shorten@start@additional=\dimen174
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.co
+de.tex
+File: pgfcorescopes.code.tex 2013/10/09  (rcs-revision 1.44)
+\pgfpic=\box34
+\pgf@hbox=\box35
+\pgf@layerbox@main=\box36
+\pgf@picture@serial@count=\count133
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicst
+ate.code.tex
+File: pgfcoregraphicstate.code.tex 2013/09/19  (rcs-revision 1.11)
+\pgflinewidth=\dimen175
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransform
+ations.code.tex
+File: pgfcoretransformations.code.tex 2013/10/10  (rcs-revision 1.17)
+\pgf@pt@x=\dimen176
+\pgf@pt@y=\dimen177
+\pgf@pt@temp=\dimen178
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.cod
+e.tex
+File: pgfcorequick.code.tex 2008/10/09  (rcs-revision 1.3)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreobjects.c
+ode.tex
+File: pgfcoreobjects.code.tex 2006/10/11  (rcs-revision 1.2)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathproce
+ssing.code.tex
+File: pgfcorepathprocessing.code.tex 2013/09/09  (rcs-revision 1.9)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.co
+de.tex
+File: pgfcorearrows.code.tex 2013/11/07  (rcs-revision 1.40)
+\pgfarrowsep=\dimen179
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.cod
+e.tex
+File: pgfcoreshade.code.tex 2013/07/15  (rcs-revision 1.15)
+\pgf@max=\dimen180
+\pgf@sys@shading@range@num=\count134
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.cod
+e.tex
+File: pgfcoreimage.code.tex 2013/07/15  (rcs-revision 1.18)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreexternal.
+code.tex
+File: pgfcoreexternal.code.tex 2013/07/15  (rcs-revision 1.20)
+\pgfexternal@startupbox=\box37
+))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcorelayers.co
+de.tex
+File: pgfcorelayers.code.tex 2013/07/18  (rcs-revision 1.7)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretranspare
+ncy.code.tex
+File: pgfcoretransparency.code.tex 2013/09/30  (rcs-revision 1.5)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepatterns.
+code.tex
+File: pgfcorepatterns.code.tex 2013/11/07  (rcs-revision 1.5)
+)))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.cod
+e.tex
+File: pgfmoduleshapes.code.tex 2013/10/31  (rcs-revision 1.34)
+\pgfnodeparttextbox=\box38
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.
+tex
+File: pgfmoduleplot.code.tex 2013/07/31  (rcs-revision 1.12)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-0-65.sty
+Package: pgfcomp-version-0-65 2007/07/03 v3.0.0 (rcs-revision 1.7)
+\pgf@nodesepstart=\dimen181
+\pgf@nodesepend=\dimen182
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-1-18.sty
+Package: pgfcomp-version-1-18 2007/07/23 v3.0.0 (rcs-revision 1.1)
+))
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex)
+) (/usr/local/texlive/2015/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+Package: pgffor 2013/12/13 v3.0.0 (rcs-revision 1.25)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)
+\pgffor@iter=\dimen183
+\pgffor@skip=\dimen184
+\pgffor@stack=\toks42
+\pgffor@toks=\toks43
+))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.cod
+e.tex
+Package: tikz 2013/12/13 v3.0.0 (rcs-revision 1.142)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothan
+dlers.code.tex
+File: pgflibraryplothandlers.code.tex 2013/08/31 v3.0.0 (rcs-revision 1.20)
+\pgf@plot@mark@count=\count135
+\pgfplotmarksize=\dimen185
+)
+\tikz@lastx=\dimen186
+\tikz@lasty=\dimen187
+\tikz@lastxsaved=\dimen188
+\tikz@lastysaved=\dimen189
+\tikzleveldistance=\dimen190
+\tikzsiblingdistance=\dimen191
+\tikz@figbox=\box39
+\tikz@figbox@bg=\box40
+\tikz@tempbox=\box41
+\tikz@tempbox@bg=\box42
+\tikztreelevel=\count136
+\tikznumberofchildren=\count137
+\tikznumberofcurrentchild=\count138
+\tikz@fig@count=\count139
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.cod
+e.tex
+File: pgfmodulematrix.code.tex 2013/09/17  (rcs-revision 1.8)
+\pgfmatrixcurrentrow=\count140
+\pgfmatrixcurrentcolumn=\count141
+\pgf@matrix@numberofcolumns=\count142
+)
+\tikz@expandcount=\count143
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2008/06/17 v3.0.0 (rcs-revision 1.2)
+)))
+(/usr/local/texlive/2015/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarypositioning.code.tex
+File: tikzlibrarypositioning.code.tex 2008/10/06 v3.0.0 (rcs-revision 1.7)
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count144
+\calc@Bcount=\count145
+\calc@Adimen=\dimen192
+\calc@Bdimen=\dimen193
+\calc@Askip=\skip53
+\calc@Bskip=\skip54
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count146
+\calc@Cskip=\skip55
+)
+\c@@todonotes@numberoftodonotes=\count147
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/soul/soul.sty
+Package: soul 2003/11/17 v2.4 letterspacing/underlining (mf)
+\SOUL@word=\toks44
+\SOUL@lasttoken=\toks45
+\SOUL@cmds=\toks46
+\SOUL@buffer=\toks47
+\SOUL@token=\toks48
+\SOUL@spaceskip=\skip56
+\SOUL@ttwidth=\dimen194
+\SOUL@uldp=\dimen195
+\SOUL@ulht=\dimen196
+)
+(./TXT_16-TIE-3798.aux)
+\openout1 = `TXT_16-TIE-3798.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 78.
+LaTeX Font Info:    ... okay on input line 78.
+
+-- Lines per column: 58 (exact).
+(/usr/local/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count148
+\scratchdimen=\dimen197
+\scratchbox=\box43
+\nofMPsegments=\count149
+\nofMParguments=\count150
+\everyMPshowfont=\toks49
+\MPscratchCnt=\count151
+\MPscratchDim=\dimen198
+\MPnumerator=\count152
+\makeMPintoPDFobject=\count153
+\everyMPtoPDFconversion=\toks50
+) (/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
+))
+(/usr/local/texlive/2015/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
+
+(/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 452.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
+Package caption Info: End \AtBeginDocument code.
+LaTeX Info: Redefining \celsius on input line 78.
+Package gensymb Info: Faking symbols for \degree and \celsius on input line 78.
+
+
+
+Package gensymb Warning: Not defining \perthousand.
+
+LaTeX Info: Redefining \ohm on input line 78.
+Package gensymb Info: Using \Omega for \ohm on input line 78.
+
+Package gensymb Warning: Not defining \micro.
+
+ABD: EveryShipout initializing macros
+LaTeX Font Info:    Try loading font information for OT1+phv on input line 82.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ot1phv.fd
+File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
+)
+LaTeX Font Info:    Calculating math sizes for size <11> on input line 82.
+LaTeX Font Info:    Try loading font information for U+msa on input line 82.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 82.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 82.
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+Underfull \hbox (badness 10000) in paragraph at lines 82--82
+\OT1/phv/m/n/8 En-gi-neer-ing, Uni-ver-sity of Cal-i-for-nia, Berke-ley, Berke-
+ley,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 82--82
+\OT1/phv/m/n/8 CA 94709, USA. Email: \OT1/pcr/m/n/9 changliu@berkeley.edu,
+ []
+
+LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <9> not available
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 89.
+LaTeX Font Info:    Font shape `OT1/phv/bx/it' in size <9> not available
+(Font)              Font shape `OT1/phv/b/it' tried instead on input line 89.
+LaTeX Font Info:    Font shape `OT1/phv/b/it' in size <9> not available
+(Font)              Font shape `OT1/phv/b/sl' tried instead on input line 89.
+
+Underfull \hbox (badness 10000) in paragraph at lines 89--100
+[]\OT1/phv/b/sl/9 Abstract\OT1/phv/b/n/9 ---This pa-per presents a mea-sure-men
+t
+ []
+
+
+Underfull \hbox (badness 1783) in paragraph at lines 89--100
+\OT1/phv/b/n/9 to dis-sem-i-nate the sen-sor mea-sure-ments within lo-cal
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 89--100
+\OT1/phv/b/n/9 avail-able mea-sure-ments, which sig-nif-i-cantly re-duces
+ []
+
+
+Underfull \hbox (badness 1540) in paragraph at lines 89--100
+\OT1/phv/b/n/9 lo-cally fuses the newly re-ceived mea-sure-ments, while
+ []
+
+[1{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 153--154
+[][]\OT1/ptm/m/n/10 In this work, we pro-pose a novel mea-sure-ment
+ []
+
+
+Underfull \hbox (badness 3088) in paragraph at lines 153--154
+\OT1/ptm/m/n/10 data scal-ing lin-early with the UGV num-ber. (c) The
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <10> not available
+(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 168.
+
+
+LaTeX Font Warning: Command \small invalid in math mode on input line 172.
+
+LaTeX Font Info:    Calculating math sizes for size <> on input line 175.
+
+LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <> not available
+(Font)              size <5> substituted on input line 175.
+
+
+LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <0.7> not available
+(Font)              size <5> substituted on input line 175.
+
+
+LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <0.5> not available
+(Font)              size <5> substituted on input line 175.
+
+
+LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <> not available
+(Font)              size <5> substituted on input line 175.
+
+
+LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <0.7> not available
+(Font)              size <5> substituted on input line 175.
+
+
+LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <0.5> not available
+(Font)              size <5> substituted on input line 175.
+
+
+LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <> not available
+(Font)              size <5> substituted on input line 175.
+
+
+LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <0.7> not available
+(Font)              size <5> substituted on input line 175.
+
+
+LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <0.5> not available
+(Font)              size <5> substituted on input line 175.
+
+[2] <com_topo_new_16-TIE-3798.pdf, id=36, 4935.41327pt x 1567.6258pt>
+File: com_topo_new_16-TIE-3798.pdf Graphic file (type pdf)
+
+<use com_topo_new_16-TIE-3798.pdf>
+Package pdftex.def Info: com_topo_new_16-TIE-3798.pdf used on input line 229.
+(pdftex.def)             Requested size: 232.19843pt x 73.74539pt.
+
+Underfull \hbox (badness 2617) in paragraph at lines 246--248
+ \OT1/ptm/m/it/10 1) Pre-dic-tion: [][] \OT1/ptm/m/n/10 At time $\OML/cmm/m/it/
+10 k$\OT1/ptm/m/n/10 , the prior in-di-vid-ual PDF
+ []
+
+
+Overfull \hbox (7.83612pt too wide) detected at line 251
+\OML/cmm/m/it/9 P[]\OT1/cmr/m/n/9 (\OML/cmm/m/it/9 X[]\OMS/cmsy/m/n/9 j\OT1/cmr
+/bx/n/9 z[]\OT1/cmr/m/n/9 ) = [] \OML/cmm/m/it/9 P\OT1/cmr/m/n/9 (\OML/cmm/m/it
+/9 X[]\OMS/cmsy/m/n/9 j\OML/cmm/m/it/9 X[]\OT1/cmr/m/n/9 )\OML/cmm/m/it/9 P[]\O
+T1/cmr/m/n/9 (\OML/cmm/m/it/9 X[]\OMS/cmsy/m/n/9 j\OT1/cmr/bx/n/9 z[]\OT1/cmr/m
+/n/9 )\OML/cmm/m/it/9 dX[];
+ []
+
+
+Underfull \hbox (badness 6691) in paragraph at lines 286--286
+[][][]\OT1/phv/m/n/8 For the pur-pose of sim-plic-ity, we will not ex-plic-itly
+ write
+ []
+
+[3 <./com_topo_new_16-TIE-3798.pdf>]
+<data_exchange_16-TIE-3798.pdf, id=59, 2104.33884pt x 1444.27568pt>
+File: data_exchange_16-TIE-3798.pdf Graphic file (type pdf)
+
+<use data_exchange_16-TIE-3798.pdf>
+Package pdftex.def Info: data_exchange_16-TIE-3798.pdf used on input line 362.
+(pdftex.def)             Requested size: 252.84283pt x 173.52599pt.
+
+Overfull \hbox (0.84283pt too wide) in paragraph at lines 362--363
+ [][] 
+ []
+
+
+Underfull \hbox (badness 4266) in paragraph at lines 391--394
+[]\OT1/ptm/m/n/10 Fig. 3 il-lus-trates the LIFO-DBF pro-ce-dure for the
+ []
+
+
+Underfull \hbox (badness 3323) in paragraph at lines 391--394
+\OT1/cmr/m/n/10 1[]$ \OT1/ptm/m/n/10 UGV as an ex-am-ple []. $\OT1/cmr/m/n/10 
+[]  []$ \OT1/ptm/m/n/10 de-note
+ []
+
+
+Underfull \hbox (badness 3942) in paragraph at lines 391--394
+\OT1/ptm/m/n/10 the in-dex set of UGVs whose mea-sure-ment at time
+ []
+
+
+Underfull \hbox (badness 1953) in paragraph at lines 391--394
+\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 k \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 N \OT
+1/cmr/m/n/10 + \OML/cmm/m/it/10 ^^X\OT1/cmr/m/n/10 )$ \OT1/ptm/m/n/10 is stored
+ in $\OML/cmm/m/it/10 i[]$ \OT1/ptm/m/n/10 UGV's record set, i.e.
+ []
+
+
+Underfull \hbox (badness 2443) in paragraph at lines 391--394
+\OT1/cmr/m/n/10 
+[] = []$\OT1/ptm/m/n/10 . The
+ []
+
+[4 <./data_exchange_16-TIE-3798.pdf>]
+<DBF_demo_16-TIE-3798.pdf, id=71, 2441.32315pt x 1539.6867pt>
+File: DBF_demo_16-TIE-3798.pdf Graphic file (type pdf)
+
+<use DBF_demo_16-TIE-3798.pdf>
+Package pdftex.def Info: DBF_demo_16-TIE-3798.pdf used on input line 397.
+(pdftex.def)             Requested size: 263.15717pt x 165.95947pt.
+
+Overfull \hbox (11.15717pt too wide) in paragraph at lines 397--403
+ [][] 
+ []
+
+
+Overfull \hbox (11.17949pt too wide) in paragraph at lines 451--451
+[] 
+ []
+
+
+Underfull \hbox (badness 7064) in paragraph at lines 494--497
+[]\OT1/ptm/m/n/10 First we look at the asymp-totic be-hav-ior of
+ []
+
+[5 <./DBF_demo_16-TIE-3798.pdf>]
+Overfull \hbox (3.51274pt too wide) detected at line 513
+[] [] [] \OT1/cmr/m/n/9 = [] [] [] + [] [] [] [] []\OML/cmm/m/it/9 :
+ []
+
+[6]
+<brg_sta_sen_sta_tar_rbt1_step1_16-TIE-3798.pdf, id=86, 468.69917pt x 367.1843p
+t>
+File: brg_sta_sen_sta_tar_rbt1_step1_16-TIE-3798.pdf Graphic file (type pdf)
+ <use brg_sta_sen_sta_tar_rbt1_step1_16-TIE-3798.pdf>
+Package pdftex.def Info: brg_sta_sen_sta_tar_rbt1_step1_16-TIE-3798.pdf used on
+ input line 623.
+(pdftex.def)             Requested size: 108.36346pt x 84.89322pt.
+
+<brg_sta_sen_sta_tar_rbt1_step3_16-TIE-3798.pdf, id=87, 468.69917pt x 367.1843p
+t>
+File: brg_sta_sen_sta_tar_rbt1_step3_16-TIE-3798.pdf Graphic file (type pdf)
+ <use brg_sta_sen_sta_tar_rbt1_step3_16-TIE-3798.pdf>
+Package pdftex.def Info: brg_sta_sen_sta_tar_rbt1_step3_16-TIE-3798.pdf used on
+ input line 627.
+(pdftex.def)             Requested size: 108.36346pt x 84.89322pt.
+
+<brg_sta_sen_sta_tar_rbt1_step5_16-TIE-3798.pdf, id=88, 468.69917pt x 367.1843p
+t>
+File: brg_sta_sen_sta_tar_rbt1_step5_16-TIE-3798.pdf Graphic file (type pdf)
+ <use brg_sta_sen_sta_tar_rbt1_step5_16-TIE-3798.pdf>
+Package pdftex.def Info: brg_sta_sen_sta_tar_rbt1_step5_16-TIE-3798.pdf used on
+ input line 631.
+(pdftex.def)             Requested size: 108.36346pt x 84.89322pt.
+
+<brg_sta_sen_sta_tar_rbt1_step10_16-TIE-3798.pdf, id=89, 468.69917pt x 367.1843
+pt>
+File: brg_sta_sen_sta_tar_rbt1_step10_16-TIE-3798.pdf Graphic file (type pdf)
+ <use brg_sta_sen_sta_tar_rbt1_step10_16-TIE-3798.pdf>
+Package pdftex.def Info: brg_sta_sen_sta_tar_rbt1_step10_16-TIE-3798.pdf used o
+n input line 635.
+(pdftex.def)             Requested size: 108.36346pt x 84.89322pt.
+
+<brg_sta_sen_sta_tar_pos_err_16-TIE-3798.pdf, id=90, 524.44682pt x 426.8839pt>
+File: brg_sta_sen_sta_tar_pos_err_16-TIE-3798.pdf Graphic file (type pdf)
+
+<use brg_sta_sen_sta_tar_pos_err_16-TIE-3798.pdf>
+Package pdftex.def Info: brg_sta_sen_sta_tar_pos_err_16-TIE-3798.pdf used on in
+put line 640.
+(pdftex.def)             Requested size: 108.36346pt x 88.20221pt.
+
+<brg_sta_sen_sta_tar_entropy_16-TIE-3798.pdf, id=91, 524.44682pt x 426.8839pt>
+File: brg_sta_sen_sta_tar_entropy_16-TIE-3798.pdf Graphic file (type pdf)
+
+<use brg_sta_sen_sta_tar_entropy_16-TIE-3798.pdf>
+Package pdftex.def Info: brg_sta_sen_sta_tar_entropy_16-TIE-3798.pdf used on in
+put line 644.
+(pdftex.def)             Requested size: 108.36346pt x 88.20221pt.
+
+<hetero_sta_sen_sta_tar_rbt5_step1_16-TIE-3798.pdf, id=92, 468.69917pt x 367.18
+43pt>
+File: hetero_sta_sen_sta_tar_rbt5_step1_16-TIE-3798.pdf Graphic file (type pdf)
+
+ <use hetero_sta_sen_sta_tar_rbt5_step1_16-TIE-3798.pdf>
+Package pdftex.def Info: hetero_sta_sen_sta_tar_rbt5_step1_16-TIE-3798.pdf used
+ on input line 656.
+(pdftex.def)             Requested size: 108.36346pt x 84.89322pt.
+
+<hetero_sta_sen_sta_tar_rbt5_step3_16-TIE-3798.pdf, id=93, 468.69917pt x 367.18
+43pt>
+File: hetero_sta_sen_sta_tar_rbt5_step3_16-TIE-3798.pdf Graphic file (type pdf)
+
+ <use hetero_sta_sen_sta_tar_rbt5_step3_16-TIE-3798.pdf>
+Package pdftex.def Info: hetero_sta_sen_sta_tar_rbt5_step3_16-TIE-3798.pdf used
+ on input line 660.
+(pdftex.def)             Requested size: 108.36346pt x 84.89322pt.
+
+<hetero_sta_sen_sta_tar_rbt5_step5_16-TIE-3798.pdf, id=94, 468.69917pt x 367.18
+43pt>
+File: hetero_sta_sen_sta_tar_rbt5_step5_16-TIE-3798.pdf Graphic file (type pdf)
+
+ <use hetero_sta_sen_sta_tar_rbt5_step5_16-TIE-3798.pdf>
+Package pdftex.def Info: hetero_sta_sen_sta_tar_rbt5_step5_16-TIE-3798.pdf used
+ on input line 664.
+(pdftex.def)             Requested size: 108.36346pt x 84.89322pt.
+
+<hetero_sta_sen_sta_tar_rbt5_step10_16-TIE-3798.pdf, id=95, 468.69917pt x 367.1
+843pt>
+File: hetero_sta_sen_sta_tar_rbt5_step10_16-TIE-3798.pdf Graphic file (type pdf
+)
+ <use hetero_sta_sen_sta_tar_rbt5_step10_16-TIE-3798.pdf>
+Package pdftex.def Info: hetero_sta_sen_sta_tar_rbt5_step10_16-TIE-3798.pdf use
+d on input line 668.
+(pdftex.def)             Requested size: 108.36346pt x 84.89322pt.
+
+<hetero_sta_sen_sta_tar_pos_err_16-TIE-3798.pdf, id=96, 524.44682pt x 426.8839p
+t>
+File: hetero_sta_sen_sta_tar_pos_err_16-TIE-3798.pdf Graphic file (type pdf)
+ <use hetero_sta_sen_sta_tar_pos_err_16-TIE-3798.pdf>
+Package pdftex.def Info: hetero_sta_sen_sta_tar_pos_err_16-TIE-3798.pdf used on
+ input line 672.
+(pdftex.def)             Requested size: 108.36346pt x 88.20221pt.
+
+<hetero_sta_sen_sta_tar_entropy_16-TIE-3798.pdf, id=97, 524.44682pt x 426.8839p
+t>
+File: hetero_sta_sen_sta_tar_entropy_16-TIE-3798.pdf Graphic file (type pdf)
+ <use hetero_sta_sen_sta_tar_entropy_16-TIE-3798.pdf>
+Package pdftex.def Info: hetero_sta_sen_sta_tar_entropy_16-TIE-3798.pdf used on
+ input line 676.
+(pdftex.def)             Requested size: 108.36346pt x 88.20221pt.
+
+Underfull \hbox (badness 1874) in paragraph at lines 728--734
+[]\OT1/ptm/m/n/10 In both sce-nar-ios, LIFO-DBF is com-pared with two
+ []
+
+
+<hetero_mov_sen_mov_tar_rbt4_step1_16-TIE-3798.pdf, id=98, 468.69917pt x 367.18
+43pt>
+File: hetero_mov_sen_mov_tar_rbt4_step1_16-TIE-3798.pdf Graphic file (type pdf)
+
+ <use hetero_mov_sen_mov_tar_rbt4_step1_16-TIE-3798.pdf>
+Package pdftex.def Info: hetero_mov_sen_mov_tar_rbt4_step1_16-TIE-3798.pdf used
+ on input line 738.
+(pdftex.def)             Requested size: 108.36346pt x 84.89322pt.
+
+<hetero_mov_sen_mov_tar_rbt4_step3_16-TIE-3798.pdf, id=99, 468.69917pt x 367.18
+43pt>
+File: hetero_mov_sen_mov_tar_rbt4_step3_16-TIE-3798.pdf Graphic file (type pdf)
+
+ <use hetero_mov_sen_mov_tar_rbt4_step3_16-TIE-3798.pdf>
+Package pdftex.def Info: hetero_mov_sen_mov_tar_rbt4_step3_16-TIE-3798.pdf used
+ on input line 742.
+(pdftex.def)             Requested size: 108.36346pt x 84.89322pt.
+
+<hetero_mov_sen_mov_tar_rbt4_step5_16-TIE-3798.pdf, id=100, 468.69917pt x 367.1
+843pt>
+File: hetero_mov_sen_mov_tar_rbt4_step5_16-TIE-3798.pdf Graphic file (type pdf)
+
+ <use hetero_mov_sen_mov_tar_rbt4_step5_16-TIE-3798.pdf>
+Package pdftex.def Info: hetero_mov_sen_mov_tar_rbt4_step5_16-TIE-3798.pdf used
+ on input line 746.
+(pdftex.def)             Requested size: 108.36346pt x 84.89322pt.
+
+<hetero_mov_sen_mov_tar_rbt4_step10_16-TIE-3798.pdf, id=101, 468.69917pt x 367.
+1843pt>
+File: hetero_mov_sen_mov_tar_rbt4_step10_16-TIE-3798.pdf Graphic file (type pdf
+)
+ <use hetero_mov_sen_mov_tar_rbt4_step10_16-TIE-3798.pdf>
+Package pdftex.def Info: hetero_mov_sen_mov_tar_rbt4_step10_16-TIE-3798.pdf use
+d on input line 750.
+(pdftex.def)             Requested size: 108.36346pt x 84.89322pt.
+
+<hetero_mov_sen_mov_tar_pos_err_16-TIE-3798.pdf, id=102, 524.44682pt x 426.8839
+pt>
+File: hetero_mov_sen_mov_tar_pos_err_16-TIE-3798.pdf Graphic file (type pdf)
+ <use hetero_mov_sen_mov_tar_pos_err_16-TIE-3798.pdf>
+Package pdftex.def Info: hetero_mov_sen_mov_tar_pos_err_16-TIE-3798.pdf used on
+ input line 754.
+(pdftex.def)             Requested size: 108.36346pt x 88.20221pt.
+
+<hetero_mov_sen_mov_tar_entropy_16-TIE-3798.pdf, id=103, 524.44682pt x 426.8839
+pt>
+File: hetero_mov_sen_mov_tar_entropy_16-TIE-3798.pdf Graphic file (type pdf)
+ <use hetero_mov_sen_mov_tar_entropy_16-TIE-3798.pdf>
+Package pdftex.def Info: hetero_mov_sen_mov_tar_entropy_16-TIE-3798.pdf used on
+ input line 758.
+(pdftex.def)             Requested size: 108.36346pt x 88.20221pt.
+
+Underfull \vbox (badness 4569) has occurred while \output is active []
+
+ [7 <./brg_sta_sen_sta_tar_rbt1_step1_16-TIE-3798.pdf> <./brg_sta_sen_sta_tar_r
+bt1_step3_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./brg_sta_sen_sta_tar_rbt1_s
+tep3_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group included in
+ a single page
+> <./brg_sta_sen_sta_tar_rbt1_step5_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./brg_sta_sen_sta_tar_rbt1_s
+tep5_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group included in
+ a single page
+> <./brg_sta_sen_sta_tar_rbt1_step10_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./brg_sta_sen_sta_tar_rbt1_s
+tep10_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group included i
+n a single page
+> <./brg_sta_sen_sta_tar_pos_err_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./brg_sta_sen_sta_tar_pos_er
+r_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group included in a 
+single page
+> <./brg_sta_sen_sta_tar_entropy_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./brg_sta_sen_sta_tar_entrop
+y_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group included in a 
+single page
+> <./hetero_sta_sen_sta_tar_rbt5_step1_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./hetero_sta_sen_sta_tar_rbt
+5_step1_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group included
+ in a single page
+> <./hetero_sta_sen_sta_tar_rbt5_step3_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./hetero_sta_sen_sta_tar_rbt
+5_step3_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group included
+ in a single page
+> <./hetero_sta_sen_sta_tar_rbt5_step5_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./hetero_sta_sen_sta_tar_rbt
+5_step5_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group included
+ in a single page
+> <./hetero_sta_sen_sta_tar_rbt5_step10_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./hetero_sta_sen_sta_tar_rbt
+5_step10_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group include
+d in a single page
+> <./hetero_sta_sen_sta_tar_pos_err_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./hetero_sta_sen_sta_tar_pos
+_err_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group included in
+ a single page
+> <./hetero_sta_sen_sta_tar_entropy_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./hetero_sta_sen_sta_tar_ent
+ropy_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group included in
+ a single page
+>] <exp_setup_rdsize_16-TIE-3798.pdf, id=417, 536.0025pt x 480.49844pt>
+File: exp_setup_rdsize_16-TIE-3798.pdf Graphic file (type pdf)
+
+<use exp_setup_rdsize_16-TIE-3798.pdf>
+Package pdftex.def Info: exp_setup_rdsize_16-TIE-3798.pdf used on input line 79
+1.
+(pdftex.def)             Requested size: 206.39685pt x 185.01813pt.
+ [8 <./hetero_mov_sen_mov_tar_rbt4_step1_16-TIE-3798.pdf> <./hetero_mov_sen_mov
+_tar_rbt4_step3_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./hetero_mov_sen_mov_tar_rbt
+4_step3_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group included
+ in a single page
+> <./hetero_mov_sen_mov_tar_rbt4_step5_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./hetero_mov_sen_mov_tar_rbt
+4_step5_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group included
+ in a single page
+> <./hetero_mov_sen_mov_tar_rbt4_step10_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./hetero_mov_sen_mov_tar_rbt
+4_step10_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group include
+d in a single page
+> <./hetero_mov_sen_mov_tar_pos_err_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./hetero_mov_sen_mov_tar_pos
+_err_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group included in
+ a single page
+> <./hetero_mov_sen_mov_tar_entropy_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./hetero_mov_sen_mov_tar_ent
+ropy_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group included in
+ a single page
+> <./exp_setup_rdsize_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./exp_setup_rdsize_16-TIE-37
+98.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+
+>]
+<sonar_mov_sen_sta_tar_rbt1_step1_16-TIE-3798.pdf, id=634, 453.90164pt x 350.90
+509pt>
+File: sonar_mov_sen_sta_tar_rbt1_step1_16-TIE-3798.pdf Graphic file (type pdf)
+ <use sonar_mov_sen_sta_tar_rbt1_step1_16-TIE-3798.pdf>
+Package pdftex.def Info: sonar_mov_sen_sta_tar_rbt1_step1_16-TIE-3798.pdf used 
+on input line 814.
+(pdftex.def)             Requested size: 108.36346pt x 83.77452pt.
+
+<sonar_mov_sen_sta_tar_rbt1_step5_16-TIE-3798.pdf, id=635, 469.26826pt x 367.75
+334pt>
+File: sonar_mov_sen_sta_tar_rbt1_step5_16-TIE-3798.pdf Graphic file (type pdf)
+ <use sonar_mov_sen_sta_tar_rbt1_step5_16-TIE-3798.pdf>
+Package pdftex.def Info: sonar_mov_sen_sta_tar_rbt1_step5_16-TIE-3798.pdf used 
+on input line 818.
+(pdftex.def)             Requested size: 108.36346pt x 84.91817pt.
+
+<sonar_mov_sen_sta_tar_rbt1_step10_16-TIE-3798.pdf, id=636, 453.90164pt x 350.9
+0509pt>
+File: sonar_mov_sen_sta_tar_rbt1_step10_16-TIE-3798.pdf Graphic file (type pdf)
+
+ <use sonar_mov_sen_sta_tar_rbt1_step10_16-TIE-3798.pdf>
+Package pdftex.def Info: sonar_mov_sen_sta_tar_rbt1_step10_16-TIE-3798.pdf used
+ on input line 822.
+(pdftex.def)             Requested size: 108.36346pt x 83.77452pt.
+
+<sonar_mov_sen_sta_tar_rbt1_step20_16-TIE-3798.pdf, id=637, 453.90164pt x 350.9
+0509pt>
+File: sonar_mov_sen_sta_tar_rbt1_step20_16-TIE-3798.pdf Graphic file (type pdf)
+
+ <use sonar_mov_sen_sta_tar_rbt1_step20_16-TIE-3798.pdf>
+Package pdftex.def Info: sonar_mov_sen_sta_tar_rbt1_step20_16-TIE-3798.pdf used
+ on input line 826.
+(pdftex.def)             Requested size: 108.36346pt x 83.77452pt.
+
+<sonar_mov_sen_sta_tar_rbt1_step30_16-TIE-3798.pdf, id=638, 453.90164pt x 350.9
+0509pt>
+File: sonar_mov_sen_sta_tar_rbt1_step30_16-TIE-3798.pdf Graphic file (type pdf)
+
+ <use sonar_mov_sen_sta_tar_rbt1_step30_16-TIE-3798.pdf>
+Package pdftex.def Info: sonar_mov_sen_sta_tar_rbt1_step30_16-TIE-3798.pdf used
+ on input line 830.
+(pdftex.def)             Requested size: 108.36346pt x 83.77452pt.
+
+<sonar_entropy_modified_16-TIE-3798.pdf, id=639, 481.73907pt x 385.79852pt>
+File: sonar_entropy_modified_16-TIE-3798.pdf Graphic file (type pdf)
+
+<use sonar_entropy_modified_16-TIE-3798.pdf>
+Package pdftex.def Info: sonar_entropy_modified_16-TIE-3798.pdf used on input l
+ine 834.
+(pdftex.def)             Requested size: 108.36346pt x 86.77737pt.
+ (./TXT_16-TIE-3798.bbl [9 <./sonar_mov_sen_sta_tar_rbt1_step1_16-TIE-3798.pdf>
+ <./sonar_mov_sen_sta_tar_rbt1_step5_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./sonar_mov_sen_sta_tar_rbt1
+_step5_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group included 
+in a single page
+> <./sonar_mov_sen_sta_tar_rbt1_step10_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./sonar_mov_sen_sta_tar_rbt1
+_step10_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group included
+ in a single page
+> <./sonar_mov_sen_sta_tar_rbt1_step20_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./sonar_mov_sen_sta_tar_rbt1
+_step20_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group included
+ in a single page
+> <./sonar_mov_sen_sta_tar_rbt1_step30_16-TIE-3798.pdf
+
+pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./sonar_mov_sen_sta_tar_rbt1
+_step30_16-TIE-3798.pdf): PDF inclusion: multiple pdfs with page group included
+ in a single page
+> <./sonar_entropy_modified_16-TIE-3798.pdf>])
+<Author_ChangLiu.pdf, id=1351, 614.295pt x 794.97pt>
+File: Author_ChangLiu.pdf Graphic file (type pdf)
+ <use Author_ChangLiu.pdf>
+Package pdftex.def Info: Author_ChangLiu.pdf used on input line 907.
+(pdftex.def)             Requested size: 69.80351pt x 90.33397pt.
+File: Author_ChangLiu.pdf Graphic file (type pdf)
+
+<use Author_ChangLiu.pdf>
+Package pdftex.def Info: Author_ChangLiu.pdf used on input line 907.
+(pdftex.def)             Requested size: 69.80351pt x 90.33397pt.
+LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <8> not available
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 907.
+Missing character: There is no â in font phvr7t!
+Missing character: There is no € in font phvr7t!
+Missing character: There is no “ in font phvr7t!
+
+<Author_ShengboLi.pdf, id=1354, 81.74098pt x 103.93872pt>
+File: Author_ShengboLi.pdf Graphic file (type pdf)
+
+<use Author_ShengboLi.pdf>
+Package pdftex.def Info: Author_ShengboLi.pdf used on input line 915.
+(pdftex.def)             Requested size: 71.04422pt x 90.33713pt.
+File: Author_ShengboLi.pdf Graphic file (type pdf)
+ <use Author_ShengboLi.pdf>
+Package pdftex.def Info: Author_ShengboLi.pdf used on input line 915.
+(pdftex.def)             Requested size: 71.04422pt x 90.33713pt.
+Missing character: There is no â in font phvr7t!
+Missing character: There is no € in font phvr7t!
+Missing character: There is no “ in font phvr7t!
+
+Underfull \hbox (badness 10000) in paragraph at lines 915--918
+[]\OT1/phv/m/n/8 His ac-tive re-search in-ter-ests in-clude
+ []
+
+
+Underfull \hbox (badness 5203) in paragraph at lines 915--918
+\OT1/phv/m/n/8 au-tonomous ve-hi-cle con-trol, learning-based
+ []
+
+
+Underfull \hbox (badness 1603) in paragraph at lines 915--918
+\OT1/phv/m/n/8 mem-ber of IEEE In-tel-li-gent Ve-hi-cle Sym-po-sium, ISC mem-be
+r of
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 915--918
+
+ []
+
+<Author_JKarlHedrick.pdf, id=1357, 159.5035pt x 210.4438pt>
+File: Author_JKarlHedrick.pdf Graphic file (type pdf)
+
+<use Author_JKarlHedrick.pdf>
+Package pdftex.def Info: Author_JKarlHedrick.pdf used on input line 922.
+(pdftex.def)             Requested size: 68.47076pt x 90.33813pt.
+File: Author_JKarlHedrick.pdf Graphic file (type pdf)
+ <use Author_JKarlHedrick.pdf>
+Package pdftex.def Info: Author_JKarlHedrick.pdf used on input line 922.
+(pdftex.def)             Requested size: 68.47076pt x 90.33813pt.
+
+Underfull \hbox (badness 7186) in paragraph at lines 922--926
+\OT1/phv/m/n/8 En-gi-neer-ing Me-chan-ics from Uni-ver-sity of
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 922--926
+\OT1/phv/m/n/8 of Me-chan-i-cal En-gi-neer-ing, Uni-ver-sity of
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 922--926
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 922--926
+
+ []
+
+[10 <./Author_ChangLiu.pdf> <./Author_ShengboLi.pdf> <./Author_JKarlHedrick.pdf
+>] (./TXT_16-TIE-3798.aux)
+
+LaTeX Font Warning: Size substitutions with differences
+(Font)              up to 4.5pt have occurred.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 17765 strings out of 493089
+ 351632 string characters out of 6134842
+ 407527 words of memory out of 5000000
+ 20869 multiletter control sequences out of 15000+600000
+ 67086 words of font info for 142 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 62i,15n,75p,810b,537s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
+exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/te
+xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/local/texl
+ive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/texliv
+e/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive
+/2015/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb></usr/local/texl
+ive/2015/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex9.pfb></usr/local/t
+exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/te
+xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texl
+ive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texliv
+e/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/
+2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/20
+15/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive/2015
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2015/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2015/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2015/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2015/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2015/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2015/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2015/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2015/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2015/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/publ
+ic/amsfonts/symbols/msam10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/
+public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2015/texmf-dist/fonts/ty
+pe1/urw/courier/ucrr8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/
+helvetic/uhvb8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/helveti
+c/uhvbo8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/helvetic/uhvr
+8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb
+></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/loc
+al/texlive/2015/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texliv
+e/2015/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2015/tex
+mf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on TXT_16-TIE-3798.pdf (10 pages, 1962983 bytes).
+PDF statistics:
+ 1512 PDF objects out of 1728 (max. 8388607)
+ 779 compressed objects within 8 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 204 words of extra memory for PDF output out of 10000 (max. 10000000)
+

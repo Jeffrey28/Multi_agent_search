@@ -1,0 +1,28 @@
+The following changes are made to fix typos in the manuscript:
+
+  Page 1. Abstract: “…estimate individual probability density function (PDF) for the static target” -> “…estimate individual probability density function (PDF) of the static target”.
+
+  Page 2. Eqn. (1): “x^g_k+1 = f(x^g_k,u^g_k)” -> “x^g_k+1 = f(x^g_k)”.
+
+  Page 3. proof of Proposition 1: “A^{\tao_{i,j}}_(i,j)” -> “A^{\tao_{i,j}}_(ij)”.
+
+  Page 9. “The experiment equipments is illustrated in Figure 8 …” -> “The experiment equipments are illustrated in Fig. 7 …”
+
+  Page 9. removed the sentence “which is rather inaccurate to use single robot to localize the target.” after the sentence “Its measurement noise is modeled as a zero-mean Gaussian random variable with standard deviation 0.51m.”.
+
+
+The following change is made to reduce the paper into 10 pages:
+
+  The simulation results of moving UGVs moving target using a homogeneous team is removed to save space. The removal of this content does not affect the completeness, novelty, and soundness of the paper. 
+
+  To be specific, the original Fig. 6 is removed. The corresponding context is also removed, which include:
+
+  Page 8: “Figures 6a to 6d and Figures 7a to 7d illustrate the evolution of individual PDF for the heterogeneous team.” -> “Figs. 6a to 6d illustrate the evolution of individual PDF for the heterogeneous team.”
+
+  Page 8: “Figs. 6a to 6d and Figs. 7a to 7d compare LIFO-DBF with CbDF and CF.” -> ““Figs. 6a to 6d compare LIFO-DBF with CbDF and CF.””
+
+
+We add the Acknowledge section.
+
+
+We add the author photos and biography.

@@ -1,0 +1,69 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: ALL_16-TIE-3798.aux
+The style file: IEEEtran.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: references.bib
+Repeated entry---line 474 of file references.bib
+ : @article{hlinka2012likelihood
+ :                              ,
+I'm skipping whatever remains of this entry
+-- IEEEtran.bst version 1.13 (2008/09/30) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+Warning--empty year in 2005distributed
+Warning--empty year in gu2007distributed
+Warning--empty year in bandyopadhyay2014distributed
+Warning--empty year in zuo2006bandwidth
+Warning--empty year in sheng2005distributed
+Warning--empty year in beaudeau2012target
+Warning--empty year in djuric2011non
+Warning--empty year in liu2015model
+
+Done.
+You've used 34 entries,
+            4039 wiz_defined-function locations,
+            1008 strings with 13699 characters,
+and the built_in function-call counts, 27654 in all, are:
+= -- 2273
+> -- 607
+< -- 289
++ -- 349
+- -- 90
+* -- 1320
+:= -- 4039
+add.period$ -- 71
+call.type$ -- 34
+change.case$ -- 30
+chr.to.int$ -- 669
+cite$ -- 42
+duplicate$ -- 1940
+empty$ -- 2183
+format.name$ -- 116
+if$ -- 6416
+int.to.chr$ -- 0
+int.to.str$ -- 34
+missing$ -- 297
+newline$ -- 125
+num.names$ -- 34
+pop$ -- 643
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 2
+skip$ -- 2162
+stack$ -- 0
+substring$ -- 1590
+swap$ -- 1658
+text.length$ -- 66
+text.prefix$ -- 0
+top$ -- 5
+type$ -- 34
+warning$ -- 8
+while$ -- 143
+width$ -- 36
+write$ -- 348
+(There was 1 error message)
