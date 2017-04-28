@@ -1,0 +1,4 @@
+Reviewer 1
+
+This paper develops a distributed algorithm for Bayesian filter. Comparing with other algorithms, it just communicates a buffer of sensory measurements with neighbours to implement the distributed calculations. The theoretical part provides a full treatment to the distributed version, and looks ok. The simulation results are provided and some comparison results are provided. But this part should be improved to justify the claims made in the introduction. As the target distribution is not known in advance, the proposed Bayesian filter is also an approximation. How good it is when compared with parameterised particle filter? 
+The paper organisation is good. The presentation is ok, but there are some typos which should be corrected.

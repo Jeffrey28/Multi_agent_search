@@ -1,0 +1,77 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: JDSMC.aux
+The style file: IEEEtran.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: references.bib
+Repeated entry---line 111 of file references.bib
+ : @article{chen2003bayesian
+ :                          ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 298 of file references.bib
+ : @article{jadbabaie2003coordination
+ :                                   ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 493 of file references.bib
+ : @article{hlinka2012likelihood
+ :                              ,
+I'm skipping whatever remains of this entry
+-- IEEEtran.bst version 1.13 (2008/09/30) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+Warning--empty year in bandyopadhyay2014distributed
+Warning--empty year in zuo2006bandwidth
+Warning--empty year in vemula2006target
+Warning--empty year in 2005distributed
+Warning--empty year in gu2007distributed
+Warning--empty year in beaudeau2012target
+Warning--empty year in sheng2005distributed
+Warning--empty year in djuric2011non
+
+Done.
+You've used 34 entries,
+            4039 wiz_defined-function locations,
+            1012 strings with 13746 characters,
+and the built_in function-call counts, 28670 in all, are:
+= -- 2398
+> -- 623
+< -- 297
++ -- 350
+- -- 93
+* -- 1372
+:= -- 4175
+add.period$ -- 72
+call.type$ -- 34
+change.case$ -- 32
+chr.to.int$ -- 672
+cite$ -- 42
+duplicate$ -- 2028
+empty$ -- 2222
+format.name$ -- 121
+if$ -- 6673
+int.to.chr$ -- 0
+int.to.str$ -- 34
+missing$ -- 310
+newline$ -- 125
+num.names$ -- 34
+pop$ -- 659
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 2
+skip$ -- 2253
+stack$ -- 0
+substring$ -- 1636
+swap$ -- 1749
+text.length$ -- 73
+text.prefix$ -- 0
+top$ -- 5
+type$ -- 34
+warning$ -- 8
+while$ -- 150
+width$ -- 36
+write$ -- 357
+(There were 3 error messages)

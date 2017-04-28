@@ -1,0 +1,214 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+
+\documentclass[twocolumn,10pt]{asme2ej}  % Comment this line out if you need a4paper
+
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+
+%\IEEEoverridecommandlockouts                              % This command is only needed if 
+% you want to use the \thanks command
+
+%\overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+
+% The following packages can be found on http:\\www.ctan.org
+%\usepackage{graphicx}
+\usepackage{graphics} % for pdf, bitmapped graphics files
+\usepackage{epsfig} % for postscript graphics files
+\usepackage{subcaption}
+\usepackage[noadjust]{cite}
+%\usepackage{mathptmx} % assumes new font selection scheme installed
+%\usepackage{times} % assumes new font selection scheme installed
+\usepackage{amsmath,amssymb,amsfonts,mathrsfs} % assumes amsmath package installed
+\usepackage{algorithm,algpseudocode}
+%\usepackage{booktabs}
+\usepackage{balance}
+\usepackage{tcolorbox}
+% the amsthm package may conflict with proof environment. so use following commands
+\let\proof\relax
+\let\endproof\relax
+\usepackage{amsthm}
+
+% format for theorems etc.
+\newtheorem{thm}{\bfseries Theorem}
+\newtheorem{lem}{\bfseries Lemma}
+\newtheorem{cor}{\bfseries Corollary}
+\newtheorem{prop}{\bfseries Proposition}
+\newtheorem{rem}{\bfseries Remark}
+
+% format for argmin, argmax
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+% format for cross-reference
+\usepackage[capitalize]{cleveref}
+\crefname{equation}{eq.}{eq.}
+\Crefname{equation}{Eq.}{Eq.}
+\crefname{thm}{theorem}{theorems}
+\Crefname{thm}{Theorem}{Theorems}
+\crefname{lem}{lemma}{lemmas}
+\Crefname{lem}{Lemma}{Lemmas}
+\crefname{cor}{corollary}{corollaries}
+\Crefname{cor}{Corollary}{Corollaries}
+\crefname{prop}{proposition}{propositions}
+\Crefname{prop}{Proposition}{Propositions}
+\crefname{rem}{remark}{remarks}
+\Crefname{rem}{Remark}{Remarks}
+
+% =====Macros for this manuscript===== %
+\newcommand{\proto}{FIFO}
+\newcommand{\lb}{\left\lbrace}
+\newcommand{\rb}{\right\rbrace}
+\newcommand{\X}{X}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\Z}{\mathcal{Z}}
+\newcommand{\zb}{\mathbf{z}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\Q}{\mathcal{Q}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\xg}{x^g}
+\newcommand{\fc}{frequently jointly strongly connected}
+\newcommand{\thi}{^\text{th}}
+\newcommand{\inbhd}{inbound neighbors}
+\newcommand{\onbhd}{outbound neighbors}
+\newcommand{\CB}{\textbf{\textit{CB}}}
+\newcommand{\TL}{\textbf{\textit{TL}}}
+
+%=====todonotes===== %
+\usepackage{todonotes}
+\usepackage{soul}
+\definecolor{smoothgreen}{rgb}{0.7,1,0.7}
+\sethlcolor{smoothgreen}
+
+\newcommand{\todopara}[1]{\vspace{0px} %
+	\todo[inline, color=black!10]{\textbf{[Paragraph:]} {#1}} %
+}
+\newcommand{\todonote}[1]{\vspace{0px} %
+	\todo[inline, color=green!30]{\textbf{[Note:]} {#1}} %
+}
+\newcommand{\todoQ}[1]{\vspace{0px} %
+	\todo[inline, color=orange!50]{\textbf{[Note:]} {#1}} %
+}
+\newcommand{\todohere}[1]{\hl{(\textbf{TODO:} #1)}}
+
+\newcommand{\hidetodos}{
+	\renewcommand{\todopara}[1]{}
+	\renewcommand{\todonote}[1]{}
+	\renewcommand{\todoQ}[1]{}
+	\renewcommand{\todohere}[1]{}
+}
+
+%=====end of proof===== %
+%\renewcommand{\qedsymbol}{\rule{0.7em}{0.7em}}
+
+\title{\LARGE \bf
+	Distributed Bayesian Filter using Measurement Dissemination for Multiple UGVs with Dynamically Changing Interaction Topologies}
+% Measurement Dissemination-based Distributed Bayesian Filter Under Dynamically Changing Interaction Topologies for Target Tracking
+%Estimation of Moving Targets Using Distributed Bayesian Filter Under Dynamically Changing Networks
+	%Distributed Bayesian Filter Under Dynamically Changing Interaction Topologies}
+
+
+%%% first author
+\author{Chang Liu
+	\affiliation{		
+		Department of Mechanical Engineering\\
+		University of California, Berkeley\\
+		Berkeley, CA 94720\\
+		Email: changliu@berkeley.edu
+	}	
+}
+%\thanks{The first two authors have equally contributed to this research.}
+
+%%% second author
+%%% remove the following entry for single author papers
+%%% add more entries for additional authors
+\author{Shengbo Eben Li\thanks{Address all correspondence to this author.}
+	\affiliation{Department of Automotive Engineering\\ 
+		Tsinghua University\\
+		Beijing, China 100084\\
+		Email: lisb04@gmail.com
+	}
+}
+
+%%% third author
+%%% remove the following entry for single author papers
+%%% add more entries for additional authors
+\author{J. Karl Hedrick
+	\affiliation{
+		Department of Mechanical Engineering\\
+		University of California, Berkeley\\
+		Berkeley, CA 94720\\
+		Email: khedrick@me.berkeley.edu
+	}
+}
+
+
+\begin{document}
+	
+	%\hidetodos % hide all todos 
+	
+	\maketitle
+	\thispagestyle{empty}
+	\pagestyle{empty}
+	
+	%\setlength{\belowcaptionskip}{-10pt} % set the spacing between figure and text
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\begin{abstract}
+		This paper presents a novel distributed Bayesian filtering (DFB) method using measurement dissemination for multiple unmanned ground vehicles (UGVs) with dynamically	changing interaction topologies. Different from statistics dissemination-based algorithms that transmit posterior distributions or likelihood functions, this method relies on a full-in-full-out (FIFO) transmission protocol, which significantly reduces the transmission burden between each pair of UGVs. 
+		Each UGV only sends a communication buffer and a track list to its neighbors, in which the former contains a history of measurements from all UGVs, and the latter trims the used measurements in the buffer to reduce communication overhead. 
+		It is proved that each UGV can disseminate its measurements over the whole network within the finite time and is able to achieve the consistency of environmental state estimation. The effectiveness of this method is validated by comparing with consensus-based distributed filters and centralized filter in a multi-target tracking problem.
+	\end{abstract}
+	
+	\input{intro}
+	\input{formulation}
+	\input{fifo}
+	\input{dbf}
+	\input{dbf-proof}
+	\input{sim}
+	\input{conclusion}
+%	\input{app}
+%	\begin{keywords} 
+%		Multiple vehicle system, target localization, environmental sensing, distributed filtering, switching interaction topology
+%	\end{keywords}
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+%	\balance
+	
+%	\addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
+	% on the last page of the document manually. It shortens
+	% the textheight of the last page by a suitable amount.
+	% This command does not take effect until the next page
+	% so it should come on the page before the last. Make
+	% sure that you do not shorten the textheight too much.
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%\section*{APPENDIX}
+	%
+	%Appendixes should appear before the acknowledgment.
+	
+%	\section*{ACKNOWLEDGMENT}\part{
+%	%This work is supported by the Embedded Humans: Provably Correct Decision Making for Networks of Humans and Unmanned Systems project, a MURI project funded by the Office of Naval Research.
+%	The authors gratefully acknowledges the Office of Naval Research for supporting this work. 
+%	They would also like to thank Yuting Wei in the Department of Statistics, UC Berkeley for he}r sincere help and fruitful discussion.
+	
+	%The preferred spelling of the word Òacknowledgment?in America is without an Òe?after the Òg? Avoid the stilted expression, ÒOne of us (R. B. G.) thanks . . .? Instead, try ÒR. B. G. thanks? Put sponsor acknowledgments in the unnumbered footnote on the first page.
+	
+	
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	{\footnotesize\bibliographystyle{IEEEtran}}
+	%\bibliographystyle{bibtex}
+	\bibliography{references}
+	
+\end{document}
