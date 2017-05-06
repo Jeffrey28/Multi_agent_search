@@ -46,8 +46,8 @@
 	The design of the Bayesian filter relies on the conditional probability of obtaining a certain measurement $z^i_k$ given the current target and sensor states, which is denoted by $P(z^i_k|x^g_k;x^i_k)$ \cite{thrun2005probabilistic}. 	
 %	We define $P(z^i_k|x^g_k;x^i_k)$ as this conditional probability.
 %	 of $z^i_k$ given the sensor state $x^i_k$ and the target state $\xg_k$. 
-	The conditional probability $P(z^i_k|x^g_k;x^i_k)$ depends on both $h_i$ and/or $w^i_k$ in \Cref{eqn:meas_model}.
-	For example, if $w^i_k$ is a zero-mean Gaussian white noise with covariance $\Gamma_k^i$, $P(z^i_k|x^g_k;x^i_k)$ can be described as $P(z^i_k|x^g_k;x^i_k)=N(h_i(\xg_k,x^i_k),\Gamma_k^i)$.
+	The conditional probability $P(z^i_k|x^g_k;x^i_k)$ depends on both $h_i$ and $w^i_k$ in \Cref{eqn:meas_model}.
+	For example, if $w^i_k$ is a zero-mean Gaussian white noise with covariance $\Gamma_k^i$, then $P(z^i_k|x^g_k;x^i_k)$ can be described as $P(z^i_k|x^g_k;x^i_k)=N(h_i(\xg_k,x^i_k),\Gamma_k^i)$.
 %	\small\begin{equation*}%\label{eqn:prob_sensor3}
 %		P(z^i_k|x^g_k;x^i_k)=\mathcal{N}(h_i(\xg_k,x^i_k),\Gamma_k^i).
 %	\end{equation*}\normalsize
@@ -180,9 +180,9 @@
 	
 %	For the purpose of simplicity, we will not explicitly write $x^{i}_k$ in the sensor model (\Cref{eqn:prob_sensor1,eqn:prob_sensor0}) for the rest of the paper.
 	
-	\begin{rem}
-		Given the knowledge of current target and UGV positions, the current measurement by each UGV can be considered conditionally independent from its own past measurements and those by other UGVs \cite{bourgault2003optimal}.
-	\end{rem}
+%	\begin{rem}
+%		Given the knowledge of current target and UGV positions, the current measurement by each UGV can be considered conditionally independent from its own past measurements and those by other UGVs \cite{bourgault2003optimal}.
+%	\end{rem}
 	
 %	\begin{rem} 
 %		The proposed {\proto} protocol and the consistency property to be described in \cref{sec:\proto-dbf} are applicable for general sensors, not limited to the ones described in this section. In addition, they do not rely on the Gaussian noise assumption.
@@ -194,7 +194,7 @@
 	We consider a simple\footnote{A (directed/undirected) graph $G=(V,E)$ is \textit{simple} if it has no self-loops (i.e., $\left( i,j\right)\in E\,\text{only if } i\neq j$) or multiple edges with the same source and target nodes (i.e., $E$ only contains distinct elements).} graph $G=(V,E)$ to represent the interaction topology of N networked UGVs, where the vertex set $V=\left\lbrace 1,\dots,N\right\rbrace $ represents the index set of UGVs and $E=V\times V$ denotes the edge set. 
 	For the purpose of narrative simplicity, we use directed graphs to describe our approach in this work.
 %	The approach can conveniently apply to undirected graphs, which can be treated as bidirectional directed graphs.
-	The undirected graphs can be treated as bidirectional directed graphs.
+	The undirected graphs can actually be treated as bidirectional directed graphs.
 	
 	The \textit{adjacency matrix} $A=\left[ a_{ij}\right] $ of the graph $G$ describes the interaction topology:
 	\small\begin{equation*}
@@ -216,17 +216,17 @@
 %	Let $\bar{G}$ denote the set of all possible simple directed graphs\footnote{For undirected graphs, we consider the set of simple undirected graphs.} defined over the network of UGVs.
 %	It is easy to know that $\bar{G}$ has finite elements.
 %	The adjacency matrix associated with a graph $G_l\in\bar{G}$ is denoted as $A_l=[a^l_{ij}]$.	
-	Define the \textit{union} of a collection of simple directed graphs 
+	Define the \textit{union} of a set of simple directed graphs 
 	%\footnote{For undirected graphs, we consider the set of simple undirected graphs.} 
 %	\small$\lb G_{i_1},G_{i_2},\dots,G_{i_l} \rb$\normalsize
 	as the graph with the vertices in $V$ and the edge set given by the union of each member's edge sets.
 %	 of \small$G_{i_j},\,j=1\dots,l$\normalsize.
-	Such collection is \textit{jointly strongly connected} if the union of its members forms a strongly connected graph\footnote{\textcolor{orange}{The counterpart definition for undirected graphs is given in \cite{jadbabaie2003coordination}.}}.
+	Such collection is \textit{jointly strongly connected} if the union of its members forms a strongly connected graph\footnote{\textcolor{\revcol}{The counterpart definition for undirected graphs is given in \cite{jadbabaie2003coordination}.}}.
 %	\footnote{For undirected graphs, such collection is \textit{jointly connected} \cite{jadbabaie2003coordination}.}.
 %	We define the concept of neighbors in a UGV network.
 %	\todohere{note that the definition for neighbor here means neighbors who can receive robot $i$'s CB, so it's outbound neighbors for directed graph.}
 	We use $G_{k}$ to represent the interaction topology of time $k$ and define the \textit{\inbhd} and \textit{\onbhd} of the $i\thi$ UGV under $G_{k}$ as the set \small$\N^\text{in}_i(G_{k})=\left\lbrace j|a^k_{ji}=1,\,j\in V\right\rbrace $\normalsize and  \small$\N^\text{out}_i(G_{k})=\left\lbrace j|a^k_{ij}=1,\,j\in V\right\rbrace $\normalsize. %\left\lbrace1,\dots,N \right\rbrace 
-	All UGVs in $\N_i(G_{k})$ can directly receive information from the $i\thi$ UGV via the single hopping.
+	All UGVs in $\N^\text{out}_i(G_{k})$ can directly receive information from the $i\thi$ UGV via the single hopping.
 %	The \textit{\anbhd} is defined as $\mathcal{Q}_i(G_{l})$ that contains indices of UGVs whose information can be received by the $i\thi$ UGV, possibly via multi-hopping, given a specific data exchange protocol and the interaction topology $G_{l}$. 
 %	Note that in general $\mathcal{N}_i(G_{l})\subseteq\mathcal{Q}_i(G_{l})$.
 	%but when only single-hopping is allowed, $\mathcal{N}_i=\mathcal{Q}_i$. 

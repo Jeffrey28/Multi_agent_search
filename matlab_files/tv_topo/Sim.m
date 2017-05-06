@@ -42,7 +42,7 @@ classdef Sim
         end
        
         
-        function dbf_hd = plotSim(this,rbt,fld,count,save_plot,DBF_only)
+        function dbf_hd = plotSim(this,rbt,fld,count,save_plot,DBF_only,DBF_type)
             % Plotting for simulation process
             tmp_fig_cnt = this.fig_cnt;
             %% LIFO-DBF
@@ -51,11 +51,17 @@ classdef Sim
             for k = this.sim_r_idx
                 dbf_hd = figure (tmp_fig_cnt); % handle for plot of a single robot's target PDF
                 clf(dbf_hd);
-                shading interp
-                contourf((rbt{k}.dbf_map)','LineColor','none');
-                load('MyColorMap','mymap')
-                colormap(mymap);
-                colorbar
+                if strcmp(DBF_type,'hist')
+                    shading interp
+                    contourf((rbt{k}.dbf_map)','LineColor','none');
+                    load('MyColorMap','mymap')
+                    colormap(mymap);
+                    colorbar
+                elseif strcmp(DBF_type,'pf')
+                    tmp_particles = rbt{k}.dbf_pf_pt;
+                    plot(tmp_particles(1,:),tmp_particles(2,:),'.')
+                end
+                
                 hold on;
                 for j=1:this.num_robot
                     % draw robot trajectory
@@ -458,6 +464,89 @@ classdef Sim
             ylabel('Entropy','FontSize',30);
             
             this.sim_res = tmp_sim_res;
+        end
+        
+        function this = compareMetricsPF(this)
+            % this function computes the metrics of the particle filter
+            % implementation of DBF. It uses the same functions in compareMetrics
+            % but is specifically for PF. The reason to separate this from
+            % the above is because PF is implemented later, and is not
+            % applied to CbDF and CF yet.
+            % be prepared to have some errors here, since this code is
+            % pasted from testFile.m. It works there.
+            
+            tmp_sim_res = []; %this.sim_res;
+            for jj = 1:this.trial_num
+                for ii = 1:this.num_robot
+                    % ml error
+                    tmp_sim_res.ml_err_dbf_pf(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.ml_err_dbf_pf;
+                    % norm of cov of pdf
+                    %         tmp_sim_res.pdf_norm_dbf_pf(ii,jj,:) = sim.rbt_set{jj}.rbt{ii}.pdf_norm_dbf_pf;
+                    % entropy of pdf
+                    tmp_sim_res.ent_dbf_pf(ii,jj,:) = this.rbt_set{jj}.rbt{ii}.ent_dbf_pf;
+                end
+            end
+            
+            for ii = 1:this.num_robot
+                % ml error
+                % dbf-pf
+                tmp_ml_err_dbf_pf = squeeze(tmp_sim_res.ml_err_dbf_pf(ii,:,:));
+                tmp_sim_res.ml_err_dbf_pf_mean(ii,:) = mean(tmp_ml_err_dbf_pf,1);
+                tmp_sim_res.ml_err_dbf_pf_cov(ii,:) = diag(cov(tmp_ml_err_dbf_pf))';
+                
+                %     % norm of cov of pdf
+                %     tmp_pdf_norm_dbf_pf = squeeze(tmp_sim_res.pdf_norm_dbf_pf(ii,:,:));
+                %     tmp_sim_res.pdf_norm_dbf_pf_mean(ii,:) = mean(tmp_pdf_norm_dbf_pf,1);
+                %     tmp_sim_res.pdf_norm_dbf_pf_cov(ii,:) = diag(cov(tmp_pdf_norm_dbf_pf)');
+                
+                % entropy of pdf
+                % dbf
+                tmp_ent_dbf_pf = squeeze(tmp_sim_res.ent_dbf_pf(ii,:,:));
+                tmp_sim_res.ent_dbf_pf_mean(ii,:) = mean(tmp_ent_dbf_pf,1);
+                tmp_sim_res.ent_dbf_pf_cov(ii,:) = diag(cov(tmp_ent_dbf_pf)');
+            end
+           
+            %% %%%%%%%%%%%%%% plot the performance metrics %%%%%%%%%%%%%%%%%
+            plot_rbt_idx = this.sim_r_idx;
+            tmp_fig_cnt = this.fig_cnt+7;
+            hf_err = figure(tmp_fig_cnt);
+            line_clr = ['r','g','b','c','m','k'];
+            line_marker = {'o','*','s','d','^','h'};
+            count = 50;
+            % for LIFO-DBF, we draw different robot's performance metrics
+            for ii = [1,3,5]
+                plot(1:count-2,tmp_sim_res.ml_err_dbf_pf_mean(ii,1:count-2),line_clr(ii),'LineWidth',2,'Marker',line_marker{ii},'MarkerSize',2); hold on;
+            end
+            xlim([0,count-1])
+            
+            % add legend
+            [~, hobj1] = legend('DBF-R1','DBF-R3','DBF-R5');
+            textobj = findobj(hobj1, 'type', 'text');
+            set(textobj, 'fontsize', 15);
+            
+            title('Target Position Error','FontSize',30);
+            set(gca,'fontsize',30)
+            xlabel('Time (Step)','FontSize',30);
+            ylabel('Position Error','FontSize',30);
+            
+            % entropy
+            hf_ent = figure(2);
+            line_clr = ['r','g','b','c','m','k'];
+            line_marker = {'o','*','s','d','^','h'};
+            for ii=[1,3,5]%plot_rbt_idx
+                plot(1:count-2,tmp_sim_res.ent_dbf_pf_mean(ii,1:count-2),line_clr(ii),'LineWidth',2,'Marker',line_marker{ii},'MarkerSize',2); hold on;
+            end
+            xlim([0,count-1])
+            
+            % add legend
+            [~, hobj3] = legend('DBF-R1','DBF-R3','DBF-R5');
+            textobj = findobj(hobj3, 'type', 'text');
+            set(textobj, 'fontsize', 15);
+            
+            title('Entropy of the Target PDF','FontSize',30);
+            set(gca,'fontsize',30)
+            xlabel('Time (Step)','FontSize',30);
+            ylabel('Entropy','FontSize',30);
         end
         
         function this = compareMetricsExp(this)

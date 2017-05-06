@@ -18,6 +18,7 @@ classdef Robot
         
         % sensor specs
         sensor_type;
+        sensor_set; % sensor type of all agents' sensor
         % binary sensor
         sen_cov;
         inv_sen_cov;
@@ -43,31 +44,40 @@ classdef Robot
         % an array saving the model index of the target at each step, this 
         % is because in my current formulation the target may change model 
         % to avoid moving out of the field
-        tar_mod; 
+        tar_mod; % an array consisting of target mode index at each time step
         
         % filtering
         nbhd_record; % record some useful info about neighbors, e.g. the time steps that have been used for updating the prob map
         track_list; % track all robot's oldest observations in CB
         meas_list; % track all robot's all observations in CB
-        trim_list; % track the trim actions. a 2*sim_len array: [obs_t;step]. 1st row is the time of the observation that is trimmed. 2nd row is the step to do the trim
+        trim_list; % track the trim actions. a 2*sim_len array: [obs_t;step]. 1st row is the time of the observation that is trimmed. 2nd row is the step to do the trim        
+        talign_t; % record the time for the time-aligned map
+        buffer; % communication buffer. a struct array, each element corresponding to the latest info for a robot
+        buffer_cent; % this buffer is not for communication. It saves all observations at current time step and is used by centralized filter
+        DBF_type; % implementation type of DBF: particle filter or histogram filter
+        % histogram filter
         lkhd_map; % prob matrix for a certain observation. a way to reduce computation time, sacrificing the space complexity
         upd_matrix; % cell used for updating probability map
         talign_map; % store the prob_map for observations with same tiem index, i.e. P(x|z^1_1:k,...,z^N_1:k)
-        talign_t; % record the time for the time-aligned map
         dbf_map; % probability map
         cons_map; % prob map for concensus method
-        cent_map; % prob map for centralized filter
-        buffer; % communication buffer. a struct array, each element corresponding to the latest info for a robot
-        buffer_cent; % this buffer is not for communication. It saves all observations at current time step and is used by centralized filter
+        cent_map; % prob map for centralized filter       
+        % particle filter implementation
+        dbf_pf_map;
+        dbf_pf_pt;
+        talign_pf_pt;
+        talign_pf_t;
         
         % plotting
         color; % color for drawing plots
         
         % performance metrics
         ml_pos_dbf;
+        ml_pos_dbf_pf
         ml_pos_cons;
         ml_pos_cent;
         ml_err_dbf;
+        ml_err_dbf_pf
         ml_err_cons;
         ml_err_cent;
         pdf_cov_dbf;
@@ -77,14 +87,13 @@ classdef Robot
         pdf_norm_cons;
         pdf_norm_cent;
         ent_dbf;
+        ent_dbf_pf;
         ent_cons;
         ent_cent;
     end
     
     methods
         function this = Robot(inPara)
-%             this.pos = inPara.pos;
-%             this.traj = inPara.pos;
             this.upd_matrix = inPara.upd_matrix; %%% can precompute this term and pass the lookup table to this constructor function
             this.idx = inPara.idx;
             if inPara.r_move == 0
@@ -106,9 +115,7 @@ classdef Robot
             this.tar_mod = [];
             
             this.sensor_type = inPara.sensor_type;
-%             this.sen_cov = inPara.sen_cov;
-%             this.inv_sen_cov = inPara.inv_sen_cov;
-%             this.sen_offset = inPara.sen_offset;
+            this.sensor_set = inPara.sensor_set;
             this.cov_ran = inPara.cov_ran;
             this.dist_ran = inPara.dist_ran;
             this.offset_ran = inPara.offset_ran;
@@ -116,6 +123,7 @@ classdef Robot
             this.offset_brg = inPara.offset_brg;
             this.cov_ranbrg = inPara.cov_ranbrg;
             this.dist_ranbrg = inPara.dist_ranbrg;
+            this.DBF_type = inPara.DBF_type;
             
             % if we use exp data
             if isfield(inPara,'dist_sonar')                
@@ -130,6 +138,9 @@ classdef Robot
             this.cent_map = this.dbf_map;
             this.talign_map = this.dbf_map; % store the prob_map for observations with same tiem index, i.e. P(x|z^1_1:k,...,z^N_1:k)
             this.talign_t = 0; % record the time for the time-aligned map
+            this.talign_pf_pt = inPara.particles;
+            this.talign_pf_t = 0;
+            
             this.lkhd_map = zeros(inPara.fld_size(1),inPara.fld_size(2));            
             this.nbhd_idx = inPara.nbhd_idx;
             
@@ -138,7 +149,7 @@ classdef Robot
             this.buffer(inPara.num_robot).z = [];
             this.buffer(inPara.num_robot).k = [];
             this.buffer(inPara.num_robot).lkhd_map = {};
-            this.buffer(inPara.num_robot).used = [];   
+            this.buffer(inPara.num_robot).used = [];              
             this.buffer_cent.pos = [];
             this.buffer_cent.z = [];
             this.buffer_cent.k = [];
@@ -373,28 +384,13 @@ classdef Robot
         function this = updOwnMsmt(this,inPara)
             % (1) self-observation
             % update robot's own measurement in the communication buffer
+            this.buffer(this.idx).pos = [this.buffer(this.idx).pos,this.pos];
+            this.buffer(this.idx).z = [this.buffer(this.idx).z,this.z];
+            this.buffer(this.idx).k = [this.buffer(this.idx).k,this.k];
+            this.buffer(this.idx).lkhd_map{this.step_cnt} = this.lkhd_map;
+            this.buffer(this.idx).sensor_type = this.sensor_type;
             
-%             selection = inPara.selection;
-%             if (selection == 1) || (selection == 3)
-%                 % static target
-%                 % update the buffer with the robot's own observation
-%                 this.buffer(this.idx).pos = this.pos;
-%                 this.buffer(this.idx).z = this.z;
-%                 this.buffer(this.idx).k = this.step_cnt;
-%                 this.buffer(this.idx).lkhd_map = this.lkhd_map;
-%                 
-%             elseif (selection == 2) || (selection == 4)
-                % moving target
-                this.buffer(this.idx).pos = [this.buffer(this.idx).pos,this.pos];
-                this.buffer(this.idx).z = [this.buffer(this.idx).z,this.z];
-                this.buffer(this.idx).k = [this.buffer(this.idx).k,this.k];
-                this.buffer(this.idx).lkhd_map{this.step_cnt} = this.lkhd_map;
-                
-                this.track_list(this.idx,this.idx) = 1; % track_list of the ego robot for its own measurement is always one
-%                 this.meas_list(this.idx).meas_hist = [this.meas_list(this.idx).meas_hist;zeros(this.num_robot,this.num_robot+1)];
-%                 this.meas_list(this.idx).meas_hist(end,this.idx) = 1;
-%                 this.meas_list(this.idx).meas_hist(end,end) = this.k;
-%             end
+            this.track_list(this.idx,this.idx) = 1; % track_list of the ego robot for its own measurement is always one
         end
         
         function this = dataExch(this,inPara)
@@ -415,6 +411,7 @@ classdef Robot
                     % be communicated. In simulation, this is for
                     % the purpose of accelerating the computation speed.
                     this.buffer(jj).lkhd_map = [this.buffer(jj).lkhd_map,tmp_rbt.buffer(jj).lkhd_map];                                        
+                    this.buffer(jj).sensor_type = tmp_rbt.buffer(jj).sensor_type;
                     
                     % second pick the unique items in terms of the
                     % measurement time                    
@@ -487,7 +484,8 @@ classdef Robot
 %             end
         end
         
-        %% filters
+        %% %%% filters
+        %% DBF using histogram implementation
         function this = DBF(this,inPara)
             % filtering
             %% update pdf by bayes rule
@@ -617,6 +615,161 @@ classdef Robot
             end
         end
         
+        %% DBf using particle filter implementation. added for JDSMC rev1
+        function this = DBF_PF(this,inPara)
+            % filtering
+            %% update pdf by bayes rule
+            
+            talign_flag = 1; % if all agent's observation's time are no less than talign_t+1, then talign_flag = 1, increase talign_t
+            tmp_at = this.talign_pf_t;
+            tmp_pf_pt = this.talign_pf_pt; % time-aligned particles
+            
+            % generate a temporary list showing what's in CB
+            % tmp_meas_hist: each cell contains binary array indicating
+            % whether a certain measurement is obtained
+%             tmp_meas_hist = cell(this.num_robot,1);
+            tmp_meas_hist = -ones(this.num_robot,this.k);
+            for jj=1:this.num_robot
+%                  tmp_hist = zeros(1,this.k);
+%                  tmp_hist(this.buffer(jj).k) = 1;
+%                  tmp_meas_hist{jj} = tmp_hist;
+                if ~isempty(this.buffer(jj).pos)
+                    tmp_meas_hist(jj,this.buffer(jj).pos(1,:)~=-1) = 1;
+                end
+            end
+            
+            %%%%%% a temporary test, add random noise every step
+            [tmpx,tmpy] = meshgrid(linspace(1,100,10),linspace(1,100,10));
+            tmp_new_par = [tmpx(:),tmpy(:)]';             
+            tmp_pf_pt = [tmp_pf_pt,tmp_new_par];
+                        
+            for t = (this.talign_pf_t+1):this.step_cnt
+                sprintf('Robot.m, line 474, t=%d',t)
+                
+                particles = tmp_pf_pt;
+            
+                %% particle filtering
+                np = size(particles,2); % number of particles
+                
+                % initalize particles weights
+                w = ones(np,1);
+                tmp_w = ones(np,1);
+                %% one-step prediction step
+                pred_par = zeros(2,np); % predicted particle state
+                for ii = 1:np
+                    pred_par(:,ii) = this.updTarget(particles(:,ii),this.tar_mod(t),inPara);
+                end
+                
+                %% updating step
+                % note: we need to fuse all UGVs' measurement at step t,
+                % not only one UGV's measurement.
+                for jj=1:this.num_robot
+%                     display(jj)
+                    if (~isempty(this.buffer(jj).k)) && (ismember(t,this.buffer(jj).k))
+                        % weight update
+                        for ii = 1:np
+                            if sum(this.buffer(jj).z(t) == -100) >= 1
+                                % if the target is outside FOV.
+                                if this.inFOV(pred_par(:,ii),this.buffer(jj).pos(:,t),this.sensor_set{jj})
+                                    tmp_w(ii) = 0;
+                                else
+                                    tmp_w(ii) = 1;
+                                end
+                            else
+                                if this.inFOV(pred_par(:,ii),this.buffer(jj).pos(:,t),this.sensor_set{jj})
+                                    tmp_w(ii) = this.sensorProb(pred_par(:,ii),this.buffer(jj).pos(:,t),this.buffer(jj).z(t),this.sensor_set{jj});
+                                else
+                                    tmp_w(ii) = 0;
+                                end
+                            end
+                        end
+                        w = w.*tmp_w;
+                    else
+                        talign_flag = 0;
+                    end
+                end         
+                
+                w = w/sum(w);
+                % resampling
+                idx = randsample(1:np, np, true, w);
+                new_particles = pred_par(:,idx);
+                tmp_pf_pt = new_particles;
+                
+                % update robot's talign_map if the all robots' measurements 
+                % in CB for contiguous times are full, i.e. tmp_at,
+                % tmp_at+1, ..., tmp_at+m are all full
+                if (t == tmp_at+1) && (talign_flag == 1)
+                    this.talign_pf_pt = tmp_pf_pt;
+                    tmp_at = tmp_at+1;
+                end
+            end
+            
+            this.talign_pf_t = tmp_at;
+            this.dbf_pf_pt = tmp_pf_pt;
+            
+            %% update CB using the track_list
+            % okay, this part actually belongs to dataExch part, but I
+            % wrote it here. I don't want to change this, but I should
+            % remember where the following code should have been placed.
+            
+            % check if track_list items corresponding to earliest time
+            % tag are all 1. Don't increase talign_t if not all 1.
+            [min_t,~] = min(this.track_list(:,end));
+            
+            % remove all records in CB whose time tages are less than min_t
+            if min_t > 1
+                for jj=1:this.num_robot
+                    this.buffer(jj).pos(:,1:min_t-1) = -ones(2,min_t-1);
+                    this.buffer(jj).z(:,1:min_t-1) = -ones(size(this.buffer(jj).z,1),min_t-1);
+%                     this.buffer(jj).k(1:min_t-1) = -ones(1,min_t-1);
+
+                    % note: lkhd_map is a cell, therefore we
+                    % keep all the old cell (empty cell) but
+                    % the length of lkhd_map will not decrease.
+                    % For pos, z, k, they are arrays, so their
+                    % length is constant (except the first few
+                    % steps). This should be noticed when
+                    % deciding the index of the element to
+                    % be removed
+                    this.buffer(jj).lkhd_map(1:min_t-1) = cell(min_t-1,1);
+                    
+                    tmp_meas_hist(jj,1:min_t-1) = -1;
+                end
+                
+                % record when observations of a certain time get trimmed
+                if this.trim_list(2,min_t-1) == 0
+                    % if this is the 1st time this measurement is trimmed
+                    % in current robot's CB 
+                    this.trim_list(2,min_t-1) = this.step_cnt;
+                end
+            end
+            
+            % for records with time tags equal to min_t, 
+            % if track_list indicates that all observations of min_t have 
+            % been received by all robots, then continue removing them in CB
+            t2 = min_t;
+            min_idx = (this.track_list(:,end) == t2);
+            if nnz(this.track_list(min_idx,1:end-1)) == numel(this.track_list(min_idx,1:end-1))
+                if t2 > 0
+                    for jj = 1:this.num_robot
+                        this.buffer(jj).pos(:,t2) = -ones(2,1);
+                        this.buffer(jj).z(:,t2) = -ones(size(this.buffer(jj).z,1),1);
+                        this.buffer(jj).lkhd_map{t2} = [];
+                        tmp_meas_hist(jj,t2) = -1;
+                    end
+                    % record when observations of a certain time get trimmed
+                    this.trim_list(2,t2) = this.step_cnt;
+                end
+                this.track_list(min_idx,end) = t2+1;
+                display(this.idx)
+                display(min_idx)
+                this.track_list(min_idx,1:this.num_robot) = zeros(nnz(min_idx),this.num_robot);
+                this.track_list(this.idx,1:this.num_robot) = tmp_meas_hist(1:this.num_robot,t2+1);                                
+            end
+        end
+        
+        %% %%%%%%%%%%%%%%  Consensus Filter %%%%%%%%%%%%%%%%%%
+        
         function this = updMap(this,inPara)
             % update own map using its own measurement, used for consensus filter
             selection = inPara.selection;
@@ -635,8 +788,7 @@ classdef Robot
             this.cons_map = this.cons_map/sum(sum(this.cons_map));
         end
         
-        function this = cons(this,inPara)
-            %% %%%%%%%%%%%%%%  Consensus Method %%%%%%%%%%%%%%%%%%
+        function this = cons(this,inPara)             
             % steps:
             % (1) observe and update the probability map for time k
             % (2) send/receive the probability map for time k from neighbors
@@ -664,8 +816,8 @@ classdef Robot
             end
         end
         
-        function this = CF(this,inPara)
-            %% %%%%%%%%%%%%%% Centralized BF %%%%%%%%%%%%%%%%%%
+        %% %%%%%%%%%%%%%% Centralized BF %%%%%%%%%%%%%%%%%%
+        function this = CF(this,inPara)            
             % steps:
             % (1) receive all robots' observations
             % (2) update the probability map for time k
@@ -692,8 +844,81 @@ classdef Robot
                 this.cent_map = tmp_map;
             end
             this.cent_map = this.cent_map/sum(sum(this.cent_map)); 
-        end      
+        end
+        
+        %% %%%%%%%%%%%%%% functions for DBF_PF %%%%%%%%%%%%%%%%%%
+        % this section contains the functions used for particle filter.
+        % They are defined in the 1st revision of JDSMC paper, Apr. 2017.
+        % Some of them can actually replace the above sensor model code.
+        % But I don't think I will do that. But when looking
+        % at the code in the future, hopefully I won't be confused about
+        % the seemingly redundant definition of functions.
+        %% target motion model
+        % this is used for updating particle states in the DBF_PF
+        function x = updTarget(this,x,tar_motion_idx,inPara)
+            % tar_mod is the index of control input: 1,2,3,4
+            tar_mode = inPara.target_mode; % target model: lin, sin, circular            
+            V = inPara.V;
+            
+            dt = 1; %%% move to class property
+            if strcmp(tar_mode,'linear')
+                u_set = inPara.u_set;
+                x = x+u_set(:,tar_motion_idx);
+                x = (mvnrnd(x',V))';
+            elseif strcmp(tar_mode,'sin')
+                u_set = inPara.u_set;
+                x = x + [u_set(1,tar_motion_idx);u_set(2,tar_motion_idx)*cos(0.2*x(1))]*dt;
+                x = (mvnrnd(x',V))';
+            elseif strcmp(tar_mode,'circle')
+                center_set = inPara.center_set;
+                %%% move to class property
+                des_lin_vel = 2; % desired linear velocity 
+                cetr = center_set(:,tar_motion_idx);
+                radius = norm(x-cetr);
+                radius = max(radius,10^-5); % if radius is 0, replace with a small number to avoid numerical issue (division by radius at next line)
+                ang_vel = des_lin_vel/radius;
+                d_ang = ang_vel*dt; % the angle increment
+                cur_ang = atan2(x(2)-cetr(2),x(1)-cetr(1));
                 
+                tmp_x = x(1) - radius*sin(cur_ang)*d_ang;
+                tmp_y = x(2) + radius*cos(cur_ang)*d_ang;
+                x = [tmp_x;tmp_y];
+                x = (mvnrnd(x',V))';
+            end
+        end
+        
+        %% sensor model
+        function in_flag = inFOV(this,x_p,x_r,sensor_type)             
+            switch sensor_type
+                case 'ran'    
+                    dist_ran = this.dist_ran;
+                    in_flag = (norm(x_p-x_r)<dist_ran);
+                case 'brg'
+                    in_flag = 1;
+                case 'rb'
+                    dist_ranbrg = this.dist_ranbrg;
+                    in_flag = (norm(x_p-x_r)<dist_ranbrg);
+            end
+        end
+        
+        % when the measurement is inside FOV, compute the probability of a
+        % certain measurement
+        function prob = sensorProb(this,x_p,x_r,z,sensor_type)
+            switch sensor_type
+                case 'ran'                    
+                    cov_ran = this.cov_ran;                    
+                    prob = normpdf(z,norm(x_p-x_r),cov_ran);
+                case 'brg'
+                    tmp_vec = x_p-x_r;
+                    cov_brg = this.cov_brg;
+                    prob = normpdf(z,atan2(tmp_vec(2),tmp_vec(1)),cov_brg);
+                case 'rb'
+                    tmp_vec = x_t-x_r;                      
+                    cov_ranbrg = this.cov_ranbrg;
+                    prob = mvnpdf(z,[tmp_vec(1),tmp_vec(2)],cov_ranbrg);
+            end
+        end
+        
         %% robot motion
         function this = robotMove(this)
             tmp_angl = atan2(this.pos(2)-this.center(2),this.pos(1)-this.center(1));
@@ -702,6 +927,7 @@ classdef Robot
             this.traj = [this.traj,this.pos];
         end
         
+        %% %%%%%%%%%%%%%% compute metrics %%%%%%%%%%%%%%%%%%
         %% metrics
         function this = computeMetrics(this,fld,id)
             % Computing Performance Metrics
@@ -718,6 +944,26 @@ classdef Robot
                 end
                 this.ml_pos_dbf(:,count) = [tmp_x1(tmp_idx);tmp_y1(tmp_idx)];
                 this.ml_err_dbf(count) = norm(this.ml_pos_dbf(:,count)-fld.target.pos);
+            end
+            
+            if strcmp(id,'dbf-pf')
+                % count the particles in each cell and use the count to
+                % find the MAP
+                particles = this.dbf_pf_pt;
+                xlen = fld.fld_size(1);
+                ylen = fld.fld_size(2);
+                % note: dbf_pf_map is actually a histogram, not a
+                % probablity mass function
+                this.dbf_pf_map = hist3(particles','Edges',{1:xlen;1:ylen});
+                
+                [tmp_x1,tmp_y1] = find(this.dbf_pf_map == max(this.dbf_pf_map(:)));
+                if length(tmp_x1) > 1
+                    tmp_idx = randi(length(tmp_x1),1,1);
+                else
+                    tmp_idx = 1;
+                end
+                this.ml_pos_dbf_pf(:,count) = [tmp_x1(tmp_idx);tmp_y1(tmp_idx)];
+                this.ml_err_dbf_pf(count) = norm(this.ml_pos_dbf_pf(:,count)-fld.target.pos);
             end
             
             % concensus
@@ -804,6 +1050,17 @@ classdef Robot
                 tmp_map1(tmp_map1 <= realmin) = realmin;
                 dis_entropy = -(tmp_map1).*log2(tmp_map1); % get the p*log(p) for all grid points
                 this.ent_dbf(count) = sum(sum(dis_entropy));
+            end
+            
+            if strcmp(id,'dbf-pf')
+                % use Monte Carlo to compute entropy
+                
+                tmp_map1 = this.dbf_pf_map;
+                tmp_map1 = tmp_map1/sum(sum(tmp_map1));
+                % this avoids the error when some grid has zeros probability
+                tmp_map1(tmp_map1 <= realmin) = realmin;
+                dis_entropy = -(tmp_map1).*log2(tmp_map1); % get the p*log(p) for all grid points
+                this.ent_dbf_pf(count) = sum(sum(dis_entropy));
             end
             
             % concensus

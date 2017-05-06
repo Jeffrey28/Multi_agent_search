@@ -2,7 +2,7 @@
 % filtering
 
 %% linear target
-%
+%{
 mode_num = 4;
 
 u_set = [[1;1],[-1;-1],[1;-1],[-1;1]]; %inPara.u_set; 
@@ -90,7 +90,7 @@ save('upd_matrix_sin_v01.mat','upd_matrix','-v7.3');
 %}
 
 %% circular target
-%{
+%
 center_set = [[50.5;50.5],[50.5;150.5],[50.5;-150.5],[-50.5;50.5],[150.5;50.5]];
 V_set = 0.1*eye(2); % 
 mode_num = size(center_set,2);
@@ -122,7 +122,7 @@ for mode_cnt = 1:mode_num
             
             tmp_x = x - radius*sin(cur_ang)*d_ang;
             tmp_y = y + radius*cos(cur_ang)*d_ang;
-            mu = [tmp_x;tmp_y];                       
+            mu = [tmp_x;tmp_y];
             
             % transition matrix            
             % tmp_trans(x,y) shows the transition probability P(x^i_k+1|[x;y]),            

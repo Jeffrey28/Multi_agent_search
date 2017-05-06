@@ -50,7 +50,7 @@ if save_video
     open(vidObj);
 end
 
-for trial_cnt = 11%1:trial_num % note: the 11th trial is for generating good simulation plot, not used for computing the metrics of DBF
+for trial_cnt = 1:trial_num % note: the 11th trial is for generating good simulation plot, not used for computing the metrics of DBF
     % initialize field class    
     target.pos = [tx_set(trial_cnt);ty_set(trial_cnt)];
     
@@ -60,17 +60,17 @@ for trial_cnt = 11%1:trial_num % note: the 11th trial is for generating good sim
     target.mode = target_mode;
     target.mode_num = mode_num;
     if strcmp(target_mode,'linear') || strcmp(target_mode,'sin')        
-        target.u_set = u_set;
-    elseif strcmp(target_mode,'circle')        
-        target.center_set = center_set;
+        target.u_set = u_set; % used for linear and sinusoidal target motion model
+    elseif strcmp(target_mode,'circle')
+        target.center_set = center_set; % used for circular target motion model
     end
     
     inPara_fld = struct('fld_size',fld_size,'target',target,'tar_move',tar_move,'dt',dt);
     fld = Field(inPara_fld);
-            
+    
     % initialize robot class        
     
-    inPara_rbt = struct('num_robot',num_robot,'dt',dt);
+%     inPara_rbt = struct('num_robot',num_robot,'dt',dt);
     rbt = cell(num_robot,1);
     
     for rbt_cnt = 1:num_robot
@@ -86,6 +86,7 @@ for trial_cnt = 11%1:trial_num % note: the 11th trial is for generating good sim
             inPara_rbt.pos = r_init_pos_exp(rbt_cnt);
         end
         
+        inPara_rbt.sensor_set = sensor_set;
         % binary sensor
 %         inPara_rbt.sen_cov = 100*eye(2);
 %         inPara_rbt.inv_sen_cov = 0.01*eye(2);
@@ -109,13 +110,15 @@ for trial_cnt = 11%1:trial_num % note: the 11th trial is for generating good sim
         inPara_rbt.idx = rbt_cnt;
         inPara_rbt.upd_matrix = upd_matrix;
         inPara_rbt.sensor_type = sensor_set{rbt_cnt};
+        inPara_rbt.DBF_type = DBF_type;
+        inPara_rbt.particles = particles;
         rbt{rbt_cnt} = Robot(inPara_rbt);
     end    
     
     %% %%%%%%%%%%%%%% main code of simulation %%%%%%%%%%%%%%%%%%
     count = 1;
     
-    while(1)                        
+    while(1)
         % following code should appear at the end of the code. Putting them
         % here is only for debugging purpose
         %% %%%%% target moves %%%%%
@@ -169,9 +172,22 @@ for trial_cnt = 11%1:trial_num % note: the 11th trial is for generating good sim
         % step (3) dbf
         % in this code, the trim of CB is conducted in this.DBF. May change
         % this later.
-        for ii = 1:num_robot                        
-            inPara3 = struct('selection',selection,'target_model',fld.target.model_idx);
-            rbt{ii} = rbt{ii}.DBF(inPara3);
+        for ii = 1:num_robot    
+            if strcmp(target_mode,'linear') || strcmp(target_mode,'sin') 
+                inPara3 = struct('selection',selection,'target_model',fld.target.model_idx,...
+                    'u_set',u_set,'target_mode',target_mode,'V',fld.target.V);
+            elseif strcmp(target_mode,'circle')
+                inPara3 = struct('selection',selection,'target_model',fld.target.model_idx,...
+                    'center_set',center_set,'target_mode',target_mode,'V',fld.target.V);
+            end
+                
+            if strcmp(DBF_type,'hist')
+                rbt{ii} = rbt{ii}.DBF(inPara3);
+            elseif strcmp(DBF_type,'pf')      
+                disp('main_tv_topo.m, line 187')
+                sprintf('robot %d',ii)
+                rbt{ii} = rbt{ii}.DBF_PF(inPara3);
+            end
         end    
         
         % temporarily record the size of CB
@@ -294,8 +310,8 @@ for trial_cnt = 11%1:trial_num % note: the 11th trial is for generating good sim
          %% draw current step
          % draw plot
          if show_plot
-             [fig_hdl] = sim.plotSim(rbt,fld,count,save_plot,DBF_only);
-%              pause(0.5)
+             [fig_hdl] = sim.plotSim(rbt,fld,count,save_plot,DBF_only,DBF_type);
+%              pause()
             % save the plot as a video
              frame_hdl = getframe(fig_hdl);
              if save_video
@@ -311,10 +327,16 @@ for trial_cnt = 11%1:trial_num % note: the 11th trial is for generating good sim
          count = count + 1;
          
          %% compute metrics
-         %
+         
+         % temporary code for testing DBF_PF         
+         for ii = 1:num_robot
+             rbt{ii} = rbt{ii}.computeMetrics(fld,'dbf-pf');
+         end
+         
          if comp_metric
              for ii = 1:num_robot
                  rbt{ii} = rbt{ii}.computeMetrics(fld,'dbf');
+                 
                  rbt{ii} = rbt{ii}.computeMetrics(fld,'cons');
                  rbt{ii} = rbt{ii}.computeMetrics(fld,'cent');
              end
@@ -334,6 +356,10 @@ end
 % % compare the performance of different methods
 if comp_metric
     sim = sim.compareMetrics();
+end
+
+if comp_metric_pf
+    sim = sim.compareMetricsPF();
 end
 
 % save data 

@@ -168,22 +168,12 @@ A.~N. Bishop, B.~Fidan, B.~D. Anderson, K.~Do{\u{g}}an{\c{c}}ay, and P.~N.
   Pathirana, ``Optimality analysis of sensor-target localization geometries,''
   \emph{Automatica}, vol.~46, no.~3, pp. 479--492, 2010.
 
-\bibitem{bourgault2003optimal}
-F.~Bourgault, T.~Furukawa, and H.~F. Durrant-Whyte, ``Optimal search for a lost
-  target in a bayesian world,'' in \emph{Field and service robotics}.\hskip 1em
-  plus 0.5em minus 0.4em\relax Springer, 2003, pp. 209--222.
-
 \bibitem{furukawa2006recursive}
 T.~Furukawa, F.~Bourgault, B.~Lavis, and H.~F. Durrant-Whyte, ``Recursive
   bayesian search-and-tracking using coordinated uavs for lost targets,'' in
   \emph{Robotics and Automation, 2006. ICRA 2006. Proceedings 2006 IEEE
   International Conference on}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE,
   2006, pp. 2521--2526.
-
-\bibitem{tisdale2009autonomous}
-J.~Tisdale, Z.~Kim, and J.~K. Hedrick, ``Autonomous uav path planning and
-  estimation,'' \emph{Robotics \& Automation Magazine, IEEE}, vol.~16, no.~2,
-  pp. 35--42, 2009.
 
 \bibitem{amemiya1985advanced}
 T.~Amemiya, \emph{Advanced econometrics}.\hskip 1em plus 0.5em minus
@@ -193,5 +183,16 @@ T.~Amemiya, \emph{Advanced econometrics}.\hskip 1em plus 0.5em minus
 M.~Malanowski and K.~Kulpa, ``Two methods for target localization in
   multistatic passive radar,'' \emph{IEEE transactions on Aerospace and
   Electronic Systems}, vol.~48, no.~1, pp. 572--580, 2012.
+
+\bibitem{olfati2006belief}
+R.~Olfati-Saber, E.~Franco, E.~Frazzoli, and J.~Shamma, ``Belief consensus and
+  distributed hypothesis testing in sensor networks,'' \emph{Networked Embedded
+  Sensing and Control}, pp. 169--182, 2006.
+
+\bibitem{veeravalli2012distributed}
+V.~V. Veeravalli and P.~K. Varshney, ``Distributed inference in wireless sensor
+  networks,'' \emph{Philosophical Transactions of the Royal Society of London
+  A: Mathematical, Physical and Engineering Sciences}, vol. 370, no. 1958, pp.
+  100--117, 2012.
 
 \end{thebibliography}

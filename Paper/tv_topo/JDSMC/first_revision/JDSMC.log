@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  27 APR 2017 20:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  3 MAY 2017 01:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -666,19 +666,19 @@ Package: soul 2003/11/17 v2.4 letterspacing/underlining (mf)
 ) (./JDSMC.aux)
 \openout1 = `JDSMC.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 148.
-LaTeX Font Info:    ... okay on input line 148.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 148.
-LaTeX Font Info:    ... okay on input line 148.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 148.
-LaTeX Font Info:    ... okay on input line 148.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 148.
-LaTeX Font Info:    ... okay on input line 148.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 148.
-LaTeX Font Info:    ... okay on input line 148.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 148.
-LaTeX Font Info:    ... okay on input line 148.
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 148.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 149.
+LaTeX Font Info:    ... okay on input line 149.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 149.
 
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ot1ptm.fd
@@ -747,60 +747,60 @@ Package caption Info: End \AtBeginDocument code.
 
 ABD: EveryShipout initializing macros
 LaTeX Font Info:    Try loading font information for OT1+ptmcm on input line 15
-2.
+3.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/ot1ptmcm.fd
 File: ot1ptmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ptmcm.
 )
 LaTeX Font Info:    Try loading font information for OML+ptmcm on input line 15
-2.
+3.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/omlptmcm.fd
 File: omlptmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ptmcm.
 )
 LaTeX Font Info:    Try loading font information for OMS+pzccm on input line 15
-2.
+3.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/omspzccm.fd
 File: omspzccm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/pzccm.
 )
 LaTeX Font Info:    Try loading font information for OMX+psycm on input line 15
-2.
+3.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/psnfss/omxpsycm.fd
 File: omxpsycm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/psycm.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 152.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 153.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 152.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 153.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 152.
-LaTeX Font Info:    Try loading font information for U+msa on input line 152.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 153.
+LaTeX Font Info:    Try loading font information for U+msa on input line 153.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 152.
+LaTeX Font Info:    Try loading font information for U+msb on input line 153.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 152.
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 153.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
-Underfull \hbox (badness 10000) detected at line 152
+Underfull \hbox (badness 10000) detected at line 153
 []
  []
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 152.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 153.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 152.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 153.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 152.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 153.
 (./intro.tex
 Overfull \vbox (17.47093pt too high) has occurred while \output is active []
 
@@ -844,50 +844,46 @@ LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <0.7> not available
 LaTeX Font Warning: Font shape `U/rsfs/m/n' in size <0.5> not available
 (Font)              size <5> substituted on input line 29.
 
-
-Overfull \vbox (13.94305pt too high) has occurred while \output is active []
-
-)
-(./fifo.tex
+) (./fifo.tex
 LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 42.
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 38.
 
-Underfull \hbox (badness 10000) in paragraph at lines 67--70
+Underfull \hbox (badness 10000) in paragraph at lines 63--66
 
  []
 
 
-Overfull \vbox (9.78276pt too high) has occurred while \output is active []
+Overfull \vbox (3.29312pt too high) has occurred while \output is active []
 
 
 [3]
-Underfull \hbox (badness 2142) in paragraph at lines 113--114
+Underfull \hbox (badness 2142) in paragraph at lines 117--118
 []\OT1/ptm/m/it/10 there ex-ists an in-fi-nite se-quence of time in-ter-vals
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 130--132
+Underfull \hbox (badness 10000) in paragraph at lines 134--136
 []\OT1/ptm/m/n/10 Using the sim-i-lar rea-son-ing for time in-ter-vals
  []
 
 <figures/fifo.pdf, id=51, 621.07362pt x 415.83122pt>
 File: figures/fifo.pdf Graphic file (type pdf)
  <use figures/fifo.pdf>
-Package pdftex.def Info: figures/fifo.pdf used on input line 188.
+Package pdftex.def Info: figures/fifo.pdf used on input line 199.
 (pdftex.def)             Requested size: 247.52496pt x 165.72675pt.
 
-Overfull \hbox (6.14288pt too wide) in paragraph at lines 188--189
+Overfull \hbox (6.14288pt too wide) in paragraph at lines 199--200
  [][] 
  []
 
 ) (./dbf.tex [4]
-Underfull \hbox (badness 1371) in paragraph at lines 28--35
+Underfull \hbox (badness 1371) in paragraph at lines 29--36
 []\OT1/ptm/b/n/10 Prediction. \OT1/ptm/m/n/10 At time $\OML/ptmcm/m/it/10 k$\OT
 1/ptm/m/n/10 , the prior in-di-vid-ual PDF
  []
 
 
-Underfull \hbox (badness 2735) in paragraph at lines 119--121
+Underfull \hbox (badness 2735) in paragraph at lines 120--122
 []\OT1/ptm/b/n/10 (3) \OT1/ptm/m/n/10 The in-di-vid-ual PDF of $\OML/ptmcm/m/it
 /10 i[]$ \OT1/ptm/m/n/10 UGV at time $\OML/ptmcm/m/it/10 k$ \OT1/ptm/m/n/10 is
  []
@@ -897,59 +893,63 @@ Underfull \hbox (badness 2735) in paragraph at lines 119--121
 File: figures/fifo-dbf.pdf Graphic file (type pdf)
 
 <use figures/fifo-dbf.pdf>
-Package pdftex.def Info: figures/fifo-dbf.pdf used on input line 155.
+Package pdftex.def Info: figures/fifo-dbf.pdf used on input line 157.
 (pdftex.def)             Requested size: 247.52496pt x 179.53937pt.
 
-Overfull \hbox (6.14288pt too wide) in paragraph at lines 155--162
+Overfull \hbox (6.14288pt too wide) in paragraph at lines 157--164
  [][] 
+ []
+
+
+Overfull \vbox (20.26308pt too high) has occurred while \output is active []
+
+
+Underfull \hbox (badness 2547) in paragraph at lines 262--263
+[]\OT1/ptm/b/n/10 Theorem 2. []\OT1/ptm/m/it/10 Each UGV's es-ti-ma-tion re-sul
+t us-ing the
  []
 
 <figures/track_list.pdf, id=161, 683.50798pt x 523.6627pt>
 File: figures/track_list.pdf Graphic file (type pdf)
 
 <use figures/track_list.pdf>
-Package pdftex.def Info: figures/track_list.pdf used on input line 194.
-(pdftex.def)             Requested size: 247.52496pt x 189.63708pt.
+Package pdftex.def Info: figures/track_list.pdf used on input line 280.
+(pdftex.def)             Requested size: 227.72629pt x 174.47124pt.
 
-Overfull \hbox (6.14288pt too wide) in paragraph at lines 194--195
- [][] 
- []
-
-
-Overfull \vbox (14.83067pt too high) has occurred while \output is active []
-
-
-[6 <./figures/fifo-dbf.pdf> <./figures/track_list.pdf>]
-Underfull \hbox (badness 2547) in paragraph at lines 251--252
-[]\OT1/ptm/b/n/10 Theorem 2. []\OT1/ptm/m/it/10 Each UGV's es-ti-ma-tion re-sul
-t us-ing the
- []
-
-
-Underfull \hbox (badness 4940) in paragraph at lines 270--277
+Underfull \hbox (badness 4940) in paragraph at lines 289--296
 [][]\OT1/ptm/m/n/10 The fol-low-ing the-o-rem de-scribes when CBs get
  []
 
-
-Underfull \hbox (badness 1584) in paragraph at lines 388--389
+[6 <./figures/fifo-dbf.pdf>]
+Underfull \hbox (badness 1584) in paragraph at lines 407--408
 []\OT1/ptm/m/n/10 remove all cor-re-spond-ing state-measurement
  []
 
-[7]) (./dbf-proof.tex
-Overfull \hbox (1.84071pt too wide) in paragraph at lines 76--76
+) (./dbf-proof.tex [7 <./figures/track_list.pdf>]
+Overfull \hbox (1.84071pt too wide) in paragraph at lines 77--77
 [] 
  []
 
 
-Underfull \hbox (badness 1418) in paragraph at lines 81--81
+Underfull \hbox (badness 1735) in paragraph at lines 77--81
+\OT1/ptm/m/n/10 The last step is ob-tained by us-ing the re-la-tion $\OMS/pzccm
+/m/n/10 B[] \OT1/ptmcm/m/n/10 =
+ []
+
+
+Underfull \hbox (badness 1418) in paragraph at lines 82--82
 [][]\OT1/ptm/m/n/8 For the pur-pose of sim-plic-ity, we use $\OML/ptmcm/m/it/8 
 P[]\OT1/ptmcm/m/n/8 (\OML/ptmcm/m/it/8 x\OMS/pzccm/m/n/8 jZ[]\OT1/ptmcm/m/n/8 )
 $ \OT1/ptm/m/n/8 to rep-re-sent
  []
 
+
+Overfull \vbox (15.25793pt too high) has occurred while \output is active []
+
+
 [8]
-Underfull \hbox (badness 3364) in paragraph at lines 266--267
-[]\OT1/ptm/m/n/10 Similar to Eq. (6), com-par-ing $\OML/ptmcm/m/it/10 P[]\OT1/p
+Underfull \hbox (badness 3364) in paragraph at lines 273--274
+[]\OT1/ptm/m/n/10 Similar to Eq. (5), com-par-ing $\OML/ptmcm/m/it/10 P[]\OT1/p
 tmcm/m/n/10 (\OML/ptmcm/m/it/10 x\OMS/pzccm/m/n/10 jZ[]\OT1/ptmcm/m/n/10 )$ \OT
 1/ptm/m/n/10 and
  []
@@ -965,160 +965,134 @@ Overfull \hbox (6.14288pt too wide) in paragraph at lines 4--5
 [][] 
  []
 
-[9 <./figures/switch_topo.pdf>]
-<figures/dbf_hetero_mov_sen_mov_tar_rbt5_step3.pdf, id=464, 468.69917pt x 367.1
+
+<figures/dbf_hetero_mov_sen_mov_tar_rbt5_step3.pdf, id=441, 468.69917pt x 367.1
 843pt>
 File: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step3.pdf Graphic file (type pdf)
 
  <use figures/dbf_hetero_mov_sen_mov_tar_rbt5_step3.pdf>
 Package pdftex.def Info: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step3.pdf used
- on input line 49.
+ on input line 12.
 (pdftex.def)             Requested size: 113.85936pt x 89.19615pt.
 
-<figures/dbf_hetero_mov_sen_mov_tar_rbt5_step5.pdf, id=465, 468.69917pt x 367.1
+<figures/dbf_hetero_mov_sen_mov_tar_rbt5_step5.pdf, id=442, 468.69917pt x 367.1
 843pt>
 File: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step5.pdf Graphic file (type pdf)
 
  <use figures/dbf_hetero_mov_sen_mov_tar_rbt5_step5.pdf>
 Package pdftex.def Info: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step5.pdf used
- on input line 53.
+ on input line 16.
 (pdftex.def)             Requested size: 113.85936pt x 89.19615pt.
 
-<figures/dbf_hetero_mov_sen_mov_tar_rbt5_step7.pdf, id=466, 468.69917pt x 367.1
+<figures/dbf_hetero_mov_sen_mov_tar_rbt5_step7.pdf, id=443, 468.69917pt x 367.1
 843pt>
 File: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step7.pdf Graphic file (type pdf)
 
  <use figures/dbf_hetero_mov_sen_mov_tar_rbt5_step7.pdf>
 Package pdftex.def Info: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step7.pdf used
- on input line 57.
+ on input line 20.
 (pdftex.def)             Requested size: 113.85936pt x 89.19615pt.
 
-<figures/dbf_hetero_mov_sen_mov_tar_rbt5_step10.pdf, id=467, 468.69917pt x 367.
+<figures/dbf_hetero_mov_sen_mov_tar_rbt5_step10.pdf, id=444, 468.69917pt x 367.
 1843pt>
 File: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step10.pdf Graphic file (type pdf
 )
  <use figures/dbf_hetero_mov_sen_mov_tar_rbt5_step10.pdf>
 Package pdftex.def Info: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step10.pdf use
-d on input line 61.
+d on input line 24.
 (pdftex.def)             Requested size: 113.85936pt x 89.19615pt.
 
-<figures/dbf_hetero_mov_sen_mov_tar_rbt5_step20.pdf, id=468, 468.69917pt x 367.
+<figures/dbf_hetero_mov_sen_mov_tar_rbt5_step20.pdf, id=445, 468.69917pt x 367.
 1843pt>
 File: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step20.pdf Graphic file (type pdf
 )
  <use figures/dbf_hetero_mov_sen_mov_tar_rbt5_step20.pdf>
 Package pdftex.def Info: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step20.pdf use
-d on input line 65.
+d on input line 28.
 (pdftex.def)             Requested size: 113.85936pt x 89.19615pt.
 
-<figures/dbf_hetero_mov_sen_mov_tar_rbt5_step40.pdf, id=469, 468.69917pt x 367.
+<figures/dbf_hetero_mov_sen_mov_tar_rbt5_step40.pdf, id=446, 468.69917pt x 367.
 1843pt>
 File: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step40.pdf Graphic file (type pdf
 )
  <use figures/dbf_hetero_mov_sen_mov_tar_rbt5_step40.pdf>
 Package pdftex.def Info: figures/dbf_hetero_mov_sen_mov_tar_rbt5_step40.pdf use
-d on input line 69.
+d on input line 32.
 (pdftex.def)             Requested size: 113.85936pt x 89.19615pt.
 
-<figures/cons_hetero_mov_sen_mov_tar_rbt5_step40.pdf, id=470, 468.69917pt x 367
+<figures/cons_hetero_mov_sen_mov_tar_rbt5_step40.pdf, id=447, 468.69917pt x 367
 .1843pt>
 File: figures/cons_hetero_mov_sen_mov_tar_rbt5_step40.pdf Graphic file (type pd
 f)
  <use figures/cons_hetero_mov_sen_mov_tar_rbt5_step40.pdf>
 Package pdftex.def Info: figures/cons_hetero_mov_sen_mov_tar_rbt5_step40.pdf us
-ed on input line 81.
+ed on input line 44.
 (pdftex.def)             Requested size: 113.85936pt x 89.19615pt.
 
-<figures/cent_hetero_mov_sen_mov_tar_rbt1_step40.pdf, id=471, 468.69917pt x 367
+<figures/cent_hetero_mov_sen_mov_tar_rbt1_step40.pdf, id=448, 468.69917pt x 367
 .1843pt>
 File: figures/cent_hetero_mov_sen_mov_tar_rbt1_step40.pdf Graphic file (type pd
 f)
  <use figures/cent_hetero_mov_sen_mov_tar_rbt1_step40.pdf>
 Package pdftex.def Info: figures/cent_hetero_mov_sen_mov_tar_rbt1_step40.pdf us
-ed on input line 85.
+ed on input line 48.
 (pdftex.def)             Requested size: 113.85936pt x 89.19615pt.
 
-<figures/hetero_mov_sen_mov_tar_pos_err_noise_linear.pdf, id=472, 524.44682pt x
+<figures/hetero_mov_sen_mov_tar_pos_err_noise_linear.pdf, id=449, 524.44682pt x
  426.8839pt>
 File: figures/hetero_mov_sen_mov_tar_pos_err_noise_linear.pdf Graphic file (typ
 e pdf)
  <use figures/hetero_mov_sen_mov_tar_pos_err_noise_linear.pdf>
 Package pdftex.def Info: figures/hetero_mov_sen_mov_tar_pos_err_noise_linear.pd
-f used on input line 94.
+f used on input line 58.
 (pdftex.def)             Requested size: 113.85936pt x 92.67714pt.
 
-<figures/hetero_mov_sen_mov_tar_entropy_noise_linear.pdf, id=473, 524.44682pt x
+<figures/hetero_mov_sen_mov_tar_entropy_noise_linear.pdf, id=450, 524.44682pt x
  426.8839pt>
 File: figures/hetero_mov_sen_mov_tar_entropy_noise_linear.pdf Graphic file (typ
 e pdf)
  <use figures/hetero_mov_sen_mov_tar_entropy_noise_linear.pdf>
 Package pdftex.def Info: figures/hetero_mov_sen_mov_tar_entropy_noise_linear.pd
-f used on input line 98.
+f used on input line 62.
 (pdftex.def)             Requested size: 113.85936pt x 92.67714pt.
 
-<figures/hetero_mov_sen_mov_tar_pos_err_noise_circle.pdf, id=474, 524.44682pt x
+<figures/hetero_mov_sen_mov_tar_pos_err_noise_circle.pdf, id=451, 524.44682pt x
  426.8839pt>
 File: figures/hetero_mov_sen_mov_tar_pos_err_noise_circle.pdf Graphic file (typ
 e pdf)
  <use figures/hetero_mov_sen_mov_tar_pos_err_noise_circle.pdf>
 Package pdftex.def Info: figures/hetero_mov_sen_mov_tar_pos_err_noise_circle.pd
-f used on input line 102.
+f used on input line 66.
 (pdftex.def)             Requested size: 113.85936pt x 92.67714pt.
 
-<figures/hetero_mov_sen_mov_tar_entropy_noise_circle.pdf, id=475, 524.44682pt x
+<figures/hetero_mov_sen_mov_tar_entropy_noise_circle.pdf, id=452, 524.44682pt x
  426.8839pt>
 File: figures/hetero_mov_sen_mov_tar_entropy_noise_circle.pdf Graphic file (typ
 e pdf)
  <use figures/hetero_mov_sen_mov_tar_entropy_noise_circle.pdf>
 Package pdftex.def Info: figures/hetero_mov_sen_mov_tar_entropy_noise_circle.pd
-f used on input line 106.
+f used on input line 70.
 (pdftex.def)             Requested size: 113.85936pt x 92.67714pt.
 
-<figures/hetero_mov_sen_mov_tar_pos_err_noise_sin.pdf, id=476, 524.44682pt x 42
+<figures/hetero_mov_sen_mov_tar_pos_err_noise_sin.pdf, id=453, 524.44682pt x 42
 6.8839pt>
 File: figures/hetero_mov_sen_mov_tar_pos_err_noise_sin.pdf Graphic file (type p
 df)
  <use figures/hetero_mov_sen_mov_tar_pos_err_noise_sin.pdf>
 Package pdftex.def Info: figures/hetero_mov_sen_mov_tar_pos_err_noise_sin.pdf u
-sed on input line 110.
+sed on input line 74.
 (pdftex.def)             Requested size: 113.85936pt x 92.67714pt.
 
-<figures/hetero_mov_sen_mov_tar_entropy_noise_sin.pdf, id=477, 524.44682pt x 41
+<figures/hetero_mov_sen_mov_tar_entropy_noise_sin.pdf, id=454, 524.44682pt x 41
 7.16791pt>
 File: figures/hetero_mov_sen_mov_tar_entropy_noise_sin.pdf Graphic file (type p
 df)
  <use figures/hetero_mov_sen_mov_tar_entropy_noise_sin.pdf>
 Package pdftex.def Info: figures/hetero_mov_sen_mov_tar_entropy_noise_sin.pdf u
-sed on input line 114.
+sed on input line 78.
 (pdftex.def)             Requested size: 113.85936pt x 90.56778pt.
-)
-(./conclusion.tex
-Underfull \hbox (badness 10000) in paragraph at lines 2--9
-[]\OT1/ptm/m/n/10 This pa-per presents a gen-eral mea-sure-ment
- []
-
-
-Underfull \hbox (badness 7649) in paragraph at lines 2--9
-\OT1/ptm/m/n/10 dissemination-based dis-tributed Bayesian fil-ter (DBF)
- []
-
-
-Underfull \hbox (badness 2418) in paragraph at lines 2--9
-\OT1/ptm/m/n/10 hi-cles (UGVs) un-der dy-nam-i-cally chang-ing in-ter-ac-tion
- []
-
-
-Underfull \hbox (badness 1675) in paragraph at lines 2--9
-\OT1/ptm/m/n/10 the in-ter-ac-tion topolo-gies is fre-quently jointly strongly
- []
-
-
-Underfull \hbox (badness 1067) in paragraph at lines 2--9
-\OT1/ptm/m/n/10 be-tween each pair of UGVs com-pared to the statis-tics
- []
-
-[10 <./figures/dbf_hetero_mov_sen_mov_tar_rbt5_step3.pdf> <./figures/dbf_hetero
-_mov_sen_mov_tar_rbt5_step5.pdf
+ [9 <./figures/switch_topo.pdf> <./figures/dbf_hetero_mov_sen_mov_tar_rbt5_step
+3.pdf> <./figures/dbf_hetero_mov_sen_mov_tar_rbt5_step5.pdf
 
 pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/dbf_hetero_mov_sen
 _mov_tar_rbt5_step5.pdf): PDF inclusion: multiple pdfs with page group included
@@ -1143,12 +1117,33 @@ d in a single page
 pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/dbf_hetero_mov_sen
 _mov_tar_rbt5_step40.pdf): PDF inclusion: multiple pdfs with page group include
 d in a single page
-> <./figures/cons_hetero_mov_sen_mov_tar_rbt5_step40.pdf
+>]) (./conclusion.tex
+Underfull \hbox (badness 10000) in paragraph at lines 2--9
+[]\OT1/ptm/m/n/10 This pa-per presents a gen-eral mea-sure-ment
+ []
 
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/cons_hetero_mov_se
-n_mov_tar_rbt5_step40.pdf): PDF inclusion: multiple pdfs with page group includ
-ed in a single page
-> <./figures/cent_hetero_mov_sen_mov_tar_rbt1_step40.pdf
+
+Underfull \hbox (badness 7649) in paragraph at lines 2--9
+\OT1/ptm/m/n/10 dissemination-based dis-tributed Bayesian fil-ter (DBF)
+ []
+
+
+Underfull \hbox (badness 2529) in paragraph at lines 2--9
+\OT1/ptm/m/n/10 for a net-work of mul-ti-ple un-manned ground ve-hi-cles
+ []
+
+
+Underfull \hbox (badness 1668) in paragraph at lines 2--9
+\OT1/ptm/m/n/10 The in-for-ma-tion ex-change among UGVs re-lies on the
+ []
+
+
+Underfull \hbox (badness 1902) in paragraph at lines 2--9
+\OT1/ptm/m/n/10 FIFO can dis-sem-i-nate mea-sure-ments over the net-work
+ []
+
+[10 <./figures/cons_hetero_mov_sen_mov_tar_rbt5_step40.pdf> <./figures/cent_het
+ero_mov_sen_mov_tar_rbt1_step40.pdf
 
 pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/cent_hetero_mov_se
 n_mov_tar_rbt1_step40.pdf): PDF inclusion: multiple pdfs with page group includ
@@ -1223,13 +1218,13 @@ LaTeX Font Warning: Size substitutions with differences
 
  ) 
 Here is how much of TeX's memory you used:
- 18790 strings out of 493089
- 373610 string characters out of 6134842
- 428877 words of memory out of 5000000
- 21826 multiletter control sequences out of 15000+600000
+ 18789 strings out of 493089
+ 373583 string characters out of 6134842
+ 434884 words of memory out of 5000000
+ 21825 multiletter control sequences out of 15000+600000
  83852 words of font info for 178 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 54i,22n,75p,824b,560s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 54i,22n,75p,824b,567s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmbsy7.pfb></usr/loc
 al/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/loca
@@ -1254,10 +1249,10 @@ pe1/urw/times/utmbi8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/t
 imes/utmr8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/times/utmri
 8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/zapfchan/uzcmi8a.pfb
 >
-Output written on JDSMC.pdf (12 pages, 986358 bytes).
+Output written on JDSMC.pdf (12 pages, 987384 bytes).
 PDF statistics:
- 932 PDF objects out of 1000 (max. 8388607)
- 545 compressed objects within 6 object streams
+ 933 PDF objects out of 1000 (max. 8388607)
+ 546 compressed objects within 6 object streams
  0 named destinations out of 1000 (max. 500000)
  108 words of extra memory for PDF output out of 10000 (max. 10000000)
 

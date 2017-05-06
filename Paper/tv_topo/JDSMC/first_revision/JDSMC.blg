@@ -8,15 +8,15 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: references.bib
-Repeated entry---line 111 of file references.bib
+Repeated entry---line 131 of file references.bib
  : @article{chen2003bayesian
  :                          ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 298 of file references.bib
+Repeated entry---line 318 of file references.bib
  : @article{jadbabaie2003coordination
  :                                   ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 493 of file references.bib
+Repeated entry---line 513 of file references.bib
  : @article{hlinka2012likelihood
  :                              ,
 I'm skipping whatever remains of this entry
@@ -35,37 +35,37 @@ Warning--empty year in djuric2011non
 Done.
 You've used 34 entries,
             4039 wiz_defined-function locations,
-            1012 strings with 13746 characters,
-and the built_in function-call counts, 28670 in all, are:
-= -- 2398
-> -- 623
-< -- 297
-+ -- 350
+            1014 strings with 13870 characters,
+and the built_in function-call counts, 28685 in all, are:
+= -- 2405
+> -- 625
+< -- 299
++ -- 352
 - -- 93
-* -- 1372
-:= -- 4175
-add.period$ -- 72
+* -- 1371
+:= -- 4179
+add.period$ -- 71
 call.type$ -- 34
 change.case$ -- 32
-chr.to.int$ -- 672
+chr.to.int$ -- 678
 cite$ -- 42
-duplicate$ -- 2028
-empty$ -- 2222
+duplicate$ -- 2027
+empty$ -- 2206
 format.name$ -- 121
-if$ -- 6673
+if$ -- 6672
 int.to.chr$ -- 0
 int.to.str$ -- 34
-missing$ -- 310
+missing$ -- 308
 newline$ -- 125
 num.names$ -- 34
-pop$ -- 659
+pop$ -- 653
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 2253
+skip$ -- 2255
 stack$ -- 0
-substring$ -- 1636
-swap$ -- 1749
+substring$ -- 1650
+swap$ -- 1753
 text.length$ -- 73
 text.prefix$ -- 0
 top$ -- 5

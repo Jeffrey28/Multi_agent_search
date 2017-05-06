@@ -36,7 +36,6 @@
 \citation{thrun2005probabilistic}
 \citation{kitagawa1996monte}
 \citation{bishop2010optimality}
-\citation{bourgault2003optimal}
 \citation{jadbabaie2003coordination}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Target and Sensor Model}{3}}
 \newlabel{eqn:tar_motion_model}{{1}{3}}
@@ -58,7 +57,7 @@
 \newlabel{sec:FIFO-dbf}{{4}{4}}
 \newlabel{sec:FIFO-dbf@cref}{{[section][4][]4}{4}}
 \citation{furukawa2006recursive,gu2007distributed,sheng2005distributed}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Example of {FIFO} with three UGVs under dynamically changing interaction topologies. The arrows represent a directed communication link between two UGVs. $\varnothing $ denotes the empty set. For the purpose of clarity, we only show measurements, not the states, in the CB in this example.\relax }}{5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Example of {FIFO} with three UGVs under dynamically changing interaction topologies. The arrows represent a directed communication link between two UGVs. $\varnothing $ denotes the empty set. For the purpose of clarity, we only show measurements, not the states, in the CB.\relax }}{5}}
 \newlabel{fig:FIFO}{{2}{5}}
 \newlabel{fig:FIFO@cref}{{[figure][2][]2}{5}}
 \newlabel{eqn:bayes_pred}{{3}{5}}
@@ -82,13 +81,14 @@
 \@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Updating TLs\relax }}{6}}
 \newlabel{alg:upd_tl}{{3}{6}}
 \newlabel{alg:upd_tl@cref}{{[algorithm][3][]3}{6}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Example of updating TLs. For the $1^\text  {st}$ UGV's TL, the $j^\text  {th}\tmspace  +\thinmuskip {.1667em}(j\in V)$ entry on the $i^\text  {th}\tmspace  +\thinmuskip {.1667em}(i\in V)$ row represents this UGV's knowledge about whether the $i^\text  {th}$ UGV has received the $j^\text  {th}$ UGV's state-measurement pair of time $k^{1i}$, where $k^{1i}$ is the last entry of the $i^\text  {th}$ row. TLs are updated using \cref  {alg:upd_tl,alg:tracklist}.\relax }}{6}}
-\newlabel{fig:upd_tl}{{4}{6}}
-\newlabel{fig:upd_tl@cref}{{[figure][4][]4}{6}}
-\newlabel{eqn:tl_entry}{{5}{6}}
-\newlabel{eqn:tl_entry@cref}{{[equation][5][]5}{6}}
-\newlabel{thm:trim_no_loss}{{2}{7}}
-\newlabel{thm:trim_no_loss@cref}{{[thm][2][]2}{7}}
+\newlabel{thm:trim_no_loss}{{2}{6}}
+\newlabel{thm:trim_no_loss@cref}{{[thm][2][]2}{6}}
+\citation{amemiya1985advanced}
+\citation{chen2003bayesian}
+\citation{malanowski2012two}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Example of updating TLs. For the $1^\text  {st}$ UGV's TL, the $j^\text  {th}\tmspace  +\thinmuskip {.1667em}(j\in V)$ entry on the $i^\text  {th}\tmspace  +\thinmuskip {.1667em}(i\in V)$ row represents this UGV's knowledge about whether the $i^\text  {th}$ UGV has received the $j^\text  {th}$ UGV's state-measurement pair of time $k^{1i}$, where $k^{1i}$ is the last entry of the $i^\text  {th}$ row. TLs are updated using \cref  {alg:upd_tl}.\relax }}{7}}
+\newlabel{fig:upd_tl}{{4}{7}}
+\newlabel{fig:upd_tl@cref}{{[figure][4][]4}{7}}
 \newlabel{thm:upd_tl_freq}{{3}{7}}
 \newlabel{thm:upd_tl_freq@cref}{{[thm][3][]3}{7}}
 \newlabel{thm:max_CB_size}{{2}{7}}
@@ -99,66 +99,64 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Complexity Analysis of FIFO-DBF}{7}}
 \newlabel{subsec:complexity}{{4.3}{7}}
 \newlabel{subsec:complexity@cref}{{[subsection][3][4]4.3}{7}}
-\citation{amemiya1985advanced}
-\citation{chen2003bayesian}
-\citation{malanowski2012two}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Proof of Consistency}{8}}
-\newlabel{sec:consist_proof}{{5}{8}}
-\newlabel{sec:consist_proof@cref}{{[section][5][]5}{8}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Proof of Consistency}{7}}
+\newlabel{sec:consist_proof}{{5}{7}}
+\newlabel{sec:consist_proof@cref}{{[section][5][]5}{7}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Static UGVs}{8}}
 \newlabel{thm:FIFO-dbf-sta-ugv}{{4}{8}}
 \newlabel{thm:FIFO-dbf-sta-ugv@cref}{{[thm][4][]4}{8}}
-\newlabel{eqn:cmp}{{6}{8}}
-\newlabel{eqn:cmp@cref}{{[equation][6][]6}{8}}
-\newlabel{eqn:cmp_log}{{7}{8}}
-\newlabel{eqn:cmp_log@cref}{{[equation][7][]7}{8}}
-\newlabel{eqn:cmp_lim2}{{8}{8}}
-\newlabel{eqn:cmp_lim2@cref}{{[subequation][8][]8}{8}}
-\newlabel{subeqn:limit1}{{9}{8}}
-\newlabel{subeqn:limit1@cref}{{[equation][9][]9}{8}}
-\newlabel{subeqn:limit2}{{10}{8}}
-\newlabel{subeqn:limit2@cref}{{[equation][10][]10}{8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Moving UGVs}{9}}
+\newlabel{eqn:cmp}{{5}{8}}
+\newlabel{eqn:cmp@cref}{{[equation][5][]5}{8}}
+\newlabel{eqn:cmp_log}{{6}{8}}
+\newlabel{eqn:cmp_log@cref}{{[equation][6][]6}{8}}
+\newlabel{eqn:cmp_lim2}{{7}{8}}
+\newlabel{eqn:cmp_lim2@cref}{{[subequation][7][]7}{8}}
+\newlabel{subeqn:limit1}{{8}{8}}
+\newlabel{subeqn:limit1@cref}{{[equation][8][]8}{8}}
+\newlabel{subeqn:limit2}{{9}{8}}
+\newlabel{subeqn:limit2@cref}{{[equation][9][]9}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Moving UGVs}{8}}
+\citation{thrun2005probabilistic}
+\citation{thrun2005probabilistic}
 \newlabel{thm:FIFO-dbf-mov-ugv}{{5}{9}}
 \newlabel{thm:FIFO-dbf-mov-ugv@cref}{{[thm][5][]5}{9}}
-\newlabel{eqn:cmp2}{{11}{9}}
-\newlabel{eqn:cmp2@cref}{{[equation][11][]11}{9}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces The dynamically changing interaction topologies used in the simulation: (a)-(d) four types of topologies; (e) the union of these topologies is jointly strongly connected. The bottom axis shows a randomly generated sequence of topologies that satisfy the frequently jointly strongly connectedness condition.\relax }}{9}}
-\newlabel{fig:com_topo}{{5}{9}}
-\newlabel{fig:com_topo@cref}{{[figure][5][]5}{9}}
+\newlabel{eqn:cmp2}{{10}{9}}
+\newlabel{eqn:cmp2@cref}{{[equation][10][]10}{9}}
 \@writefile{toc}{\contentsline {section}{\numberline {6}Simulation}{9}}
 \newlabel{sec:sim}{{6}{9}}
 \newlabel{sec:sim@cref}{{[section][6][]6}{9}}
-\newlabel{fig:step3}{{6a}{10}}
-\newlabel{fig:step3@cref}{{[subfigure][1][6]6a}{10}}
-\newlabel{sub@fig:step3}{{a}{10}}
-\newlabel{sub@fig:step3@cref}{{[subfigure][1][6]6a}{10}}
-\newlabel{fig:step5}{{6b}{10}}
-\newlabel{fig:step5@cref}{{[subfigure][2][6]6b}{10}}
-\newlabel{sub@fig:step5}{{b}{10}}
-\newlabel{sub@fig:step5@cref}{{[subfigure][2][6]6b}{10}}
-\newlabel{fig:step7}{{6c}{10}}
-\newlabel{fig:step7@cref}{{[subfigure][3][6]6c}{10}}
-\newlabel{sub@fig:step7}{{c}{10}}
-\newlabel{sub@fig:step7@cref}{{[subfigure][3][6]6c}{10}}
-\newlabel{fig:step10}{{6d}{10}}
-\newlabel{fig:step10@cref}{{[subfigure][4][6]6d}{10}}
-\newlabel{sub@fig:step10}{{d}{10}}
-\newlabel{sub@fig:step10@cref}{{[subfigure][4][6]6d}{10}}
-\newlabel{fig:step20}{{6e}{10}}
-\newlabel{fig:step20@cref}{{[subfigure][5][6]6e}{10}}
-\newlabel{sub@fig:step20}{{e}{10}}
-\newlabel{sub@fig:step20@cref}{{[subfigure][5][6]6e}{10}}
-\newlabel{fig:step40}{{6f}{10}}
-\newlabel{fig:step40@cref}{{[subfigure][6][6]6f}{10}}
-\newlabel{sub@fig:step40}{{f}{10}}
-\newlabel{sub@fig:step40@cref}{{[subfigure][6][6]6f}{10}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Evolution of the target estimation using FIFO-DBF. The colorful background represents the sum of the individual PDF of three targets.\relax }}{10}}
-\newlabel{fig:mov_sen_mov_tar1}{{6}{10}}
-\newlabel{fig:mov_sen_mov_tar1@cref}{{[figure][6][]6}{10}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{10}}
-\newlabel{sec:conclu}{{7}{10}}
-\newlabel{sec:conclu@cref}{{[section][7][]7}{10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces The dynamically changing interaction topologies used in the simulation: (a)-(d) four types of topologies; (e) the union of these topologies is jointly strongly connected. The bottom axis shows a randomly generated sequence of topologies that satisfy the frequently jointly strongly connectedness condition.\relax }}{9}}
+\newlabel{fig:com_topo}{{5}{9}}
+\newlabel{fig:com_topo@cref}{{[figure][5][]5}{9}}
+\newlabel{fig:step3}{{6a}{9}}
+\newlabel{fig:step3@cref}{{[subfigure][1][6]6a}{9}}
+\newlabel{sub@fig:step3}{{a}{9}}
+\newlabel{sub@fig:step3@cref}{{[subfigure][1][6]6a}{9}}
+\newlabel{fig:step5}{{6b}{9}}
+\newlabel{fig:step5@cref}{{[subfigure][2][6]6b}{9}}
+\newlabel{sub@fig:step5}{{b}{9}}
+\newlabel{sub@fig:step5@cref}{{[subfigure][2][6]6b}{9}}
+\newlabel{fig:step7}{{6c}{9}}
+\newlabel{fig:step7@cref}{{[subfigure][3][6]6c}{9}}
+\newlabel{sub@fig:step7}{{c}{9}}
+\newlabel{sub@fig:step7@cref}{{[subfigure][3][6]6c}{9}}
+\newlabel{fig:step10}{{6d}{9}}
+\newlabel{fig:step10@cref}{{[subfigure][4][6]6d}{9}}
+\newlabel{sub@fig:step10}{{d}{9}}
+\newlabel{sub@fig:step10@cref}{{[subfigure][4][6]6d}{9}}
+\newlabel{fig:step20}{{6e}{9}}
+\newlabel{fig:step20@cref}{{[subfigure][5][6]6e}{9}}
+\newlabel{sub@fig:step20}{{e}{9}}
+\newlabel{sub@fig:step20@cref}{{[subfigure][5][6]6e}{9}}
+\newlabel{fig:step40}{{6f}{9}}
+\newlabel{fig:step40@cref}{{[subfigure][6][6]6f}{9}}
+\newlabel{sub@fig:step40}{{f}{9}}
+\newlabel{sub@fig:step40@cref}{{[subfigure][6][6]6f}{9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Evolution of the $1^\text  {st}$ UGV's target estimation using FIFO-DBF. The colorful background represents the sum of the individual PDF of three targets.\relax }}{9}}
+\newlabel{fig:mov_sen_mov_tar1}{{6}{9}}
+\newlabel{fig:mov_sen_mov_tar1@cref}{{[figure][6][]6}{9}}
+\citation{olfati2006belief}
+\citation{veeravalli2012distributed}
 \newlabel{fig:cbdf_step40}{{7a}{10}}
 \newlabel{fig:cbdf_step40@cref}{{[subfigure][1][7]7a}{10}}
 \newlabel{sub@fig:cbdf_step40}{{a}{10}}
@@ -167,7 +165,7 @@
 \newlabel{fig:cf_step40@cref}{{[subfigure][2][7]7b}{10}}
 \newlabel{sub@fig:cf_step40}{{b}{10}}
 \newlabel{sub@fig:cf_step40@cref}{{[subfigure][2][7]7b}{10}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Target estimation using (a) CbDF and (b) CF. The estimation uncertainty remains large for CbDF.\relax }}{10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces The $1^\text  {st}$ UGV's target estimation using (a) CbDF and (b) CF. The estimation uncertainty remains large for CbDF.\relax }}{10}}
 \newlabel{fig:lin_pos_err}{{8a}{10}}
 \newlabel{fig:lin_pos_err@cref}{{[subfigure][1][8]8a}{10}}
 \newlabel{sub@fig:lin_pos_err}{{a}{10}}
@@ -192,7 +190,7 @@
 \newlabel{fig:sin_ent@cref}{{[subfigure][6][8]8f}{10}}
 \newlabel{sub@fig:sin_ent}{{f}{10}}
 \newlabel{sub@fig:sin_ent@cref}{{[subfigure][6][8]8f}{10}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces First scenario: (a) two types of topologies; (b) individual PDF of the $3^\text  {rd}$ UGV after initial observation; (c)-(e) PDFs at the end of simulation using different filters; (f) average position estimation errors; (g) average entropy of PDF. In last two figures, metrics are based on the PDFs of the $1^\text  {st}$, $3^\text  {rd}$ and $5^\text  {th}$ UGV using FIFO-DBF, the common PDF using CbDF and using CF.\relax }}{10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces \leavevmode {\color  {orange}The average estimation error (a)(c)(e) and the average entropy (b)(d)(f) of ten trials using different filtering approaches. The dotted lines correspond to the results of FIFO-DBF by the six UGVs ('U1'-'U6' in the legends).}\relax }}{10}}
 \newlabel{fig:metrics}{{8}{10}}
 \newlabel{fig:metrics@cref}{{[figure][8][]8}{10}}
 \bibstyle{IEEEtran}
@@ -221,13 +219,16 @@
 \bibcite{ribeiro2006bandwidth}{22}
 \bibcite{djuric2011non}{23}
 \bibcite{xiao2008asynchronous}{24}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{11}}
+\newlabel{sec:conclu}{{7}{11}}
+\newlabel{sec:conclu@cref}{{[section][7][]7}{11}}
 \bibcite{xia2009networked}{25}
 \bibcite{leung2010decentralized}{26}
 \bibcite{liu2016distributed}{27}
 \bibcite{kitagawa1996monte}{28}
 \bibcite{bishop2010optimality}{29}
-\bibcite{bourgault2003optimal}{30}
-\bibcite{furukawa2006recursive}{31}
-\bibcite{tisdale2009autonomous}{32}
-\bibcite{amemiya1985advanced}{33}
-\bibcite{malanowski2012two}{34}
+\bibcite{furukawa2006recursive}{30}
+\bibcite{amemiya1985advanced}{31}
+\bibcite{malanowski2012two}{32}
+\bibcite{olfati2006belief}{33}
+\bibcite{veeravalli2012distributed}{34}

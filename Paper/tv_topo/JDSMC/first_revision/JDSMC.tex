@@ -75,6 +75,7 @@
 \newcommand{\onbhd}{outbound neighbors}
 \newcommand{\CB}{\textbf{\textit{CB}}}
 \newcommand{\TL}{\textbf{\textit{TL}}}
+\newcommand{\revcol}{orange} % color for the revised text
 
 %=====todonotes===== %
 \usepackage{todonotes}
@@ -157,9 +158,12 @@
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\begin{abstract}
-		This paper presents a novel distributed Bayesian filtering (DFB) method using measurement dissemination for multiple unmanned ground vehicles (UGVs) with dynamically	changing interaction topologies. Different from statistics dissemination-based algorithms that transmit posterior distributions or likelihood functions, this method relies on a full-in-full-out (FIFO) transmission protocol, which significantly reduces the transmission burden between each pair of UGVs. 
-		Each UGV only sends a communication buffer and a track list to its neighbors, in which the former contains a history of measurements from all UGVs, and the latter trims the used measurements in the buffer to reduce communication overhead. 
-		It is proved that each UGV can disseminate its measurements over the whole network within the finite time and is able to achieve the consistency of environmental state estimation. The effectiveness of this method is validated by comparing with consensus-based distributed filters and centralized filter in a multi-target tracking problem.
+		This paper presents a novel distributed Bayesian filtering (DFB) method using measurement dissemination for multiple unmanned ground vehicles (UGVs) with dynamically	changing interaction topologies. Different from statistics dissemination-based algorithms that transmit posterior distributions or likelihood functions, this method relies on a \textcolor{\revcol}{Full-In-and-Full-Out} (FIFO) transmission protocol, which significantly reduces the transmission burden between each pair of UGVs. 
+		Each UGV only sends a communication buffer \textcolor{\revcol}{(CB)} and a track list to its neighbors, in which the former contains a history of sensor measurements from all UGVs, 
+		\textcolor{\revcol}{and the latter is used to trim the redundant measurements in the CB to reduce communication overhead.
+%		and the latter trims the used measurements in the buffer to reduce communication overhead. 
+		It is proved that by using FIFO each UGV can disseminate its measurements over the whole network within a finite time, and the FIFO-based DBF is able to achieve consistent estimation of the environment state.} 
+		The effectiveness of this method is validated by comparing with the consensus-based distributed filter and the centralized filter in a multi-target tracking problem.
 	\end{abstract}
 	
 	\input{intro}

@@ -9,12 +9,14 @@ set(0,'defaultAxesFontName', 'Times New Roman')
 set(0,'defaultTextFontName', 'Times New Roman')
 
 sim_mode = true; % used in main_tv_topo.m, use simulated data instead of experiment data (no experiment in tv_topo though)
-show_plot = true; % draw pdf at each step. used in main_tv_topo.m
+show_plot = false; % draw pdf at each step. used in main_tv_topo.m
 save_plot = false; % save pdf of selected steps and corresponding .mat file. used in main_tv_topo.m and Sim.m (plotSim)
 DBF_only = true; % only run DBF (true) or run DBF, CF and ConF (false)
-save_video = true; % save the progress figures to a video. When using this, don't use dual monitors, which can cause problem in the captured video region
-save_data = false; % save all sim data. used in main_tv_topo.m and Sim.m and for drawing metrics plot
+DBF_type = 'pf'; % choose the implementation of dbf: particle filter('pf') or histogram('hist')
+save_video = false; % save the progress figures to a video. When using this, don't use dual monitors, which can cause problem in the captured video region
+save_data = true; % save all sim data. used in main_tv_topo.m and Sim.m and for drawing metrics plot
 comp_metric = false; % decide if needs to compute metrics and compare them. used in main_tv_topo.m
+comp_metric_pf = true; % decide if needs to compute metrics and compare them for pf implementation. used in main_tv_topo.m
 
 % decide which plot I want to draw. This is a shortcut to set up the
 % parameters. If I choose both process_plot and metrics_plot to be false,
@@ -146,6 +148,8 @@ switch topo_select
             {4,6};
             {1,5}};
     case 2
+        % this part is out of date. needs to define rbt_nbhd instead of
+        % defining rbt.top.neighbour
         rbt(1).top(1).neighbour=6;
         rbt(2).top(1).neighbour=0;
         rbt(3).top(1).neighbour=5;
@@ -199,8 +203,15 @@ switch topo_select
         top_idx_set = [1 2 2 2 4 1 3 1 3 4];    
 end
 
+xMin = 0;
+xMax = fld_size(1);
+yMin = 0;
+yMax = fld_size(2);
+[X,Y] = meshgrid((xMin+0.5):2:(xMax-0.5),(yMin+0.5):2:(yMax-0.5));
+particles = [X(:),Y(:)]';
+
 %% define target 
-target_mode = 'sin'; %%!!! warning: whenever change the target_mode, remember to delete the previous upd_matrix first
+target_mode = 'linear'; %%!!! warning: whenever change the target_mode, remember to delete the previous upd_matrix first
 
 if strcmp(target_mode, 'linear')    
     % linear target model
