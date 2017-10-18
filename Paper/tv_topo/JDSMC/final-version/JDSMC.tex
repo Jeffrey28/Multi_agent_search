@@ -1,0 +1,196 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+
+\documentclass[twocolumn,10pt]{asme2ej}  % Comment this line out if you need a4paper
+
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+
+%\IEEEoverridecommandlockouts                              % This command is only needed if 
+% you want to use the \thanks command
+
+%\overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+
+% The following packages can be found on http:\\www.ctan.org
+%\usepackage{graphicx}
+\usepackage{graphics} % for pdf, bitmapped graphics files
+\usepackage{epsfig} % for postscript graphics files
+\usepackage{subcaption}
+\usepackage[noadjust]{cite}
+%\usepackage{mathptmx} % assumes new font selection scheme installed
+%\usepackage{times} % assumes new font selection scheme installed
+\usepackage{amsmath,amssymb,amsfonts,mathrsfs} % assumes amsmath package installed
+\usepackage{algorithm,algpseudocode}
+%\usepackage{booktabs}
+\usepackage{balance}
+\usepackage{tcolorbox}
+% the amsthm package may conflict with proof environment. so use following commands
+\let\proof\relax
+\let\endproof\relax
+\usepackage{amsthm}
+
+% format for theorems etc.
+\newtheorem{thm}{\bfseries Theorem}
+\newtheorem{lem}{\bfseries Lemma}
+\newtheorem{cor}{\bfseries Corollary}
+\newtheorem{prop}{\bfseries Proposition}
+\newtheorem{rem}{\bfseries Remark}
+
+% format for argmin, argmax
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+% format for cross-reference
+\usepackage[capitalize]{cleveref}
+\crefname{equation}{eq.}{eq.}
+\Crefname{equation}{Eq.}{Eq.}
+\crefname{thm}{theorem}{theorems}
+\Crefname{thm}{Theorem}{Theorems}
+\crefname{lem}{lemma}{lemmas}
+\Crefname{lem}{Lemma}{Lemmas}
+\crefname{cor}{corollary}{corollaries}
+\Crefname{cor}{Corollary}{Corollaries}
+\crefname{prop}{proposition}{propositions}
+\Crefname{prop}{Proposition}{Propositions}
+\crefname{rem}{remark}{remarks}
+\Crefname{rem}{Remark}{Remarks}
+
+% =====Macros for this manuscript===== %
+\newcommand{\proto}{FIFO}
+\newcommand{\lb}{\left\lbrace}
+\newcommand{\rb}{\right\rbrace}
+\newcommand{\X}{X}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\Z}{\mathcal{Z}}
+\newcommand{\zb}{\mathbf{z}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\Q}{\mathcal{Q}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\xg}{x^g}
+\newcommand{\fc}{frequently jointly strongly connected}
+\newcommand{\thi}{^\text{th}}
+\newcommand{\inbhd}{inbound neighbors}
+\newcommand{\onbhd}{outbound neighbors}
+\newcommand{\CB}{\textbf{\textit{CB}}}
+\newcommand{\TL}{\textbf{\textit{TL}}}
+\newcommand{\revcol}{black} % color for the revised text
+
+%=====todonotes===== %
+\usepackage{todonotes}
+\usepackage{soul}
+\definecolor{smoothgreen}{rgb}{0.7,1,0.7}
+\sethlcolor{smoothgreen}
+
+\newcommand{\todopara}[1]{\vspace{0px} %
+	\todo[inline, color=black!10]{\textbf{[Paragraph:]} {#1}} %
+}
+\newcommand{\todonote}[1]{\vspace{0px} %
+	\todo[inline, color=green!30]{\textbf{[Note:]} {#1}} %
+}
+\newcommand{\todoQ}[1]{\vspace{0px} %
+	\todo[inline, color=orange!50]{\textbf{[Note:]} {#1}} %
+}
+\newcommand{\todohere}[1]{\hl{(\textbf{TODO:} #1)}}
+
+\newcommand{\hidetodos}{
+	\renewcommand{\todopara}[1]{}
+	\renewcommand{\todonote}[1]{}
+	\renewcommand{\todoQ}[1]{}
+	\renewcommand{\todohere}[1]{}
+}
+
+%=====end of proof===== %
+%\renewcommand{\qedsymbol}{\rule{0.7em}{0.7em}}
+
+\title{\LARGE \bf
+	Distributed Bayesian Filter using Measurement Dissemination for Multiple UGVs with Dynamically Changing Interaction Topologies}
+
+\author{Chang Liu\textsuperscript{1}, Shengbo Eben Li\textsuperscript{2}\thanks{Address all correspondence to this author.}, Diange Yang\textsuperscript{2}, J. Karl Hedrick\textsuperscript{1}
+	\affiliation{				
+		\\
+		\textsuperscript{1}Department of Mechanical Engineering, University of California, Berkeley,\\ \vspace{0.5cm} Berkeley, CA 94720 U.S.\\
+		\textsuperscript{2}Department of Automotive Engineering, State Key Lab of Automotive Safety and Energy, Tsinghua University,\\ Beijing 100084 China\\
+		\\
+		Email: changliu@berkeley.edu, lisb04@gmail.com, ydg@tsinghua.edu.cn, khedrick@me.berkeley.edu
+	}	
+}
+
+%%%% first author
+%\author{Chang Liu
+%	\affiliation{		
+%		Department of Mechanical Engineering, 
+%		University of California, Berkeley\\
+%		Berkeley, CA 94720\\
+%		Email: changliu@berkeley.edu
+%	}	
+%}
+%%%% second author
+%%%% remove the following entry for single author papers
+%%%% add more entries for additional authors
+%\author{Shengbo Eben Li\thanks{Address all correspondence to this author.}
+%	\affiliation{Department of Automotive Engineering, 
+%		Tsinghua University\\
+%		Beijing, China 100084\\
+%		Email: lisb04@gmail.com
+%	}
+%}
+%%%% third author
+%%%% remove the following entry for single author papers
+%%%% add more entries for additional authors
+%\author{Diange Yang
+%	\affiliation{
+%		Department of Automotive Engineering,
+%		State Key Lab of Automotive Safety and Energy,
+%		Tsinghua University\\
+%		Beijing, 100084, China\\
+%		Email: ydg@tsinghua.edu.cn
+%	}
+%}
+%%%% third author
+%%%% remove the following entry for single author papers
+%%%% add more entries for additional authors
+%\author{J. Karl Hedrick
+%	\affiliation{
+%		Department of Mechanical Engineering,
+%		University of California, Berkeley\\
+%		Berkeley, CA 94720\\
+%		Email: khedrick@me.berkeley.edu
+%	}
+%}
+
+\begin{document}
+	
+	%\hidetodos % hide all todos 
+	
+	\maketitle
+	\thispagestyle{empty}
+	\pagestyle{empty}
+	
+	%\setlength{\belowcaptionskip}{-10pt} % set the spacing between figure and text
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\begin{abstract}
+		This paper presents a novel distributed Bayesian filtering (DFB) method using measurement dissemination for multiple unmanned ground vehicles (UGVs) with dynamically	changing interaction topologies. Different from statistics dissemination-based algorithms that transmit posterior distributions or likelihood functions, this method relies on a \textcolor{\revcol}{Full-In-and-Full-Out} (FIFO) transmission protocol, which significantly reduces the transmission burden between each pair of UGVs. 
+		Each UGV only sends a communication buffer \textcolor{\revcol}{(CB)} and a track list to its neighbors, in which the former contains a history of sensor measurements from all UGVs, 
+		\textcolor{\revcol}{and the latter is used to trim the redundant measurements in the CB to reduce communication overhead.
+%		and the latter trims the used measurements in the buffer to reduce communication overhead. 
+		It is proved that by using FIFO each UGV can disseminate its measurements over the whole network within a finite time, and the FIFO-based DBF is able to achieve consistent estimation of the environment state.} 
+		The effectiveness of this method is validated by comparing with the consensus-based distributed filter and the centralized filter in a multi-target tracking problem.
+	\end{abstract}
+	
+	\input{intro}
+	\input{formulation}
+	\input{fifo}
+	\input{dbf}
+	\input{dbf-proof}
+	\input{sim}
+	\input{conclusion}
+	\input{acknowledgment}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	{\footnotesize\bibliographystyle{asmems4}}
+	\bibliography{references}
+	
+\end{document}

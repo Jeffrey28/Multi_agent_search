@@ -1,0 +1,11 @@
+\section{Conclusion}\label{sec:conclu}	
+	This paper presents a general measurement dissemination-based distributed Bayesian filter (DBF) for a network of multiple unmanned ground vehicles (UGVs) under dynamically changing interaction topologies.
+	The information exchange among UGVs relies on the Full-In-and-Full-Out (\proto) protocol, under which UGVs exchange the communication buffers and track lists with neighbors.
+	Under the condition that the union of the interaction topologies is \fc, {\proto} can disseminate measurements over the network within finite time. 
+	By using the track list, the CBs can be trimmed to save communication resource without causing information loss.
+	The \proto-DBF algorithm is developed to estimate individual probability density function for target localization. 	
+	The \proto-DBF can significantly reduce the transmission burden between each pair of UGVs compared to the statistics dissemination methods, and can achieve consistent state estimation.
+	Simulations comparing \proto-DBF with consensus-based distributed filters (CbDF) and the centralized filter (CF) show that \proto-DBF achieves similar performance as the CF and more superior performance than the CbDF.
+	
+%	In our future work, we will modify the {\proto} to handle the changing number of UGVs. 
+%	We will also look into the combination of transmission of measurements and parameterized statistics to save communication cost without sacrificing estimation accuracy.

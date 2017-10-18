@@ -1,0 +1,156 @@
+\section{Proof of Consistency}\label{sec:consist_proof}
+
+	
+	This section proves the consistency of the \textit{maximum a posteriori} (MAP) estimator of LIFO-DBF under unbiased sensors (sensors without offset).
+	A state estimator is \textit{consistent} if it converges in probability to the true value of the state \cite{amemiya1985advanced}.
+	Consistency is an important metric for stochastic filtering approaches \cite{chen2003bayesian}, which 
+%	which implies that all UGVs' estimation results converge to a same value, while the consistency
+	not only implies achieving consensus asymptotically, but also requires the estimated value converge to the true value.	
+	We first prove the consistency for static UGVs and then for moving UGVs. 
+%	For simplicity and clarity, 
+	Here we assume that $S$ is a finite set (e.g. a finely discretized field) and the target is relatively slow compared to the filtering dynamics.
+%	This makes sense if the convergence is achieved much faster than the target's dynamics.
+	In addition, the target position can be uniquely determined by the multi-UGV network with proper placement (i.e., excluding the special case of ghost targets \cite{malanowski2012two}).
+	
+	\subsection{Static UGVs}	
+	The consistency of \proto-DBF for static UGVs is stated as follows: 
+	
+	\begin{thm}\label{thm:\proto-dbf-sta-ugv}
+		Assume the UGVs are static and the sensors are unbiased. If the network of $N$ UGVs is \fc, then the MAP estimator of target position converges in probability to the true position of the target using \proto-DBF, i.e.,
+		
+		\small\begin{equation*}
+		\lim\limits_{k\rightarrow \infty}
+		P(\X_k^{MAP}=\xg)=
+		1,\;i\in V,
+		\end{equation*}\normalsize
+		where 
+		\small\begin{equation*}
+		\X_k^{MAP}=\arg\max\limits_{\X}P^i_{pdf}(\X|\Z^{i}_{1:k}).
+		\end{equation*}		
+	\end{thm}
+%	\medskip
+	
+	\begin{proof}	
+		\textcolor{\revcol}{The DBF can be transformed into the batch form by recursively applying \Cref{eqn:bayes_upd} from $k$ to the initial time $1$ (back in time):}
+		\textcolor{\revcol}{
+		\small\begin{align*}
+		P^i_{pdf}(\X|\Z^i_{1:k})&=K_iP^i_{pdf}(\X|\Z^i_{1:k-1})\prod\limits_{z^j_k\in\Z^i_k}P(z^j_k|\X)\\
+		&=K_iP^i_{pdf}(\X|\Z^i_{1:k-2})\prod\limits_{z^j_{k-1}\in\Z^i_{k-1}}P(z^j_{k-1}|\X)\prod\limits_{z^j_k\in\Z^i_k}P(z^j_k|\X)\\
+		&=\dots\\
+		&=K_iP^i_{pdf}(\X)\prod\limits_{z^j_1\in\Z^i_1}P(z^j_1|\X)\dots\prod\limits_{z^j_k\in\Z^i_k}P(z^j_k|\X)\\ %\prod\limits_{z^j_{k-1}\in\Z^i_{k-1}}P(z^j_{k-1}|\X)
+		&=K_iP^i_{pdf}(\X)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{ij}_{k}}P(z^j_t|\X).
+		\end{align*}\normalsize
+	The last step is obtained by using the relation $\B^i_k=\left[ Y^1_{\K^{i1}_k},\dots,Y^N_{\K^{iN}_k}\right]$ and $\Z^i_{1:k}$ is the set of all measurements in $\B^i_k$.}
+%		\small\begin{equation*}
+%	P^i_{pdf}(\X|\Z^i_{1:k})=\frac{P^i_{pdf}(\X)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\X)}{\sum\limits_{\X\in S}P^i_{pdf}(\X)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{i,j}_{k}}P(z^j_t|\X)},
+%		\end{equation*}\normalsize		
+		
+		Comparing $P^i_{pdf}(X_k=x|\Z^i_{1:k})$ with $P^i_{pdf}(X_k=\xg|\Z^i_{1:k})$\footnote{For the purpose of simplicity, we use $P^i_{pdf}(x|\Z^i_{1:k})$ to represent $P^i_{pdf}(X_k=x|\Z^i_{1:k})$ in this proof.} yields
+		
+		\small\begin{equation}\label{eqn:cmp}
+		\frac{P^i_{pdf}(x|\Z^i_{1:k})}{P^i_{pdf}(\xg|\Z^i_{1:k})}=\frac{P^i_{pdf}(x)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{ij}_{k}}P(z^j_t|x)}{P^i_{pdf}(\xg)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{ij}_{k}}P(z^j_t|\xg)}.
+		\end{equation}\normalsize
+		
+		Take the logarithm of \Cref{eqn:cmp} and average it over $k$ steps:
+		\small\begin{equation}\label{eqn:cmp_log}
+		\frac{1}{k}\ln\frac{P^i_{pdf}(x|\Z^i_{1:k})}{P^i_{pdf}(\xg|\Z^i_{1:k})}=\frac{1}{k}\ln\frac{P^i_{pdf}(x)}{P^i_{pdf}(\xg)}+\sum\limits_{j=1}^{N}\frac{1}{k}\sum\limits_{t\in\K^{ij}_{k}}\ln\frac{P(z^j_t|x)}{P(z^j_t|\xg)}.
+		\end{equation}\normalsize
+		
+		Since $P^i_{pdf}(x)$ and $P^i_{pdf}(\xg)$ are bounded and nonzero by the choice of the initial PDF, $\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x)}{P^i_{pdf}(\xg)}= 0.$
+		\textcolor{\revcol}{Note that the sensor measurement is a random variable drawn from the underlying distribution associated with the sensor model, i.e., $z^j_t\sim P(\cdot|\xg),\,j\in V$.
+		Therefore $\ln\frac{P(z^j_t|x)}{P(z^j_t|\xg)}$ is a random variable associated with $z^j_t$.
+		Due to the finite delay of measurement arrival (\Cref{cor1}), i.e., 
+%		$i\thi$ UGV constantly receives the sensor measurements of all UGVs, 
+		$k-NT_u\leq |\K^{ij}_{k}|\leq k$, where $|\cdot|$ is the set cardinality, we can use the law of large numbers to study the asymptotic behavior of the series in \Cref{eqn:cmp_log}:}
+		\small\begin{subequations}\label{eqn:cmp_lim2}
+			\begin{align}
+			\frac{1}{k}\sum\limits_{t\in\K^{ij}_{k}}\ln\frac{P(z^j_t|x)}{P(z^j_t|\xg)}&\overset{P}{\longrightarrow}\mathbb{E}_{z^j_t} \left[\frac{P(z^j_t|x)}{P(z^j_t|\xg)}\right]\\
+			&=\int_{z^j_t} P(z^j_t|\xg)\frac{P(z^j_t|x)}{P(z^j_t|\xg)} dz^j_t\\
+			&=-D_{KL}\left(P(z^j_t|x)\|P(z^j_t|\xg)\right),
+			\end{align}
+		\end{subequations}\normalsize		
+		where ``$\overset{P}{\longrightarrow}$" represents ``convergence in probability'' and $D_{KL}(P_1\|P_2)$ denotes the Kullback-Leibler (KL) divergence between two probability distribution $P_1$ and $P_2$.
+		KL divergence has the property that $\forall P_1,\,P_2, \; D_{KL}(P_1\|P_2)\leq 0$, and the equality holds if and only if $\; P_1=P_2.$ Therefore
+%		This leads to the following conclusion:
+		%		\begin{subequations}
+		\small\begin{align*}
+		\lim\limits_{k\rightarrow \infty}\frac{1}{k}\sum\limits_{t\in\K^{ij}_{k}}\ln\frac{P(z^j_t|x)}{P(z^j_t|\xg)}<0,&\quad x\neq \xg\\
+		\lim\limits_{k\rightarrow \infty}\frac{1}{k}\sum\limits_{t\in\K^{ij}_{k}}\ln\frac{P(z^j_t|x)}{P(z^j_t|\xg)}=0,&\quad x= \xg.
+		\end{align*}\normalsize
+		%		\end{subequations}
+		
+		Considering the limiting case of \Cref{eqn:cmp_log}, we get
+		%		\begin{subequations}
+		\small\begin{align}
+		\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x|\Z^i_{1:k})}{P^i_{pdf}(\xg|\Z^i_{1:k})}<0,&\quad x\neq \xg\label{subeqn:limit1}\\
+		\lim\limits_{k\rightarrow \infty}\frac{1}{k}\ln\frac{P^i_{pdf}(x|\Z^i_{1:k})}{P^i_{pdf}(\xg|\Z^i_{1:k})}=0,&\quad x= \xg\label{subeqn:limit2}.
+		\end{align}\normalsize
+		%		\end{subequations}
+		\Cref{subeqn:limit1,subeqn:limit2} imply that
+		
+		\small\begin{equation*}
+		\frac{P^i_{pdf}(x|\Z^i_{1:k})}{P^i_{pdf}(\xg|\Z^i_{1:k})}\overset{P}{\longrightarrow}
+		\begin{cases}
+		0\quad x\neq \xg,\\
+		1\quad x= \xg.
+		\end{cases}		
+		\end{equation*}\normalsize
+		
+		Therefore,
+		\small\begin{equation*}
+		\lim\limits_{k\rightarrow \infty}
+		P(X_k^{MAP}=\xg)=1.
+		\end{equation*}\normalsize		
+		
+%		\hfill\qedsymbol
+	\end{proof}
+	
+
+	\subsection{Moving UGVs}
+%	This subsection considers the case of using moving UGVs to localize a target, either static or moving.
+	The consistency proof for the moving UGVs case is different from the static UGVs case in that each moving UGV makes measurements at multiple different positions.
+	We classify UGV measurement positions into two disjoint sets: \textit{infinite-measurement spots} \textcolor{\revcol}{$S_I$} that contain positions where a UGV keeps revisiting as time tends to infinity, and \textit{finite-measurement spots} \textcolor{\revcol}{$S_F$} that contain positions where the UGV visits finitely many times (i.e., the UGV does not visit again after a finite time period).
+	It is easy to know that each UGV has at least one position where it revisits infinitely many times as $k$ tends to infinity.
+			
+	\begin{thm}\label{thm:\proto-dbf-mov-ugv}
+		Assume the UGVs move within a finite set of positions and the sensors are unbiased. If the network of $N$ UGVs is \fc, then the MAP estimator of target position converges in probability to the true position of the target using \proto-DBF, i.e.,
+		\small\begin{equation*}
+		\lim\limits_{k\rightarrow \infty}
+		P(\X^{MAP}_k=\xg)=1,\;i\in V,
+		%		P(x=\xg|\mathbf{z}^i_{1:k})=1,\;i=1,\dots,N.
+		\end{equation*}\normalsize		
+		\textcolor{\revcol}{where 
+		\small\begin{equation*}
+		\X_k^{MAP}=\arg\max\limits_{\X}P^i_{pdf}(\X|\Z^{i}_{1:k}).
+		\end{equation*}}	
+	\end{thm}
+		
+	\begin{proof}		
+%		The batch form of DBF at $k\thi$ step is
+		Similar to \Cref{eqn:cmp}, comparing $P^i_{pdf}(x|\Z^i_k)$ and $P^i_{pdf}(\xg|\Z^i_k)$ yields		
+		\small\begin{equation}\label{eqn:cmp2}
+		\frac{P^i_{pdf}(x|\Z^i_k)}{P^i_{pdf}(\xg|\Z^i_k)}=\frac{P^i_{pdf}(x)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{ij}_{k}}P(z^j_t|x;x^j_t)}{P^i_{pdf}(\xg)\prod\limits_{j=1}^{N}\prod\limits_{t\in\K^{ij}_{k}}P(z^j_t|\xg;x^j_t)}.
+		\end{equation}\normalsize
+			
+		\textcolor{\revcol}{
+		The only difference from \Cref{eqn:cmp} is that $P(\cdot|x;x^j_l)$ varies as the $j\thi$ UGV moves, since $x^j_l$ changes over time.
+		Similar to \Cref{eqn:cmp_log}, we obtain 
+		\begin{equation*}
+		\begin{split}
+		\frac{1}{k}\ln\frac{P^i_{pdf}(x|\Z^i_{1:k})}{P^i_{pdf}(\xg|\Z^i_{1:k})}&=\frac{1}{k}\ln\frac{P^i_{pdf}(x)}{P^i_{pdf}(\xg)}\\
+		&+\sum\limits_{j=1}^{N}\frac{1}{k}\sum\limits_{t\in\K^{ij}_{k},x^j_t\in S_F}\ln\frac{P(z^j_t|x;x^j_t)}{P(z^j_t|\xg;x^j_t)}\\
+		&+\sum\limits_{j=1}^{N}\frac{1}{k}\sum\limits_{t\in\K^{ij}_{k},x^j_t\in S_I}\ln\frac{P(z^j_t|x;x^j_t)}{P(z^j_t|\xg;x^j_t)},
+		\end{split}		
+		\end{equation*}
+		where the second summand corresponds to the sensor positions that are in the finite-measurement spots set, and the third summand corresponds to the positions in the infinite-measurement spots set. 
+		By referring to \Cref{eqn:cmp_lim2}, it is straightforward to know
+		\begin{equation*}
+		\begin{split}
+		\sum\limits_{j=1}^{N}\frac{1}{k}\sum\limits_{t\in\K^{ij}_{k},x^j_t\in S_F}\ln\frac{P(z^j_t|x;x^j_t)}{P(z^j_t|\xg;x^j_t)}&\overset{P}{\longrightarrow} 0,\\
+		\sum\limits_{j=1}^{N}\frac{1}{k}\sum\limits_{t\in\K^{ij}_{k},x^j_t\in S_I}\ln\frac{P(z^j_t|x;x^j_t)}{P(z^j_t|\xg;x^j_t)}&\overset{P}{\longrightarrow} \mathbb{E}_{z^j_t} \left[\frac{P(z^j_t|x)}{P(z^j_t|\xg)}\right],
+		\end{split}		
+		\end{equation*}
+		since only finitely many observations associated with sensor positions in $S_F$ are obtained but infinitely many observations associated with sensor positions in $S_I$ are received.
+		The rest of the proof is similar to that of \Cref{thm:\proto-dbf-sta-ugv}.}
+	\end{proof}
+			

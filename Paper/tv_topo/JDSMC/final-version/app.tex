@@ -1,0 +1,53 @@
+\appendix
+	\section*{Appendix: Proof of the Maximal Time Interval between Consecutive Trims}
+	
+	We consider the time intervals $\left[T_m,T_{m+1} \right),\,m=1,2,\dots$, where $T_1=0$.
+	The time intervals are defined in the way that within each interval a UGV can send its information to any another UGVs.
+	\Cref{prop1} ensures that such time intervals exist and are of finite length.
+%	Note that, $\left[T_m,T_{m+1}\right)$ is different from $\left[k_n,k_{n+1}\right)$.
+%	The latter requires that the union within the interval is a jointly connected graph, 
+	Define $L^{ij}_m\,(i,j\in V, m=1,2,\dots)$ as the size of the measurements from the $j\thi$ UGV that are stored in the $i\thi$ UGV's CB at time $T_m$.
+	Let $C^i_m$ be the length of time steps of which the $i\thi$ UGV CB has got the measurements from all UGVs but have not yet been trimmed at $T_m$.
+	Define $\Delta_m = T_{m+1}-T_m$. 
+	Therefore $\Delta_m \le T_M$.
+	It is easy to know that $L^{ij}_1\le T_M$. 
+	The equality holds if the $i\thi$ UGV does not receive the measurement of the $j\thi$ UGV until at $T_2$.
+	We consider the upper bound of $L^{ij}_m,\,m=1,2,\dots$.
+	Notices that, if $\Delta_m>C^i_m$, then it can happen that after trimming all measurements corresponding to first $C^i_m$ time steps, no trimming happens if the $i\thi$ UGV does not receive the measurement of the $j\thi$ UGV until at $T_{m+1}$.
+	This case will maximally increase the size of the $i\thi$ UGV's CB.
+	Considering the mechanism of the trimming, we can derive maximal increase of the CB's size:
+	\begin{align*}
+	L^{ij}_{m+1} &= L^{ij}_{m}+\max(\Delta_{m}-C^i_{m},0),\;m=1,2,\dots\\
+	C^i_{m+1}&=C^i_m+\Delta_m-\min(C^i_m,\Delta_m)=\max(\Delta_m,C^i_m).
+	\end{align*}
+	
+	We consider the relation of between $L^{ij}_{m+3}$ and $L^{ij}_{m}$:
+	\small
+	\begin{subequations}
+		\begin{align}
+		L^{ij}_{m+3}&=L^{ij}_{m+2}+\max(\Delta_{m+2}-C^i_{m+2},0)\label{subeq:app1}\\
+		&=L^{ij}_{m+1}+\max(\Delta_{m+1}-C^i_{m+1},0)+\max(\Delta_{m+2}-C^i_{m+2},0)\label{subeq:app2}\\
+		&=L^{ij}_{m+1}+\max(\Delta_{m+1}-C^i_{m+1},0)+\max(\Delta_{m+2}-\max(\Delta_{m+1},C^i_{m+1}),0)\label{subeq:app3}\\
+		&=L^{ij}_{m+1}+\max(\Delta_{m+2},\max(\Delta_{m+1},C^i_{m+1}))-C^i_{m+1}\label{subeq:app4}\\
+		&=L^{ij}_{m}+\max(\Delta_{m}-C^i_{m},0)+\max(\Delta_{m+2},\max(\Delta_{m+1},C^i_{m+1}))-C^i_{m+1}\label{subeq:app5}\\
+		&=L^{ij}_{m}+\max(\Delta_{m}-C^i_{m},0)+\max(\Delta_{m+2},\max(\Delta_{m+1},\max(\Delta_{m},C^i_{m})))\nonumber\\
+		&\quad -\max(\Delta_{m},C^i_{m})\label{subeq:app6}\\
+		&=L^{ij}_{m}+\max(\Delta_{m+2},\max(\Delta_{m+1},\max(\Delta_{m},C^i_{m})))-C^i_{m}\label{subeq:app7}.
+		\end{align}
+	\end{subequations}
+	\normalsize
+	\Cref{subeq:app1,subeq:app2} are from the definitions of $L^{ij}_{m+2}$ and $L^{ij}_{m+1}$, and \Cref{subeq:app3} uses the definition of $C^i_{m+2}$.
+	\Cref{subeq:app4} is obtained by using the following relation:
+	\begin{equation*}
+		\max(a,b)=\max(a-b,0)+b,\quad \forall a,b\in\mathbb{R}.
+	\end{equation*}
+	\Cref{subeq:app5,subeq:app6,subeq:app7} are similarly derived.
+	In general, we can get the following result for $m=1,2,\dots$ :
+	\begin{equation*}
+		L^{ij}_{m}=L^{ij}_{1}+\max(\Delta_{m-1},\max(\Delta_{m-2},\max(\Delta_{m-3},\dots,\max(\Delta_1,C^i_1)))-C^i_1.
+	\end{equation*}
+	Notice that $\Delta_{m}\le T_M$, $L^{ij}_{1}\le T_M$ and $C^i_1=0$.
+	Therefore, $L^{ij}_{m}\le 2T_M$.
+	
+	
+\appendix
