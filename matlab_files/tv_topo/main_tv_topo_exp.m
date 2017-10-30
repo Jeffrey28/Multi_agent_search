@@ -11,12 +11,19 @@
 % 2. when target_mode is changed, remember to delete upd_matrix and load a
 % new one.
 
+% 2017 October
+% 10/18/17 
+% this file is specifically for using experiment data with dbf for 
+% tv_topo. The generated videos is intended to be included in phd seminar
+
 % main function for running the simulation. use with simSetup
 clearvars -except upd_matrix
 clc; close all
 
+dbstop if error
 %% %%%%%%% Simulation %%%%%%%%%%
-simSetup();
+% simSetup();
+expSetup();
 
 % define parameters, precompute certain quantities
 
@@ -45,12 +52,23 @@ tmp_t_len = zeros(num_robot,sim_len);
 
 % save to video
 if save_video
-    vidObj = VideoWriter('tv-topo.avi');
-    vidObj.FrameRate = 2;
-    open(vidObj);
+    % experiment has three robots. so draw three
+    % robot 1
+    vidObj1 = VideoWriter('tv-topo-exp1.avi');
+    vidObj1.FrameRate = 2;
+    open(vidObj1);
+    
+    % robot 1
+    vidObj2 = VideoWriter('tv-topo-exp2.avi');
+    vidObj2.FrameRate = 2;
+    open(vidObj2);
+    
+    vidObj3 = VideoWriter('tv-topo-exp3.avi');
+    vidObj3.FrameRate = 2;
+    open(vidObj3);
 end
 
-for trial_cnt = 1:trial_num % note: the 11th trial is for generating good simulation plot, not used for computing the metrics of DBF
+for trial_cnt = 1%:trial_num % note: the 11th trial is for generating good simulation plot, not used for computing the metrics of DBF
     % initialize field class    
     target.pos = [tx_set(trial_cnt);ty_set(trial_cnt)];
     
@@ -83,7 +101,8 @@ for trial_cnt = 1:trial_num % note: the 11th trial is for generating good simula
             inPara_rbt.T = T_set(rbt_cnt);
             inPara_rbt.w = dir_set(rbt_cnt)*2*pi/inPara_rbt.T;
         elseif r_move == 2
-            inPara_rbt.pos = r_init_pos_exp(rbt_cnt);
+%             inPara_rbt.pos = r_init_pos_exp(rbt_cnt);
+            inPara_rbt.state = rbt_init_state(:,rbt_cnt);
         end
         
         inPara_rbt.sensor_set = sensor_set;
@@ -101,6 +120,10 @@ for trial_cnt = 1:trial_num % note: the 11th trial is for generating good simula
         % range-bearing sensor
         inPara_rbt.dist_ranbrg = 20;
         inPara_rbt.cov_ranbrg = 1*eye(2);%100
+        % P3DX onboard sonar
+        inPara_rbt.dist_sonar = 5*scale; % sensing range
+        inPara_rbt.cov_sonar = 0.5*scale;%0.1*scale; % covariance on measured distance
+        inPara_rbt.ang_sonar = 25/180*pi; % sensing FOV (angle)
         
         inPara_rbt.fld_size = fld_size;
         inPara_rbt.max_step = sim_len;
@@ -112,13 +135,18 @@ for trial_cnt = 1:trial_num % note: the 11th trial is for generating good simula
         inPara_rbt.sensor_type = sensor_set{rbt_cnt};
         inPara_rbt.DBF_type = DBF_type;
         inPara_rbt.particles = particles;
-        rbt{rbt_cnt} = Robot(inPara_rbt);
+        rbt{rbt_cnt} = Robot_exp(inPara_rbt);
     end    
     
     %% %%%%%%%%%%%%%% main code of simulation %%%%%%%%%%%%%%%%%%
     count = 1;
     
     while(1)
+        % break condition
+        if count > sim_len
+             break
+        end
+         
         % following code should appear at the end of the code. Putting them
         % here is only for debugging purpose
         %% %%%%% target moves %%%%%
@@ -127,10 +155,10 @@ for trial_cnt = 1:trial_num % note: the 11th trial is for generating good simula
         end
         
         %% %%%%% robot moves %%%%%
-        if r_move == 1
+        if r_move == 1 || r_move == 2
             for ii = 1:num_robot
                 rbt{ii}.tar_mod = [rbt{ii}.tar_mod,fld.target.model_idx];
-                rbt{ii} = rbt{ii}.robotMove();
+                rbt{ii} = rbt{ii}.robotMove(samp_meas_data{ii}(count,1:3));
             end
         end
         
@@ -151,7 +179,7 @@ for trial_cnt = 1:trial_num % note: the 11th trial is for generating good simula
                         rbt{ii} = rbt{ii}.sensorGenRanBrg(fld);
                 end
             elseif exp_mode
-                rbt{ii} = rbt{ii}.sensorGenRan(fld);
+                rbt{ii} = rbt{ii}.sensorGenSonar(fld,samp_meas_data{ii}(count,4));
             end
                         
             % update own observation                      
@@ -173,7 +201,7 @@ for trial_cnt = 1:trial_num % note: the 11th trial is for generating good simula
         % in this code, the trim of CB is conducted in this.DBF. May change
         % this later.
         for ii = 1:num_robot    
-            if strcmp(target_mode,'linear') || strcmp(target_mode,'sin') 
+            if strcmp(target_mode,'linear') || strcmp(target_mode,'sin') || strcmp(target_mode,'exp')
                 inPara3 = struct('selection',selection,'target_model',fld.target.model_idx,...
                     'u_set',u_set,'target_mode',target_mode,'V',fld.target.V);
             elseif strcmp(target_mode,'circle')
@@ -182,7 +210,7 @@ for trial_cnt = 1:trial_num % note: the 11th trial is for generating good simula
             end
                 
             if strcmp(DBF_type,'hist')
-                rbt{ii} = rbt{ii}.DBF(inPara3);
+                rbt{ii} = rbt{ii}.DBF_exp(inPara3);
             elseif strcmp(DBF_type,'pf')      
                 disp('main_tv_topo.m, line 187')
                 sprintf('robot %d',ii)
@@ -234,6 +262,13 @@ for trial_cnt = 1:trial_num % note: the 11th trial is for generating good simula
                 end
                 top_idx = top_idx_set(tmp_idx);
             case 7
+                len = length(top_idx_set);
+                tmp_idx = rem(count,len);
+                if tmp_idx == 0
+                    tmp_idx = len;
+                end
+                top_idx = top_idx_set(tmp_idx);
+            case 8
                 len = length(top_idx_set);
                 tmp_idx = rem(count,len);
                 if tmp_idx == 0
@@ -318,19 +353,21 @@ for trial_cnt = 1:trial_num % note: the 11th trial is for generating good simula
          % draw plot
          if show_plot
              [fig_hdl] = sim.plotSim(rbt,fld,count,save_plot,DBF_only,DBF_type);
-%              pause()
-            % save the plot as a video
-             frame_hdl = getframe(fig_hdl);
+             %              pause()
+             % save the plot as a video
+             frame_hdl1 = getframe(figure(1));
+             frame_hdl2 = getframe(figure(2));
+             frame_hdl3 = getframe(figure(3));
+             
+%              frame_hdl = getframe(fig_hdl);
              if save_video
-                writeVideo(vidObj,frame_hdl);
-            end
+                 writeVideo(vidObj1,frame_hdl1);
+                 writeVideo(vidObj2,frame_hdl2);
+                 writeVideo(vidObj3,frame_hdl3);
+             end
          end
                 
          %% go to next iteration
-         if count > sim_len
-             break
-         end
-         
          count = count + 1;
          
          %% compute metrics
@@ -356,7 +393,9 @@ for trial_cnt = 1:trial_num % note: the 11th trial is for generating good simula
 end
 
 if save_video
-    close(vidObj)
+    close(vidObj1)
+    close(vidObj2)
+    close(vidObj3)
 end
 
 %% %%%%%%%%%%%%%%%%%%%%%% Simulation Results %%%%%%%%%%%%%%%%%%%%%%
@@ -372,7 +411,7 @@ end
 % save data 
 % note 'sim' contains all data about rbt, fld and simulation results.
 % However it is so huge that we cannot save all...
-if save_data
+if save_data_exp
     sim_for_save = sim;
     sim_for_save.rbt_set = {};
     sim_for_save.fld_set = {};

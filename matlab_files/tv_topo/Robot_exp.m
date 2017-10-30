@@ -1,4 +1,6 @@
-classdef Robot
+classdef Robot_exp
+    % (10/19/17) class for processing experiment data. This should be merged into
+    % Robot.m someday.
     properties
         % basic info
         idx; % index of the robot
@@ -93,7 +95,7 @@ classdef Robot
     end
     
     methods
-        function this = Robot(inPara)
+        function this = Robot_exp(inPara)
             this.upd_matrix = inPara.upd_matrix; %%% can precompute this term and pass the lookup table to this constructor function
             this.idx = inPara.idx;
             if inPara.r_move == 0
@@ -1084,11 +1086,14 @@ classdef Robot
         end
         
         %% robot motion
-        function this = robotMove(this)
-            tmp_angl = atan2(this.pos(2)-this.center(2),this.pos(1)-this.center(1));
-            tmp_angl = tmp_angl+this.w;
-            this.pos = this.r*[cos(tmp_angl);sin(tmp_angl)]+this.center;
+        function this = robotMove(this,state)
+            this.state = state';
+            this.pos = this.state(1:2);
             this.traj = [this.traj,this.pos];
+%             tmp_angl = atan2(this.pos(2)-this.center(2),this.pos(1)-this.center(1));
+%             tmp_angl = tmp_angl+this.w;
+%             this.pos = this.r*[cos(tmp_angl);sin(tmp_angl)]+this.center;
+%             this.traj = [this.traj,this.pos];
         end
         
         %% %%%%%%%%%%%%%% compute metrics %%%%%%%%%%%%%%%%%%

@@ -9,14 +9,14 @@ set(0,'defaultAxesFontName', 'Times New Roman')
 set(0,'defaultTextFontName', 'Times New Roman')
 
 sim_mode = true; % used in main_tv_topo.m, use simulated data instead of experiment data (no experiment in tv_topo though)
-show_plot = false; % draw pdf at each step. used in main_tv_topo.m
+show_plot = true; % draw pdf at each step. used in main_tv_topo.m
 save_plot = false; % save pdf of selected steps and corresponding .mat file. used in main_tv_topo.m and Sim.m (plotSim)
 DBF_only = true; % only run DBF (true) or run DBF, CF and ConF (false)
-DBF_type = 'pf'; % choose the implementation of dbf: particle filter('pf') or histogram('hist')
-save_video = false; % save the progress figures to a video. When using this, don't use dual monitors, which can cause problem in the captured video region
-save_data = true; % save all sim data. used in main_tv_topo.m and Sim.m and for drawing metrics plot
+DBF_type = 'hist'; % choose the implementation of dbf: particle filter('pf') or histogram('hist')
+save_video = true; % save the progress figures to a video. When using this, don't use dual monitors, which can cause problem in the captured video region
+save_data = false; % save all sim data. used in main_tv_topo.m and Sim.m and for drawing metrics plot
 comp_metric = false; % decide if needs to compute metrics and compare them. used in main_tv_topo.m
-comp_metric_pf = true; % decide if needs to compute metrics and compare them for pf implementation. used in main_tv_topo.m
+comp_metric_pf = false; % decide if needs to compute metrics and compare them for pf implementation. used in main_tv_topo.m
 
 % decide which plot I want to draw. This is a shortcut to set up the
 % parameters. If I choose both process_plot and metrics_plot to be false,
@@ -41,7 +41,7 @@ if metrics_plot
     comp_metric = true;
 end
 
-sim_len = 50; % max step
+sim_len = 60; % max step
 % rounds of consensus at each time step
 cons_step = 10;
 cons_fig = false; % whether to show intermediate step of consensus
@@ -64,7 +64,7 @@ if r_move == 0
     sim_r_idx = [1,3,5];
 else
 %     sim_r_idx = [1,3,5];
-    sim_r_idx = 3;
+    sim_r_idx = 5;
 end
 
 % the sensor type of each robot
@@ -137,7 +137,7 @@ dir_set = [1 -1 1 -1 -1 -1];
 
 % communication neighbor. note that the neighbors here are inbound
 % neighbors, i.e., the ones a UGV can receive info from
-topo_select = 6;
+topo_select = 7;%6;
 
 switch topo_select
     case 1
@@ -193,14 +193,26 @@ switch topo_select
             {5}};
     case 6
         % topology that contains both unidirectional and bidirecational
-        % communication, used for simulation in the paper
+        % communication, used for simulation in the paper. each row
+        % corresponds to a robot. The index in each cell means that robot
+        % can send measurement to the ith robot (ith row).
         rbt_nbhd = {{[2],[],[],[]};
             {[1,3],[],[],[]};
             {[2],[],[],[5,6]};
             {[],[3],[],[]};
             {[],[],[4],[]};
             {[],[1],[],[]}};
-        top_idx_set = [1 2 2 2 4 1 3 1 3 4];    
+        top_idx_set = [1 2 2 2 4 1 3 1 3 4];   
+    case 7
+        % topology that contains unidirecational
+        % communication, used for generating videos for phd seminar
+        rbt_nbhd = {{[],[2],[],[],[]};
+            {[6],[],[5],[],[]};
+            {[4],[1],[],[],[]};
+            {[],[],[2],[3],[]};
+            {[],[],[],[4],[]};
+            {[],[],[],[],[1]}};
+        top_idx_set = [2,4,3,5,1,3,3,1,5,5];   
 end
 
 xMin = 0;
@@ -211,7 +223,7 @@ yMax = fld_size(2);
 particles = [X(:),Y(:)]';
 
 %% define target 
-target_mode = 'linear'; %%!!! warning: whenever change the target_mode, remember to delete the previous upd_matrix first
+target_mode = 'sin'; %%!!! warning: whenever change the target_mode, remember to delete the previous upd_matrix first
 
 if strcmp(target_mode, 'linear')    
     % linear target model
